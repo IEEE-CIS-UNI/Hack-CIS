@@ -1,0 +1,312 @@
+@import "tailwindcss";
+
+:root {
+  --void: #05000d;
+  --ink: #0b0118;
+  --night: #150a30;
+  --plum: #26104f;
+  --grape: #5b1a99;
+  --violet: #8b5cf6;
+  --lavender: #b69cff;
+  --mist: #d9ccff;
+  --glow: #4de3ff;
+  --magenta: #d946ef;
+}
+
+@theme inline {
+  --color-void: var(--void);
+  --color-ink: var(--ink);
+  --color-night: var(--night);
+  --color-plum: var(--plum);
+  --color-grape: var(--grape);
+  --color-violet: var(--violet);
+  --color-lavender: var(--lavender);
+  --color-mist: var(--mist);
+  --color-glow: var(--glow);
+  --color-magenta: var(--magenta);
+  --font-display: var(--font-outfit);
+  --font-sans: var(--font-inter);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 4rem;
+}
+
+body {
+  background-color: var(--void);
+  color: #fff;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Fondo estático (sin JS ni WebGL): lo usan los celulares y los equipos lentos. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  pointer-events: none;
+  background-image:
+    radial-gradient(60rem 42rem at 85% -8%, rgba(139, 92, 246, 0.34), transparent 60%),
+    radial-gradient(50rem 38rem at -10% 45%, rgba(91, 26, 153, 0.42), transparent 60%),
+    radial-gradient(44rem 30rem at 65% 108%, rgba(217, 70, 239, 0.2), transparent 60%),
+    radial-gradient(1px 1px at 12% 18%, rgba(255, 255, 255, 0.8), transparent 100%),
+    radial-gradient(1px 1px at 78% 8%, rgba(255, 255, 255, 0.7), transparent 100%),
+    radial-gradient(1.5px 1.5px at 44% 32%, rgba(182, 156, 255, 0.9), transparent 100%),
+    radial-gradient(1px 1px at 90% 46%, rgba(255, 255, 255, 0.6), transparent 100%),
+    radial-gradient(1px 1px at 22% 64%, rgba(255, 255, 255, 0.7), transparent 100%),
+    radial-gradient(1.5px 1.5px at 66% 78%, rgba(77, 227, 255, 0.7), transparent 100%),
+    radial-gradient(1px 1px at 8% 92%, rgba(255, 255, 255, 0.6), transparent 100%);
+  background-size: auto, auto, auto, 520px 520px, 520px 520px, 520px 520px, 520px 520px, 520px 520px,
+    520px 520px, 520px 520px;
+}
+
+/* Cuando corre el shader, el fondo estático deja solo las estrellas. */
+html.shader body::before {
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, rgba(255, 255, 255, 0.8), transparent 100%),
+    radial-gradient(1px 1px at 78% 8%, rgba(255, 255, 255, 0.7), transparent 100%),
+    radial-gradient(1.5px 1.5px at 44% 32%, rgba(182, 156, 255, 0.9), transparent 100%),
+    radial-gradient(1px 1px at 90% 46%, rgba(255, 255, 255, 0.6), transparent 100%),
+    radial-gradient(1px 1px at 22% 64%, rgba(255, 255, 255, 0.7), transparent 100%),
+    radial-gradient(1.5px 1.5px at 66% 78%, rgba(77, 227, 255, 0.7), transparent 100%),
+    radial-gradient(1px 1px at 8% 92%, rgba(255, 255, 255, 0.6), transparent 100%);
+  background-size: 520px 520px;
+}
+
+::selection {
+  background: var(--violet);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--glow);
+  outline-offset: 3px;
+  border-radius: 0.4rem;
+}
+
+.display {
+  font-family: var(--font-outfit), system-ui, sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+}
+
+.outline-text {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.6);
+}
+
+.hud {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.glass {
+  background: rgba(21, 10, 48, 0.88);
+  border: 1px solid rgba(182, 156, 255, 0.2);
+}
+
+/* ---------- Visor (cierre): estático, sin JS ---------- */
+.visor {
+  position: relative;
+  width: min(78vw, 560px);
+  aspect-ratio: 16 / 7;
+}
+.visor-frame {
+  position: absolute;
+  inset: 0;
+  padding: 0.55rem;
+  border-radius: 42% / 62%;
+  background: linear-gradient(135deg, #f1ebff 0%, #8b5cf6 28%, #26104f 55%, #b69cff 100%);
+  box-shadow: 0 0 60px -10px rgba(139, 92, 246, 0.6);
+}
+.visor-glass {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 42% / 62%;
+  background: radial-gradient(120% 150% at 28% 12%, #1d0b40 0%, #0b0118 52%, #04000a 100%);
+  box-shadow: inset 0 0 40px rgba(77, 227, 255, 0.1);
+}
+.visor-glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 28%, rgba(255, 255, 255, 0.1) 34%, transparent 44%);
+  pointer-events: none;
+}
+.visor-ear {
+  position: absolute;
+  top: 50%;
+  width: 6.5%;
+  aspect-ratio: 1;
+  translate: 0 -50%;
+  border-radius: 999px;
+  background: radial-gradient(circle at 35% 30%, #f5b6ff, #d946ef 55%, #7a1d92);
+}
+.visor-eyes {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15%;
+}
+.eye {
+  width: 8.5%;
+  height: 44%;
+  border-radius: 999px;
+  background: linear-gradient(#d4f9ff, #4de3ff 55%, #1fa7d6);
+  box-shadow: 0 0 18px 2px rgba(77, 227, 255, 0.75);
+  transition: height 0.3s ease, width 0.3s ease, border-radius 0.3s ease;
+  animation: blink 6.5s infinite;
+  transform-origin: center;
+}
+.visor[data-mood="happy"] .eye {
+  height: 20%;
+  width: 10%;
+  background: transparent;
+  border: clamp(6px, 1.3vw, 14px) solid #7eecff;
+  border-bottom: 0;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  translate: 0 -2%;
+  animation: none;
+}
+
+@keyframes blink {
+  0%, 94%, 100% { transform: scaleY(1); }
+  96.5% { transform: scaleY(0.08); }
+}
+@keyframes led {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+@keyframes caret {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes pulse-ring {
+  0% { transform: scale(0.9); opacity: 0.7; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes toast {
+  0%, 8% { transform: translateX(120%); opacity: 0; }
+  14%, 70% { transform: translateX(0); opacity: 1; }
+  78%, 100% { transform: translateX(120%); opacity: 0; }
+}
+@keyframes dot-pulse {
+  0%, 100% { transform: scale(1.5); }
+  50% { transform: scale(2); }
+}
+
+.led { animation: led 1.6s ease-in-out infinite; }
+.caret { animation: caret 1s steps(1) infinite; }
+.animate-marquee { animation: marquee 34s linear infinite; will-change: transform; }
+.animate-marquee-rev { animation: marquee 46s linear infinite reverse; will-change: transform; }
+.animate-pulse-ring { animation: pulse-ring 2.4s ease-out infinite; }
+.animate-pop-in { animation: pop-in 0.2s ease-out; }
+.animate-float { animation: float-y 6s ease-in-out infinite; }
+.animate-toast { animation: toast 8s ease-in-out infinite; }
+
+/* ---------- Misión (embudo de puntos) ---------- */
+.dots {
+  position: relative;
+  aspect-ratio: 1;
+  --ds: clamp(5px, 0.95vw, 11px);
+}
+.dot {
+  position: absolute;
+  width: var(--ds);
+  height: var(--ds);
+  margin: calc(var(--ds) / -2) 0 0 calc(var(--ds) / -2);
+  border-radius: 999px;
+  background: var(--lavender);
+  opacity: 0.85;
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.dots:is([data-step="2"], [data-step="3"], [data-step="4"], [data-step="5"]) .dot {
+  background: var(--c);
+}
+.dots:is([data-step="3"], [data-step="4"]) .dot:not(.fin) {
+  opacity: 0.07;
+}
+.dots[data-step="3"] .dot.fin {
+  transform: scale(1.7);
+  opacity: 1;
+}
+.dots[data-step="4"] .dot.fin {
+  opacity: 1;
+  animation: dot-pulse 1.2s ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+.dots[data-step="5"] .dot:not(.win) {
+  opacity: 0.04;
+}
+.dots[data-step="5"] .dot.win {
+  background: #fff;
+  transform: scale(3.2);
+  box-shadow: 0 0 24px 4px var(--c);
+  opacity: 1;
+}
+
+/* ---------- Tracks ---------- */
+.slab {
+  position: relative;
+  overflow: hidden;
+  flex: 1 1 0%;
+  min-width: 0;
+  transition: flex-grow 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--tone) 22%, #0b0118) 0%, #07000f 100%);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+.slab[data-active="true"] {
+  flex-grow: 3.2;
+}
+@media (max-width: 1023px) {
+  .slab {
+    transition: min-height 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    min-height: 5.5rem;
+    border-left: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .slab[data-active="true"] {
+    flex-grow: 1;
+    min-height: 26rem;
+  }
+}
+
+/* ---------- Cuarto oscuro ---------- */
+.room {
+  touch-action: pan-y;
+}
+.lit {
+  -webkit-mask-image: radial-gradient(circle 230px at 50% 45%, #000 0%, rgba(0, 0, 0, 0.88) 38%, transparent 100%);
+  mask-image: radial-gradient(circle 230px at 50% 45%, #000 0%, rgba(0, 0, 0, 0.88) 38%, transparent 100%);
+}
+
+details > summary { list-style: none; }
+details > summary::-webkit-details-marker { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .led, .caret, .animate-marquee, .animate-marquee-rev, .animate-pulse-ring, .animate-pop-in,
+  .animate-toast, .animate-float, .eye, .dot { animation: none !important; }
+}
