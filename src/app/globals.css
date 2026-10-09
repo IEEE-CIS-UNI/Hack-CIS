@@ -86,6 +86,15 @@ html.shader body::before {
   border-radius: 0.4rem;
 }
 
+/* Campos grandes del formulario: el anillo rectangular los encajona y rompe
+   la línea. El foco se indica con el subrayado, que es igual de visible.
+   Va aquí y no como utilidad de Tailwind porque las reglas sin capa ganan
+   a las utilidades, así que `focus-visible:outline-none` no alcanzaría. */
+.campo-grande:focus-visible {
+  outline: none;
+  border-bottom-color: var(--lavender);
+}
+
 .display {
   font-family: var(--font-outfit), system-ui, sans-serif;
   font-weight: 800;

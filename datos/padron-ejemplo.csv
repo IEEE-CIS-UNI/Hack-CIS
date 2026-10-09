@@ -1,0 +1,9 @@
+codigo,universidad,nombres,apellido_paterno,apellido_materno,carrera,facultad,ciclo,estado
+20221111A,UNI,PERSONA,EJEMPLO,UNO,Ingenieria de Telecomunicaciones,FIEE,9,matriculado
+20202222B,UNI,PERSONA,EJEMPLO,DOS,Ingenieria Mecanica,FIM,10,matriculado
+20203333C,UNI,PERSONA,EJEMPLO,TRES,Ingenieria Civil,FIC,6,retirado
+20234444D,UNI,PERSONA,EJEMPLO,,Ingenieria Electronica,FIEE,5,matriculado
+20205555,PUCP,PERSONA,EJEMPLO,CINCO,Ingenieria Informatica,Ciencias e Ingenieria,8,matriculado
+202066666,UP,PERSONA,EJEMPLO,SEIS,Economia,Economia y Finanzas,7,matriculado
+19077777,UNMSM,PERSONA,ÑAUPAS,SIETE,Ingenieria de Software,FISI,6,matriculado
+U202088888,UTEC,PERSONA,EJEMPLO,OCHO,Ciencia de la Computacion,Ingenieria,8,matriculado
