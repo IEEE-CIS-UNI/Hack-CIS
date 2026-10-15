@@ -1,21 +1,22 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { isLowPower } from "@/lib/perf";
 import { useInView } from "@/lib/useInView";
-import { PersonSilhouette, RobotSilhouette, type PersonKind } from "./silhouettes";
+import Sil, { type SilKind } from "./silhouettes";
 
 const SCRIPTS = [
   {
-    role: "Code Reviewer",
+    role: "code reviewer",
     lines: ["$ agente revisar --pr 12", "> analizando 14 archivos...", "> 2 bugs encontrados, 1 sugerencia", "> PR aprobado con cambios"],
   },
   {
-    role: "Scrum Master",
+    role: "scrum master",
     lines: ["$ agente planificar --sprint 1", "> 5 tareas · 4 integrantes · 100 h", "> riesgo: integración con la API del sponsor", "> daily programado: 9:00 pm"],
   },
   {
-    role: "Analista de Datos",
+    role: "analista de datos",
     lines: ["$ agente analizar --dataset track.csv", "> 12,480 filas · 3 anomalías", "> hallazgo: 38 % abandona en el paso 2", "> gráfico listo para el pitch"],
   },
 ];
@@ -53,18 +54,18 @@ function Terminal() {
   const lines = TEXTS[i].slice(0, n).split("\n");
 
   return (
-    <div ref={ref} className="overflow-hidden rounded-2xl border border-white/15 bg-void/80 shadow-[0_0_50px_-20px_rgba(77,227,255,0.35)]">
-      <div className="flex items-center gap-2 border-b border-white/10 px-4 py-3">
-        <span className="size-2.5 rounded-full bg-white/20" aria-hidden />
-        <span className="size-2.5 rounded-full bg-white/20" aria-hidden />
-        <span className="size-2.5 rounded-full bg-white/20" aria-hidden />
-        <span className="hud ml-3 text-mist/60">agente@cis-hack · rol: {SCRIPTS[i].role}</span>
+    <div ref={ref} className="term">
+      <div className="bar">
+        <i />
+        <i />
+        <i />
+        <span>agente@cis-hack · rol: {SCRIPTS[i].role}</span>
       </div>
-      <pre className="min-h-44 px-5 py-5 font-mono text-[0.8rem] leading-relaxed whitespace-pre-wrap sm:text-sm" aria-label={`Ejemplo: agente en rol de ${SCRIPTS[i].role}`}>
+      <pre aria-label={`Ejemplo: agente en rol de ${SCRIPTS[i].role}`}>
         {lines.map((l, k) => (
-          <span key={k} className={`block ${l.startsWith("$") ? "text-lavender" : "text-glow/90"}`}>
+          <span key={k} className={l.startsWith("$") ? "p" : undefined} style={{ display: "block" }}>
             {l}
-            {k === lines.length - 1 && <span className="caret ml-0.5 inline-block h-[1em] w-[0.5ch] translate-y-[0.15em] bg-glow" />}
+            {k === lines.length - 1 && <span className="caret" />}
           </span>
         ))}
       </pre>
@@ -72,39 +73,38 @@ function Terminal() {
   );
 }
 
-const PEOPLE: PersonKind[] = ["man", "womanBun", "manBeard", "woman"];
+const PEOPLE: SilKind[] = ["man", "womanBun", "manBeard", "woman"];
 
 export default function Fifth() {
   return (
-    <section id="quinto" className="relative px-5 py-28 sm:px-10">
-      <div className="mx-auto max-w-6xl">
-        <p className="hud text-lavender">El 5.º miembro</p>
-        <h2 className="display mt-4 text-[clamp(2.6rem,8.5vw,8rem)]">
+    <section id="quinto" className="pad">
+      <div className="wrap">
+        <span className="label">El 5.º miembro</span>
+        <h2 className="h2">
           Tu equipo
           <br />
-          ahora es de <span className="text-lavender">cinco</span>
+          ahora es de <span className="lav">cinco</span>
         </h2>
 
-        <div className="mt-14 grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr]">
+        <div className="five">
           <div>
-            <div className="flex items-end justify-center gap-[2.5%]" role="img" aria-label="Cuatro personas y un agente de IA">
+            <div className="crew" role="img" aria-label="Cuatro personas y un agente de IA">
               {PEOPLE.map((k) => (
-                <PersonSilhouette key={k} kind={k} className="w-[17%] text-white/20" />
+                <span key={k} data-sil={k}>
+                  <Sil kind={k} />
+                </span>
               ))}
-              <div className="relative w-[24%] animate-float">
-                <RobotSilhouette eyes className="text-violet" />
-              </div>
+              <Image src="/robot.webp" width={330} height={300} alt="" unoptimized />
             </div>
-            <p className="hud mt-6 text-center text-mist/70">2 a 4 humanos + 1 agente de IA</p>
-            <p className="mx-auto mt-6 max-w-lg text-center text-lg text-mist/85 lg:text-left">
+            <p className="cap">2 a 4 humanos + 1 agente de IA</p>
+            <p className="lead" style={{ margin: "20px auto 0", textAlign: "center", maxWidth: "32rem" }}>
               Cada equipo suma un agente autónomo a su flujo de trabajo. No es el producto final: es parte del equipo que lo
               construye. En el Bootcamp aprendes a usar herramientas gratuitas para estudiantes.
             </p>
           </div>
-
           <div>
             <Terminal />
-            <p className="hud mt-3 text-mist/50">Ejemplo ilustrativo de lo que hace un agente en tu equipo.</p>
+            <p className="note">Ejemplo ilustrativo de lo que hace un agente en tu equipo.</p>
           </div>
         </div>
       </div>

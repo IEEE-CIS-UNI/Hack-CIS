@@ -3,15 +3,15 @@
 import { useEffect, useRef } from "react";
 import { EVENT } from "@/lib/config";
 import { isFancyDesktop } from "@/lib/perf";
-import { PersonSilhouette, PrizeSilhouette, type PersonKind, type PrizeKind } from "./silhouettes";
+import Sil, { type SilKind } from "./silhouettes";
 
-const PRIZES: { kind: PrizeKind; label: string }[] = [
+const PRIZES: { kind: SilKind; label: string }[] = [
   { kind: "trophy", label: "Track Finanzas" },
   { kind: "gift", label: "Track Telco" },
   { kind: "medal", label: "Track Impacto Social" },
 ];
 
-const PEOPLE: { kind: PersonKind; role: string }[] = [
+const PEOPLE: { kind: SilKind; role: string }[] = [
   { kind: "man", role: "Mentor" },
   { kind: "womanBun", role: "Jurada" },
   { kind: "womanCurly", role: "Mentora" },
@@ -21,32 +21,32 @@ const PEOPLE: { kind: PersonKind; role: string }[] = [
 ];
 
 function Room({ lit }: { lit: boolean }) {
-  const shape = lit ? "text-lavender" : "text-[#1a0c38]";
-  const label = lit ? "text-white" : "text-white/15";
-  const head = lit ? "text-lavender" : "text-white/15";
-
   return (
-    <div className="grid gap-14 lg:grid-cols-[0.9fr_1.5fr] lg:gap-12">
+    <div className={`roomgrid ${lit ? "layer-lit" : "layer-dark"}`}>
       <div>
-        <p className={`hud mb-5 ${head}`}>Premios</p>
-        <ul className="grid grid-cols-3 gap-4">
+        <h4>Premios</h4>
+        <ul className="g3">
           {PRIZES.map((p) => (
-            <li key={p.kind} className="flex flex-col items-center text-center">
-              <PrizeSilhouette kind={p.kind} className={`h-28 w-auto sm:h-36 ${shape}`} />
-              <span className={`hud mt-3 ${label}`}>{p.label}</span>
-              <span className={`hud mt-1 ${lit ? "text-glow" : "text-white/10"}`}>Por revelar</span>
+            <li key={p.kind}>
+              <span data-sil={p.kind}>
+                <Sil kind={p.kind} />
+              </span>
+              <b>{p.label}</b>
+              <u>Por revelar</u>
             </li>
           ))}
         </ul>
       </div>
       <div>
-        <p className={`hud mb-5 ${head}`}>Mentores y jurados</p>
-        <ul className="grid grid-cols-3 gap-4 sm:grid-cols-6">
+        <h4>Mentores y jurados</h4>
+        <ul className="g6">
           {PEOPLE.map((p, i) => (
-            <li key={i} className="flex flex-col items-center text-center">
-              <PersonSilhouette kind={p.kind} className={`h-28 w-auto sm:h-32 ${shape}`} />
-              <span className={`hud mt-3 ${label}`}>{p.role}</span>
-              <span className={`hud mt-1 ${lit ? "text-glow" : "text-white/10"}`}>Por revelar</span>
+            <li key={i}>
+              <span data-sil={p.kind}>
+                <Sil kind={p.kind} />
+              </span>
+              <b>{p.role}</b>
+              <u>Por revelar</u>
             </li>
           ))}
         </ul>
@@ -119,23 +119,21 @@ export default function DarkRoom() {
   }, []);
 
   return (
-    <section id="oscuridad" className="relative overflow-hidden bg-[#03000a] px-5 py-28 sm:px-10">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-transparent to-[#03000a]" aria-hidden />
-      <div className="relative mx-auto max-w-6xl">
-        <p className="hud text-lavender">Premios y mentores</p>
-        <h2 className="display mt-4 text-[clamp(2.6rem,8.5vw,8rem)]">
+    <section id="oscuridad" className="pad dark">
+      <div className="wrap">
+        <span className="label">Premios y mentores</span>
+        <h2 className="h2">
           Hay algo
           <br />
-          en la <span className="text-lavender">oscuridad</span>
+          en la <span className="lav">oscuridad</span>
         </h2>
-        <p className="mt-6 max-w-xl text-lg text-mist/80">
+        <p className="lead">
           Premios, mentores y jurados se revelan el {EVENT.registrationOpensLabel}. Mientras tanto, enciende la linterna:
           mueve el cursor o desliza el dedo.
         </p>
-
-        <div ref={room} className="room relative mt-16">
+        <div ref={room} className="room" data-room>
           <Room lit={false} />
-          <div ref={lit} className="lit pointer-events-none absolute inset-0" aria-hidden>
+          <div ref={lit} className="lit" aria-hidden>
             <Room lit />
           </div>
         </div>

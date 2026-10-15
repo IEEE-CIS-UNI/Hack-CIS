@@ -1,116 +1,84 @@
-"use client";
-
-import { useState } from "react";
+import type { CSSProperties } from "react";
 import { HeartHandshake, Landmark, Lock, RadioTower } from "lucide-react";
-import { BuildingSilhouette } from "./silhouettes";
+import Sil from "./silhouettes";
 
 const TRACKS = [
   {
     icon: Landmark,
-    title: "IA & Finanzas",
+    title: <>Finanzas</>,
+    sub: "IA & Finanzas",
+    desc: "Personalización comercial inteligente, evaluación de riesgos o asistentes de educación financiera.",
     community: "CIS UP",
-    text: "Personalización comercial inteligente, evaluación de riesgos o asistentes de educación financiera.",
     tone: "#8b5cf6",
+    tone2: "#4d17c2",
   },
   {
     icon: RadioTower,
-    title: "IA & Telco y Operaciones",
+    title: <>Telco</>,
+    sub: "IA & Telco y Operaciones",
+    desc: "Automatización de procesos, atención al cliente o predicción de fallas.",
     community: "UNI",
-    text: "Automatización de procesos, atención al cliente o predicción de fallas.",
     tone: "#22c7ee",
+    tone2: "#0b7a96",
   },
   {
     icon: HeartHandshake,
-    title: "IA & Impacto Social",
+    title: (
+      <>
+        Impacto
+        <br />
+        Social
+      </>
+    ),
+    sub: "IA & Impacto Social",
+    desc: "Ciberseguridad, IoT para sostenibilidad o educación.",
     community: "DSC PUCP",
-    text: "Ciberseguridad, IoT para sostenibilidad o educación.",
     tone: "#d946ef",
+    tone2: "#8d1ba3",
   },
 ];
 
 export default function Tracks() {
-  const [active, setActive] = useState(0);
-
   return (
-    <section id="tracks" className="relative pt-24">
-      <div className="px-5 pb-10 sm:px-10">
-        <p className="hud text-lavender">Tracks</p>
-        <h2 className="display mt-4 text-[clamp(2.6rem,8vw,7.5rem)]">
-          Elige tu <span className="text-lavender">batalla</span>
+    <section id="tracks" className="pad">
+      <div className="wrap">
+        <span className="label">Tracks</span>
+        <h2 className="h2">
+          Elige tu <span className="lav">batalla</span>
         </h2>
-        <p className="mt-5 max-w-xl text-lg text-mist/80">
+        <p className="lead">
           Tres sponsors, tres retos reales. Los presentan en vivo en el kickoff y tú decides en cuál competir.
         </p>
-      </div>
 
-      <div className="flex flex-col lg:h-[80svh] lg:min-h-[36rem] lg:flex-row">
-        {TRACKS.map((t, i) => {
-          const on = active === i;
-          const Icon = t.icon;
-          return (
-            <article
-              key={t.title}
-              className="slab"
-              data-active={on}
-              style={{ "--tone": t.tone } as React.CSSProperties}
-              onPointerEnter={(e) => e.pointerType === "mouse" && setActive(i)}
-            >
-              <button
-                type="button"
-                aria-expanded={on}
-                onClick={() => setActive(i)}
-                onFocus={() => setActive(i)}
-                className="relative flex h-full w-full flex-col p-6 text-left sm:p-8"
-              >
-                <span className="flex items-start justify-between">
-                  <span style={{ color: t.tone }}>
-                    <Icon className="size-12 sm:size-14" aria-hidden />
+        <div className="tk-list">
+          {TRACKS.map((t) => {
+            const Icon = t.icon;
+            return (
+              <article key={t.sub} className="tk" style={{ "--tone": t.tone, "--tone2": t.tone2 } as CSSProperties}>
+                <div className="tk-ic">
+                  <Icon aria-hidden strokeWidth={1.6} />
+                </div>
+                <div>
+                  <h3 className="tk-title">{t.title}</h3>
+                  <p className="tk-sub">{t.sub}</p>
+                  <p className="tk-desc">{t.desc}</p>
+                </div>
+                <div className="tk-meta">
+                  <span style={{ width: 84, color: t.tone, opacity: 0.55 }}>
+                    <Sil kind="building" />
                   </span>
-                  <span style={{ color: t.tone }} className={`transition-opacity duration-500 ${on ? "opacity-60" : "opacity-25"}`}>
-                    <BuildingSilhouette className="w-24 sm:w-32" />
+                  <span>
+                    Comunidad: <em>{t.community}</em>
                   </span>
-                </span>
-
-                <span
-                  aria-hidden
-                  className={`display absolute bottom-8 left-8 hidden text-2xl transition-opacity duration-300 [writing-mode:vertical-rl] lg:block ${
-                    on ? "opacity-0" : "opacity-100"
-                  }`}
-                  style={{ rotate: "180deg" }}
-                >
-                  {t.title}
-                </span>
-
-                <span className="mt-auto block pt-6">
-                  <span
-                    className={`display block text-[clamp(1.8rem,3.4vw,3.4rem)] transition-opacity duration-300 ${
-                      on ? "lg:opacity-100" : "lg:opacity-0"
-                    }`}
-                  >
-                    {t.title}
+                  <span>
+                    <Lock size={12} aria-hidden style={{ verticalAlign: -1, marginRight: 4 }} />
+                    Sponsor por revelar
                   </span>
-                  <span
-                    className={`grid transition-[grid-template-rows,opacity] duration-500 ${
-                      on ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-                    }`}
-                  >
-                    <span className="block overflow-hidden">
-                      <span className="mt-4 block max-w-md text-base text-mist/85 sm:text-lg">{t.text}</span>
-                      <span className="hud mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-mist/80">
-                        <span>
-                          Comunidad: <strong className="text-white">{t.community}</strong>
-                        </span>
-                        <span className="inline-flex items-center gap-1.5 text-lavender">
-                          <Lock className="size-3.5" aria-hidden /> Sponsor por revelar
-                        </span>
-                      </span>
-                    </span>
-                  </span>
-                </span>
-              </button>
-            </article>
-          );
-        })}
+                </div>
+              </article>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

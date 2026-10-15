@@ -44,7 +44,7 @@ export default function AutoTyped({ messages }: { messages: string[] }) {
     <span ref={ref}>
       <span className="sr-only">{messages[0]}</span>
       <span aria-hidden>{text.slice(0, n)}</span>
-      <span aria-hidden className="caret ml-0.5 inline-block h-[1em] w-[0.5ch] translate-y-[0.15em] bg-glow" />
+      <span className="caret" aria-hidden />
     </span>
   );
 }
