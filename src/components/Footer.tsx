@@ -1,4 +1,5 @@
 import { LINKS } from "@/lib/config";
+import Logos from "./Logos";
 
 export default function Footer() {
   return (
@@ -11,6 +12,9 @@ export default function Footer() {
             <a href={LINKS.linkedin}>LinkedIn ↗</a>
             <a href={LINKS.instagram}>Instagram ↗</a>
           </div>
+        </div>
+        <div style={{ marginTop: 34 }}>
+          <Logos align="left" />
         </div>
         <div className="mark" aria-hidden>
           CIS[HACK]

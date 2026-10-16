@@ -1,6 +1,7 @@
 import Image from "next/image";
 import AutoTyped from "./AutoTyped";
 import Countdown from "./Countdown";
+import Logos from "./Logos";
 
 const MESSAGES = [
   "¡Algo grande se acerca!",
@@ -9,16 +10,12 @@ const MESSAGES = [
   "¡Inscripciones el 20/10!",
 ];
 
-const ALLIES = ["IEEE SB UP", "IEEE SB UNI", "IEEE CIS", "DSC PUCP", "DSC UNI"];
-
 export default function Hero() {
   return (
     <section id="top" className="hero">
       <div className="hero-top">
-        <div className="allies" aria-label="Organizan y aliados (logos por confirmar)">
-          {ALLIES.map((a) => (
-            <span key={a}>Logo · {a}</span>
-          ))}
+        <div className="allies" aria-label="Organizan y aliados">
+          <Logos />
         </div>
 
         <h1 className="title" aria-label="The Agentic Era">

@@ -1,7 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { LINKS } from "@/lib/config";
-
-const ALLIES = ["IEEE CIS UNI", "DSC PUCP", "CIS UP", "DSC UNI"];
+import Logos from "./Logos";
 
 function Row({ reverse = false }: { reverse?: boolean }) {
   return (
@@ -25,12 +24,10 @@ export default function Sponsors() {
           <br />
           <span className="lav">apuestan</span> por ti
         </h2>
-        <div className="allies-big">
-          {ALLIES.map((a) => (
-            <span key={a}>{a}</span>
-          ))}
+        <div style={{ marginTop: 40 }}>
+          <Logos size="lg" align="left" />
         </div>
-        <p className="note">Organiza y comunidades aliadas · logos por confirmar</p>
+        <p className="note">Organiza y comunidades aliadas · falta el logo de IEEE SB UP</p>
       </div>
 
       <Row />
