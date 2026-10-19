@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import Countdown from "@/components/Countdown";
-import CursorGlow from "@/components/CursorGlow";
 import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
 import RegistroCliente from "@/components/RegistroCliente";
-import Shader from "@/components/Shader";
-import { ButtonLink } from "@/components/ui";
+import StarField from "@/components/StarField";
 import { LINKS, registroAbierto } from "@/lib/config";
 
 export const metadata: Metadata = {
@@ -27,8 +25,8 @@ export default async function RegistroPage({
 
   return (
     <>
-      <Shader />
-      <CursorGlow />
+      <StarField />
+      <div className="nebula" aria-hidden />
       <Nav />
       <main className="flex min-h-[85vh] items-center px-5 pt-28 pb-16 sm:px-10">
         <div className="mx-auto w-full max-w-4xl">
@@ -57,10 +55,12 @@ function Espera() {
         <Countdown />
       </div>
       <div className="mt-8 flex flex-wrap gap-3">
-        <ButtonLink href={LINKS.whatsapp}>Unirme al WhatsApp</ButtonLink>
-        <ButtonLink href="/" variant="ghost">
+        <a href={LINKS.whatsapp} className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-lg font-bold text-ink shadow-[0_0_40px_-5px_rgba(182,156,255,0.8)] transition-all hover:scale-105 hover:bg-lavender">
+          Unirme al WhatsApp
+        </a>
+        <a href="/" className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-transparent px-6 py-3 text-lg font-bold text-white transition-all hover:bg-white/10">
           <ArrowLeft className="size-5" aria-hidden /> Volver al inicio
-        </ButtonLink>
+        </a>
       </div>
     </>
   );

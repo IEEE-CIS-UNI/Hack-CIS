@@ -19,5 +19,3 @@ export const LINKS = {
 };
 
 export const HELP_VIDEO_URL = process.env.NEXT_PUBLIC_HELP_VIDEO_URL ?? "";
-
-export const MASCOT_SRC = "/mascot.svg";

@@ -2,61 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const N = 250;
-const TRACK_COLORS = ["#8b5cf6", "#4de3ff", "#d946ef"];
-const TRACK_NAMES = ["Finanzas", "Telco", "Impacto social"];
-
-function mulberry32(seed: number) {
-  let a = seed;
-  return () => {
-    a = (a + 0x6d2b79f5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-type Dot = { x: number; y: number; color: string; fin: boolean; win: boolean; delay: string };
-
-function buildDots(): Dot[] {
-  const rnd = mulberry32(2026);
-  const teamOf: number[] = [];
-  const firstOfTeam: number[] = [];
-  let team = 0;
-  for (let i = 0; i < N; ) {
-    const size = 2 + Math.floor(rnd() * 3);
-    firstOfTeam[team] = i;
-    for (let k = 0; k < size && i < N; k++) teamOf[i++] = team;
-    team++;
-  }
-  const finalist = new Set<number>();
-  const winners = new Set<number>();
-  for (let tr = 0; tr < 3; tr++) {
-    const ids: number[] = [];
-    for (let t = 0; t < team; t++) if (t % 3 === tr) ids.push(t);
-    const picks = [0, 1, 2, 3, 4].map((j) => ids[Math.floor(((j + 0.5) * ids.length) / 5)]);
-    picks.forEach((p) => finalist.add(p));
-    winners.add(picks[2]);
-  }
-  const winnerDots = new Set([...winners].map((t) => firstOfTeam[t]));
-
-  return Array.from({ length: N }, (_, i) => {
-    const r = 47 * Math.sqrt((i + 0.5) / N);
-    const a = i * 2.399963;
-    const t = teamOf[i];
-    return {
-      x: Number((50 + r * Math.cos(a)).toFixed(3)),
-      y: Number((50 + r * Math.sin(a)).toFixed(3)),
-      color: TRACK_COLORS[t % 3],
-      fin: finalist.has(t),
-      win: winnerDots.has(i),
-      delay: `${(rnd() * 3.6).toFixed(2)}s`,
-    };
-  });
-}
-
-const DOTS = buildDots();
-
 const STEPS = [
   {
     title: "Bootcamp",
@@ -124,65 +69,26 @@ export default function Mission() {
   }, []);
 
   return (
-    <section id="mision" ref={ref} className="relative" style={{ height: "560svh" }}>
-      <div className="sticky top-0 flex h-svh flex-col items-center gap-2 px-5 pt-20 pb-6 sm:px-10 lg:flex-row lg:gap-10 lg:pt-16">
-        <div className="relative z-10 w-full max-w-xl lg:w-1/2">
-          <p className="hud text-lavender">La misión</p>
-
-          <div className="mt-3 flex items-baseline gap-3 sm:mt-6">
-            <span className="display text-[clamp(4.5rem,15vw,11rem)] [text-shadow:0_0_60px_rgba(139,92,246,0.55)]">
-              {STEPS[step].count}
-            </span>
-            <span className="hud text-mist/80">{STEPS[step].unit}</span>
+    <section id="mision" ref={ref} className="funnel">
+      <div className="funnel-stick">
+        <div className="funnel-text">
+          <span className="label">La misión</span>
+          <div className="count">
+            <span>{STEPS[step].count}</span>
+            <small>{STEPS[step].unit}</small>
           </div>
-
-          <div className="mt-2 grid sm:mt-4">
+          <div className="steps">
             {STEPS.map((s, i) => (
-              <div
-                key={s.title}
-                aria-hidden={i !== step}
-                className={`[grid-area:1/1] transition-all duration-500 ${
-                  i === step ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-3 opacity-0"
-                }`}
-              >
-                <h2 className="display text-[clamp(1.9rem,4.4vw,3.6rem)]">
-                  {s.title}
-                </h2>
-                <p className="hud mt-2 text-glow">{s.when}</p>
-                <p className="mt-3 max-w-md text-base text-mist/85 sm:text-lg">{s.text}</p>
+              <div key={s.title} className={`step ${i === step ? "is-active" : ""}`} aria-hidden={i !== step}>
+                <h3>{s.title}</h3>
+                <p className="when">{s.when}</p>
+                <p>{s.text}</p>
               </div>
             ))}
           </div>
-
-          <div className="mt-5 flex items-center gap-1.5" aria-hidden>
+          <div className="pips" aria-hidden>
             {STEPS.map((s, i) => (
-              <span key={s.title} className={`h-1 rounded-full transition-all duration-500 ${i <= step ? "w-9 bg-lavender" : "w-4 bg-white/20"}`} />
-            ))}
-          </div>
-
-          <div className={`hud mt-4 flex flex-wrap gap-x-5 gap-y-1 text-mist/80 transition-opacity duration-500 ${step >= 1 ? "opacity-100" : "opacity-0"}`} aria-hidden>
-            {TRACK_NAMES.map((n, i) => (
-              <span key={n} className="flex items-center gap-2">
-                <span className="size-2 rounded-full" style={{ background: TRACK_COLORS[i] }} />
-                {n}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex min-h-0 w-full flex-1 items-center justify-center lg:w-1/2">
-          <div
-            className="dots w-[min(84vw,46svh)] lg:w-[min(44vw,76svh)]"
-            data-step={step + 1}
-            role="img"
-            aria-label="Visualización: de 250 personas se pasa a 15 equipos finalistas y 3 ganadores"
-          >
-            {DOTS.map((d, i) => (
-              <span
-                key={i}
-                className={`dot ${d.fin ? "fin" : ""} ${d.win ? "win" : ""}`}
-                style={{ left: `${d.x}%`, top: `${d.y}%`, "--c": d.color, "--d": d.delay } as React.CSSProperties}
-              />
+              <i key={s.title} className={i <= step ? "on" : ""} />
             ))}
           </div>
         </div>

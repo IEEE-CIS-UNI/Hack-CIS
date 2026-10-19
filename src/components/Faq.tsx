@@ -1,4 +1,3 @@
-import { Plus } from "lucide-react";
 import { EVENT } from "@/lib/config";
 
 const ITEMS = [
@@ -34,24 +33,21 @@ const ITEMS = [
 
 export default function Faq() {
   return (
-    <section id="faq" className="relative px-5 py-28 sm:px-10">
-      <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+    <section id="faq" className="pad">
+      <div className="wrap faq">
         <div>
-          <p className="hud text-lavender">Dudas</p>
-          <h2 className="display mt-4 text-[clamp(2.6rem,7vw,6rem)]">
+          <span className="label">Dudas</span>
+          <h2 className="h2">
             Preguntas
             <br />
-            <span className="text-lavender">frecuentes</span>
+            <span className="lav">frecuentes</span>
           </h2>
         </div>
-        <div className="border-t border-white/15">
+        <div>
           {ITEMS.map((item) => (
-            <details key={item.q} className="group border-b border-white/15">
-              <summary className="flex cursor-pointer items-center gap-4 py-6 sm:gap-6">
-                <span className="flex-1 text-lg font-semibold transition-colors group-hover:text-lavender sm:text-xl">{item.q}</span>
-                <Plus className="size-6 shrink-0 text-lavender transition-transform duration-300 group-open:rotate-45" aria-hidden />
-              </summary>
-              <p className="max-w-xl pr-10 pb-7 text-mist/80">{item.a}</p>
+            <details key={item.q}>
+              <summary>{item.q}</summary>
+              <p>{item.a}</p>
             </details>
           ))}
         </div>

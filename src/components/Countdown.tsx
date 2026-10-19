@@ -20,7 +20,7 @@ const getServerSnapshot = () => 0;
 
 const target = Math.floor(new Date(EVENT.registrationOpensAt).getTime() / 1000);
 
-export default function Countdown({ className = "" }: { className?: string }) {
+function useCountdown() {
   const now = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   const ready = now > 0;
   const left = Math.max(0, target - now);
@@ -34,23 +34,44 @@ export default function Countdown({ className = "" }: { className?: string }) {
     { label: "s", value: left % 60 },
   ];
 
+  return { open, pad, parts };
+}
+
+export function TicketCountdown() {
+  const { open, pad, parts } = useCountdown();
+
   return (
-    <div className={`hud flex items-center gap-3 text-mist/80 ${className}`}>
-      <span className="led size-1.5 rounded-full bg-magenta" aria-hidden />
-      {open ? (
-        <span>Inscripciones abiertas</span>
-      ) : (
-        <>
-          <span>Abren el {EVENT.registrationOpensLabel}</span>
-          <span className="flex gap-2 text-white tabular-nums" aria-live="off">
-            {parts.map((p) => (
-              <span key={p.label}>
-                {pad(p.value)}
-                <span className="text-lavender">{p.label}</span>
-              </span>
-            ))}
-          </span>
-        </>
+    <div className="ticket">
+      <small>{open ? "Ya en cartelera" : `Estreno · ${EVENT.registrationOpensLabel}`}</small>
+      {!open && (
+        <div className="cd" aria-live="off">
+          {parts.map((p) => (
+            <span key={p.label}>
+              <b>{pad(p.value)}</b>
+              <i>{p.label}</i>
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function Countdown() {
+  const { open, pad, parts } = useCountdown();
+
+  return (
+    <div className="count-box">
+      <span className="hud">{open ? "Inscripciones abiertas" : `Inscripciones abren el ${EVENT.registrationOpensLabel}`}</span>
+      {!open && (
+        <div className="cd" aria-live="off">
+          {parts.map((p) => (
+            <span key={p.label}>
+              <b>{pad(p.value)}</b>
+              <i>{p.label}</i>
+            </span>
+          ))}
+        </div>
       )}
     </div>
   );

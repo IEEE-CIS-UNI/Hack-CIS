@@ -13,8 +13,3 @@ export function isLowPower(): boolean {
     (navigator.hardwareConcurrency ?? 8) <= 4
   );
 }
-
-export function isFancyDesktop(): boolean {
-  if (typeof window === "undefined") return false;
-  return !isLowPower() && window.matchMedia("(min-width: 1024px) and (hover: hover) and (pointer: fine)").matches;
-}

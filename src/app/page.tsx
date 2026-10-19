@@ -1,6 +1,5 @@
 import Closing from "@/components/Closing";
 import Community from "@/components/Community";
-import CursorGlow from "@/components/CursorGlow";
 import DarkRoom from "@/components/DarkRoom";
 import Faq from "@/components/Faq";
 import Fifth from "@/components/Fifth";
@@ -10,15 +9,15 @@ import Hero from "@/components/Hero";
 import Mission from "@/components/Mission";
 import Nav from "@/components/Nav";
 import Pulse from "@/components/Pulse";
-import Shader from "@/components/Shader";
 import Sponsors from "@/components/Sponsors";
+import StarField from "@/components/StarField";
 import Tracks from "@/components/Tracks";
 
 export default function Home() {
   return (
     <>
-      <Shader />
-      <CursorGlow />
+      <StarField />
+      <div className="nebula" aria-hidden />
       <Nav />
       <main>
         <Hero />
