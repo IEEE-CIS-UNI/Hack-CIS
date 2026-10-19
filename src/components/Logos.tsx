@@ -8,6 +8,13 @@ const LOGOS = [
     alt: "IEEE Student Branch UNI e IEEE Computational Intelligence Society",
     cls: "l-cis",
   },
+  {
+    src: "/logos/ieee-cis-up.webp",
+    width: 1400,
+    height: 224,
+    alt: "IEEE Student Branch Universidad del Pacífico e IEEE Computational Intelligence Society",
+    cls: "l-up",
+  },
   { src: "/logos/dsc-pucp.webp", width: 852, height: 410, alt: "Developer Student Club PUCP", cls: "l-pucp" },
   { src: "/logos/dsc-uni.webp", width: 848, height: 815, alt: "Developer Student Club UNI", cls: "l-dsc" },
 ];
@@ -15,7 +22,6 @@ const LOGOS = [
 export default function Logos({ size = "sm", align = "center" }: { size?: "sm" | "lg"; align?: "center" | "left" }) {
   return (
     <div className={`logos ${size} ${align}`}>
-      <span className="ph">Logo · IEEE SB UP</span>
       {LOGOS.map((l) => (
         <Image key={l.src} src={l.src} width={l.width} height={l.height} alt={l.alt} className={l.cls} unoptimized />
       ))}

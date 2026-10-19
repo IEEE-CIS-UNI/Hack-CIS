@@ -27,7 +27,7 @@ export default function Sponsors() {
         <div style={{ marginTop: 40 }}>
           <Logos size="lg" align="left" />
         </div>
-        <p className="note">Organiza y comunidades aliadas · falta el logo de IEEE SB UP</p>
+        <p className="note">Organizan y comunidades aliadas</p>
       </div>
 
       <Row />
