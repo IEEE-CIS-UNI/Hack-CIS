@@ -5,46 +5,47 @@
  *
  * Cada campo se verifica contra el servidor apenas la persona termina de
  * escribirlo, y lo que se deduce aparece en el acto: el nombre desde el DNI,
- * la universidad desde el correo, la carrera desde el padrón. Son tres datos
- * tipeados y el resto se rellena solo.
+ * la universidad desde el correo. Son pocos datos tipeados y el resto se
+ * rellena solo.
  *
- * El progreso se guarda en el navegador: si se cae la señal a medio
- * formulario, al volver sigue donde estaba.
+ * Al final NO queda inscrita: queda un correo enviado. La inscripción nace
+ * cuando abre ese correo, y por eso el correo institucional prueba algo.
+ *
+ * El progreso se guarda en el navegador para que una señal que se corta no
+ * obligue a empezar de nuevo. El DNI nunca entra en ese borrador.
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, Check, Loader2, TriangleAlert, X } from "lucide-react";
-import { EVENT, LINKS } from "@/lib/config";
+import { ArrowLeft, ArrowRight, Check, Loader2, Mail, TriangleAlert, X } from "lucide-react";
+import { CLAVE_BOLETO, EVENT } from "@/lib/config";
+import { PAISES, PAIS_POR_DEFECTO, normalizarTelefono } from "@/lib/telefono";
 
-const BORRADOR = "cishack-registro-v1";
+const BORRADOR = "cishack-registro-v2";
 
-type Estado = "vacio" | "cargando" | "ok" | "aviso" | "error";
 
-type Deducido = {
-  nombre?: string;
-  universidad?: string;
-  universidadNombre?: string;
-  prioridad?: string;
-  sinCatalogar?: boolean;
-  anioIngreso?: number | null;
-  carrera?: string | null;
-  facultad?: string | null;
-  ciclo?: string | null;
-};
+const TRACKS = [
+  { id: "finanzas",       titulo: "IA & Finanzas",            desc: "Riesgos, educación financiera, personalización." },
+  { id: "telco",          titulo: "IA & Telco y Operaciones", desc: "Automatización, atención, predicción de fallas." },
+  { id: "impacto_social", titulo: "IA & Impacto Social",      desc: "Ciberseguridad, IoT sostenible, educación." },
+] as const;
 
-type Campo = { valor: string; estado: Estado; mensaje?: string };
+const NIVELES = ["Principiante", "Intermedio", "Avanzado", "Experto"] as const;
+
+type EstadoCampo = "vacio" | "cargando" | "ok" | "aviso" | "error";
+type Campo = { valor: string; estado: EstadoCampo; mensaje?: string };
 
 const vacio: Campo = { valor: "", estado: "vacio" };
 
-function desdeBorrador(campo: "dni" | "correo" | "codigo"): Campo {
-  try {
-    const guardado = localStorage.getItem(BORRADOR);
-    if (!guardado) return vacio;
-    const v = JSON.parse(guardado)?.[campo];
-    return typeof v === "string" && v ? { valor: v, estado: "vacio" } : vacio;
-  } catch {
-    return vacio;   // modo privado o almacenamiento bloqueado
-  }
+/**
+ * El borrador guarda lo que cuesta volver a escribir, nunca el documento.
+ * Antes se guardaba el DNI en claro mientras la pantalla prometía no
+ * guardarlo; ahora la promesa y el código dicen lo mismo.
+ */
+type Borrador = { correo: string; telefono: string; pais: string; carrera: string; anio: string; track: string; nivel: string };
+
+function leerBorrador(): Partial<Borrador> {
+  try { return JSON.parse(localStorage.getItem(BORRADOR) ?? "{}") ?? {}; }
+  catch { return {}; }          // modo privado o almacenamiento bloqueado
 }
 
 async function post(ruta: string, cuerpo: unknown) {
@@ -58,7 +59,7 @@ async function post(ruta: string, cuerpo: unknown) {
 
 // ───────────────────────────────────────────────────────────── piezas ──
 
-function Senal({ estado }: { estado: Estado }) {
+function Senal({ estado }: { estado: EstadoCampo }) {
   if (estado === "cargando") return <Loader2 className="size-5 animate-spin text-lavender" aria-hidden />;
   if (estado === "ok") return <Check className="size-5 text-glow" aria-hidden />;
   if (estado === "aviso") return <TriangleAlert className="size-5 text-amber-300" aria-hidden />;
@@ -79,56 +80,105 @@ function Barra({ paso, total }: { paso: number; total: number }) {
   return (
     <div className="flex items-center gap-2" role="progressbar" aria-valuenow={paso + 1} aria-valuemin={1} aria-valuemax={total}>
       {Array.from({ length: total }).map((_, i) => (
-        <span
-          key={i}
-          className={`h-1 flex-1 rounded-full transition-colors duration-300 ${
-            i < paso ? "bg-lavender" : i === paso ? "bg-glow" : "bg-white/15"
-          }`}
-        />
+        <span key={i} className={`h-1 flex-1 rounded-full transition-colors duration-300 ${
+          i < paso ? "bg-lavender" : i === paso ? "bg-glow" : "bg-white/15"
+        }`} />
       ))}
     </div>
   );
 }
 
+const CAMPO = "campo-grande w-full border-b-2 border-white/15 bg-transparent pb-3 text-white outline-none transition-colors placeholder:text-white/20 focus:border-lavender focus-visible:outline-none";
+
+function Pregunta({ titulo, ayuda, children }: { titulo: React.ReactNode; ayuda: string; children: React.ReactNode }) {
+  return (
+    <div className="animate-pop-in">
+      <h1 className="display mt-4 text-[clamp(2.2rem,7.5vw,4.5rem)]">{titulo}</h1>
+      <p className="mt-4 max-w-md text-mist/70">{ayuda}</p>
+      <div className="mt-8">{children}</div>
+    </div>
+  );
+}
+
+function Pie({ campo, children }: { campo: Campo; children?: React.ReactNode }) {
+  return (
+    <div className="flex min-h-[4.5rem] items-start gap-3 pt-4" aria-live="polite">
+      {campo.estado !== "vacio" && <span className="pt-0.5"><Senal estado={campo.estado} /></span>}
+      <div className="flex-1">
+        {campo.mensaje
+          ? <p className={campo.estado === "error" ? "text-magenta" : "text-amber-300"}>{campo.mensaje}</p>
+          : children}
+      </div>
+    </div>
+  );
+}
+
+/** Botón de opción grande: sirve para track, año y nivel. */
+function Opcion({ activo, onClick, titulo, desc }: { activo: boolean; onClick: () => void; titulo: string; desc?: string }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={activo}
+      className={`w-full rounded-2xl border px-5 py-4 text-left transition-colors ${
+        activo
+          ? "border-lavender bg-white/12"
+          : "border-white/20 bg-white/[0.04] hover:border-white/45 hover:bg-white/[0.07]"
+      }`}
+    >
+      <span className="block font-bold text-white">{titulo}</span>
+      {desc && <span className="mt-1 block text-sm text-mist/70">{desc}</span>}
+    </button>
+  );
+}
+
 // ──────────────────────────────────────────────────────────── el wizard ──
 
-const PASOS = ["DNI", "Correo", "Código", "Confirmar"] as const;
+const PASOS = ["DNI", "Correo", "Celular", "Carrera", "Track", "Confirmar"] as const;
 
 export default function RegistroWizard() {
   const [paso, setPaso] = useState(0);
-  // Este componente solo se monta en el cliente (ver RegistroCliente), así
-  // que leer localStorage al inicializar es seguro: no hay hidratación.
-  const [dni, setDni] = useState<Campo>(() => desdeBorrador("dni"));
-  const [correo, setCorreo] = useState<Campo>(() => desdeBorrador("correo"));
-  const [codigo, setCodigo] = useState<Campo>(() => desdeBorrador("codigo"));
-  const [deducido, setDeducido] = useState<Deducido>({});
+
+  // Este componente solo se monta en el navegador (ver RegistroCliente), así
+  // que leer localStorage al inicializar es seguro: no hay HTML del servidor
+  // con el que discrepar, que es lo que rompe la hidratación.
+  const [dni, setDni] = useState<Campo>(vacio);
+  const [correo, setCorreo] = useState<Campo>(() => ({ valor: leerBorrador().correo ?? "", estado: "vacio" }));
+  const [telefono, setTelefono] = useState<Campo>(() => ({ valor: leerBorrador().telefono ?? "", estado: "vacio" }));
+  const [pais, setPais] = useState(() => leerBorrador().pais ?? PAIS_POR_DEFECTO);
+  const [carrera, setCarrera] = useState(() => leerBorrador().carrera ?? "");
+  const [anio, setAnio] = useState(() => leerBorrador().anio ?? "");
+  const [track, setTrack] = useState(() => leerBorrador().track ?? "");
+  const [nivel, setNivel] = useState(() => leerBorrador().nivel ?? "");
   const [consiente, setConsiente] = useState(false);
+
+  const [nombre, setNombre] = useState("");
+  const [universidad, setUniversidad] = useState("");
   const [enviando, setEnviando] = useState(false);
-  const [resultado, setResultado] = useState<{ estado: string; motivo: string | null } | null>(null);
+  const [resultado, setResultado] = useState<{ ok: boolean; correo?: string; motivo?: string } | null>(null);
   const campoRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     try {
-      localStorage.setItem(BORRADOR, JSON.stringify({ dni: dni.valor, correo: correo.valor, codigo: codigo.valor }));
-    } catch { /* modo privado: el borrador es un extra, no se interrumpe nada */ }
-  }, [dni.valor, correo.valor, codigo.valor]);
+      localStorage.setItem(BORRADOR, JSON.stringify({
+        correo: correo.valor, telefono: telefono.valor, pais, carrera, anio, track, nivel,
+      }));
+    } catch { /* el borrador es un extra: que falle no interrumpe nada */ }
+  }, [correo.valor, telefono.valor, pais, carrera, anio, track, nivel]);
 
   useEffect(() => { campoRef.current?.focus(); }, [paso]);
 
-  // ── verificaciones ──
-
-  // Con el campo ya lleno, cada tecla más dispararía otra consulta: el input
-  // recorta a 8 y el valor sigue teniendo largo 8. Guardamos lo último que
-  // se consultó para no repetir ni gastar créditos de más.
+  // Con el campo lleno, cada tecla más dispararía otra consulta. Guardamos lo
+  // último que se preguntó para no repetir ni gastar créditos de más.
   const yaConsultado = useRef<Record<string, string>>({});
-  const nuevo = (campo: string, valor: string) => {
+  const esNuevo = (campo: string, valor: string) => {
     if (yaConsultado.current[campo] === valor) return false;
     yaConsultado.current[campo] = valor;
     return true;
   };
 
   const verDni = useCallback(async (valor: string) => {
-    if (valor.length !== 8 || !nuevo("dni", valor)) return;
+    if (valor.length !== 8 || !esNuevo("dni", valor)) return;
     setDni((c) => ({ ...c, estado: "cargando", mensaje: undefined }));
     try {
       const { datos } = await post("/api/validar-dni", { dni: valor });
@@ -137,137 +187,123 @@ export default function RegistroWizard() {
         setDni({ valor, estado: datos.reintentable ? "aviso" : "error", mensaje: datos.motivo });
         return;
       }
-      setDeducido((d) => ({ ...d, nombre: datos.persona.nombreCompleto }));
+      setNombre(datos.persona.nombreCompleto);
       setDni({ valor, estado: "ok" });
     } catch {
-      setDni({ valor, estado: "aviso", mensaje: "No pudimos conectarnos. Puedes continuar y lo revisamos a mano." });
+      setDni({ valor, estado: "aviso", mensaje: "No pudimos conectarnos. Puedes continuar e intentarlo al enviar." });
     }
   }, []);
 
   const verCorreo = useCallback(async (valor: string) => {
-    if (!valor.includes("@") || !nuevo("correo", valor)) return;
+    if (!valor.includes("@") || !esNuevo("correo", valor)) return;
     setCorreo((c) => ({ ...c, estado: "cargando", mensaje: undefined }));
     try {
       const { datos } = await post("/api/universidad", { correo: valor });
       if (!datos.ok) {
+        setUniversidad("");
         setCorreo({ valor, estado: "error", mensaje: datos.motivo });
-        setDeducido((d) => ({ ...d, universidad: undefined, universidadNombre: undefined }));
         return;
       }
-      const sinCatalogar = datos.clase === "educativa_sin_catalogar";
-      setDeducido((d) => ({
-        ...d,
-        universidad: datos.universidad ?? undefined,
-        universidadNombre: datos.universidadNombre ?? datos.dominio,
-        prioridad: datos.prioridad,
-        sinCatalogar,
-      }));
-      setCorreo({ valor, estado: sinCatalogar ? "aviso" : "ok", mensaje: sinCatalogar ? datos.nota : undefined });
+      setUniversidad(datos.universidadNombre);
+      setCorreo({ valor, estado: "ok" });
     } catch {
       setCorreo({ valor, estado: "error", mensaje: "No pudimos conectarnos. Inténtalo de nuevo." });
     }
   }, []);
 
-  const verCodigo = useCallback(async (valor: string) => {
-    if (valor.length < 6 || !nuevo("codigo", valor + "|" + correo.valor)) return;
-    setCodigo((c) => ({ ...c, estado: "cargando", mensaje: undefined }));
-    try {
-      const { datos } = await post("/api/validar-codigo", { codigo: valor, correo: correo.valor });
-      if (!datos.ok) {
-        setCodigo({ valor, estado: "error", mensaje: datos.motivo });
-        return;
-      }
-      const p = datos.padron ?? {};
-      if (p.consultado && !p.encontrado) {
-        setCodigo({ valor, estado: "error", mensaje: p.motivo });
-        return;
-      }
-      setDeducido((d) => ({
-        ...d,
-        anioIngreso: datos.anioIngreso,
-        carrera: p.carrera ?? null,
-        facultad: p.facultad ?? null,
-        ciclo: p.ciclo ?? null,
-      }));
-      setCodigo({ valor, estado: "ok" });
-    } catch {
-      setCodigo({ valor, estado: "error", mensaje: "No pudimos conectarnos. Inténtalo de nuevo." });
-    }
-  }, [correo.valor]);
+  /** El teléfono se valida en el navegador: no necesita servidor. */
+  const verTelefono = useCallback((valor: string, iso: string) => {
+    if (!valor.trim()) { setTelefono({ valor, estado: "vacio" }); return; }
+    const r = normalizarTelefono(valor, iso);
+    setTelefono(r.ok
+      ? { valor, estado: "ok", mensaje: undefined }
+      : { valor, estado: "error", mensaje: r.motivo });
+  }, []);
 
-  // Si volvió con un borrador, los campos llegan llenos pero sin verificar:
-  // el botón quedaría bloqueado sin que nada lo explique. Se revalidan solos
-  // fuera del render síncrono, y se cancelan si el componente se desmonta.
+  // Quien vuelve con un borrador trae los campos llenos pero sin verificar: el
+  // botón quedaría bloqueado sin que nada lo explique. Se revalidan solos.
+  // El DNI no está aquí porque nunca se guarda en el borrador.
   useEffect(() => {
     let vivo = true;
+    // Fuera del render síncrono, y cancelable si el componente se desmonta.
     (async () => {
       await Promise.resolve();
       if (!vivo) return;
-      if (dni.valor.length === 8) verDni(dni.valor);
       if (correo.valor.includes("@")) verCorreo(correo.valor);
-      // El código depende del correo: se verifica al llegar a su paso.
+      if (telefono.valor.trim()) verTelefono(telefono.valor, pais);
     })();
     return () => { vivo = false; };
+    // Solo al montar: después, cada campo se verifica cuando la persona lo toca.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function enviar() {
     setEnviando(true);
     try {
-      const { datos } = await post("/api/validar", { dni: dni.valor, codigo: codigo.valor, correo: correo.valor });
-      setResultado({ estado: datos.estado, motivo: datos.motivo });
-      if (datos.estado !== "invalido") {
-        try { localStorage.removeItem(BORRADOR); } catch { /* da igual */ }
+      const { datos } = await post("/api/inscripcion", {
+        dni: dni.valor, correo: correo.valor, telefono: telefono.valor, pais,
+        carrera, anio: Number(anio), track, nivel,
+      });
+      if (datos.ok) {
+        try {
+          localStorage.removeItem(BORRADOR);
+          // Lo recoge /bienvenida al volver del correo. Va firmado por el
+          // servidor, así que tocarlo aquí solo lo invalida.
+          if (datos.boleto) localStorage.setItem(CLAVE_BOLETO, datos.boleto);
+        } catch { /* da igual: sin boleto se usan los metadatos del usuario */ }
+        setResultado({ ok: true, correo: datos.correo });
+      } else {
+        setResultado({ ok: false, motivo: datos.motivo });
       }
     } catch {
-      setResultado({ estado: "revision_manual", motivo: "No pudimos conectarnos; guardamos tu inscripción para revisarla." });
+      setResultado({ ok: false, motivo: "No pudimos conectarnos. Revisa tu conexión e inténtalo de nuevo." });
     } finally {
       setEnviando(false);
     }
   }
 
+  const telOk = telefono.estado === "ok";
   const puedeSeguir =
-    (paso === 0 && dni.estado === "ok") ||
-    (paso === 0 && dni.estado === "aviso") ||
-    (paso === 1 && (correo.estado === "ok" || correo.estado === "aviso")) ||
-    (paso === 2 && codigo.estado === "ok") ||
-    (paso === 3 && consiente);
+    (paso === 0 && (dni.estado === "ok" || dni.estado === "aviso")) ||
+    (paso === 1 && correo.estado === "ok") ||
+    (paso === 2 && telOk) ||
+    (paso === 3 && carrera.trim().length >= 3 && anio !== "") ||
+    (paso === 4 && track !== "") ||
+    (paso === 5 && consiente);
 
   // ── pantalla de resultado ──
   if (resultado) {
-    const bueno = resultado.estado === "valido";
-    const revision = resultado.estado === "revision_manual";
+    if (resultado.ok) {
+      return (
+        <div className="animate-pop-in">
+          <p className="hud text-lavender">Casi listo</p>
+          <h1 className="display mt-4 text-[clamp(2.4rem,8vw,6rem)]">
+            Revisa tu<br /><span className="text-lavender">correo</span>
+          </h1>
+          <p className="mt-6 max-w-xl text-lg text-mist/85">
+            Te mandamos un mensaje a <span className="font-bold text-white">{resultado.correo}</span>.
+            Ábrelo y toca el enlace para confirmar tu inscripción. Si no aparece en un par de
+            minutos, mira en spam o promociones.
+          </p>
+          <p className="mt-4 flex items-center gap-2 text-mist/60">
+            <Mail className="size-5" aria-hidden /> Tu lugar queda reservado al confirmar.
+          </p>
+        </div>
+      );
+    }
     return (
       <div className="animate-pop-in">
-        <p className="hud text-lavender">{bueno ? "Listo" : revision ? "Casi" : "No pudimos"}</p>
+        <p className="hud text-lavender">No pudimos</p>
         <h1 className="display mt-4 text-[clamp(2.4rem,8vw,6rem)]">
-          {bueno ? <>Eres parte de<br /><span className="text-lavender">CIS[HACK]</span></>
-            : revision ? <>Te revisamos<br /><span className="text-lavender">a mano</span></>
-            : <>Algo no<br /><span className="text-magenta">cuadra</span></>}
+          Algo no<br /><span className="text-magenta">cuadra</span>
         </h1>
-        <p className="mt-6 max-w-xl text-lg text-mist/85">
-          {bueno
-            ? "Te llega un correo con tu código de Discord. Es de un solo uso y está atado a tu correo institucional."
-            : revision
-            ? `${resultado.motivo ?? ""} Te escribimos en menos de 24 horas al correo que dejaste.`
-            : resultado.motivo}
-        </p>
-        {!bueno && !revision && (
-          <button
-            onClick={() => { setResultado(null); setPaso(0); }}
-            className="hud mt-8 rounded-full border border-white/40 px-6 py-3 text-white transition-colors hover:border-lavender hover:text-lavender"
-          >
-            Corregir mis datos
-          </button>
-        )}
-        {bueno && (
-          <a
-            href={LINKS.discord}
-            className="mt-8 inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 font-bold text-ink transition-colors hover:bg-lavender"
-          >
-            Entrar al Discord <ArrowRight className="size-5" aria-hidden />
-          </a>
-        )}
+        <p className="mt-6 max-w-xl text-lg text-mist/85">{resultado.motivo}</p>
+        <button
+          onClick={() => { setResultado(null); setPaso(0); }}
+          className="hud mt-8 rounded-full border border-white/40 px-6 py-3 text-white transition-colors hover:border-lavender hover:text-lavender"
+        >
+          Corregir mis datos
+        </button>
       </div>
     );
   }
@@ -276,14 +312,12 @@ export default function RegistroWizard() {
   return (
     <div className="w-full max-w-xl">
       <Barra paso={paso} total={PASOS.length} />
-      <p className="hud mt-5 text-lavender">
-        Paso {paso + 1} de {PASOS.length} · {PASOS[paso]}
-      </p>
+      <p className="hud mt-5 text-lavender">Paso {paso + 1} de {PASOS.length} · {PASOS[paso]}</p>
 
       {paso === 0 && (
         <Pregunta
           titulo={<>¿Cuál es<br />tu <span className="text-lavender">DNI</span>?</>}
-          ayuda="Lo usamos una sola vez para confirmar tu nombre. No lo guardamos."
+          ayuda="Lo usamos para confirmar tu nombre real. Guardamos solo una huella cifrada, nunca el número."
         >
           <input
             ref={campoRef}
@@ -300,10 +334,8 @@ export default function RegistroWizard() {
             className={`${CAMPO} text-[clamp(2rem,9vw,3.5rem)] font-bold tracking-[0.12em] tabular-nums`}
           />
           <Pie campo={dni}>
-            {deducido.nombre && dni.estado === "ok" && (
-              <p className="text-lg text-mist">
-                Hola, <span className="font-bold text-white">{deducido.nombre}</span>
-              </p>
+            {nombre && dni.estado === "ok" && (
+              <p className="text-lg text-mist">Hola, <span className="font-bold text-white">{nombre}</span></p>
             )}
           </Pie>
         </Pregunta>
@@ -312,7 +344,7 @@ export default function RegistroWizard() {
       {paso === 1 && (
         <Pregunta
           titulo={<>¿Tu correo<br /><span className="text-lavender">institucional</span>?</>}
-          ayuda="El que te dio tu universidad. Con él confirmamos dónde estudias."
+          ayuda="El que te dio tu universidad. Te llegará ahí el enlace para confirmar."
         >
           <input
             ref={campoRef}
@@ -327,13 +359,8 @@ export default function RegistroWizard() {
             className={`${CAMPO} text-[clamp(1.1rem,4.6vw,1.9rem)] font-semibold`}
           />
           <Pie campo={correo}>
-            {deducido.universidadNombre && correo.estado === "ok" && (
-              <>
-                <p className="text-lg font-bold text-white">{deducido.universidadNombre}</p>
-                {deducido.prioridad === "anfitriona" && (
-                  <p className="hud mt-1 text-glow">universidad anfitriona</p>
-                )}
-              </>
+            {universidad && correo.estado === "ok" && (
+              <p className="text-lg font-bold text-white">{universidad}</p>
             )}
           </Pie>
         </Pregunta>
@@ -341,31 +368,43 @@ export default function RegistroWizard() {
 
       {paso === 2 && (
         <Pregunta
-          titulo={<>Tu <span className="text-lavender">código</span><br />de estudiante</>}
-          ayuda="El de tu carné universitario."
+          titulo={<>Tu <span className="text-lavender">celular</span></>}
+          ayuda="Para avisarte de cambios de último minuto y coordinar tu equipo."
         >
-          <input
-            ref={campoRef}
-            value={codigo.valor}
-            onChange={(e) => setCodigo({ valor: e.target.value.toUpperCase().slice(0, 15), estado: "vacio" })}
-            onBlur={(e) => verCodigo(e.target.value.toUpperCase())}
-            onKeyDown={(e) => { if (e.key === "Enter") verCodigo(codigo.valor); }}
-            autoComplete="off"
-            placeholder="el de tu carné"
-            aria-label="Código de estudiante"
-            className={`${CAMPO} text-[clamp(1.6rem,7vw,3rem)] font-bold tracking-[0.1em]`}
-          />
-          <Pie campo={codigo}>
-            {codigo.estado === "ok" && (
-              <div className="w-full">
-                {deducido.anioIngreso && <Dato etiqueta="ingreso" valor={String(deducido.anioIngreso)} />}
-                {deducido.carrera && <Dato etiqueta="carrera" valor={deducido.carrera} />}
-                {deducido.facultad && <Dato etiqueta="facultad" valor={deducido.facultad} />}
-                {deducido.ciclo && <Dato etiqueta="ciclo" valor={deducido.ciclo} />}
-                {!deducido.carrera && (
-                  <p className="hud text-mist/50">te preguntamos la carrera más adelante</p>
-                )}
-              </div>
+          <div className="flex items-end gap-3">
+            <select
+              value={pais}
+              onChange={(e) => { setPais(e.target.value); verTelefono(telefono.valor, e.target.value); }}
+              aria-label="País del número"
+              className="shrink-0 rounded-xl border-2 border-white/15 bg-ink/60 px-3 py-3 text-base font-semibold text-white outline-none transition-colors focus:border-lavender"
+            >
+              {PAISES.map((p) => (
+                <option key={p.iso} value={p.iso} className="bg-[#120a24] text-white">
+                  {p.bandera} +{p.codigo}
+                </option>
+              ))}
+            </select>
+            <input
+              ref={campoRef}
+              value={telefono.valor}
+              onChange={(e) => setTelefono({ valor: e.target.value, estado: "vacio" })}
+              onBlur={(e) => verTelefono(e.target.value, pais)}
+              onKeyDown={(e) => { if (e.key === "Enter") verTelefono(telefono.valor, pais); }}
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel"
+              placeholder={PAISES.find((p) => p.iso === pais)?.ejemplo ?? "999 888 777"}
+              aria-label="Número de celular"
+              className={`${CAMPO} text-[clamp(1.4rem,6vw,2.4rem)] font-bold tabular-nums`}
+            />
+          </div>
+          <Pie campo={telefono}>
+            {telOk && (
+              <p className="text-lg text-mist">
+                Guardamos <span className="font-bold text-white">{normalizarTelefono(telefono.valor, pais).ok
+                  ? (normalizarTelefono(telefono.valor, pais) as { bonito: string }).bonito
+                  : telefono.valor}</span>
+              </p>
             )}
           </Pie>
         </Pregunta>
@@ -373,16 +412,80 @@ export default function RegistroWizard() {
 
       {paso === 3 && (
         <Pregunta
-          titulo={<>¿Todo<br /><span className="text-lavender">correcto</span>?</>}
-          ayuda="Revisa antes de enviar."
+          titulo={<>¿Qué <span className="text-lavender">estudias</span>?</>}
+          ayuda="Tal como figura en tu universidad."
         >
+          <input
+            ref={campoRef}
+            value={carrera}
+            onChange={(e) => setCarrera(e.target.value.slice(0, 80))}
+            autoComplete="off"
+            placeholder="Ingeniería de Sistemas"
+            aria-label="Carrera"
+            className={`${CAMPO} text-[clamp(1.2rem,5vw,2rem)] font-semibold`}
+          />
+          <p className="hud mt-8 text-mist/50">¿en qué año vas?</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {[1, 2, 3, 4, 5, 6, 7].map((a) => (
+              <button
+                key={a}
+                type="button"
+                onClick={() => setAnio(String(a))}
+                aria-pressed={anio === String(a)}
+                className={`size-12 rounded-xl border font-bold transition-colors ${
+                  anio === String(a) ? "border-lavender bg-white/10 text-white" : "border-white/15 text-mist hover:border-white/40"
+                }`}
+              >
+                {a}
+              </button>
+            ))}
+          </div>
+        </Pregunta>
+      )}
+
+      {paso === 4 && (
+        <Pregunta
+          titulo={<>Elige tu<br /><span className="text-lavender">track</span></>}
+          ayuda="Define en qué reto compites y a qué canales de Discord entras."
+        >
+          <div className="flex flex-col gap-3">
+            {TRACKS.map((t) => (
+              <Opcion key={t.id} activo={track === t.id} onClick={() => setTrack(t.id)} titulo={t.titulo} desc={t.desc} />
+            ))}
+          </div>
+          <p className="hud mt-8 text-mist/50">¿cómo te ves hoy? (opcional)</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {NIVELES.map((n) => (
+              <button
+                key={n}
+                type="button"
+                onClick={() => setNivel(nivel === n ? "" : n)}
+                aria-pressed={nivel === n}
+                className={`rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${
+                  nivel === n ? "border-lavender bg-white/10 text-white" : "border-white/15 text-mist hover:border-white/40"
+                }`}
+              >
+                {n}
+              </button>
+            ))}
+          </div>
+        </Pregunta>
+      )}
+
+      {paso === 5 && (
+        <Pregunta titulo={<>¿Todo<br /><span className="text-lavender">correcto</span>?</>} ayuda="Revisa antes de enviar.">
           <div className="glass w-full rounded-2xl px-5 py-4">
-            <Dato etiqueta="nombre" valor={deducido.nombre ?? "por confirmar"} />
-            <Dato etiqueta="universidad" valor={deducido.universidadNombre ?? "por catalogar"} />
-            <Dato etiqueta="código" valor={codigo.valor} />
-            {deducido.anioIngreso && <Dato etiqueta="ingreso" valor={String(deducido.anioIngreso)} />}
-            {deducido.carrera && <Dato etiqueta="carrera" valor={deducido.carrera} />}
+            <Dato etiqueta="nombre" valor={nombre || "por confirmar"} />
+            <Dato etiqueta="universidad" valor={universidad || "—"} />
             <Dato etiqueta="correo" valor={correo.valor} />
+            <Dato etiqueta="celular" valor={
+              normalizarTelefono(telefono.valor, pais).ok
+                ? (normalizarTelefono(telefono.valor, pais) as { bonito: string }).bonito
+                : telefono.valor
+            } />
+            <Dato etiqueta="carrera" valor={`${carrera} · año ${anio}`} />
+            <Dato etiqueta="track" valor={TRACKS.find((t) => t.id === track)?.titulo ?? "—"} />
+            {nivel && <Dato etiqueta="nivel" valor={nivel} />}
           </div>
 
           <label className="mt-6 flex cursor-pointer items-start gap-3 text-sm text-mist/85">
@@ -415,7 +518,7 @@ export default function RegistroWizard() {
           disabled={!puedeSeguir || enviando}
           className="group inline-flex items-center gap-3 rounded-full bg-white px-8 py-3.5 font-bold text-ink shadow-[0_0_40px_-8px_rgba(182,156,255,0.8)] transition-all hover:bg-lavender disabled:cursor-not-allowed disabled:bg-white/20 disabled:text-white/40 disabled:shadow-none"
         >
-          {enviando ? <Loader2 className="size-5 animate-spin" aria-hidden /> : null}
+          {enviando && <Loader2 className="size-5 animate-spin" aria-hidden />}
           {paso === PASOS.length - 1 ? "Enviar inscripción" : "Continuar"}
           {!enviando && <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" aria-hidden />}
         </button>
@@ -424,35 +527,12 @@ export default function RegistroWizard() {
       <p className="hud mt-6 text-mist/40">
         inscripciones abiertas desde el {EVENT.registrationOpensLabel} · 250 cupos
       </p>
-    </div>
-  );
-}
 
-function Pregunta({ titulo, ayuda, children }: { titulo: React.ReactNode; ayuda: string; children: React.ReactNode }) {
-  return (
-    <div className="animate-pop-in">
-      <h1 className="display mt-4 text-[clamp(2.2rem,7.5vw,4.5rem)]">{titulo}</h1>
-      <p className="mt-4 max-w-md text-mist/70">{ayuda}</p>
-      <div className="mt-8">{children}</div>
-    </div>
-  );
-}
-
-/** La raya va pegada al input, no debajo del mensaje. */
-const CAMPO = "campo-grande w-full border-b-2 border-white/15 bg-transparent pb-3 text-white outline-none transition-colors placeholder:text-white/20 focus:border-lavender focus-visible:outline-none";
-
-function Pie({ campo, children }: { campo: Campo; children?: React.ReactNode }) {
-  const hay = campo.estado !== "vacio";
-  return (
-    <div className="flex min-h-[4.5rem] items-start gap-3 pt-4" aria-live="polite">
-      {hay && <span className="pt-0.5"><Senal estado={campo.estado} /></span>}
-      <div className="flex-1">
-        {campo.mensaje ? (
-          <p className={campo.estado === "error" ? "text-magenta" : "text-amber-300"}>{campo.mensaje}</p>
-        ) : (
-          children
-        )}
-      </div>
+      {/* Quien ya pasó por aquí no tiene por qué volver a llenar nada. */}
+      <p className="hud mt-3 text-mist/40">
+        ¿ya estás inscrito?{" "}
+        <a href="/mi-inscripcion" className="text-lavender underline underline-offset-4">entra a tu panel</a>
+      </p>
     </div>
   );
 }

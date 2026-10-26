@@ -9,6 +9,7 @@ import Hero from "@/components/Hero";
 import Mission from "@/components/Mission";
 import Nav from "@/components/Nav";
 import Pulse from "@/components/Pulse";
+import RescateDeSesion from "@/components/RescateDeSesion";
 import Sponsors from "@/components/Sponsors";
 import StarField from "@/components/StarField";
 import Tracks from "@/components/Tracks";
@@ -16,6 +17,7 @@ import Tracks from "@/components/Tracks";
 export default function Home() {
   return (
     <>
+      <RescateDeSesion />
       <StarField />
       <div className="nebula" aria-hidden />
       <Nav />

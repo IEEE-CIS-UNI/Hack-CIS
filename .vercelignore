@@ -1,0 +1,4 @@
+# Lo que no es la aplicacion no tiene por que viajar al despliegue.
+*.docx
+datos/
+supabase/

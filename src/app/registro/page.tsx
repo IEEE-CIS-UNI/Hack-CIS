@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import Countdown from "@/components/Countdown";
 import Footer from "@/components/Footer";
@@ -58,9 +59,9 @@ function Espera() {
         <a href={LINKS.whatsapp} className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-lg font-bold text-ink shadow-[0_0_40px_-5px_rgba(182,156,255,0.8)] transition-all hover:scale-105 hover:bg-lavender">
           Unirme al WhatsApp
         </a>
-        <a href="/" className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-transparent px-6 py-3 text-lg font-bold text-white transition-all hover:bg-white/10">
+        <Link href="/" className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-transparent px-6 py-3 text-lg font-bold text-white transition-all hover:bg-white/10">
           <ArrowLeft className="size-5" aria-hidden /> Volver al inicio
-        </a>
+        </Link>
       </div>
     </>
   );

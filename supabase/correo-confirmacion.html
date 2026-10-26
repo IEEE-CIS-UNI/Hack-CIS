@@ -1,0 +1,127 @@
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0;padding:0;background-color:#08030f;">
+  <tr>
+    <td align="center" style="padding:32px 16px;">
+
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;background-color:#120a24;border-radius:20px;overflow:hidden;">
+
+        <!-- cabecera -->
+        <tr>
+          <td style="padding:36px 36px 28px 36px;background-color:#1a0b38;border-bottom:3px solid #7a2cf5;">
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:26px;font-weight:bold;color:#ffffff;letter-spacing:-0.5px;">
+              CIS<span style="color:#b69cff;">[HACK]</span>
+            </p>
+            <p style="margin:6px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;color:#b69cff;letter-spacing:3px;text-transform:uppercase;">
+              UNI 2026 &middot; The Agentic Era
+            </p>
+          </td>
+        </tr>
+
+        <!-- cuerpo -->
+        <tr>
+          <td style="padding:36px;">
+
+            <p style="margin:0 0 8px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;color:#b69cff;letter-spacing:2px;text-transform:uppercase;">
+              Falta un paso
+            </p>
+
+            <h1 style="margin:0 0 20px 0;font-family:Arial,Helvetica,sans-serif;font-size:30px;line-height:1.2;color:#ffffff;">
+              {{ if .Data.name }}{{ .Data.name }},{{ else }}Hola,{{ end }}<br>
+              confirma tu lugar
+            </h1>
+
+            <p style="margin:0 0 24px 0;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.6;color:#d9ccff;">
+              Recibimos tu inscripción al hackathon de IEEE CIS UNI. Toca el botón para
+              confirmar que este correo es tuyo y quedas dentro.
+            </p>
+
+            <!-- botón -->
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 24px 0;">
+              <tr>
+                <td align="center" style="border-radius:999px;background-color:#ffffff;">
+                  <a href="{{ .ConfirmationURL }}"
+                     style="display:inline-block;padding:16px 40px;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;color:#0b0118;text-decoration:none;border-radius:999px;">
+                    Confirmar mi inscripción &rarr;
+                  </a>
+                </td>
+              </tr>
+            </table>
+
+            <p style="margin:0 0 28px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#8d7fb0;">
+              El enlace sirve una sola vez y vence en una hora. Si el botón no funciona,
+              copia y pega esta dirección en tu navegador:<br>
+              <a href="{{ .ConfirmationURL }}" style="color:#b69cff;word-break:break-all;">{{ .ConfirmationURL }}</a>
+            </p>
+
+            <!-- resumen -->
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#0d0520;border-radius:14px;">
+              <tr>
+                <td style="padding:20px 24px;">
+                  <p style="margin:0 0 14px 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;color:#8d7fb0;letter-spacing:2px;text-transform:uppercase;">
+                    Tu inscripción
+                  </p>
+
+                  {{ if .Data.name }}
+                  <p style="margin:0 0 10px 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#d9ccff;">
+                    <span style="color:#8d7fb0;">Nombre</span><br>
+                    <strong style="color:#ffffff;">{{ .Data.name }}</strong>
+                  </p>
+                  {{ end }}
+
+                  <p style="margin:0 0 10px 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#d9ccff;">
+                    <span style="color:#8d7fb0;">Correo</span><br>
+                    <strong style="color:#ffffff;">{{ .Email }}</strong>
+                  </p>
+
+                  {{ if .Data.track }}
+                  <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#d9ccff;">
+                    <span style="color:#8d7fb0;">Track</span><br>
+                    <strong style="color:#ffffff;">
+                      {{ if eq .Data.track "finanzas" }}IA &amp; Finanzas{{ end }}
+                      {{ if eq .Data.track "telco" }}IA &amp; Telco y Operaciones{{ end }}
+                      {{ if eq .Data.track "impacto_social" }}IA &amp; Impacto Social{{ end }}
+                    </strong>
+                  </p>
+                  {{ end }}
+                </td>
+              </tr>
+            </table>
+
+            <!-- qué sigue -->
+            <p style="margin:28px 0 12px 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;color:#8d7fb0;letter-spacing:2px;text-transform:uppercase;">
+              Qué sigue
+            </p>
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td width="28" valign="top" style="font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;color:#b69cff;">1.</td>
+                <td style="padding-bottom:10px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;color:#d9ccff;">Confirmas con el botón de arriba.</td>
+              </tr>
+              <tr>
+                <td width="28" valign="top" style="font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;color:#b69cff;">2.</td>
+                <td style="padding-bottom:10px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;color:#d9ccff;">Entras al Discord y se te abren los canales de tu track.</td>
+              </tr>
+              <tr>
+                <td width="28" valign="top" style="font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;color:#b69cff;">3.</td>
+                <td style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;color:#d9ccff;">Armas equipo antes del Bootcamp.</td>
+              </tr>
+            </table>
+
+          </td>
+        </tr>
+
+        <!-- pie -->
+        <tr>
+          <td style="padding:24px 36px 32px 36px;border-top:1px solid #241544;">
+            <p style="margin:0 0 10px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#8d7fb0;">
+              Organizado por IEEE CIS UNI, en alianza con DSC PUCP y CIS Universidad del Pac&iacute;fico.
+            </p>
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:#6b5f8a;">
+              Si no te inscribiste, ignora este mensaje: sin confirmar, no se guarda nada.
+            </p>
+          </td>
+        </tr>
+
+      </table>
+
+    </td>
+  </tr>
+</table>

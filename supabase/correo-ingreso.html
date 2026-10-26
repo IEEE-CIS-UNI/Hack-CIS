@@ -1,0 +1,71 @@
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0;padding:0;background-color:#08030f;">
+  <tr>
+    <td align="center" style="padding:32px 16px;">
+
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;background-color:#120a24;border-radius:20px;overflow:hidden;">
+
+        <tr>
+          <td style="padding:36px 36px 28px 36px;background-color:#1a0b38;border-bottom:3px solid #7a2cf5;">
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:26px;font-weight:bold;color:#ffffff;letter-spacing:-0.5px;">
+              CIS<span style="color:#b69cff;">[HACK]</span>
+            </p>
+            <p style="margin:6px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;color:#b69cff;letter-spacing:3px;text-transform:uppercase;">
+              UNI 2026 &middot; The Agentic Era
+            </p>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:36px;">
+
+            <p style="margin:0 0 8px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;color:#b69cff;letter-spacing:2px;text-transform:uppercase;">
+              Tu acceso
+            </p>
+
+            <h1 style="margin:0 0 20px 0;font-family:Arial,Helvetica,sans-serif;font-size:30px;line-height:1.2;color:#ffffff;">
+              {{ if .Data.name }}{{ .Data.name }},{{ else }}Hola,{{ end }}<br>
+              entra a tu ficha
+            </h1>
+
+            <p style="margin:0 0 24px 0;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.6;color:#d9ccff;">
+              Pediste entrar a tu inscripci&oacute;n de CIS[HACK]. Toca el bot&oacute;n y entras directo,
+              sin contrase&ntilde;a.
+            </p>
+
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 24px 0;">
+              <tr>
+                <td align="center" style="border-radius:999px;background-color:#ffffff;">
+                  <a href="{{ .ConfirmationURL }}"
+                     style="display:inline-block;padding:16px 40px;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;color:#0b0118;text-decoration:none;border-radius:999px;">
+                    Entrar a mi inscripci&oacute;n &rarr;
+                  </a>
+                </td>
+              </tr>
+            </table>
+
+            <p style="margin:0 0 8px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#8d7fb0;">
+              El enlace sirve una sola vez y vence en una hora. Si el bot&oacute;n no funciona,
+              copia y pega esta direcci&oacute;n en tu navegador:<br>
+              <a href="{{ .ConfirmationURL }}" style="color:#b69cff;word-break:break-all;">{{ .ConfirmationURL }}</a>
+            </p>
+
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:24px 36px 32px 36px;border-top:1px solid #241544;">
+            <p style="margin:0 0 10px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#8d7fb0;">
+              Organizado por IEEE CIS UNI, en alianza con DSC PUCP y CIS Universidad del Pac&iacute;fico.
+            </p>
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:#6b5f8a;">
+              Si no pediste entrar, ignora este mensaje. Nadie puede usar este enlace sin tu
+              bandeja de entrada.
+            </p>
+          </td>
+        </tr>
+
+      </table>
+
+    </td>
+  </tr>
+</table>
