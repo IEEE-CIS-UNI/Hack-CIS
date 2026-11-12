@@ -1,21 +1,23 @@
 /**
  * GET/PATCH /api/perfil — la ficha de quien ya está inscrito.
  *
+ * GET devuelve todo junto (persona, inscripciones y equipo) desde la función
+ * `my_overview` de la base.
+ *
  * Lo que se puede cambiar y lo que no:
  *
- *   sí  — teléfono, carrera, año, track, nivel, GitHub, LinkedIn.
+ *   sí  — teléfono, carrera, año, nivel, GitHub, LinkedIn, foto.
  *   no  — nombre, correo, DNI, universidad. Eso es la identidad verificada;
  *         si cambiara a voluntad, la verificación no habría servido de nada.
+ *         Además la base solo deja editar esas columnas.
  */
 
 import { conToken, tokenDe } from "@/lib/supabase";
-import { TRACKS, NIVELES, type Nivel, type Track } from "@/lib/inscripcion";
+import { NIVELES, type Nivel } from "@/lib/inscripcion";
 import { normalizarTelefono } from "@/lib/telefono";
 import { json, leerCuerpo, RespuestaMala } from "@/lib/limite";
 
 export const runtime = "nodejs";
-
-const CAMPOS = "id, name, email, phone, career, study_year, track, level, institution_id, discord_id, discord_username, linkedin_url, github_url, photo_url, badge_number, qr_token, created_at";
 
 async function sesionDe(req: Request) {
   const token = tokenDe(req);
@@ -34,16 +36,11 @@ export async function GET(req: Request) {
   const s = await sesionDe(req);
   if (s.error) return s.error;
 
-  const { data, error } = await s.sb
-    .from("hackers")
-    .select(`${CAMPOS}, institutions(name, short_name)`)
-    .eq("auth_user_id", s.usuario.id)
-    .maybeSingle();
-
+  const { data, error } = await s.sb.rpc("my_overview");
   if (error) return json({ ok: false, motivo: "No pudimos leer tu ficha." }, 500);
-  if (!data) return json({ ok: false, sinInscripcion: true, motivo: "Todavía no estás inscrito." }, 404);
+  if (!data?.person) return json({ ok: false, sinInscripcion: true, motivo: "Todavía no estás inscrito." }, 404);
 
-  return json({ ok: true, hacker: data });
+  return json({ ok: true, resumen: data });
 }
 
 export async function PATCH(req: Request) {
@@ -76,13 +73,6 @@ export async function PATCH(req: Request) {
       return json({ ok: false, campo: "anio", motivo: "Elige en qué año estás." }, 422);
     }
     cambios.study_year = a;
-  }
-
-  if (cuerpo.track !== undefined) {
-    if (!TRACKS.some((t) => t.id === cuerpo.track)) {
-      return json({ ok: false, campo: "track", motivo: "Elige un track válido." }, 422);
-    }
-    cambios.track = cuerpo.track as Track;
   }
 
   if (cuerpo.nivel !== undefined) {
@@ -123,18 +113,19 @@ export async function PATCH(req: Request) {
     return json({ ok: false, motivo: "No mandaste nada que cambiar." }, 400);
   }
 
-  const { data, error } = await s.sb
-    .from("hackers")
+  const { data: fila, error } = await s.sb
+    .from("people")
     .update(cambios)
     .eq("auth_user_id", s.usuario.id)
-    .select(CAMPOS)
+    .select("id")
     .maybeSingle();
 
   if (error) {
-    if (error.code === "23514") return json({ ok: false, motivo: error.message }, 422);
+    if (error.code === "23514") return json({ ok: false, motivo: "Alguno de los datos no es válido." }, 422);
     return json({ ok: false, motivo: "No pudimos guardar los cambios." }, 500);
   }
-  if (!data) return json({ ok: false, sinInscripcion: true, motivo: "Todavía no estás inscrito." }, 404);
+  if (!fila) return json({ ok: false, sinInscripcion: true, motivo: "Todavía no estás inscrito." }, 404);
 
-  return json({ ok: true, hacker: data });
+  const { data } = await s.sb.rpc("my_overview");
+  return json({ ok: true, resumen: data });
 }

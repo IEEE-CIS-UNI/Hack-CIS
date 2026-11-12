@@ -2,15 +2,21 @@
  * POST /api/completar — segundo paso: ya confirmó el correo, se guarda.
  *
  * Llega con la sesión que Supabase creó al abrir el enlace del correo. El
- * cliente de aquí hereda esa sesión, así que las políticas de la base siguen
+ * cliente de aquí hereda esa sesión, así que las reglas de la base siguen
  * mandando: aunque este código tuviera un error, no podría escribir en la
- * fila de otra persona.
+ * ficha de otra persona ni pasar de los 250 cupos de la hackathon.
  *
- * Es idempotente: si ya estaba inscrita, devuelve su ficha en vez de romper.
+ * Hace tres cosas, en este orden:
+ *   1. crea la ficha (`register_person`), si no existía;
+ *   2. la inscribe en lo que pidió: la hack y/o las sesiones del bootcamp;
+ *   3. devuelve su estado completo para pintar la credencial.
+ *
+ * Es idempotente: si ya estaba inscrita, devuelve su estado en vez de romper.
  */
 
 import { conToken, tokenDe } from "@/lib/supabase";
-import { metadatosValidos, type Inscripcion } from "@/lib/inscripcion";
+import { incluyeHack, metadatosValidos, type Inscripcion } from "@/lib/inscripcion";
+import { traducirError } from "@/lib/errores";
 import { abrirBoleto } from "@/lib/boleto";
 import { json } from "@/lib/limite";
 
@@ -24,8 +30,7 @@ export async function POST(req: Request) {
 
   // El token va explícito a propósito. getUser() sin argumento espera a
   // initializePromise y pide un cerrojo pensado para el navegador; en el
-  // servidor, sin almacenamiento de sesión, ese camino se queda colgado y la
-  // página se quedaba en «Un segundo» para siempre.
+  // servidor, sin almacenamiento de sesión, ese camino se queda colgado.
   const { data: sesion, error: errSesion } = await sb.auth.getUser(token);
   if (errSesion || !sesion?.user) {
     return json({ ok: false, motivo: "Tu enlace venció. Pide uno nuevo desde la página de inscripción." }, 401);
@@ -36,94 +41,66 @@ export async function POST(req: Request) {
     return json({ ok: false, motivo: "Todavía no confirmaste tu correo." }, 403);
   }
 
-  // ¿Ya estaba? Entonces no hay nada que crear.
-  const { data: yaEsta } = await sb
-    .from("hackers")
-    .select("id, name, email, phone, career, study_year, track, level, institution_id, discord_id")
-    .eq("auth_user_id", usuario.id)
-    .maybeSingle();
-
-  if (yaEsta) return json({ ok: true, nuevo: false, hacker: yaEsta });
-
   // Primero el boleto que firmamos al enviar el formulario; si no llegó (abrió
   // el correo en otro aparato), los metadatos del usuario. El boleto manda
   // porque los metadatos solo se escriben al crear el usuario y pueden estar
-  // viejos: quien se reinscribió con otro track tiene ahí el track anterior.
+  // viejos: quien se reinscribió con otro plan tiene ahí el plan anterior.
   let cuerpo;
   try { cuerpo = await req.json(); } catch { cuerpo = {}; }
 
   const firmado = abrirBoleto<Inscripcion>(cuerpo?.boleto);
   const meta = firmado.ok ? firmado.datos : usuario.user_metadata;
+  const hayDatos = metadatosValidos(meta);
 
-  if (!metadatosValidos(meta)) {
-    return json({
-      ok: false,
-      motivo: "No encontramos los datos de tu inscripción. Vuelve a llenar el formulario.",
-    }, 422);
-  }
-
-  // El correo confirmado es la única fuente fiable. Vale tanto para el boleto
-  // (uno ajeno no sirve en esta sesión) como para los metadatos.
-  if (meta.email.toLowerCase() !== (usuario.email ?? "").toLowerCase()) {
+  // El correo confirmado es la única fuente fiable.
+  if (hayDatos && meta.email.toLowerCase() !== (usuario.email ?? "").toLowerCase()) {
     return json({ ok: false, motivo: "Los datos no coinciden con el correo que confirmaste." }, 422);
   }
 
-  // Los nulos se quitan en vez de mandarse: así la columna aplica su valor
-  // por defecto si lo tiene. Mandar «level: null» cuando nadie eligió nivel
-  // convierte un campo opcional del formulario en un rechazo de la base.
-  const fila: Record<string, unknown> = { auth_user_id: usuario.id };
-  for (const [clave, valor] of Object.entries(meta)) {
-    if (valor !== null && valor !== undefined) fila[clave] = valor;
+  const avisos: { hackLleno?: boolean; sinVerificar?: boolean; sesiones?: string[] } = {};
+
+  if (hayDatos) {
+    const { error } = await sb.rpc("register_person", {
+      p: {
+        name: meta.name, display_name: meta.display_name, phone: meta.phone, dni_hash: meta.dni_hash,
+        career: meta.career, study_year: meta.study_year, level: meta.level, affiliation: meta.affiliation,
+      },
+    });
+    if (error) {
+      const t = traducirError(error.message, error.code);
+      if (t.estado >= 500) console.error("[completar] register_person:", error);
+      return json({ ok: false, motivo: t.motivo, yaInscrito: error.code === "23505" }, t.estado === 500 ? 500 : 409);
+    }
+
+    if (incluyeHack(meta.plan)) {
+      const { error: e } = await sb.rpc("enroll_in", { p_slug: "hack" });
+      if (e) {
+        const t = traducirError(e.message, e.code);
+        if (/cupo_lleno/.test(e.message)) avisos.hackLleno = true;
+        else if (/requiere_verificacion/.test(e.message)) avisos.sinVerificar = true;
+        else { console.error("[completar] enroll_in hack:", e); return json({ ok: false, motivo: t.motivo }, t.estado); }
+      }
+    }
+
+    // Las sesiones una por una: si una falla no tumba a las demás.
+    const fallidas: string[] = [];
+    for (const slug of meta.sesiones) {
+      const { error: e } = await sb.rpc("enroll_in", { p_slug: slug });
+      if (e) fallidas.push(slug);
+    }
+    if (fallidas.length) avisos.sesiones = fallidas;
   }
 
-  // Guardar y leer van separados a propósito.
-  //
-  // Encadenar .select().single() al insert hace que PostgREST devuelva la
-  // fila recién creada, y esa lectura vuelve a pasar por la política de
-  // SELECT. Si devolviera cero filas, .single() lanza PGRST116 y el guardado
-  // —que sí ocurrió— se reporta como fallo. La persona ve «no pudimos
-  // guardar» mientras su inscripción está en la tabla: el peor de los
-  // mundos, porque al reintentar choca con el índice único.
-  const { error } = await sb.from("hackers").insert(fila);
-
-  if (error) {
-    // 23505 = índice único. O ya se inscribió con otro correo, o el DNI ya está.
-    if (error.code === "23505") {
-      const porDni = /dni_hash/.test(error.message);
-      return json({
-        ok: false,
-        yaInscrito: true,
-        motivo: porDni
-          ? "Ese DNI ya está inscrito. Si fuiste tú, entra con el correo que usaste la primera vez."
-          : "Ese correo ya está inscrito. Entra con él para ver tu ficha.",
-      }, 409);
-    }
-    // 23514 = el constraint del correo institucional o el del track.
-    if (error.code === "23514") {
-      return json({ ok: false, motivo: error.message }, 422);
-    }
-    // El motivo es para la persona; el detalle es para quien tenga que
-    // arreglarlo. Sin esto, un fallo de la base llega como «inténtalo de
-    // nuevo» y no hay forma de saber qué pasó: en el plan gratuito de Vercel
-    // los logs de ejecución no se guardan. No es información sensible: es
-    // nuestro propio esquema, y para llegar aquí hace falta sesión válida.
-    console.error("[completar] no se pudo guardar:", error);
+  const { data: resumen, error: errResumen } = await sb.rpc("my_overview");
+  if (errResumen || !resumen?.person) {
     return json({
       ok: false,
-      reintentable: true,
-      motivo: "No pudimos guardar tu inscripción. Inténtalo de nuevo.",
-      detalle: { codigo: error.code, mensaje: error.message, pista: error.hint, donde: error.details },
-    }, 500);
+      motivo: hayDatos
+        ? "No pudimos guardar tu inscripción. Inténtalo de nuevo."
+        : "No encontramos los datos de tu inscripción. Vuelve a llenar el formulario.",
+      reintentable: hayDatos,
+    }, hayDatos ? 500 : 422);
   }
 
-  // Ya está guardada. Leerla de vuelta es un lujo: si la lectura fallara, la
-  // inscripción sigue siendo válida y no hay nada que avisar. Se devuelve lo
-  // que acabamos de escribir.
-  const { data: creado } = await sb
-    .from("hackers")
-    .select("id, name, email, phone, career, study_year, track, level, institution_id, discord_id")
-    .eq("auth_user_id", usuario.id)
-    .maybeSingle();
-
-  return json({ ok: true, nuevo: true, hacker: creado ?? { ...fila, id: null } });
+  return json({ ok: true, resumen, avisos });
 }

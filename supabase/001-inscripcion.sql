@@ -1,5 +1,5 @@
 -- ---------------------------------------------------------------------------
--- Inscripción de CIS[HACK] UNI 2026
+-- Inscripción de HACK[CIS] UNI 2026
 --
 -- Qué resuelve:
 --   · dni_hash  — el DNI nunca se guarda en claro; se guarda su hash con sal.

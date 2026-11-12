@@ -6,8 +6,8 @@ import Nav from "@/components/Nav";
 import StarField from "@/components/StarField";
 
 export const metadata: Metadata = {
-  title: "Bases · CIS[HACK] UNI 2026",
-  description: "Reglas de participación, tratamiento de datos y licencia piloto de CIS[HACK] UNI 2026.",
+  title: "Bases · HACK[CIS] UNI 2026",
+  description: "Reglas de participación, tratamiento de datos y licencia piloto de HACK[CIS] UNI 2026.",
 };
 
 /**
@@ -57,14 +57,14 @@ export default function BasesPage() {
             Reglas del<br /><span className="text-lavender">juego</span>
           </h1>
           <p className="mt-6 text-lg text-mist/85">
-            CIS[HACK] UNI 2026 · The Agentic Era. Organizado por IEEE CIS UNI, en alianza con
-            DSC PUCP y CIS Universidad del Pacífico.
+            HACK[CIS] UNI 2026 · The Agentic Era. Organizado por IEEE CIS UNI, en alianza con
+            DSC PUCP y DSC UNI.
           </p>
 
           <Seccion n="01" titulo="Quién puede participar">
             <p>
-              Estudiantes universitarios con matrícula vigente y correo institucional
-              propio. La inscripción se verifica contra ese correo: sin confirmarlo, no hay
+              Estudiantes universitarios y de institutos de todo el país, con matrícula
+              vigente y correo institucional propio. La inscripción se verifica contra ese correo: sin confirmarlo, no hay
               inscripción.
             </p>
             <ul>
@@ -87,21 +87,19 @@ export default function BasesPage() {
 
           <Seccion n="03" titulo="Tracks">
             <ul>
-              <li><strong className="text-white">IA &amp; Finanzas</strong> — propuesto por CIS UP.</li>
-              <li><strong className="text-white">IA &amp; Telco y Operaciones</strong> — propuesto por IEEE CIS UNI.</li>
-              <li><strong className="text-white">IA &amp; Impacto Social</strong> — propuesto por DSC PUCP.</li>
+              <li><strong className="text-white">IA &amp; Energía</strong></li>
+              <li>Otros dos tracks, por anunciar.</li>
             </ul>
             <p>El track se elige al inscribirse y se puede cambiar desde tu ficha hasta el cierre del Bootcamp.</p>
           </Seccion>
 
           <Seccion n="04" titulo="Etapas">
             <ul>
-              <li><strong className="text-white">Bootcamp</strong> — virtual, la semana previa. Prototipado rápido y pitch. Abierto a todos los inscritos.</li>
-              <li><strong className="text-white">Build</strong> — pasan <strong className="text-white">15 equipos</strong>.</li>
-              <li><strong className="text-white">Gran Final</strong> — presencial, Auditorio CTIC de la UNI.</li>
+              <li><strong className="text-white">Bootcamp</strong> — virtual, del 23 al 27 de noviembre. Abierto a todos los inscritos.</li>
+              <li><strong className="text-white">Build</strong> — desde el 30 de noviembre, pasan <strong className="text-white">15 equipos</strong>.</li>
+              <li><strong className="text-white">Gran Final</strong> — presencial, sábado 5 de diciembre, Auditorio CTIC de la UNI.</li>
             </ul>
-            <p>El hackathon es en la tercera semana de noviembre de 2026.</p>
-            <Pendiente>Las fechas exactas de cada etapa se publican aquí en cuanto estén cerradas.</Pendiente>
+            <p>Las inscripciones abren el 13 de noviembre de 2026.</p>
           </Seccion>
 
           <Seccion n="05" titulo="Evaluación y premios">

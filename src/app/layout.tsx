@@ -9,9 +9,9 @@ const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
-  title: "CIS[HACK] UNI 2026 · The Agentic Era",
+  title: "HACK[CIS] UNI 2026 · The Agentic Era",
   description:
-    "Hackathon universitaria de 100 horas: resuelve un reto real de empresa con un agente de IA como 5to miembro de tu equipo. UNI, PUCP y Universidad del Pacífico.",
+    "Hackathon nacional de 100 horas para universitarios y estudiantes de institutos: resuelve un reto real de empresa con un agente de IA como 5to miembro de tu equipo.",
 };
 
 export const viewport: Viewport = {

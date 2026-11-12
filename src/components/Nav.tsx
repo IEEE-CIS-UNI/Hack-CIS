@@ -4,14 +4,15 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 const LINKS = [
-  { href: "#mision", label: "La misión" },
-  { href: "#tracks", label: "Tracks" },
-  { href: "#quinto", label: "El 5.º miembro" },
-  { href: "#oscuridad", label: "Premios y mentores" },
-  { href: "#pulso", label: "Leaderboard" },
-  { href: "#sponsors", label: "Sponsors" },
-  { href: "#comunidad", label: "Comunidad" },
-  { href: "#faq", label: "FAQ" },
+  { href: "/#mision", label: "La misión" },
+  { href: "/#bootcamp", label: "Bootcamp" },
+  { href: "/#tracks", label: "Tracks" },
+  { href: "/#quinto", label: "El 5.º miembro" },
+  { href: "/#granfinal", label: "Gran Final" },
+  { href: "/#oscuridad", label: "Premios y mentores" },
+  { href: "/#sponsors", label: "Sponsors" },
+  { href: "/#comunidad", label: "Comunidad" },
+  { href: "/#faq", label: "FAQ" },
 ];
 
 export default function Nav() {
@@ -40,7 +41,9 @@ export default function Nav() {
     <>
       <header className="top">
         <Link href="/" className="logo">
-          CIS<b>[HACK]</b>
+          <span>
+            HACK<b>[CIS]</b>
+          </span>
           <small>UNI 2026</small>
         </Link>
         <div className="top-r">

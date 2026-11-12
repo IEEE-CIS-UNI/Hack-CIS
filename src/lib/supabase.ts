@@ -13,9 +13,14 @@
 
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-const URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-const ANON = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
+export const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+const URL = SUPABASE_URL;
+// Supabase renombró la clave pública («anon» -> «publishable»): vale cualquiera
+// de las dos. Se leen por su nombre completo para que Next las incruste.
+export const SUPABASE_CLAVE =
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
 
+const ANON = SUPABASE_CLAVE;
 export const supabaseConfigurado = Boolean(URL && ANON);
 
 /** Falla temprano y con un mensaje que se entiende, no con «fetch failed». */

@@ -48,7 +48,7 @@ export const UNIVERSIDADES: Universidad[] = [
   { siglas: "PUCP", nombre: "Pontificia Universidad Católica del Perú", tipo: "privada",
     prioridad: "anfitriona", dominios: ["pucp.edu.pe", "pucp.pe"], formato: null },
   { siglas: "UP", nombre: "Universidad del Pacífico", tipo: "privada",
-    prioridad: "anfitriona", dominios: ["up.edu.pe"], formato: null },
+    prioridad: "general", dominios: ["up.edu.pe"], formato: null },
   { siglas: "ULIMA", nombre: "Universidad de Lima", tipo: "privada",
     prioridad: "general", dominios: ["ulima.edu.pe"], formato: null },
   { siglas: "ESAN", nombre: "Universidad ESAN", tipo: "privada",

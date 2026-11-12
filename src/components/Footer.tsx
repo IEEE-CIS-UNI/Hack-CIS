@@ -6,9 +6,8 @@ export default function Footer() {
     <footer id="contacto">
       <div className="wrap">
         <div className="row">
-          <p>Organizado por IEEE CIS UNI, en alianza con DSC PUCP y CIS Universidad del Pacífico.</p>
+          <p>Organizado por IEEE CIS UNI, en alianza con DSC PUCP y DSC UNI.</p>
           <div className="links">
-            <span>[correo de contacto]</span>
             {/* Salen del sitio: pestaña nueva, y noreferrer para no filtrarles
                 desde dónde llegó la visita. */}
             <a href={LINKS.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
@@ -19,7 +18,7 @@ export default function Footer() {
           <Logos align="left" />
         </div>
         <div className="mark" aria-hidden>
-          CIS[HACK]
+          HACK[CIS]
         </div>
       </div>
     </footer>

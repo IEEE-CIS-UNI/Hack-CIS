@@ -3,8 +3,8 @@
  *
  * Aquí NO se guarda nada todavía. Se valida todo, se crea el usuario en
  * Supabase Auth con los datos colgados de él, y Supabase manda el correo de
- * confirmación. La fila en «hackers» nace recién cuando la persona hace clic
- * en ese correo (/api/completar).
+ * confirmación. La ficha en «people» y las inscripciones nacen recién cuando
+ * la persona hace clic en ese correo (/api/completar).
  *
  * Ese orden es el que convierte el correo institucional en una prueba: hasta
  * que no entra a su bandeja, no existe inscripción.
@@ -13,7 +13,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { validarInscripcion } from "@/lib/inscripcion";
 import { emitirBoleto } from "@/lib/boleto";
-import { urlDelSitio } from "@/lib/supabase";
+import { SUPABASE_CLAVE, SUPABASE_URL, urlDelSitio } from "@/lib/supabase";
 import { dentroDelLimite, ipDe, json, leerCuerpo, RespuestaMala } from "@/lib/limite";
 
 export const runtime = "nodejs";
@@ -36,15 +36,13 @@ export async function POST(req: Request) {
       r.reintentable ? 502 : 422);
   }
 
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !anon) {
+  if (!SUPABASE_URL || !SUPABASE_CLAVE) {
     return json({ ok: false, reintentable: true, motivo: "La base de datos no está configurada." }, 500);
   }
 
   // Implícito: ver la nota en lib/supabase.ts. Con PKCE el enlace del correo
   // volvería con un código que el navegador no sabría canjear.
-  const sb = createClient(url, anon, { auth: { persistSession: false, flowType: "implicit" } });
+  const sb = createClient(SUPABASE_URL, SUPABASE_CLAVE, { auth: { persistSession: false, flowType: "implicit" } });
 
   const { error } = await sb.auth.signInWithOtp({
     email: r.datos.email,

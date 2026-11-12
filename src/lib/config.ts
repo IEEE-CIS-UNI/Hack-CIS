@@ -1,6 +1,6 @@
 export const EVENT = {
-  registrationOpensAt: "2026-10-20T00:00:00-05:00",
-  registrationOpensLabel: "20/10",
+  registrationOpensAt: "2026-11-13T00:00:00-05:00",
+  registrationOpensLabel: "13/11",
 };
 
 /**
@@ -24,6 +24,20 @@ export const LINKS = {
   instagram: "https://www.instagram.com/ieeecisuni",
   brochures: "#contacto",
 };
+
+/**
+ * WhatsApp de relaciones públicas de IEEE CIS UNI, para sponsors, mentores y
+ * jurados. El mensaje sale escrito de antemano para que quien escribe diga de
+ * dónde viene.
+ */
+const WA_RRPP = "51948223332";
+export const waRRPP = (mensaje: string) => `https://wa.me/${WA_RRPP}?text=${encodeURIComponent(mensaje)}`;
+export const WA_SPONSOR = waRRPP(
+  "Hola, vi en la web de HACK[CIS] UNI 2026 que puedo ser sponsor y quisiera más información."
+);
+export const WA_MENTOR = waRRPP(
+  "Hola, vi en la web de HACK[CIS] UNI 2026 que puedo postular como mentor o jurado y quisiera más información."
+);
 
 export const HELP_VIDEO_URL = process.env.NEXT_PUBLIC_HELP_VIDEO_URL ?? "";
 

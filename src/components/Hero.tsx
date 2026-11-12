@@ -7,7 +7,8 @@ const MESSAGES = [
   "¡Algo grande se acerca!",
   "Cuatro humanos, un agente. Así se construye en la era agéntica.",
   "Solo 15 equipos construyen. ¡Prepárate en el Bootcamp!",
-  "¡Inscripciones el 20/10!",
+  "¡Inscripciones el 13/11!",
+  "Bootcamp virtual desde el 23/11.",
 ];
 
 export default function Hero() {

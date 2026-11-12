@@ -59,7 +59,7 @@ function Terminal() {
         <i />
         <i />
         <i />
-        <span>agente@cis-hack · rol: {SCRIPTS[i].role}</span>
+        <span>agente@hack-cis · rol: {SCRIPTS[i].role}</span>
       </div>
       <pre aria-label={`Ejemplo: agente en rol de ${SCRIPTS[i].role}`}>
         {lines.map((l, k) => (

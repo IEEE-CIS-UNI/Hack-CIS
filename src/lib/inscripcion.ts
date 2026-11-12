@@ -1,66 +1,89 @@
 /**
  * La inscripción, de extremo a extremo.
  *
+ * Hay tres planes y cada uno pide cosas distintas:
+ *
+ *   hack            — la hackathon sola. Verificación fuerte: DNI contra RENIEC
+ *                     y correo de una institución del catálogo.
+ *   hack_bootcamp   — la hackathon y las sesiones del bootcamp que elija.
+ *   bootcamp        — solo sesiones. Abierto a cualquiera: nombre y correo
+ *                     confirmado, sin DNI. Así no se gastan créditos de
+ *                     consulta de DNI en quien solo quiere un taller.
+ *
  * Orden de las comprobaciones, de la más barata a la más cara:
  *
- *   1. forma      — nombre, carrera, año, track: puro texto, cuesta cero.
+ *   1. forma      — plan, sesiones, carrera, año: puro texto, cuesta cero.
  *   2. teléfono   — se normaliza a E.164 sin salir del proceso.
- *   3. correo     — el dominio decide la universidad, contra la tabla
- *                   university_domains, que es la misma que usa el constraint
- *                   de la base. Si aquí pasa, el INSERT no va a rebotar.
+ *   3. correo     — para la hack, el dominio decide la institución contra la
+ *                   misma tabla que usa la base.
  *   4. DNI        — lo último, porque es la única que sale a la red y la
- *                   única que cuesta créditos.
+ *                   única que cuesta créditos. Solo en los planes con hack.
  *
  * Lo que sale de aquí es exactamente lo que se guarda: nada se arma después.
+ * El track ya no se elige aquí: lo elige el equipo, desde la página del track.
  */
 
 import "server-only";
 import { createClient } from "@supabase/supabase-js";
-import { validarDni, consultarDni, hashDni, nombreNatural, normalizar } from "./validacion";
+import { validarDni, consultarDni, hashDni, nombreNatural } from "./validacion";
 import { normalizarTelefono } from "./telefono";
-
-export const TRACKS = [
-  { id: "finanzas",       nombre: "IA & Finanzas",               comunidad: "CIS UP" },
-  { id: "telco",          nombre: "IA & Telco y Operaciones",    comunidad: "UNI" },
-  { id: "impacto_social", nombre: "IA & Impacto Social",         comunidad: "DSC PUCP" },
-] as const;
+import { SESIONES } from "./contenido";
+import { SUPABASE_CLAVE, SUPABASE_URL } from "./supabase";
 
 export const NIVELES = ["Principiante", "Intermedio", "Avanzado", "Experto"] as const;
-
-export type Track = (typeof TRACKS)[number]["id"];
 export type Nivel = (typeof NIVELES)[number];
 
-/** Lo que se guarda en hackers. Los nombres son los de las columnas. */
+export const PLANES = ["hack", "hack_bootcamp", "bootcamp"] as const;
+export type Plan = (typeof PLANES)[number];
+
+export const incluyeHack = (p: Plan) => p === "hack" || p === "hack_bootcamp";
+export const incluyeBootcamp = (p: Plan) => p === "bootcamp" || p === "hack_bootcamp";
+
+const ETIQUETA_PLAN: Record<Plan, string> = {
+  hack: "la Hackathon",
+  hack_bootcamp: "la Hackathon y el Bootcamp",
+  bootcamp: "el Bootcamp",
+};
+
+/** Lo que viaja en el boleto y se entrega a la base. Los nombres de las columnas son los de `people`. */
 export type Inscripcion = {
+  plan: Plan;
+  plan_label: string;
+  sesiones: string[];
   name: string;
+  display_name: string;
   email: string;
-  phone: string;
-  dni_hash: string;
-  career: string;
-  study_year: number;
-  track: Track;
+  phone: string | null;
+  dni_hash: string | null;
+  career: string | null;
+  study_year: number | null;
   level: Nivel | null;
-  institution_id: string;
+  affiliation: string | null;
 };
 
 export type Fallo = { ok: false; campo: string; motivo: string; reintentable?: boolean };
-export type Exito = { ok: true; datos: Inscripcion; nombreDni: string };
+export type Exito = { ok: true; datos: Inscripcion; nombreDni: string | null };
 
 const texto = (v: unknown) => String(v ?? "").trim().replace(/\s+/g, " ");
+
+/** «ROSA MARÍA» -> «Rosa María». Con acentos y ñ intactos. */
+export const titulo = (s: string) =>
+  s.toLocaleLowerCase("es").replace(/(^|\s)\p{L}/gu, (c) => c.toLocaleUpperCase("es"));
+
+const primera = (s: string) => texto(s).split(" ")[0] ?? "";
 
 /**
  * Catálogo de dominios, leído de la base.
  *
- * Es la misma tabla que valida el constraint de hackers, así que preguntarle
- * a ella evita el caso feo: el formulario dice que sí y el INSERT dice que no.
+ * Es la misma tabla que usa la base para decidir la institución, así que
+ * preguntarle a ella evita el caso feo: el formulario dice que sí y la base
+ * dice que no.
  */
 export async function universidadDelCorreo(correo: string) {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !anon) return { ok: false as const, motivo: "La base de datos no está configurada." };
+  if (!SUPABASE_URL || !SUPABASE_CLAVE) return { ok: false as const, motivo: "La base de datos no está configurada." };
 
   const dominio = correo.split("@").pop()!.toLowerCase();
-  const sb = createClient(url, anon, { auth: { persistSession: false } });
+  const sb = createClient(SUPABASE_URL, SUPABASE_CLAVE, { auth: { persistSession: false } });
 
   const { data, error } = await sb
     .from("university_domains")
@@ -72,7 +95,7 @@ export async function universidadDelCorreo(correo: string) {
   if (!data) {
     return {
       ok: false as const,
-      motivo: `«${dominio}» no está en nuestra lista de universidades. Usa el correo que te dio la tuya, y si crees que es un error escríbenos.`,
+      motivo: `«${dominio}» no está en nuestra lista de universidades e institutos. Usa el correo que te dio la tuya, y si crees que es un error escríbenos.`,
     };
   }
 
@@ -91,7 +114,7 @@ export async function universidadDelCorreo(correo: string) {
 }
 
 /**
- * Valida todo y devuelve la fila lista para guardar.
+ * Valida todo y devuelve lo listo para guardar.
  *
  * Regla heredada del diseño anterior y que se mantiene: que un servicio
  * externo se caiga no es culpa de quien se inscribe. Si la API de DNI falla,
@@ -100,6 +123,60 @@ export async function universidadDelCorreo(correo: string) {
  */
 export async function validarInscripcion(cuerpo: Record<string, unknown>): Promise<Exito | Fallo> {
   // ── 1. forma ──
+  const plan = texto(cuerpo.plan) as Plan;
+  if (!PLANES.includes(plan)) return { ok: false, campo: "plan", motivo: "Elige qué quieres hacer." };
+
+  const validas = new Set(SESIONES.map((s) => s.slug));
+  const sesiones = Array.isArray(cuerpo.sesiones)
+    ? [...new Set(cuerpo.sesiones.map(texto).filter((s) => validas.has(s)))]
+    : [];
+  if (incluyeBootcamp(plan) && sesiones.length === 0) {
+    return { ok: false, campo: "sesiones", motivo: "Elige al menos una sesión del bootcamp." };
+  }
+  const sesionesFinal = incluyeBootcamp(plan) ? sesiones : [];
+
+  const correo = texto(cuerpo.correo).toLowerCase();
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(correo)) {
+    return { ok: false, campo: "correo", motivo: "Ese correo no parece estar bien escrito." };
+  }
+
+  // ── 2. teléfono ──
+  // Para la hack es obligatorio (coordinar equipos); para el bootcamp, opcional.
+  const crudoTel = texto(cuerpo.telefono);
+  let phone: string | null = null;
+  if (crudoTel || incluyeHack(plan)) {
+    const tel = normalizarTelefono(crudoTel, texto(cuerpo.pais) || "PE");
+    if (!tel.ok) return { ok: false, campo: "telefono", motivo: tel.motivo };
+    phone = tel.e164;
+  }
+
+  const base = { plan, plan_label: ETIQUETA_PLAN[plan], sesiones: sesionesFinal, email: correo, phone };
+
+  // ── solo bootcamp: sin DNI ──
+  if (plan === "bootcamp") {
+    const nombres = texto(cuerpo.nombres);
+    const apellidos = texto(cuerpo.apellidos);
+    if (nombres.length < 2) return { ok: false, campo: "nombres", motivo: "Escribe tus nombres." };
+    if (apellidos.length < 2) return { ok: false, campo: "apellidos", motivo: "Escribe tus apellidos." };
+    if (nombres.length > 60 || apellidos.length > 60) {
+      return { ok: false, campo: "nombres", motivo: "Ese nombre es demasiado largo." };
+    }
+    const afiliacion = texto(cuerpo.afiliacion).slice(0, 80) || null;
+    const name = titulo(`${nombres} ${apellidos}`);
+    return {
+      ok: true,
+      nombreDni: null,
+      datos: {
+        ...base,
+        name,
+        display_name: titulo(`${primera(nombres)} ${primera(apellidos)}`),
+        dni_hash: null, career: null, study_year: null, level: null,
+        affiliation: afiliacion,
+      },
+    };
+  }
+
+  // ── con hack: carrera, correo institucional y DNI ──
   const carrera = texto(cuerpo.carrera);
   if (carrera.length < 3) return { ok: false, campo: "carrera", motivo: "Escribe tu carrera." };
   if (carrera.length > 80) return { ok: false, campo: "carrera", motivo: "Ese nombre de carrera es demasiado largo." };
@@ -109,27 +186,12 @@ export async function validarInscripcion(cuerpo: Record<string, unknown>): Promi
     return { ok: false, campo: "anio", motivo: "Elige en qué año de la carrera estás." };
   }
 
-  const track = texto(cuerpo.track) as Track;
-  if (!TRACKS.some((t) => t.id === track)) {
-    return { ok: false, campo: "track", motivo: "Elige un track." };
-  }
-
   const nivelCrudo = texto(cuerpo.nivel);
   const nivel = NIVELES.includes(nivelCrudo as Nivel) ? (nivelCrudo as Nivel) : null;
 
-  // ── 2. teléfono ──
-  const tel = normalizarTelefono(cuerpo.telefono, texto(cuerpo.pais) || "PE");
-  if (!tel.ok) return { ok: false, campo: "telefono", motivo: tel.motivo };
-
-  // ── 3. correo ──
-  const correo = texto(cuerpo.correo).toLowerCase();
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(correo)) {
-    return { ok: false, campo: "correo", motivo: "Ese correo no parece estar bien escrito." };
-  }
   const uni = await universidadDelCorreo(correo);
   if (!uni.ok) return { ok: false, campo: "correo", motivo: uni.motivo };
 
-  // ── 4. DNI ──
   const fdni = validarDni(cuerpo.dni);
   if (!fdni.ok) return { ok: false, campo: "dni", motivo: fdni.motivo };
 
@@ -146,19 +208,21 @@ export async function validarInscripcion(cuerpo: Record<string, unknown>): Promi
 
   // El nombre lo pone RENIEC, no el formulario: así la lista de inscritos y
   // la de asistentes del día del evento son la misma lista.
+  const primerNombre = primera(consulta.persona.nombres);
+  const primerApellido = primera(consulta.persona.apellidoPaterno);
+
   return {
     ok: true,
     nombreDni,
     datos: {
+      ...base,
       name: nombreDni,
-      email: correo,
-      phone: tel.e164,
+      display_name: titulo(`${primerNombre} ${primerApellido}`.trim()) || titulo(nombreDni),
       dni_hash: hashDni(fdni.dni),
       career: carrera,
       study_year: anio,
-      track,
       level: nivel,
-      institution_id: uni.institution_id,
+      affiliation: null,
     },
   };
 }
@@ -167,25 +231,33 @@ export async function validarInscripcion(cuerpo: Record<string, unknown>): Promi
  * Comprueba que lo que volvió del correo sea lo que mandamos.
  *
  * Los metadatos del usuario son, en principio, editables por su dueño. Antes
- * de copiarlos a la tabla se revisan de nuevo: si algo no calza con lo que el
- * servidor validó, se descarta la inscripción en vez de guardar basura.
+ * de usarlos se revisan de nuevo: si algo no calza, se descarta la inscripción
+ * en vez de guardar basura.
  */
 export function metadatosValidos(m: unknown): m is Inscripcion {
   if (!m || typeof m !== "object") return false;
   const d = m as Record<string, unknown>;
-  return (
+  const plan = d.plan as Plan;
+  if (!PLANES.includes(plan)) return false;
+  const validas = new Set(SESIONES.map((s) => s.slug));
+  const sesionesOk =
+    Array.isArray(d.sesiones) &&
+    d.sesiones.every((s) => typeof s === "string" && validas.has(s)) &&
+    (!incluyeBootcamp(plan) || d.sesiones.length > 0);
+
+  const base =
+    sesionesOk &&
     typeof d.name === "string" && d.name.length > 0 &&
     typeof d.email === "string" && d.email.includes("@") &&
-    typeof d.phone === "string" && /^\+\d{8,15}$/.test(d.phone) &&
+    (d.phone === null || (typeof d.phone === "string" && /^\+\d{8,15}$/.test(d.phone)));
+  if (!base) return false;
+
+  if (!incluyeHack(plan)) return true;
+
+  return (
     typeof d.dni_hash === "string" && d.dni_hash.startsWith("sha256:") &&
     typeof d.career === "string" && d.career.length >= 3 &&
     typeof d.study_year === "number" && d.study_year >= 1 && d.study_year <= 7 &&
-    TRACKS.some((t) => t.id === d.track) &&
-    (d.level === null || NIVELES.includes(d.level as Nivel)) &&
-    typeof d.institution_id === "string" && d.institution_id.length > 0
+    (d.level === null || NIVELES.includes(d.level as Nivel))
   );
 }
-
-/** Para el panel de admin y los correos: «ROSA MARÍA» -> «Rosa María». */
-export const enTitulo = (s: string) =>
-  normalizar(s).toLowerCase().replace(/(^|\s)\p{L}/gu, (c) => c.toUpperCase());

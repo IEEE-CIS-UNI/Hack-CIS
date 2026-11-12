@@ -9,11 +9,11 @@ import StarField from "@/components/StarField";
 import { LINKS, registroAbierto } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: "Inscripción · CIS[HACK] UNI 2026",
+  title: "Inscripción · HACK[CIS] UNI 2026",
 };
 
 /**
- * Antes del 20/10 la página muestra la cuenta regresiva. El formulario se
+ * Antes del 13/11 la página muestra la cuenta regresiva. El formulario se
  * puede abrir con ?preview para probarlo sin tocar la fecha.
  */
 export default async function RegistroPage({

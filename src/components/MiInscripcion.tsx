@@ -1,10 +1,15 @@
 "use client";
 
 /**
- * La ficha de quien ya está inscrito: verla y corregirla.
+ * El panel de quien ya está inscrito: sus inscripciones, su card, su equipo y
+ * sus datos.
  *
- * Lo que se puede cambiar es lo que cambia en la vida real (el celular, el
- * track, el año). El nombre, el correo y la universidad están verificados y
+ * Desde aquí se suma lo que falta: quien entró solo a la hack puede apuntarse
+ * a las sesiones del bootcamp con un clic, y quien entró solo al bootcamp ve
+ * qué necesita para la hack.
+ *
+ * Lo que se puede cambiar es lo que cambia en la vida real (el celular, la
+ * carrera, el año). El nombre, el correo y la institución están verificados y
  * se muestran como lo que son: hechos, no campos.
  *
  * Sin sesión no pide contraseña: manda un enlace al correo. Es el mismo
@@ -14,46 +19,24 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { Check, Loader2, LogIn, LogOut, Mail } from "lucide-react";
+import { ArrowRight, Check, Loader2, LogIn, LogOut, Mail } from "lucide-react";
 import { navegador, urlDelSitio } from "@/lib/supabase";
-import Credencial from "./Credencial";
-import ElegirClave from "./ElegirClave";
+import { SESIONES } from "@/lib/contenido";
+import { api, estaEn, inscripcionHack, numeroBonito, type Resumen } from "@/lib/resumen";
 import { PAISES, PAIS_POR_DEFECTO, formatearE164, normalizarTelefono, paisPorCodigo } from "@/lib/telefono";
-
-const TRACKS = [
-  { id: "finanzas", titulo: "IA & Finanzas" },
-  { id: "telco", titulo: "IA & Telco y Operaciones" },
-  { id: "impacto_social", titulo: "IA & Impacto Social" },
-] as const;
+import ElegirClave from "./ElegirClave";
+import TarjetaHack from "./TarjetaHack";
 
 const NIVELES = ["Principiante", "Intermedio", "Avanzado", "Experto"] as const;
-
-type Hacker = {
-  id: string; name: string; email: string; phone: string | null;
-  career: string | null; study_year: number | null; track: string | null;
-  level: string | null; discord_username: string | null;
-  linkedin_url: string | null; github_url: string | null;
-  photo_url: string | null; badge_number: string | number | null; qr_token: string | null;
-  institutions?: { name: string; short_name: string } | null;
-};
 
 type Vista =
   | { fase: "cargando" }
   | { fase: "sinSesion" }
   | { fase: "correoEnviado"; correo: string }
   | { fase: "sinInscripcion" }
-  | { fase: "ficha"; hacker: Hacker };
+  | { fase: "ficha"; resumen: Resumen };
 
-function Fila({ etiqueta, children }: { etiqueta: string; children: React.ReactNode }) {
-  return (
-    <div className="border-b border-white/5 py-4 last:border-0">
-      <p className="hud text-mist/50">{etiqueta}</p>
-      <div className="mt-2">{children}</div>
-    </div>
-  );
-}
-
-const ENTRADA = "rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-white outline-none transition-colors placeholder:text-white/25 focus:border-lavender";
+type Aviso = { tipo: "ok" | "error"; texto: string } | null;
 
 export default function MiInscripcion() {
   const [vista, setVista] = useState<Vista>({ fase: "cargando" });
@@ -64,45 +47,43 @@ export default function MiInscripcion() {
   const [pais, setPais] = useState(PAIS_POR_DEFECTO);
   const [carrera, setCarrera] = useState("");
   const [anio, setAnio] = useState("");
-  const [track, setTrack] = useState("");
   const [nivel, setNivel] = useState("");
   const [linkedin, setLinkedin] = useState("");
   const [github, setGithub] = useState("");
 
   const [guardando, setGuardando] = useState(false);
-  const [aviso, setAviso] = useState<{ tipo: "ok" | "error"; texto: string } | null>(null);
+  const [aviso, setAviso] = useState<Aviso>(null);
+  const [ocupado, setOcupado] = useState<string | null>(null);
+  const [avisoInsc, setAvisoInsc] = useState<Aviso>(null);
 
   const [correoEntrada, setCorreoEntrada] = useState("");
   const [claveEntrada, setClaveEntrada] = useState("");
   const [entrando, setEntrando] = useState(false);
-  // La foto recién subida manda sobre la de la ficha hasta que se recargue.
-  const [foto, setFoto] = useState<string | null>(null);
   const [enviandoEnlace, setEnviandoEnlace] = useState(false);
 
   /** Copia la ficha al formulario de edición. */
-  const cargarEnFormulario = useCallback((h: Hacker) => {
-    const tel = h.phone ?? "";
-    const p = tel ? paisPorCodigo(tel.replace(/\D/g, "")) : null;
-    setPais(p?.iso ?? PAIS_POR_DEFECTO);
+  const cargarEnFormulario = useCallback((r: Resumen) => {
+    const p = r.person;
+    const tel = p.phone ?? "";
+    const pa = tel ? paisPorCodigo(tel.replace(/\D/g, "")) : null;
+    setPais(pa?.iso ?? PAIS_POR_DEFECTO);
     setTelefono(tel ? formatearE164(tel).replace(/^\+\d+\s/, "") : "");
-    setCarrera(h.career ?? "");
-    setAnio(h.study_year ? String(h.study_year) : "");
-    setTrack(h.track ?? "");
-    setNivel(h.level ?? "");
-    setLinkedin(h.linkedin_url ?? "");
-    setGithub(h.github_url ?? "");
+    setCarrera(p.career ?? "");
+    setAnio(p.study_year ? String(p.study_year) : "");
+    setNivel(p.level ?? "");
+    setLinkedin(p.linkedin_url ?? "");
+    setGithub(p.github_url ?? "");
   }, []);
 
   /** Pide la ficha al servidor y decide qué pantalla mostrar. */
   const cargarFicha = useCallback(async (acceso: string) => {
     setToken(acceso);
     try {
-      const res = await fetch("/api/perfil", { headers: { Authorization: `Bearer ${acceso}` } });
-      const datos = await res.json();
-      if (datos.ok) {
-        cargarEnFormulario(datos.hacker);
-        setVista({ fase: "ficha", hacker: datos.hacker });
-      } else if (datos.sinInscripcion) {
+      const { datos } = await api("/api/perfil", { token: acceso });
+      if (datos.ok && datos.resumen) {
+        cargarEnFormulario(datos.resumen);
+        setVista({ fase: "ficha", resumen: datos.resumen });
+      } else if ((datos as { sinInscripcion?: boolean }).sinInscripcion) {
         setVista({ fase: "sinInscripcion" });
       } else {
         setVista({ fase: "sinSesion" });
@@ -122,10 +103,7 @@ export default function MiInscripcion() {
     setEntrando(true);
     setAviso(null);
     try {
-      const { data, error } = await navegador().auth.signInWithPassword({
-        email: correo,
-        password: claveEntrada,
-      });
+      const { data, error } = await navegador().auth.signInWithPassword({ email: correo, password: claveEntrada });
       if (error || !data.session) {
         // Un mensaje igual para correo inexistente y clave errada: decir cuál
         // de los dos falló le confirma a un desconocido qué correos existen.
@@ -144,9 +122,13 @@ export default function MiInscripcion() {
 
   useEffect(() => {
     (async () => {
-      const { data } = await navegador().auth.getSession();
-      if (!data.session) { setVista({ fase: "sinSesion" }); return; }
-      await cargarFicha(data.session.access_token);
+      try {
+        const { data } = await navegador().auth.getSession();
+        if (!data.session) { setVista({ fase: "sinSesion" }); return; }
+        await cargarFicha(data.session.access_token);
+      } catch {
+        setVista({ fase: "sinSesion" });
+      }
     })();
     // Al montar. No lleva bandera de «sigue montado»: con el guardia de
     // arriba, apagarla dejaría la pantalla cargando para siempre.
@@ -155,12 +137,11 @@ export default function MiInscripcion() {
 
   async function pedirEnlace() {
     const correo = correoEntrada.trim().toLowerCase();
-    if (!correo.includes("@")) { setAviso({ tipo: "error", texto: "Escribe tu correo institucional." }); return; }
+    if (!correo.includes("@")) { setAviso({ tipo: "error", texto: "Escribe tu correo." }); return; }
     setEnviandoEnlace(true);
     setAviso(null);
     try {
-      const sb = navegador();
-      const { error } = await sb.auth.signInWithOtp({
+      const { error } = await navegador().auth.signInWithOtp({
         email: correo,
         options: { shouldCreateUser: false, emailRedirectTo: `${urlDelSitio()}/mi-inscripcion` },
       });
@@ -180,23 +161,46 @@ export default function MiInscripcion() {
     }
   }
 
+  /** Inscribirse a algo más (una sesión del bootcamp, o la hack). */
+  async function matricular(slug: string) {
+    if (!token) return;
+    setOcupado(slug);
+    setAvisoInsc(null);
+    const { datos } = await api("/api/matricular", { metodo: "POST", token, cuerpo: { slug } });
+    setOcupado(null);
+    if (datos.ok && datos.resumen) {
+      setVista({ fase: "ficha", resumen: datos.resumen });
+      setAvisoInsc({ tipo: "ok", texto: "Listo, quedaste inscrito." });
+    } else {
+      setAvisoInsc({ tipo: "error", texto: datos.motivo ?? "No pudimos inscribirte." });
+    }
+  }
+
+  async function salirDelEquipo() {
+    if (!token) return;
+    setOcupado("equipo");
+    const { datos } = await api("/api/equipo", { metodo: "DELETE", token });
+    setOcupado(null);
+    if (datos.ok && datos.resumen) setVista({ fase: "ficha", resumen: datos.resumen });
+    else setAvisoInsc({ tipo: "error", texto: datos.motivo ?? "No pudimos sacarte del equipo." });
+  }
+
   async function guardar() {
     if (!token) return;
     setGuardando(true);
     setAviso(null);
     try {
-      const res = await fetch("/api/perfil", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({
-          telefono, pais, carrera, anio: Number(anio), track,
-          nivel: nivel || null, linkedin, github,
-        }),
+      const { datos } = await api("/api/perfil", {
+        metodo: "PATCH", token,
+        cuerpo: {
+          telefono, pais, linkedin, github,
+          ...(carrera ? { carrera, anio: Number(anio) } : {}),
+          nivel: nivel || null,
+        },
       });
-      const datos = await res.json();
-      if (datos.ok) {
-        cargarEnFormulario(datos.hacker);
-        setVista({ fase: "ficha", hacker: datos.hacker });
+      if (datos.ok && datos.resumen) {
+        cargarEnFormulario(datos.resumen);
+        setVista({ fase: "ficha", resumen: datos.resumen });
         setAviso({ tipo: "ok", texto: "Guardado." });
       } else {
         setAviso({ tipo: "error", texto: datos.motivo ?? "No pudimos guardar los cambios." });
@@ -218,19 +222,19 @@ export default function MiInscripcion() {
 
   if (vista.fase === "cargando") {
     return (
-      <p className="flex items-center gap-3 text-lg text-mist/85">
-        <Loader2 className="size-6 animate-spin text-lavender" aria-hidden /> Cargando tu ficha…
+      <p className="rg-help" style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        <Loader2 className="size-6 animate-spin text-lavender" aria-hidden /> Cargando tu panel…
       </p>
     );
   }
 
   if (vista.fase === "correoEnviado") {
     return (
-      <div className="animate-pop-in">
-        <p className="hud text-lavender">Enlace enviado</p>
-        <h1 className="display mt-4 text-[clamp(2.4rem,8vw,6rem)]">Revisa tu<br /><span className="text-lavender">correo</span></h1>
-        <p className="mt-6 max-w-xl text-lg text-mist/85">
-          Te mandamos un enlace a <span className="font-bold text-white">{vista.correo}</span>. Ábrelo
+      <div className="rg animate-pop-in">
+        <p className="rg-step">Enlace enviado</p>
+        <h1 className="rg-q">Revisa tu<br /><span>correo</span></h1>
+        <p className="rg-help">
+          Te mandamos un enlace a <strong style={{ color: "#fff" }}>{vista.correo}</strong>. Ábrelo
           desde este mismo dispositivo y entras sin contraseña.
         </p>
       </div>
@@ -239,187 +243,217 @@ export default function MiInscripcion() {
 
   if (vista.fase === "sinSesion") {
     return (
-      <div className="animate-pop-in">
-        <p className="hud text-lavender">Tu inscripción</p>
-        <h1 className="display mt-4 text-[clamp(2.4rem,8vw,6rem)]">Entra a<br /><span className="text-lavender">tu panel</span></h1>
-        <p className="mt-6 max-w-xl text-lg text-mist/85">
-          Con el correo institucional con el que te inscribiste y la contraseña que elegiste.
-        </p>
-        <div className="mt-8 flex w-full max-w-md flex-col gap-3">
+      <div className="rg animate-pop-in">
+        <p className="rg-step">Tu inscripción</p>
+        <h1 className="rg-q">Entra a<br /><span>tu panel</span></h1>
+        <p className="rg-help">Con el correo con el que te inscribiste y la contraseña que elegiste.</p>
+        <div className="rg-body rg-two">
           <input
-            value={correoEntrada}
-            onChange={(e) => setCorreoEntrada(e.target.value)}
-            type="email"
-            autoComplete="email"
-            placeholder="tu.nombre@tuuniversidad.edu.pe"
-            aria-label="Correo institucional"
-            className={`${ENTRADA} w-full`}
+            value={correoEntrada} onChange={(e) => setCorreoEntrada(e.target.value)}
+            type="email" autoComplete="email" placeholder="tu@correo.com" aria-label="Correo" className="rg-input"
           />
           <input
-            value={claveEntrada}
-            onChange={(e) => setClaveEntrada(e.target.value)}
+            value={claveEntrada} onChange={(e) => setClaveEntrada(e.target.value)}
             onKeyDown={(e) => { if (e.key === "Enter") entrarConClave(); }}
-            type="password"
-            autoComplete="current-password"
-            placeholder="tu contraseña"
-            aria-label="Contraseña"
-            className={`${ENTRADA} w-full`}
+            type="password" autoComplete="current-password" placeholder="tu contraseña" aria-label="Contraseña" className="rg-input"
           />
-          {aviso && <p className={aviso.tipo === "ok" ? "text-glow" : "text-magenta"}>{aviso.texto}</p>}
-          <button
-            onClick={entrarConClave}
-            disabled={entrando}
-            className="inline-flex items-center justify-center gap-3 rounded-full bg-white px-8 py-3.5 font-bold text-ink transition-colors hover:bg-lavender disabled:bg-white/20 disabled:text-white/40"
-          >
-            {entrando ? <Loader2 className="size-5 animate-spin" aria-hidden /> : <LogIn className="size-5" aria-hidden />}
+        </div>
+        {aviso && <p className={`rg-msg ${aviso.tipo === "ok" ? "ok" : "err"}`} style={{ marginTop: 14 }}>{aviso.texto}</p>}
+        <div className="rg-actions">
+          <button onClick={entrarConClave} disabled={entrando} className="more solid">
+            {entrando ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <LogIn className="size-4" aria-hidden />}
             Entrar
           </button>
-
           {/* El enlace por correo deja de ser la puerta principal y pasa a ser
               la salida de emergencia: quien olvidó su contraseña entra igual y
               la cambia desde dentro. */}
-          <button
-            onClick={pedirEnlace}
-            disabled={enviandoEnlace}
-            className="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 px-6 py-3 text-mist transition-colors hover:border-lavender hover:text-lavender disabled:opacity-50"
-          >
+          <button onClick={pedirEnlace} disabled={enviandoEnlace} className="more">
             {enviandoEnlace ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <Mail className="size-4" aria-hidden />}
             Olvidé mi contraseña
           </button>
-
-          <p className="hud mt-2 text-mist/40">
-            ¿aún no te inscribes? <Link href="/registro" className="text-lavender underline underline-offset-4">hazlo aquí</Link>
-          </p>
         </div>
+        <p className="rg-small">
+          ¿aún no te inscribes? <Link href="/registro">hazlo aquí</Link>
+        </p>
       </div>
     );
   }
 
   if (vista.fase === "sinInscripcion") {
     return (
-      <div className="animate-pop-in">
-        <p className="hud text-lavender">Casi</p>
-        <h1 className="display mt-4 text-[clamp(2.4rem,8vw,6rem)]">Aún no<br /><span className="text-lavender">te inscribes</span></h1>
-        <p className="mt-6 max-w-xl text-lg text-mist/85">
-          Tu correo está verificado, pero falta llenar el formulario.
-        </p>
-        <Link href="/registro" className="mt-8 inline-flex rounded-full bg-white px-8 py-4 font-bold text-ink transition-colors hover:bg-lavender">
-          Completar mi inscripción
-        </Link>
+      <div className="rg animate-pop-in">
+        <p className="rg-step">Casi</p>
+        <h1 className="rg-q">Aún no<br /><span>te inscribes</span></h1>
+        <p className="rg-help">Tu correo está verificado, pero falta llenar el formulario.</p>
+        <div className="rg-actions">
+          <Link href="/registro" className="more solid">Completar mi inscripción <ArrowRight aria-hidden size={14} /></Link>
+        </div>
       </div>
     );
   }
 
-  const h = vista.hacker;
+  const r = vista.resumen;
+  const p = r.person;
+  const hack = inscripcionHack(r);
 
   return (
-    <div className="animate-pop-in">
-      <div className="flex flex-wrap items-start justify-between gap-4">
+    <div className="page-w animate-pop-in">
+      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-start", justifyContent: "space-between", gap: 16 }}>
         <div>
-          <p className="hud text-lavender">Tu inscripción</p>
-          <h1 className="display mt-3 text-[clamp(2rem,6vw,4rem)]">{h.name}</h1>
+          <p className="rg-step" style={{ marginTop: 0 }}>Tu panel</p>
+          <h1 className="rg-q" style={{ fontSize: "clamp(2.2rem,9vw,4rem)" }}>{p.display_name}</h1>
         </div>
-        <button onClick={salir} className="hud inline-flex items-center gap-2 rounded-full border border-white/25 px-4 py-2 text-mist transition-colors hover:border-lavender hover:text-lavender">
-          <LogOut className="size-4" aria-hidden /> salir
+        <button onClick={salir} className="more" style={{ marginTop: 6 }}>
+          <LogOut className="size-4" aria-hidden /> Salir
         </button>
       </div>
 
-      <div className="mt-8">
-        <Credencial
-          token={token}
-          datos={{
-            nombre: h.name,
-            track: h.track,
-            universidad: h.institutions?.name ?? null,
-            numero: h.badge_number != null ? String(h.badge_number) : null,
-            qrToken: h.qr_token,
-            foto: foto ?? h.photo_url,
-          }}
-          alCambiarFoto={setFoto}
-        />
+      {hack && (
+        <div className="box" style={{ marginTop: 26 }}>
+          <TarjetaHack
+            persona={p}
+            hack={hack}
+            token={token}
+            alCambiarFoto={(url) => setVista({ fase: "ficha", resumen: { ...r, person: { ...p, photo_url: url } } })}
+          />
+        </div>
+      )}
+
+      <div className="box" style={{ marginTop: hack ? 18 : 26 }}>
+        <p className="box-h">Mis inscripciones</p>
+        <ul className="rows">
+          <li>
+            <div>
+              <b>Hackathon</b>
+              <small>
+                {hack
+                  ? `Inscrito n.º ${numeroBonito(hack.number)} · 30 nov – 5 dic`
+                  : p.verified ? "30 nov – 5 dic · 250 cupos" : "Necesita correo institucional y DNI verificado"}
+              </small>
+            </div>
+            {hack ? (
+              <span className="pill-ok"><Check size={12} aria-hidden /> inscrito</span>
+            ) : p.verified ? (
+              <button className="more" style={{ marginTop: 0 }} disabled={ocupado === "hack"} onClick={() => matricular("hack")}>
+                {ocupado === "hack" && <Loader2 className="size-4 animate-spin" aria-hidden />} Inscribirme
+              </button>
+            ) : null}
+          </li>
+          {SESIONES.map((s) => (
+            <li key={s.slug}>
+              <div>
+                <b>{s.title}</b>
+                <small>Bootcamp · virtual</small>
+              </div>
+              {estaEn(r, s.slug) ? (
+                <Link href={`/bootcamp/${s.n}`} className="pill-ok"><Check size={12} aria-hidden /> inscrito</Link>
+              ) : (
+                <button className="more" style={{ marginTop: 0 }} disabled={ocupado === s.slug} onClick={() => matricular(s.slug)}>
+                  {ocupado === s.slug && <Loader2 className="size-4 animate-spin" aria-hidden />} Inscribirme
+                </button>
+              )}
+            </li>
+          ))}
+        </ul>
+        {avisoInsc && <p className={`rg-msg ${avisoInsc.tipo === "ok" ? "ok" : "err"}`} style={{ marginTop: 14 }}>{avisoInsc.texto}</p>}
       </div>
 
-      <div className="glass mt-6 rounded-2xl px-6 py-2">
-        <Fila etiqueta="verificado">
-          <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-mist">
-            <Check className="size-5 shrink-0 text-glow" aria-hidden />
-            <span className="font-semibold text-white">{h.email}</span>
-            <span className="text-mist/60">{h.institutions?.name ?? ""}</span>
-          </p>
-          <p className="hud mt-2 text-mist/40">nombre, correo y universidad no se pueden cambiar</p>
-        </Fila>
-
-        <Fila etiqueta="celular">
-          <div className="flex gap-3">
-            <select value={pais} onChange={(e) => setPais(e.target.value)} aria-label="País" className={`${ENTRADA} w-28 shrink-0`}>
-              {PAISES.map((p) => (
-                <option key={p.iso} value={p.iso} className="bg-[#120a24]">{p.bandera} +{p.codigo}</option>
-              ))}
-            </select>
-            <input value={telefono} onChange={(e) => setTelefono(e.target.value)} type="tel" aria-label="Celular" className={`${ENTRADA} w-full`} />
-          </div>
-          {telefono && !normalizarTelefono(telefono, pais).ok && (
-            <p className="mt-2 text-sm text-magenta">{(normalizarTelefono(telefono, pais) as { motivo: string }).motivo}</p>
+      {hack && (
+        <div className="box">
+          <p className="box-h">Mi equipo</p>
+          {r.team ? (
+            <>
+              <p style={{ fontFamily: "var(--display)", fontWeight: 700, textTransform: "uppercase", fontSize: "1.8rem", lineHeight: 1 }}>
+                {r.team.name}
+              </p>
+              <p className="rg-help" style={{ marginTop: 6 }}>Track: <strong style={{ color: "#fff" }}>{r.team.track_name}</strong></p>
+              <ul className="team-list" style={{ marginTop: 12 }}>
+                {r.team.members.map((m) => (
+                  <li key={m.name}>
+                    <Check size={14} aria-hidden className="text-glow" /> <b>{m.name}</b>{m.leader && <span className="pill-ok">líder</span>}
+                  </li>
+                ))}
+              </ul>
+              <button className="more" style={{ marginTop: 14 }} disabled={ocupado === "equipo"} onClick={salirDelEquipo}>
+                {ocupado === "equipo" && <Loader2 className="size-4 animate-spin" aria-hidden />} Salir del equipo
+              </button>
+            </>
+          ) : (
+            <>
+              <p className="rg-help" style={{ marginTop: 0 }}>
+                Todavía no tienes equipo. El viernes 27 de noviembre, después del pitch de los sponsors, el líder elige
+                un track y suma a su equipo con sus DNI.
+              </p>
+              <Link href="/tracks" className="more" style={{ marginTop: 14 }}>Ver los tracks <ArrowRight aria-hidden size={14} /></Link>
+            </>
           )}
-        </Fila>
+        </div>
+      )}
 
-        <Fila etiqueta="carrera y año">
-          <input value={carrera} onChange={(e) => setCarrera(e.target.value.slice(0, 80))} aria-label="Carrera" className={`${ENTRADA} w-full`} />
-          <div className="mt-3 flex flex-wrap gap-2">
-            {[1, 2, 3, 4, 5, 6, 7].map((a) => (
-              <button key={a} type="button" onClick={() => setAnio(String(a))} aria-pressed={anio === String(a)}
-                className={`size-11 rounded-xl border font-bold transition-colors ${anio === String(a) ? "border-lavender bg-white/10 text-white" : "border-white/15 text-mist hover:border-white/40"}`}>
-                {a}
-              </button>
-            ))}
+      <div className="box">
+        <p className="box-h">Mis datos</p>
+        <p className="rg-help" style={{ marginTop: 0 }}>
+          <Check size={14} aria-hidden className="text-glow" style={{ display: "inline", marginRight: 6 }} />
+          <strong style={{ color: "#fff" }}>{p.email}</strong>
+          {p.institution ? <> · {p.institution}</> : null}
+          <br /><span className="rg-small" style={{ marginTop: 6, display: "inline-block" }}>nombre, correo e institución no se pueden cambiar</span>
+        </p>
+
+        <div className="rg-two" style={{ marginTop: 22 }}>
+          <div>
+            <label className="rg-lbl" htmlFor="mi-tel">Celular</label>
+            <div className="rg-tel">
+              <select value={pais} onChange={(e) => setPais(e.target.value)} aria-label="País" className="rg-sel">
+                {PAISES.map((x) => <option key={x.iso} value={x.iso}>{x.bandera} +{x.codigo}</option>)}
+              </select>
+              <input id="mi-tel" value={telefono} onChange={(e) => setTelefono(e.target.value)} type="tel" className="rg-input" />
+            </div>
+            {telefono && !normalizarTelefono(telefono, pais).ok && (
+              <p className="rg-msg err" style={{ marginTop: 8 }}>{(normalizarTelefono(telefono, pais) as { motivo: string }).motivo}</p>
+            )}
           </div>
-        </Fila>
 
-        <Fila etiqueta="track">
-          <div className="flex flex-col gap-2">
-            {TRACKS.map((t) => (
-              <button key={t.id} type="button" onClick={() => setTrack(t.id)} aria-pressed={track === t.id}
-                className={`rounded-xl border px-4 py-3 text-left font-semibold transition-colors ${track === t.id ? "border-lavender bg-white/10 text-white" : "border-white/15 text-mist hover:border-white/40"}`}>
-                {t.titulo}
-              </button>
-            ))}
+          {p.verified && (
+            <>
+              <div>
+                <label className="rg-lbl" htmlFor="mi-carrera">Carrera</label>
+                <input id="mi-carrera" value={carrera} onChange={(e) => setCarrera(e.target.value.slice(0, 80))} className="rg-input" />
+                <div className="rg-chips" style={{ marginTop: 14 }}>
+                  {[1, 2, 3, 4, 5, 6, 7].map((a) => (
+                    <button key={a} type="button" className="rg-chip rg-year" onClick={() => setAnio(String(a))} aria-pressed={anio === String(a)}>{a}</button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <p className="rg-lbl">Nivel</p>
+                <div className="rg-chips">
+                  {NIVELES.map((n) => (
+                    <button key={n} type="button" className="rg-chip" onClick={() => setNivel(nivel === n ? "" : n)} aria-pressed={nivel === n}>{n}</button>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
+
+          <div>
+            <label className="rg-lbl" htmlFor="mi-gh">GitHub (opcional)</label>
+            <input id="mi-gh" value={github} onChange={(e) => setGithub(e.target.value)} placeholder="https://github.com/tuusuario" className="rg-input" />
           </div>
-        </Fila>
-
-        <Fila etiqueta="nivel">
-          <div className="flex flex-wrap gap-2">
-            {NIVELES.map((n) => (
-              <button key={n} type="button" onClick={() => setNivel(nivel === n ? "" : n)} aria-pressed={nivel === n}
-                className={`rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${nivel === n ? "border-lavender bg-white/10 text-white" : "border-white/15 text-mist hover:border-white/40"}`}>
-                {n}
-              </button>
-            ))}
+          <div>
+            <label className="rg-lbl" htmlFor="mi-in">LinkedIn (opcional)</label>
+            <input id="mi-in" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} placeholder="https://linkedin.com/in/tuusuario" className="rg-input" />
           </div>
-        </Fila>
+        </div>
 
-        <Fila etiqueta="enlaces (opcional)">
-          <input value={github} onChange={(e) => setGithub(e.target.value)} placeholder="https://github.com/tuusuario" aria-label="GitHub" className={`${ENTRADA} w-full`} />
-          <input value={linkedin} onChange={(e) => setLinkedin(e.target.value)} placeholder="https://linkedin.com/in/tuusuario" aria-label="LinkedIn" className={`${ENTRADA} mt-3`} />
-        </Fila>
-
-        {h.discord_username && (
-          <Fila etiqueta="discord"><p className="font-semibold text-white">{h.discord_username}</p></Fila>
-        )}
+        <div className="rg-actions">
+          <button onClick={guardar} disabled={guardando} className="more solid">
+            {guardando && <Loader2 className="size-4 animate-spin" aria-hidden />} Guardar cambios
+          </button>
+          {aviso && <p className={`rg-msg ${aviso.tipo === "ok" ? "ok" : "err"}`}>{aviso.texto}</p>}
+        </div>
       </div>
 
-      <div className="mt-6 flex flex-wrap items-center gap-4">
-        <button
-          onClick={guardar}
-          disabled={guardando}
-          className="inline-flex items-center gap-3 rounded-full bg-white px-8 py-3.5 font-bold text-ink transition-colors hover:bg-lavender disabled:bg-white/20 disabled:text-white/40"
-        >
-          {guardando && <Loader2 className="size-5 animate-spin" aria-hidden />}
-          Guardar cambios
-        </button>
-        {aviso && <p className={aviso.tipo === "ok" ? "text-glow" : "text-magenta"}>{aviso.texto}</p>}
-      </div>
-
-      <div className="glass mt-8 rounded-2xl px-6 py-6">
+      <div className="box">
         <ElegirClave
           titulo="Cambiar mi contraseña"
           ayuda="Si la olvidaste, puedes pedir un enlace al correo y cambiarla desde aquí."

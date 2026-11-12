@@ -1,19 +1,12 @@
 import Image from "next/image";
 
-const LOGOS = [
+export const LOGOS = [
   {
     src: "/logos/ieee-cis-uni.webp",
     width: 1400,
     height: 182,
     alt: "IEEE Student Branch UNI e IEEE Computational Intelligence Society",
     cls: "l-cis",
-  },
-  {
-    src: "/logos/ieee-cis-up.webp",
-    width: 1400,
-    height: 224,
-    alt: "IEEE Student Branch Universidad del Pacífico e IEEE Computational Intelligence Society",
-    cls: "l-up",
   },
   { src: "/logos/dsc-pucp.webp", width: 852, height: 410, alt: "Developer Student Club PUCP", cls: "l-pucp" },
   { src: "/logos/dsc-uni.webp", width: 848, height: 815, alt: "Developer Student Club UNI", cls: "l-dsc" },

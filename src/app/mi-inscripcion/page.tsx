@@ -5,7 +5,7 @@ import Nav from "@/components/Nav";
 import StarField from "@/components/StarField";
 
 export const metadata: Metadata = {
-  title: "Mi inscripción · CIS[HACK] UNI 2026",
+  title: "Mi inscripción · HACK[CIS] UNI 2026",
   robots: { index: false },   // es la ficha privada de cada persona
 };
 

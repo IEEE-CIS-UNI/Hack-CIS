@@ -5,7 +5,7 @@ import Nav from "@/components/Nav";
 import StarField from "@/components/StarField";
 
 export const metadata: Metadata = {
-  title: "Confirmando tu inscripción · CIS[HACK] UNI 2026",
+  title: "Confirmando tu inscripción · HACK[CIS] UNI 2026",
   robots: { index: false },   // es la vuelta de un enlace privado
 };
 

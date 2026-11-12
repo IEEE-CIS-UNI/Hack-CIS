@@ -72,14 +72,10 @@
                     <strong style="color:#ffffff;">{{ .Email }}</strong>
                   </p>
 
-                  {{ if .Data.track }}
+                  {{ if .Data.plan_label }}
                   <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#d9ccff;">
-                    <span style="color:#8d7fb0;">Track</span><br>
-                    <strong style="color:#ffffff;">
-                      {{ if eq .Data.track "finanzas" }}IA &amp; Finanzas{{ end }}
-                      {{ if eq .Data.track "telco" }}IA &amp; Telco y Operaciones{{ end }}
-                      {{ if eq .Data.track "impacto_social" }}IA &amp; Impacto Social{{ end }}
-                    </strong>
+                    <span style="color:#8d7fb0;">Te inscribes a</span><br>
+                    <strong style="color:#ffffff;">{{ .Data.plan_label }}</strong>
                   </p>
                   {{ end }}
                 </td>
@@ -97,7 +93,7 @@
               </tr>
               <tr>
                 <td width="28" valign="top" style="font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;color:#b69cff;">2.</td>
-                <td style="padding-bottom:10px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;color:#d9ccff;">Entras al Discord y se te abren los canales de tu track.</td>
+                <td style="padding-bottom:10px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;color:#d9ccff;">Si entraste a la hackathon, canjeas tu código en Discord y se te abren los canales.</td>
               </tr>
               <tr>
                 <td width="28" valign="top" style="font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;color:#b69cff;">3.</td>
@@ -112,7 +108,7 @@
         <tr>
           <td style="padding:24px 36px 32px 36px;border-top:1px solid #241544;">
             <p style="margin:0 0 10px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#8d7fb0;">
-              Organizado por IEEE CIS UNI, en alianza con DSC PUCP y CIS Universidad del Pac&iacute;fico.
+              Organizado por IEEE CIS UNI, en alianza con DSC PUCP y DSC UNI.
             </p>
             <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:#6b5f8a;">
               Si no te inscribiste, ignora este mensaje: sin confirmar, no se guarda nada.

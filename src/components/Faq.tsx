@@ -3,7 +3,7 @@ import { EVENT } from "@/lib/config";
 const ITEMS = [
   {
     q: "¿Quién puede participar?",
-    a: "Estudiantes universitarios de la UNI, la PUCP y la Universidad del Pacífico, con carné o código de matrícula. Hay 250 cupos.",
+    a: "Estudiantes universitarios y de institutos de todo el país, con carné o código de matrícula. Hay 250 cupos.",
   },
   {
     q: "¿Me inscribo solo o con mi equipo?",
@@ -23,11 +23,23 @@ const ITEMS = [
   },
   {
     q: "¿Cuándo y dónde es?",
-    a: "El hackathon es en la 3.ª semana de noviembre. El Bootcamp es virtual la semana previa y la Gran Final es presencial en el Auditorio CTIC de la UNI.",
+    a: "El Bootcamp es virtual, del 23 al 27 de noviembre. El hackathon va del 30 de noviembre al 5 de diciembre, y la Gran Final es presencial el sábado 5 en el Auditorio CTIC de la UNI.",
   },
   {
     q: "¿Cuándo abren las inscripciones?",
     a: `El ${EVENT.registrationOpensLabel}. Los cupos son limitados, así que entra a la comunidad para enterarte primero.`,
+  },
+  {
+    q: "¿Cuánto dura el build?",
+    a: "Unas 100 horas, desde el lunes 30 de noviembre por la noche hasta la Gran Final del sábado 5 de diciembre. Solo construyen los 15 equipos finalistas.",
+  },
+  {
+    q: "¿Cuáles son los tracks?",
+    a: "Energía ya está revelado. Los otros dos se anuncian muy pronto. Cada sponsor presenta su reto al cierre del Bootcamp, el 27 de noviembre.",
+  },
+  {
+    q: "¿Y si no vivo en Lima?",
+    a: "Puedes participar desde cualquier parte del país. La Gran Final es presencial en Lima, así que lo ideal es que tu equipo tenga al menos una persona que pueda asistir.",
   },
 ];
 
