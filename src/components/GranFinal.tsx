@@ -29,7 +29,8 @@ export default function GranFinal() {
           </h2>
           <p className="lead">
             Sábado 5 de diciembre, todo el día, en el Auditorio CTIC de la UNI. Habrá feria de stands, los 15 equipos
-            finalistas hacen pitch y demo, y hay mini-retos con premios.
+            finalistas hacen pitch y demo, y hay mini-retos con premios para <b>todas las personas que asistan</b>, no solo
+            para quienes participan en la hackathon.
           </p>
 
           <div className="gf-map">

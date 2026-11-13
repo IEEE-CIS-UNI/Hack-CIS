@@ -19,6 +19,7 @@ export type Persona = {
   linkedin_url: string | null;
   github_url: string | null;
   discord_username: string | null;
+  sponsors_consent: boolean;
   qr_token: string;
   institution: string | null;
   verified: boolean;

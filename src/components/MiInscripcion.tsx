@@ -54,6 +54,7 @@ export default function MiInscripcion() {
   const [linkedin, setLinkedin] = useState("");
   const [github, setGithub] = useState("");
   const [discord, setDiscord] = useState("");
+  const [sponsors, setSponsors] = useState(false);
 
   const [guardando, setGuardando] = useState(false);
   const [aviso, setAviso] = useState<Aviso>(null);
@@ -79,6 +80,7 @@ export default function MiInscripcion() {
     setLinkedin(p.linkedin_url ?? "");
     setGithub(p.github_url ?? "");
     setDiscord(p.discord_username ?? "");
+    setSponsors(p.sponsors_consent === true);
   }, []);
 
   // El catálogo de carreras, para el selector de «Mis datos».
@@ -209,7 +211,7 @@ export default function MiInscripcion() {
       const { datos } = await api("/api/perfil", {
         metodo: "PATCH", token,
         cuerpo: {
-          telefono, pais, linkedin, github, discord,
+          telefono, pais, linkedin, github, discord, sponsors,
           ...(carreraId ? { carrera_id: Number(carreraId), carrera_otra: carreraOtra } : {}),
           ...(ciclo ? { ciclo: Number(ciclo) } : {}),
           nivel: nivel || null,
@@ -476,6 +478,15 @@ export default function MiInscripcion() {
             <input id="mi-in" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} placeholder="https://linkedin.com/in/tuusuario" className="rg-input" />
           </div>
         </div>
+
+        <label className="rg-consent" style={{ marginTop: 26 }}>
+          <input type="checkbox" checked={sponsors} onChange={(e) => setSponsors(e.target.checked)} />
+          <span>
+            <strong style={{ color: "#fff" }}>Quiero que las empresas sponsor me conozcan.</strong> Al terminar el evento
+            compartirán mi perfil (nombre, universidad, carrera, ciclo, correo, celular y mis redes) para oportunidades de
+            prácticas y empleo. Puedo cambiarlo cuando quiera.
+          </span>
+        </label>
 
         <div className="rg-actions">
           <button onClick={guardar} disabled={guardando} className="more solid">

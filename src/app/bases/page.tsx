@@ -103,7 +103,8 @@ export default function BasesPage() {
               </li>
               <li>Para el bootcamp: nombres, apellidos y correo. El celular es opcional.</li>
               <li>
-                Opcional en ambos: LinkedIn, GitHub, usuario de Discord y cómo te enteraste del evento.
+                Opcional en ambos: LinkedIn, GitHub, usuario de Discord, cómo te enteraste del evento y si quieres que
+                las empresas sponsor te conozcan (ver la sección 07).
               </li>
             </ul>
             <p>
@@ -139,8 +140,9 @@ export default function BasesPage() {
               </li>
               <li>
                 <B>Gran Final</B> — presencial, sábado 5 de diciembre, en el Auditorio CTIC de la UNI, durante
-                todo el día. Habrá feria de stands. Para los finalistas, lo ideal es que al menos una
-                persona del equipo pueda asistir en Lima.
+                todo el día. Habrá feria de stands, y los mini-retos y premios son para{" "}
+                <B>todas las personas que asistan</B>, no solo para quienes participan en la hackathon. Para los
+                finalistas, lo ideal es que al menos una persona del equipo pueda asistir en Lima.
               </li>
             </ul>
           </Seccion>
@@ -210,6 +212,7 @@ export default function BasesPage() {
               <li>Darte acceso a la comunidad y a los canales de la hackathon en Discord.</li>
               <li>Armar y validar equipos.</li>
               <li>Estadísticas agregadas y anónimas sobre participación.</li>
+              <li>Solo si tú lo autorizas: que las empresas sponsor te conozcan (abajo te contamos cómo).</li>
             </ul>
             <p className="font-bold text-white">Qué puedes hacer</p>
             <ul>
@@ -221,9 +224,32 @@ export default function BasesPage() {
                 completa, sin condiciones y sin pedirte explicaciones.
               </li>
             </ul>
+            <p className="font-bold text-white">Las empresas sponsor y tú</p>
             <p>
-              No vendemos ni cedemos tus datos. Los sponsors reciben estadísticas agregadas, nunca tu
-              información individual sin tu permiso expreso.
+              Los sponsors apuestan por el talento joven y, al terminar el evento, les encantaría conocer a quienes
+              participaron: para ofrecer prácticas, empleo o proyectos. Por eso te invitamos a marcar, si quieres, la casilla
+              opcional <B>«Quiero que las empresas sponsor me conozcan»</B> al inscribirte.
+            </p>
+            <ul>
+              <li>
+                <B>Es tu decisión.</B> No marcarla no afecta tu participación ni tus premios.
+              </li>
+              <li>
+                <B>Qué compartiríamos:</B> tu nombre, universidad o instituto, carrera, ciclo, nivel, correo, celular, y tu
+                LinkedIn y GitHub si los pusiste. Tu DNI no, porque ni siquiera lo guardamos.
+              </li>
+              <li>
+                <B>Cuándo:</B> una sola vez, al terminar el evento, con las empresas sponsor del evento. Les pedimos que
+                usen los datos solo para contactarte por oportunidades relacionadas con el evento.
+              </li>
+              <li>
+                <B>Cámbialo cuando quieras</B> desde <Link href="/mi-inscripcion">tu panel</Link>: si lo desmarcas, dejas
+                de estar en esa lista.
+              </li>
+            </ul>
+            <p>
+              Si no lo marcas, tus datos individuales no se entregan a nadie: los sponsors solo reciben estadísticas
+              agregadas y anónimas. No vendemos tus datos.
             </p>
           </Seccion>
 

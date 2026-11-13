@@ -67,6 +67,8 @@ export type Inscripcion = {
   github_url: string | null;
   discord_username: string | null;
   heard_from: string | null;
+  /** Quiere que, al terminar el evento, las empresas sponsor lo conozcan. Opcional. */
+  sponsors_consent: boolean;
   level: Nivel | null;
   affiliation: string | null;
 };
@@ -204,7 +206,7 @@ export async function validarInscripcion(cuerpo: Record<string, unknown>): Promi
   if (!dc.ok) return { ok: false, campo: "discord", motivo: dc.motivo };
   const origenCrudo = texto(cuerpo.origen);
   const heard_from = origenValido(origenCrudo) ? origenCrudo : null;
-  const contacto = { linkedin_url: li.valor, github_url: gh.valor, discord_username: dc.valor, heard_from };
+  const contacto = { linkedin_url: li.valor, github_url: gh.valor, discord_username: dc.valor, heard_from, sponsors_consent: cuerpo.sponsors === true };
 
   // ── solo bootcamp: sin DNI ──
   if (plan === "bootcamp") {

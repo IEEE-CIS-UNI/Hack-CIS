@@ -158,6 +158,7 @@ export default function RegistroWizard() {
   const [nombres, setNombres] = useState(() => leerBorrador().nombres ?? "");
   const [apellidos, setApellidos] = useState(() => leerBorrador().apellidos ?? "");
   const [consiente, setConsiente] = useState(false);
+  const [sponsors, setSponsors] = useState(false);
 
   const [universidad, setUniversidad] = useState("");
   const [enviando, setEnviando] = useState(false);
@@ -294,7 +295,7 @@ export default function RegistroWizard() {
         plan, sesiones: conBootcamp ? sesiones : [],
         dni: dni.valor, correo: correo.valor, telefono: telefono.valor, pais,
         carrera_id: Number(carreraId), carrera_otra: carreraOtra, ciclo: Number(ciclo), nivel, nombres, apellidos,
-        linkedin, github, discord, origen,
+        linkedin, github, discord, origen, sponsors,
       });
       if (datos.ok) {
         try {
@@ -655,6 +656,15 @@ export default function RegistroWizard() {
             <span>
               Autorizo el tratamiento de mis datos personales para este evento (Ley 29733) y acepto las{" "}
               <a href="/bases">bases</a>{conHack && <>, incluida la cláusula de licencia piloto</>}.
+            </span>
+          </label>
+
+          <label className="rg-consent">
+            <input type="checkbox" checked={sponsors} onChange={(e) => setSponsors(e.target.checked)} />
+            <span>
+              <strong style={{ color: "#fff" }}>Opcional:</strong> quiero que las empresas sponsor me conozcan. Al terminar
+              el evento compartirán mi perfil (nombre, universidad, carrera, ciclo, correo, celular y mis redes) para
+              oportunidades de prácticas y empleo. Puedo cambiarlo cuando quiera desde mi panel.
             </span>
           </label>
         </Pregunta>
