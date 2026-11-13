@@ -42,7 +42,10 @@ export const WA_MENTOR = waRRPP(
   "Hola, vi en la web de HACK[CIS] UNI 2026 que puedo postular como mentor o jurado y quisiera más información."
 );
 
-export const HELP_VIDEO_URL = process.env.NEXT_PUBLIC_HELP_VIDEO_URL ?? "";
+/** El video «cómo me inscribo» (Vercel Blob). Se puede reemplazar con NEXT_PUBLIC_HELP_VIDEO_URL. */
+export const HELP_VIDEO_URL =
+  process.env.NEXT_PUBLIC_HELP_VIDEO_URL ||
+  "https://korg7p4oh5xkmcg2.public.blob.vercel-storage.com/como-inscribirse.mp4";
 
 /**
  * Donde el navegador guarda el boleto firmado entre que se envia el

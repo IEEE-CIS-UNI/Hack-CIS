@@ -57,7 +57,7 @@ export default function HelpVideo() {
             <div className="vid">
               {HELP_VIDEO_URL ? (
                 isFile(HELP_VIDEO_URL) ? (
-                  <video src={HELP_VIDEO_URL} controls playsInline style={{ width: "100%", height: "100%" }} />
+                  <video src={HELP_VIDEO_URL} controls autoPlay playsInline preload="metadata" style={{ width: "100%", height: "100%", background: "#000" }} />
                 ) : (
                   <iframe
                     src={HELP_VIDEO_URL}
