@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import Link from "next/link";
 import { ArrowUpRight, CalendarDays } from "lucide-react";
-import type { SESIONES } from "@/lib/contenido";
+import { SESIONES } from "@/lib/contenido";
 import { DATOS_SESION } from "@/lib/sesiones";
 
 type Sesion = (typeof SESIONES)[number];
@@ -12,9 +12,14 @@ export default function SesionCard({ s }: { s: Sesion }) {
   const Icon = s.icon;
   return (
     <article className="sc" style={{ "--tone": d.tone, "--tone2": d.tone2 } as CSSProperties}>
+      <i className="sc-corner a" aria-hidden />
+      <i className="sc-corner b" aria-hidden />
+      <span className="sc-wm" aria-hidden>
+        {s.n}
+      </span>
       <div className="sc-top">
-        <span className="sc-num" aria-hidden>
-          {s.n}
+        <span className="sc-id">
+          Sesión {s.n} / {String(SESIONES.length).padStart(2, "0")}
         </span>
         <div className="sc-ic">
           <Icon aria-hidden strokeWidth={1.6} />
