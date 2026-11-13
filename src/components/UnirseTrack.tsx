@@ -101,7 +101,7 @@ export default function UnirseTrack({ slug }: { slug: string }) {
         </p>
         <div className="rg-actions" style={{ marginTop: 18 }}>
           <Link href="/mi-inscripcion" className="more solid">Entrar a mi panel <ArrowRight aria-hidden size={14} /></Link>
-          <Link href="/registro?plan=hack" className="more">Inscribirme a la hack</Link>
+          <Link href="/registro?plan=hack_bootcamp" className="more">Inscribirme a la hack</Link>
         </div>
       </div>
     );

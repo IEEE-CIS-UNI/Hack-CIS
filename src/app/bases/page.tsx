@@ -57,8 +57,8 @@ export default function BasesPage() {
             Reglas del<br /><span className="text-lavender">juego</span>
           </h1>
           <p className="mt-6 text-lg text-mist/85">
-            HACK[CIS] UNI 2026 · The Agentic Era. Organizado por IEEE CIS UNI, en alianza con
-            DSC PUCP y DSC UNI.
+            HACK[CIS] UNI 2026 · The Agentic Era. Organizado por IEEE CIS UNI, DSC PUCP
+            y DSC UNI.
           </p>
 
           <Seccion n="01" titulo="Quién puede participar">
@@ -140,9 +140,9 @@ export default function BasesPage() {
               <li>Tu correo institucional y tu número de celular.</li>
               <li>Tu universidad, carrera, año de estudios, track y nivel.</li>
               <li>
-                Tu DNI <strong className="text-white">no se guarda</strong>: se usa una sola vez para
-                confirmar tu nombre y de él solo conservamos una huella criptográfica
-                irreversible, que sirve para impedir inscripciones duplicadas y nada más.
+                Tu DNI <strong className="text-white">no se guarda</strong>: de él solo conservamos
+                una huella criptográfica irreversible, que sirve para impedir inscripciones
+                duplicadas y para que tu líder pueda sumarte a su equipo, y nada más.
               </li>
             </ul>
             <p className="font-bold text-white">Para qué</p>

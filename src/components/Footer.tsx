@@ -6,7 +6,7 @@ export default function Footer() {
     <footer id="contacto">
       <div className="wrap">
         <div className="row">
-          <p>Organizado por IEEE CIS UNI, en alianza con DSC PUCP y DSC UNI.</p>
+          <p>Organizado por IEEE CIS UNI, DSC PUCP y DSC UNI.</p>
           <div className="links">
             {/* Salen del sitio: pestaña nueva, y noreferrer para no filtrarles
                 desde dónde llegó la visita. */}

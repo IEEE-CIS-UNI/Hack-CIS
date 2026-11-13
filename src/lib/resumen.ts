@@ -9,8 +9,10 @@ export type Persona = {
   display_name: string;
   email: string;
   phone: string | null;
+  career_id: number | null;
   career: string | null;
-  study_year: number | null;
+  career_other: string | null;
+  cycle: number | null;
   level: string | null;
   affiliation: string | null;
   photo_url: string | null;

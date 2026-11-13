@@ -58,8 +58,18 @@ viernes 27 y el sábado 28 de noviembre; se cambian en la tabla `tracks`.
 
 ## `correo-confirmacion.html`
 
-Va en **Authentication → Emails → Magic Link → Body**.
+Va en **Authentication → Emails → Confirm signup → Body** (es el que Supabase
+manda a quien se inscribe por primera vez).
 Asunto: `Confirma tu lugar en HACK[CIS] UNI 2026`
+
+`correo-ingreso.html` va en **Magic Link → Body** (para quien ya tiene cuenta y
+pide entrar sin contraseña). Asunto: `Tu acceso a HACK[CIS] UNI 2026`.
+Conviene probar los dos una vez, porque cuál plantilla usa Supabase en cada caso
+depende de si la persona ya existía.
+
+Las imágenes están en Vercel Blob; los originales viven en `marca/correo/`. Las
+URL llevan `?v=2` para saltarse el caché cuando se vuelve a subir una imagen
+con el mismo nombre: si cambias una, sube el número en las plantillas.
 
 Supabase no deja editar las plantillas hasta configurar SMTP propio, así que
 primero va el SMTP y después esto.
@@ -102,7 +112,7 @@ Las mismas tienen que estar en local (`.env`) y en Vercel:
 |---|---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | proyecto | — |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | clave pública (sirve también `NEXT_PUBLIC_SUPABASE_ANON_KEY`) | — |
-| `API_APP_JSON` | consulta de DNI | es de pago: nunca al navegador |
+| `API_APP_JSON` | consulta de DNI (opcional) | hoy no se usa: el DNI y el nombre los escribe la persona |
 | `DNI_PEPPER` | sal del hash del DNI | **si cambia, los hashes guardados dejan de cuadrar** |
 | `INSCRIPCION_SECRETO` | firma del boleto | si cambia, los boletos en vuelo se invalidan |
 | `NEXT_PUBLIC_SITE_URL` | a dónde vuelve el correo y la imagen para compartir | `https://hackcis.lat` en producción |

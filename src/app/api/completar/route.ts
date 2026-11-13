@@ -63,7 +63,10 @@ export async function POST(req: Request) {
     const { error } = await sb.rpc("register_person", {
       p: {
         name: meta.name, display_name: meta.display_name, phone: meta.phone, dni_hash: meta.dni_hash,
-        career: meta.career, study_year: meta.study_year, level: meta.level, affiliation: meta.affiliation,
+        career_id: meta.career_id, career_other: meta.career_other, cycle: meta.cycle, level: meta.level,
+        linkedin_url: meta.linkedin_url ?? null, github_url: meta.github_url ?? null,
+        discord_username: meta.discord_username ?? null, heard_from: meta.heard_from ?? null,
+        affiliation: meta.affiliation,
       },
     });
     if (error) {

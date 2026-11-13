@@ -6,14 +6,16 @@
  *
  * Lo que se puede cambiar y lo que no:
  *
- *   sí  — teléfono, carrera, año, nivel, GitHub, LinkedIn, foto.
+ *   sí  — teléfono, carrera, ciclo, nivel, LinkedIn, GitHub, Discord, foto.
  *   no  — nombre, correo, DNI, universidad. Eso es la identidad verificada;
  *         si cambiara a voluntad, la verificación no habría servido de nada.
  *         Además la base solo deja editar esas columnas.
  */
 
 import { conToken, tokenDe } from "@/lib/supabase";
-import { NIVELES, type Nivel } from "@/lib/inscripcion";
+import { NIVELES, carrerasDelCatalogo, type Nivel } from "@/lib/inscripcion";
+import { SLUG_OTRA, limpiarCarrera } from "@/lib/carreras";
+import { normalizarDiscord, normalizarGithub, normalizarLinkedin } from "@/lib/contacto";
 import { normalizarTelefono } from "@/lib/telefono";
 import { json, leerCuerpo, RespuestaMala } from "@/lib/limite";
 
@@ -59,20 +61,27 @@ export async function PATCH(req: Request) {
     cambios.phone = tel.e164;
   }
 
-  if (cuerpo.carrera !== undefined) {
-    const c = String(cuerpo.carrera).trim().replace(/\s+/g, " ");
-    if (c.length < 3 || c.length > 80) {
-      return json({ ok: false, campo: "carrera", motivo: "Escribe tu carrera." }, 422);
+  // Carrera: de la lista; «Otra carrera» pide el nombre, limpio y con mayúsculas.
+  if (cuerpo.carrera_id !== undefined) {
+    const catalogo = await carrerasDelCatalogo();
+    const c = catalogo.find((x) => x.id === Number(cuerpo.carrera_id));
+    if (!c) return json({ ok: false, campo: "carrera", motivo: "Elige tu carrera de la lista." }, 422);
+    cambios.career_id = c.id;
+    if (c.slug === SLUG_OTRA) {
+      const otra = limpiarCarrera(cuerpo.carrera_otra);
+      if (!otra) return json({ ok: false, campo: "carrera", motivo: "Escribe cuál es tu carrera." }, 422);
+      cambios.career_other = otra;
+    } else {
+      cambios.career_other = null;
     }
-    cambios.career = c;
   }
 
-  if (cuerpo.anio !== undefined) {
-    const a = Number(cuerpo.anio);
-    if (!Number.isInteger(a) || a < 1 || a > 7) {
-      return json({ ok: false, campo: "anio", motivo: "Elige en qué año estás." }, 422);
+  if (cuerpo.ciclo !== undefined) {
+    const a = Number(cuerpo.ciclo);
+    if (!Number.isInteger(a) || a < 1 || a > 10) {
+      return json({ ok: false, campo: "ciclo", motivo: "Elige en qué ciclo estás, del 1 al 10." }, 422);
     }
-    cambios.study_year = a;
+    cambios.cycle = a;
   }
 
   if (cuerpo.nivel !== undefined) {
@@ -99,14 +108,16 @@ export async function PATCH(req: Request) {
     }
   }
 
-  for (const [campo, columna] of [["linkedin", "linkedin_url"], ["github", "github_url"]] as const) {
+  // Redes y contacto: se aceptan en cualquier forma razonable y se guardan en una sola.
+  for (const [campo, columna, fn] of [
+    ["linkedin", "linkedin_url", normalizarLinkedin],
+    ["github", "github_url", normalizarGithub],
+    ["discord", "discord_username", normalizarDiscord],
+  ] as const) {
     if (cuerpo[campo] === undefined) continue;
-    const v = String(cuerpo[campo] ?? "").trim();
-    if (!v) { cambios[columna] = null; continue; }
-    if (!/^https?:\/\/[^\s]+\.[^\s]+$/.test(v)) {
-      return json({ ok: false, campo, motivo: "Pega el enlace completo, empezando por https://" }, 422);
-    }
-    cambios[columna] = v;
+    const r = fn(cuerpo[campo]);
+    if (!r.ok) return json({ ok: false, campo, motivo: r.motivo }, 422);
+    cambios[columna] = r.valor;
   }
 
   if (!Object.keys(cambios).length) {

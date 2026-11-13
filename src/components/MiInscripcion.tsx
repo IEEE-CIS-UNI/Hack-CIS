@@ -9,7 +9,7 @@
  * qué necesita para la hack.
  *
  * Lo que se puede cambiar es lo que cambia en la vida real (el celular, la
- * carrera, el año). El nombre, el correo y la institución están verificados y
+ * carrera, el ciclo). El nombre, el correo y la institución están verificados y
  * se muestran como lo que son: hechos, no campos.
  *
  * Sin sesión no pide contraseña: manda un enlace al correo. Es el mismo
@@ -22,6 +22,7 @@ import Link from "next/link";
 import { ArrowRight, Check, Loader2, LogIn, LogOut, Mail } from "lucide-react";
 import { navegador, urlDelSitio } from "@/lib/supabase";
 import { SESIONES } from "@/lib/contenido";
+import { CICLOS, SLUG_OTRA, porArea, type Carrera } from "@/lib/carreras";
 import { api, estaEn, inscripcionHack, numeroBonito, type Resumen } from "@/lib/resumen";
 import { PAISES, PAIS_POR_DEFECTO, formatearE164, normalizarTelefono, paisPorCodigo } from "@/lib/telefono";
 import ElegirClave from "./ElegirClave";
@@ -45,11 +46,14 @@ export default function MiInscripcion() {
   // borrador de edición
   const [telefono, setTelefono] = useState("");
   const [pais, setPais] = useState(PAIS_POR_DEFECTO);
-  const [carrera, setCarrera] = useState("");
-  const [anio, setAnio] = useState("");
+  const [carreraId, setCarreraId] = useState("");
+  const [carreraOtra, setCarreraOtra] = useState("");
+  const [ciclo, setCiclo] = useState("");
+  const [carreras, setCarreras] = useState<Carrera[]>([]);
   const [nivel, setNivel] = useState("");
   const [linkedin, setLinkedin] = useState("");
   const [github, setGithub] = useState("");
+  const [discord, setDiscord] = useState("");
 
   const [guardando, setGuardando] = useState(false);
   const [aviso, setAviso] = useState<Aviso>(null);
@@ -68,11 +72,23 @@ export default function MiInscripcion() {
     const pa = tel ? paisPorCodigo(tel.replace(/\D/g, "")) : null;
     setPais(pa?.iso ?? PAIS_POR_DEFECTO);
     setTelefono(tel ? formatearE164(tel).replace(/^\+\d+\s/, "") : "");
-    setCarrera(p.career ?? "");
-    setAnio(p.study_year ? String(p.study_year) : "");
+    setCarreraId(p.career_id ? String(p.career_id) : "");
+    setCarreraOtra(p.career_other ?? "");
+    setCiclo(p.cycle ? String(p.cycle) : "");
     setNivel(p.level ?? "");
     setLinkedin(p.linkedin_url ?? "");
     setGithub(p.github_url ?? "");
+    setDiscord(p.discord_username ?? "");
+  }, []);
+
+  // El catálogo de carreras, para el selector de «Mis datos».
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await navegador().from("careers").select("id, slug, name, field").order("position");
+        if (data) setCarreras(data as Carrera[]);
+      } catch { /* el selector queda vacío: se vuelve a intentar al recargar */ }
+    })();
   }, []);
 
   /** Pide la ficha al servidor y decide qué pantalla mostrar. */
@@ -143,7 +159,7 @@ export default function MiInscripcion() {
     try {
       const { error } = await navegador().auth.signInWithOtp({
         email: correo,
-        options: { shouldCreateUser: false, emailRedirectTo: `${urlDelSitio()}/mi-inscripcion` },
+        options: { shouldCreateUser: false, emailRedirectTo: `${urlDelSitio()}/auth/confirmar?siguiente=/mi-inscripcion` },
       });
       if (error) {
         // shouldCreateUser: false hace que un correo no inscrito falle aquí.
@@ -193,8 +209,9 @@ export default function MiInscripcion() {
       const { datos } = await api("/api/perfil", {
         metodo: "PATCH", token,
         cuerpo: {
-          telefono, pais, linkedin, github,
-          ...(carrera ? { carrera, anio: Number(anio) } : {}),
+          telefono, pais, linkedin, github, discord,
+          ...(carreraId ? { carrera_id: Number(carreraId), carrera_otra: carreraOtra } : {}),
+          ...(ciclo ? { ciclo: Number(ciclo) } : {}),
           nivel: nivel || null,
         },
       });
@@ -417,10 +434,21 @@ export default function MiInscripcion() {
             <>
               <div>
                 <label className="rg-lbl" htmlFor="mi-carrera">Carrera</label>
-                <input id="mi-carrera" value={carrera} onChange={(e) => setCarrera(e.target.value.slice(0, 80))} className="rg-input" />
-                <div className="rg-chips" style={{ marginTop: 14 }}>
-                  {[1, 2, 3, 4, 5, 6, 7].map((a) => (
-                    <button key={a} type="button" className="rg-chip rg-year" onClick={() => setAnio(String(a))} aria-pressed={anio === String(a)}>{a}</button>
+                <select id="mi-carrera" value={carreraId} onChange={(e) => setCarreraId(e.target.value)} className="rg-sel" style={{ width: "100%" }}>
+                  <option value="">Elige tu carrera…</option>
+                  {porArea(carreras).map(([area, lista]) => (
+                    <optgroup key={area} label={area}>
+                      {lista.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+                    </optgroup>
+                  ))}
+                </select>
+                {carreras.find((c) => String(c.id) === carreraId)?.slug === SLUG_OTRA && (
+                  <input value={carreraOtra} onChange={(e) => setCarreraOtra(e.target.value.slice(0, 60))} placeholder="¿Cuál es tu carrera?" aria-label="Otra carrera" className="rg-input" style={{ marginTop: 14 }} />
+                )}
+                <p className="rg-lbl" style={{ marginTop: 18 }}>Ciclo</p>
+                <div className="rg-chips">
+                  {CICLOS.map((a) => (
+                    <button key={a} type="button" className="rg-chip rg-year" onClick={() => setCiclo(String(a))} aria-pressed={ciclo === String(a)}>{a}</button>
                   ))}
                 </div>
               </div>
@@ -438,6 +466,10 @@ export default function MiInscripcion() {
           <div>
             <label className="rg-lbl" htmlFor="mi-gh">GitHub (opcional)</label>
             <input id="mi-gh" value={github} onChange={(e) => setGithub(e.target.value)} placeholder="https://github.com/tuusuario" className="rg-input" />
+          </div>
+          <div>
+            <label className="rg-lbl" htmlFor="mi-dc">Usuario de Discord (opcional)</label>
+            <input id="mi-dc" value={discord} onChange={(e) => setDiscord(e.target.value)} placeholder="tuusuario" className="rg-input" />
           </div>
           <div>
             <label className="rg-lbl" htmlFor="mi-in">LinkedIn (opcional)</label>

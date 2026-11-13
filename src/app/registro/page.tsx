@@ -49,8 +49,8 @@ function Espera() {
         <span className="text-lavender">abren pronto</span>
       </h1>
       <p className="mt-6 max-w-xl text-lg text-mist/85">
-        Entra a la comunidad para enterarte primero. Cuando abran, te inscribes con tres datos:
-        DNI, correo institucional y código de estudiante.
+        Entra a la comunidad para enterarte primero. Cuando abran, te inscribes con tu DNI,
+        tu nombre y tu correo institucional.
       </p>
       <div className="mt-8">
         <Countdown />

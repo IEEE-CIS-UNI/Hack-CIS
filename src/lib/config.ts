@@ -1,5 +1,7 @@
 export const EVENT = {
-  registrationOpensAt: "2026-11-13T00:00:00-05:00",
+  // NEXT_PUBLIC_REGISTRO_ABRE adelanta la apertura para probar el formulario
+  // (en .env.local o en una vista previa de Vercel). Sin ella manda la fecha real.
+  registrationOpensAt: process.env.NEXT_PUBLIC_REGISTRO_ABRE ?? "2026-11-13T00:00:00-05:00",
   registrationOpensLabel: "13/11",
 };
 

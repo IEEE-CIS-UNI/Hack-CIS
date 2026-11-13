@@ -6,12 +6,14 @@
  * Primero se elige qué quiere hacer la persona (la hack sola, la hack con el
  * bootcamp, o solo el bootcamp) y de ahí salen las preguntas que siguen:
  *
- *   con hack        DNI · correo institucional · celular · carrera
- *   solo bootcamp   nombre · correo (cualquiera) · celular (opcional)
+ *   con hack        DNI · nombre · correo institucional · celular · carrera · redes
+ *   solo bootcamp   nombre · correo (cualquiera) · celular (opcional) · redes
  *
- * Cada campo se verifica contra el servidor apenas la persona termina de
- * escribirlo, y lo que se deduce aparece en el acto: el nombre desde el DNI,
- * la universidad desde el correo.
+ * «Redes» es opcional en los dos: LinkedIn, GitHub, Discord y cómo se enteró.
+ *
+ * El correo institucional se verifica contra el servidor apenas la persona lo
+ * escribe, y la universidad aparece en el acto. El DNI y el nombre los escribe
+ * la persona: el DNI solo se revisa en su forma y se guarda como huella.
  *
  * Al final NO queda inscrita: queda un correo enviado. La inscripción nace
  * cuando abre ese correo, y por eso el correo prueba algo.
@@ -27,19 +29,20 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, Check, Loader2, Mail, TriangleAlert, X } from "lucide-react";
 import { CLAVE_BOLETO, EVENT } from "@/lib/config";
 import { SESIONES } from "@/lib/contenido";
+import { CICLOS, SLUG_OTRA, limpiarCarrera, porArea, type Carrera } from "@/lib/carreras";
+import { ORIGENES, normalizarDiscord, normalizarGithub, normalizarLinkedin } from "@/lib/contacto";
 import { navegador } from "@/lib/supabase";
 import { PAISES, PAIS_POR_DEFECTO, normalizarTelefono } from "@/lib/telefono";
 
 const BORRADOR = "hackcis-registro-v3";
 
-type Plan = "hack" | "hack_bootcamp" | "bootcamp";
+type Plan = "hack_bootcamp" | "bootcamp";
 
 const PLANES: { id: Plan; titulo: string; desc: string; marca?: string }[] = [
-  { id: "hack", titulo: "Solo la hack", desc: "100 horas construyendo con un agente de IA. Hasta 250 cupos." },
   {
     id: "hack_bootcamp",
     titulo: "Hack + Bootcamp",
-    desc: "La hackathon y las sesiones del bootcamp que quieras para llegar preparado.",
+    desc: "La hackathon (hasta 250 cupos) y el bootcamp, que es parte de la experiencia: eliges las sesiones que quieras.",
     marca: "Recomendado",
   },
   { id: "bootcamp", titulo: "Solo bootcamp", desc: "Abierto a todos: sin DNI ni correo institucional. Eliges las sesiones." },
@@ -52,7 +55,8 @@ type Campo = { valor: string; estado: EstadoCampo; mensaje?: string };
 const vacio: Campo = { valor: "", estado: "vacio" };
 
 type Borrador = {
-  correo: string; telefono: string; pais: string; carrera: string; anio: string; nivel: string;
+  correo: string; telefono: string; pais: string; carreraId: string; carreraOtra: string; ciclo: string; nivel: string;
+  linkedin: string; github: string; discord: string; origen: string;
   nombres: string; apellidos: string;
 };
 
@@ -69,7 +73,9 @@ function leerEnlace() {
     .split(",")
     .map((n) => `bootcamp-${n.trim().padStart(2, "0")}`)
     .filter((s) => SESIONES.some((x) => x.slug === s));
-  return { plan: plan && PLANES.some((p) => p.id === plan) ? plan : null, sesiones };
+  // «hack» a secas ya no existe: quien llega con un enlace viejo entra por hack + bootcamp.
+  const efectivo = (plan as string | null) === "hack" ? "hack_bootcamp" : plan;
+  return { plan: efectivo && PLANES.some((p) => p.id === efectivo) ? efectivo : null, sesiones };
 }
 
 async function post(ruta: string, cuerpo: unknown) {
@@ -140,20 +146,25 @@ export default function RegistroWizard() {
   const [correo, setCorreo] = useState<Campo>(() => ({ valor: leerBorrador().correo ?? "", estado: "vacio" }));
   const [telefono, setTelefono] = useState<Campo>(() => ({ valor: leerBorrador().telefono ?? "", estado: "vacio" }));
   const [pais, setPais] = useState(() => leerBorrador().pais ?? PAIS_POR_DEFECTO);
-  const [carrera, setCarrera] = useState(() => leerBorrador().carrera ?? "");
-  const [anio, setAnio] = useState(() => leerBorrador().anio ?? "");
+  const [carreraId, setCarreraId] = useState(() => leerBorrador().carreraId ?? "");
+  const [carreraOtra, setCarreraOtra] = useState(() => leerBorrador().carreraOtra ?? "");
+  const [ciclo, setCiclo] = useState(() => leerBorrador().ciclo ?? "");
+  const [carreras, setCarreras] = useState<Carrera[]>([]);
+  const [linkedin, setLinkedin] = useState(() => leerBorrador().linkedin ?? "");
+  const [github, setGithub] = useState(() => leerBorrador().github ?? "");
+  const [discord, setDiscord] = useState(() => leerBorrador().discord ?? "");
+  const [origen, setOrigen] = useState(() => leerBorrador().origen ?? "");
   const [nivel, setNivel] = useState(() => leerBorrador().nivel ?? "");
   const [nombres, setNombres] = useState(() => leerBorrador().nombres ?? "");
   const [apellidos, setApellidos] = useState(() => leerBorrador().apellidos ?? "");
   const [consiente, setConsiente] = useState(false);
 
-  const [nombre, setNombre] = useState("");
   const [universidad, setUniversidad] = useState("");
   const [enviando, setEnviando] = useState(false);
   const [resultado, setResultado] = useState<{ ok: boolean; correo?: string; motivo?: string } | null>(null);
   const campoRef = useRef<HTMLInputElement>(null);
 
-  const conHack = plan === "hack" || plan === "hack_bootcamp";
+  const conHack = plan === "hack_bootcamp";
   const conBootcamp = plan === "bootcamp" || plan === "hack_bootcamp";
 
   // Las pantallas que toca recorrer según el plan elegido.
@@ -162,7 +173,8 @@ export default function RegistroWizard() {
     : [
         "plan",
         ...(conBootcamp ? ["sesiones"] : []),
-        ...(conHack ? ["dni", "correo", "celular", "carrera"] : ["nombre", "correo", "celular"]),
+        ...(conHack ? ["dni", "nombre", "correo", "celular", "carrera"] : ["nombre", "correo", "celular"]),
+        "redes",
         "confirmar",
       ];
   const actual = pasos[paso] ?? "plan";
@@ -189,10 +201,11 @@ export default function RegistroWizard() {
   useEffect(() => {
     try {
       localStorage.setItem(BORRADOR, JSON.stringify({
-        correo: correo.valor, telefono: telefono.valor, pais, carrera, anio, nivel, nombres, apellidos,
+        correo: correo.valor, telefono: telefono.valor, pais, carreraId, carreraOtra, ciclo, nivel, nombres, apellidos,
+        linkedin, github, discord, origen,
       }));
     } catch { /* el borrador es un extra: que falle no interrumpe nada */ }
-  }, [correo.valor, telefono.valor, pais, carrera, anio, nivel, nombres, apellidos]);
+  }, [correo.valor, telefono.valor, pais, carreraId, carreraOtra, ciclo, nivel, nombres, apellidos, linkedin, github, discord, origen]);
 
   useEffect(() => { campoRef.current?.focus(); }, [paso, plan]);
 
@@ -204,23 +217,6 @@ export default function RegistroWizard() {
     yaConsultado.current[campo] = valor;
     return true;
   };
-
-  const verDni = useCallback(async (valor: string) => {
-    if (valor.length !== 8 || !esNuevo("dni", valor)) return;
-    setDni((c) => ({ ...c, estado: "cargando", mensaje: undefined }));
-    try {
-      const { datos } = await post("/api/validar-dni", { dni: valor });
-      if (!datos.ok) {
-        // Si falló el servicio y no la persona, se deja seguir: lo revisa un admin.
-        setDni({ valor, estado: datos.reintentable ? "aviso" : "error", mensaje: datos.motivo });
-        return;
-      }
-      setNombre(datos.persona.nombreCompleto);
-      setDni({ valor, estado: "ok" });
-    } catch {
-      setDni({ valor, estado: "aviso", mensaje: "No pudimos conectarnos. Puedes continuar e intentarlo al enviar." });
-    }
-  }, []);
 
   /** Para la hack el correo tiene que ser de una institución; para el bootcamp, cualquiera. */
   const verCorreo = useCallback(async (valor: string, soloFormato: boolean) => {
@@ -278,13 +274,27 @@ export default function RegistroWizard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [actual]);
 
+  // El catálogo de carreras se pide al llegar a esa pantalla, no antes.
+  useEffect(() => {
+    if (actual !== "carrera" || carreras.length) return;
+    let vivo = true;
+    (async () => {
+      try {
+        const { data } = await navegador().from("careers").select("id, slug, name, field").order("position");
+        if (vivo && data) setCarreras(data as Carrera[]);
+      } catch { /* sin lista no se puede elegir: la pantalla lo avisa */ }
+    })();
+    return () => { vivo = false; };
+  }, [actual, carreras.length]);
+
   async function enviar() {
     setEnviando(true);
     try {
       const { datos } = await post("/api/inscripcion", {
         plan, sesiones: conBootcamp ? sesiones : [],
         dni: dni.valor, correo: correo.valor, telefono: telefono.valor, pais,
-        carrera, anio: Number(anio), nivel, nombres, apellidos,
+        carrera_id: Number(carreraId), carrera_otra: carreraOtra, ciclo: Number(ciclo), nivel, nombres, apellidos,
+        linkedin, github, discord, origen,
       });
       if (datos.ok) {
         try {
@@ -304,15 +314,24 @@ export default function RegistroWizard() {
     }
   }
 
+  const carreraElegida = carreras.find((c) => String(c.id) === carreraId);
+  const esOtra = carreraElegida?.slug === SLUG_OTRA;
+  const carreraTexto = esOtra ? (limpiarCarrera(carreraOtra) ?? "Otra carrera") : (carreraElegida?.name ?? "");
+  // Las redes son opcionales, pero si se escriben tienen que ser válidas.
+  const liN = normalizarLinkedin(linkedin);
+  const ghN = normalizarGithub(github);
+  const dcN = normalizarDiscord(discord);
+  const redesOk = liN.ok && ghN.ok && dcN.ok;
   const telOk = telefono.estado === "ok";
   const puedeSeguir =
     (actual === "plan" && plan !== null) ||
     (actual === "sesiones" && sesiones.length > 0) ||
-    (actual === "dni" && (dni.estado === "ok" || dni.estado === "aviso")) ||
+    (actual === "dni" && dni.estado === "ok") ||
     (actual === "nombre" && nombres.trim().length >= 2 && apellidos.trim().length >= 2) ||
     (actual === "correo" && correo.estado === "ok") ||
     (actual === "celular" && (conHack ? telOk : telefono.estado === "vacio" || telOk)) ||
-    (actual === "carrera" && carrera.trim().length >= 3 && anio !== "") ||
+    (actual === "carrera" && carreraId !== "" && (!esOtra || limpiarCarrera(carreraOtra) !== null) && ciclo !== "") ||
+    (actual === "redes" && redesOk) ||
     (actual === "confirmar" && consiente);
 
   const alternarSesion = (slug: string) =>
@@ -385,7 +404,11 @@ export default function RegistroWizard() {
             {PLANES.map((p) => (
               <button
                 key={p.id} type="button" className="rg-opt" aria-pressed={plan === p.id}
-                onClick={() => { setPlan(p.id); if (p.id === "hack") setSesiones([]); }}
+                onClick={() => {
+                  setPlan(p.id);
+                  // En la hack el bootcamp va incluido: se parte con todas las sesiones marcadas.
+                  if (p.id === "hack_bootcamp") setSesiones((s) => (s.length ? s : SESIONES.map((x) => x.slug)));
+                }}
               >
                 <b>{p.titulo}{p.marca && <em>{p.marca}</em>}</b>
                 <span>{p.desc}</span>
@@ -419,15 +442,16 @@ export default function RegistroWizard() {
       {actual === "dni" && (
         <Pregunta
           titulo={<>¿Cuál es<br />tu <span>DNI</span>?</>}
-          ayuda="Lo usamos para confirmar tu nombre real. Guardamos solo una huella cifrada, nunca el número."
+          ayuda="Lo usamos para evitar inscripciones repetidas y para que tu líder pueda sumarte a su equipo. Guardamos solo una huella cifrada, nunca el número."
         >
           <input
             ref={campoRef}
             value={dni.valor}
             onChange={(e) => {
               const v = e.target.value.replace(/\D/g, "").slice(0, 8);
-              setDni({ valor: v, estado: "vacio" });
-              if (v.length === 8) verDni(v);
+              if (v.length < 8) setDni({ valor: v, estado: "vacio" });
+              else if (/^(\d)\1{7}$/.test(v)) setDni({ valor: v, estado: "error", mensaje: "Ese DNI no es válido." });
+              else setDni({ valor: v, estado: "ok" });
             }}
             inputMode="numeric"
             autoComplete="off"
@@ -435,16 +459,12 @@ export default function RegistroWizard() {
             aria-label="DNI"
             className="rg-input dni tabular-nums"
           />
-          <Pie campo={dni}>
-            {nombre && dni.estado === "ok" && (
-              <p className="rg-msg" style={{ fontSize: "1.1rem" }}>Hola, <strong>{nombre}</strong></p>
-            )}
-          </Pie>
+          <Pie campo={dni} />
         </Pregunta>
       )}
 
       {actual === "nombre" && (
-        <Pregunta titulo={<>¿Cómo te<br /><span>llamas</span>?</>} ayuda="Tal como quieres que aparezca en tu constancia.">
+        <Pregunta titulo={<>¿Cómo te<br /><span>llamas</span>?</>} ayuda={conHack ? "Tal como figura en tu DNI. Es el nombre de tu credencial." : "Tal como quieres que aparezca en tu constancia."}>
           <div className="rg-two">
             <div>
               <label className="rg-lbl" htmlFor="rg-nombres">Nombres</label>
@@ -526,20 +546,34 @@ export default function RegistroWizard() {
       )}
 
       {actual === "carrera" && (
-        <Pregunta titulo={<>¿Qué <span>estudias</span>?</>} ayuda="Tal como figura en tu universidad o instituto.">
-          <input
-            ref={campoRef}
-            value={carrera}
-            onChange={(e) => setCarrera(e.target.value.slice(0, 80))}
-            autoComplete="off"
-            placeholder="Ingeniería de Sistemas"
-            aria-label="Carrera"
-            className="rg-input"
-          />
-          <p className="rg-lbl" style={{ marginTop: 28 }}>¿En qué año vas?</p>
+        <Pregunta titulo={<>¿Qué <span>estudias</span>?</>} ayuda="Elige tu carrera de la lista. Si no está, marca «Otra carrera» y escríbela.">
+          <label className="rg-lbl" htmlFor="rg-carrera">Carrera</label>
+          <select
+            id="rg-carrera"
+            value={carreraId}
+            onChange={(e) => setCarreraId(e.target.value)}
+            className="rg-sel"
+            style={{ width: "100%" }}
+          >
+            <option value="">Elige tu carrera…</option>
+            {porArea(carreras).map(([area, lista]) => (
+              <optgroup key={area} label={area}>
+                {lista.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+              </optgroup>
+            ))}
+          </select>
+          {carreras.length === 0 && <p className="rg-msg" style={{ marginTop: 10 }}>Cargando la lista…</p>}
+          {esOtra && (
+            <div style={{ marginTop: 22 }}>
+              <label className="rg-lbl" htmlFor="rg-otra">¿Cuál es tu carrera?</label>
+              <input id="rg-otra" value={carreraOtra} onChange={(e) => setCarreraOtra(e.target.value.slice(0, 60))}
+                autoComplete="off" placeholder="Ingeniería Pesquera" className="rg-input" />
+            </div>
+          )}
+          <p className="rg-lbl" style={{ marginTop: 28 }}>¿En qué ciclo vas?</p>
           <div className="rg-chips">
-            {[1, 2, 3, 4, 5, 6, 7].map((a) => (
-              <button key={a} type="button" className="rg-chip rg-year" onClick={() => setAnio(String(a))} aria-pressed={anio === String(a)}>
+            {CICLOS.map((a) => (
+              <button key={a} type="button" className="rg-chip rg-year" onClick={() => setCiclo(String(a))} aria-pressed={ciclo === String(a)}>
                 {a}
               </button>
             ))}
@@ -549,6 +583,46 @@ export default function RegistroWizard() {
             {NIVELES.map((n) => (
               <button key={n} type="button" className="rg-chip" onClick={() => setNivel(nivel === n ? "" : n)} aria-pressed={nivel === n}>
                 {n}
+              </button>
+            ))}
+          </div>
+        </Pregunta>
+      )}
+
+      {actual === "redes" && (
+        <Pregunta
+          titulo={<>Tus <span>redes</span></>}
+          ayuda="Todo esto es opcional. Nos sirve para que te encuentren tu equipo y los sponsors."
+        >
+          <div className="rg-two">
+            <div>
+              <label className="rg-lbl" htmlFor="rg-li">LinkedIn</label>
+              <input id="rg-li" value={linkedin} onChange={(e) => setLinkedin(e.target.value.slice(0, 120))}
+                autoComplete="off" placeholder="linkedin.com/in/tuusuario" className="rg-input" />
+              {!liN.ok && <p className="rg-msg err" style={{ marginTop: 8 }}>{liN.motivo}</p>}
+            </div>
+            {conHack && (
+              <div>
+                <label className="rg-lbl" htmlFor="rg-gh">GitHub</label>
+                <input id="rg-gh" value={github} onChange={(e) => setGithub(e.target.value.slice(0, 120))}
+                  autoComplete="off" placeholder="tuusuario" className="rg-input" />
+                {!ghN.ok && <p className="rg-msg err" style={{ marginTop: 8 }}>{ghN.motivo}</p>}
+              </div>
+            )}
+            <div>
+              <label className="rg-lbl" htmlFor="rg-dc">Usuario de Discord</label>
+              <input id="rg-dc" value={discord} onChange={(e) => setDiscord(e.target.value.slice(0, 40))}
+                autoComplete="off" placeholder="tuusuario" className="rg-input" />
+              {!dcN.ok
+                ? <p className="rg-msg err" style={{ marginTop: 8 }}>{dcN.motivo}</p>
+                : conHack && <p className="rg-small" style={{ marginTop: 10 }}>Para entrar a los canales usarás tu código, que verás al confirmar tu correo.</p>}
+            </div>
+          </div>
+          <p className="rg-lbl" style={{ marginTop: 28 }}>¿Cómo te enteraste?</p>
+          <div className="rg-chips">
+            {ORIGENES.map((o) => (
+              <button key={o.id} type="button" className="rg-chip" aria-pressed={origen === o.id} onClick={() => setOrigen(origen === o.id ? "" : o.id)}>
+                {o.nombre}
               </button>
             ))}
           </div>
@@ -565,12 +639,15 @@ export default function RegistroWizard() {
                 <dd>{sesiones.map((s) => SESIONES.find((x) => x.slug === s)?.n).join(" · ")}</dd>
               </div>
             )}
-            <div><dt>Nombre</dt><dd>{conHack ? (nombre || "por confirmar") : `${nombres} ${apellidos}`}</dd></div>
+            <div><dt>Nombre</dt><dd>{`${nombres} ${apellidos}`}</dd></div>
             {conHack && <div><dt>Institución</dt><dd>{universidad || "—"}</dd></div>}
             <div><dt>Correo</dt><dd>{correo.valor}</dd></div>
             {(conHack || telOk) && <div><dt>Celular</dt><dd>{bonito}</dd></div>}
-            {conHack && <div><dt>Carrera</dt><dd>{carrera} · año {anio}</dd></div>}
+            {conHack && <div><dt>Carrera</dt><dd>{carreraTexto} · ciclo {ciclo}</dd></div>}
             {conHack && nivel && <div><dt>Nivel</dt><dd>{nivel}</dd></div>}
+            {liN.ok && liN.valor && <div><dt>LinkedIn</dt><dd>{liN.valor.replace("https://www.", "")}</dd></div>}
+            {ghN.ok && ghN.valor && conHack && <div><dt>GitHub</dt><dd>{ghN.valor.replace("https://", "")}</dd></div>}
+            {dcN.ok && dcN.valor && <div><dt>Discord</dt><dd>{dcN.valor}</dd></div>}
           </dl>
 
           <label className="rg-consent">

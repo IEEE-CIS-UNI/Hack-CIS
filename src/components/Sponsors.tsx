@@ -75,21 +75,16 @@ function Chip({ s }: { s: Sponsor }) {
 }
 
 /**
- * Niveles de logos: quien organiza, las comunidades aliadas, los sponsors
- * del evento (fichas grandes) y quienes apoyan (fichas pequeñas).
+ * Niveles de logos: quienes organizan (las tres comunidades), los sponsors
+ * del evento y quienes apoyan.
  */
 export function Niveles() {
   return (
     <div className="sp-tiers">
       <div className="sp-tier org">
-        <p className="note">Organiza</p>
+        <p className="note">Organizan</p>
         <div className="sp-logos">
           <Logo l={CIS} />
-        </div>
-      </div>
-      <div className="sp-tier ally">
-        <p className="note">En alianza con</p>
-        <div className="sp-logos">
           <Logo l={PUCP} />
           <Logo l={DSC} />
         </div>

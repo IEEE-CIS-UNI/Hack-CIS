@@ -1,73 +1,85 @@
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0;padding:0;background-color:#08030f;">
-  <tr>
-    <td align="center" style="padding:32px 16px;">
+<!-- texto de vista previa (lo que se lee en la bandeja antes de abrir) -->
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;color:#08030f;font-size:1px;line-height:1px;">
+  Toca el bot&oacute;n para confirmar tu correo y quedar dentro de HACK[CIS] UNI 2026.
+</div>
 
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;background-color:#120a24;border-radius:20px;overflow:hidden;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#08030f" style="margin:0;padding:0;background-color:#08030f;">
+  <tr>
+    <td align="center" style="padding:0;">
+
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" bgcolor="#08030f" style="width:100%;max-width:600px;background-color:#08030f;">
 
         <!-- cabecera -->
         <tr>
-          <td style="padding:36px 36px 28px 36px;background-color:#1a0b38;border-bottom:3px solid #7a2cf5;">
-            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:26px;font-weight:bold;color:#ffffff;letter-spacing:-0.5px;">
-              CIS<span style="color:#b69cff;">[HACK]</span>
-            </p>
-            <p style="margin:6px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;color:#b69cff;letter-spacing:3px;text-transform:uppercase;">
-              UNI 2026 &middot; The Agentic Era
-            </p>
+          <td style="padding:0;">
+            <img src="https://korg7p4oh5xkmcg2.public.blob.vercel-storage.com/email-cabecera.png?v=2" width="600" alt="HACK[CIS] UNI 2026 &middot; The Agentic Era" border="0" style="display:block;width:100%;max-width:600px;height:auto;border:0;">
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:0;">
+            <img src="https://korg7p4oh5xkmcg2.public.blob.vercel-storage.com/email-separador.png?v=2" width="600" alt="" border="0" style="display:block;width:100%;max-width:600px;height:auto;border:0;">
           </td>
         </tr>
 
         <!-- cuerpo -->
         <tr>
-          <td style="padding:36px;">
+          <td style="padding:28px 28px 8px 28px;">
 
-            <p style="margin:0 0 8px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;color:#b69cff;letter-spacing:2px;text-transform:uppercase;">
-              Falta un paso
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td valign="middle" style="padding-right:12px;">
+                  <p style="margin:0 0 10px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;color:#b69cff;letter-spacing:3px;text-transform:uppercase;">
+                    Falta un paso
+                  </p>
+                  <h1 style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:30px;line-height:1.15;color:#ffffff;">
+                    {{ if .Data.name }}{{ .Data.name }},{{ else }}Hola,{{ end }}<br>
+                    <span style="color:#b69cff;">confirma tu lugar</span>
+                  </h1>
+                </td>
+                <td width="110" valign="middle" align="right" style="width:110px;">
+                  <img src="https://korg7p4oh5xkmcg2.public.blob.vercel-storage.com/email-robot.png?v=2" width="110" alt="" border="0" style="display:block;width:110px;height:auto;border:0;">
+                </td>
+              </tr>
+            </table>
+
+            <p style="margin:22px 0 26px 0;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.6;color:#d9ccff;">
+              Recibimos tu inscripci&oacute;n a HACK[CIS] UNI 2026, organizado por IEEE CIS UNI, DSC PUCP y DSC UNI. Toca el bot&oacute;n
+              para confirmar que este correo es tuyo y quedas dentro.
             </p>
 
-            <h1 style="margin:0 0 20px 0;font-family:Arial,Helvetica,sans-serif;font-size:30px;line-height:1.2;color:#ffffff;">
-              {{ if .Data.name }}{{ .Data.name }},{{ else }}Hola,{{ end }}<br>
-              confirma tu lugar
-            </h1>
-
-            <p style="margin:0 0 24px 0;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.6;color:#d9ccff;">
-              Recibimos tu inscripción al hackathon de IEEE CIS UNI. Toca el botón para
-              confirmar que este correo es tuyo y quedas dentro.
-            </p>
-
-            <!-- botón -->
+            <!-- bot&oacute;n -->
             <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 24px 0;">
               <tr>
-                <td align="center" style="border-radius:999px;background-color:#ffffff;">
-                  <a href="{{ .ConfirmationURL }}"
-                     style="display:inline-block;padding:16px 40px;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;color:#0b0118;text-decoration:none;border-radius:999px;">
-                    Confirmar mi inscripción &rarr;
+                <td align="center" bgcolor="#ffffff" style="border-radius:999px;background-color:#ffffff;">
+                  <a href="{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=signup"
+                     style="display:inline-block;padding:17px 42px;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;color:#0b0118;text-decoration:none;border-radius:999px;">
+                    Confirmar mi inscripci&oacute;n &rarr;
                   </a>
                 </td>
               </tr>
             </table>
 
-            <p style="margin:0 0 28px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#8d7fb0;">
-              El enlace sirve una sola vez y vence en una hora. Si el botón no funciona,
-              copia y pega esta dirección en tu navegador:<br>
-              <a href="{{ .ConfirmationURL }}" style="color:#b69cff;word-break:break-all;">{{ .ConfirmationURL }}</a>
+            <p style="margin:0 0 26px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#8d7fb0;">
+              El enlace sirve una sola vez y vence en una hora. Si el bot&oacute;n no funciona,
+              abre <a href="{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=signup" style="color:#b69cff;">este enlace</a> en tu navegador.
             </p>
 
             <!-- resumen -->
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#0d0520;border-radius:14px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#120a24" style="background-color:#120a24;border:1px solid #2a1a52;border-radius:14px;">
               <tr>
-                <td style="padding:20px 24px;">
+                <td style="padding:20px 22px;">
                   <p style="margin:0 0 14px 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;color:#8d7fb0;letter-spacing:2px;text-transform:uppercase;">
-                    Tu inscripción
+                    Tu inscripci&oacute;n
                   </p>
 
                   {{ if .Data.name }}
-                  <p style="margin:0 0 10px 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#d9ccff;">
+                  <p style="margin:0 0 12px 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#d9ccff;">
                     <span style="color:#8d7fb0;">Nombre</span><br>
                     <strong style="color:#ffffff;">{{ .Data.name }}</strong>
                   </p>
                   {{ end }}
 
-                  <p style="margin:0 0 10px 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#d9ccff;">
+                  <p style="margin:0 0 12px 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#d9ccff;">
                     <span style="color:#8d7fb0;">Correo</span><br>
                     <strong style="color:#ffffff;">{{ .Email }}</strong>
                   </p>
@@ -82,35 +94,43 @@
               </tr>
             </table>
 
-            <!-- qué sigue -->
-            <p style="margin:28px 0 12px 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;color:#8d7fb0;letter-spacing:2px;text-transform:uppercase;">
-              Qué sigue
+            <!-- qu&eacute; sigue -->
+            <p style="margin:30px 0 12px 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;color:#8d7fb0;letter-spacing:2px;text-transform:uppercase;">
+              Qu&eacute; sigue
             </p>
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
                 <td width="28" valign="top" style="font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;color:#b69cff;">1.</td>
-                <td style="padding-bottom:10px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;color:#d9ccff;">Confirmas con el botón de arriba.</td>
+                <td style="padding-bottom:10px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;color:#d9ccff;">Confirmas con el bot&oacute;n de arriba y te mostramos tu card para compartir.</td>
               </tr>
               <tr>
                 <td width="28" valign="top" style="font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;color:#b69cff;">2.</td>
-                <td style="padding-bottom:10px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;color:#d9ccff;">Si entraste a la hackathon, canjeas tu código en Discord y se te abren los canales.</td>
+                <td style="padding-bottom:10px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;color:#d9ccff;">Si entraste a la hackathon, ver&aacute;s tu c&oacute;digo de Discord para abrir los canales.</td>
               </tr>
               <tr>
                 <td width="28" valign="top" style="font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;color:#b69cff;">3.</td>
-                <td style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;color:#d9ccff;">Armas equipo antes del Bootcamp.</td>
+                <td style="padding-bottom:10px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;color:#d9ccff;">El Bootcamp virtual es del 23 al 27 de noviembre.</td>
+              </tr>
+              <tr>
+                <td width="28" valign="top" style="font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;color:#b69cff;">4.</td>
+                <td style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;color:#d9ccff;">El viernes 27 eliges track con tu equipo.</td>
               </tr>
             </table>
 
           </td>
         </tr>
 
+        <!-- organizadores -->
+        <tr>
+          <td style="padding:26px 0 0 0;">
+            <img src="https://korg7p4oh5xkmcg2.public.blob.vercel-storage.com/email-organizadores.png?v=3" width="600" alt="Organizan IEEE CIS UNI, DSC PUCP y DSC UNI" border="0" style="display:block;width:100%;max-width:600px;height:auto;border:0;">
+          </td>
+        </tr>
+
         <!-- pie -->
         <tr>
-          <td style="padding:24px 36px 32px 36px;border-top:1px solid #241544;">
-            <p style="margin:0 0 10px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#8d7fb0;">
-              Organizado por IEEE CIS UNI, en alianza con DSC PUCP y DSC UNI.
-            </p>
-            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:#6b5f8a;">
+          <td style="padding:10px 28px 30px 28px;">
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:#6b5f8a;text-align:center;">
               Si no te inscribiste, ignora este mensaje: sin confirmar, no se guarda nada.
             </p>
           </td>

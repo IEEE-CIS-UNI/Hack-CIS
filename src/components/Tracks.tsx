@@ -5,27 +5,17 @@ import { ArrowRight, Lock, Zap } from "lucide-react";
 import Sil from "./silhouettes";
 
 /**
- * Energía ya está revelado; los otros dos tracks todavía no están cerrados
- * y salen como «Pronto» en vez de inventar nombres.
- *
- * El sponsor de Energía va como «Powered by». Cuando llegue el logo, se deja
- * en /public/logos y se pone aquí en `sponsor.logo` (con su ancho y alto);
- * mientras no esté, se muestra un recuadro vacío.
+ * Energía es el único track revelado. Su sponsor todavía no está confirmado:
+ * cuando lo esté, se agrega aquí `sponsor` con su logo y vuelve el «Powered by».
  */
 export const ENERGIA = {
   icon: Zap,
   title: <>Energía</>,
   sub: "IA & Energía",
-  desc: "Zeia es una plataforma de monitoreo energético en tiempo real para empresas peruanas: sensores IoT y software que muestran dónde se va cada sol de energía. Su reto lo presentan en vivo al cierre del Bootcamp.",
+  desc: "Un reto real del sector energético, resuelto con un agente de IA como quinto miembro de tu equipo. Su sponsor se anuncia pronto.",
   tone: "#4de3ff",
   tone2: "#0b7a96",
-  sponsor: {
-    name: "Zeia",
-    url: "https://zeia.com.pe/",
-    logo: "/logos/zeia.png",
-    width: 308,
-    height: 92,
-  } as null | { name: string; url: string; logo: string; width: number; height: number },
+  sponsor: null as null | { name: string; url: string; logo: string; width: number; height: number },
 };
 
 const PRONTO = [
@@ -68,9 +58,9 @@ export function TrackList() {
               />
             </a>
           ) : (
-            <span className="tk-power">
-              Powered by
-              <i className="tk-logo-slot" aria-label="Logo del sponsor por añadir" />
+            <span>
+              <Lock size={12} aria-hidden style={{ verticalAlign: -1, marginRight: 4 }} />
+              Sponsor por revelar
             </span>
           )}
         </div>

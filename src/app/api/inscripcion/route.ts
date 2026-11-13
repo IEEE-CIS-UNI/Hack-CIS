@@ -48,7 +48,7 @@ export async function POST(req: Request) {
     email: r.datos.email,
     options: {
       data: r.datos,                                   // viaja con el usuario
-      emailRedirectTo: `${urlDelSitio()}/bienvenida`,
+      emailRedirectTo: `${urlDelSitio()}/auth/confirmar?siguiente=/bienvenida`,
     },
   });
 

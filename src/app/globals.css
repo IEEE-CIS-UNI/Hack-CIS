@@ -253,8 +253,7 @@ section{position:relative}
 .sp-tier .note{margin:0 0 18px;color:var(--lav);font-size:.56rem}
 .sp-logos{display:flex;flex-wrap:wrap;align-items:center;gap:16px 36px}
 .sp-logos img{width:auto;opacity:.95}
-.sp-tier.org .l-cis{height:34px}
-.sp-tier.ally .l-pucp{height:50px}.sp-tier.ally .l-dsc{height:64px}
+.sp-tier.org .l-cis{height:30px}.sp-tier.org .l-pucp{height:48px}.sp-tier.org .l-dsc{height:60px}
 .sp-chip{display:flex;align-items:center;justify-content:center;gap:10px;color:#fff;transition:transform .3s,opacity .3s}
 a.sp-chip{opacity:.92}
 a.sp-chip:hover{opacity:1;transform:translateY(-3px)}
@@ -268,8 +267,7 @@ a.sp-chip:hover{opacity:1;transform:translateY(-3px)}
 .sp-tier.sup .sp-chip img.sp-mark{height:34px}
 .sp-tier.sup .sp-chip b{font-size:1.1rem}
 @media (min-width:700px){
-  .sp-tier.org .l-cis{height:52px}
-  .sp-tier.ally .l-pucp{height:64px}.sp-tier.ally .l-dsc{height:84px}
+  .sp-tier.org .l-cis{height:44px}.sp-tier.org .l-pucp{height:64px}.sp-tier.org .l-dsc{height:80px}
   .sp-tier.gen .sp-chip{height:92px}
   .sp-tier.gen .sp-chip.tall{height:124px}
   .sp-tier.sup .sp-chip{height:52px}

@@ -5,7 +5,7 @@
 -- en `hackers` a `people`, y esto borra lo viejo.
 --
 -- Qué se queda (esquema public):
---   catálogos   institutions, university_domains, expertises
+--   catálogos   institutions, university_domains, careers
 --   v2          people, offerings, enrollments, tracks, hack_teams,
 --               hack_team_members  (+ la vista hack_roster y sus funciones)
 --   storage     el depósito «fotos» y sus políticas
@@ -23,11 +23,35 @@
 -- Supabase → SQL Editor → pegar → Run. Se puede correr dos veces.
 -- ---------------------------------------------------------------------------
 
+-- ── Restos del proyecto anterior en storage y políticas repetidas ───────────
+-- Va PRIMERO: la función de abajo no se puede borrar mientras las políticas
+-- del depósito la usen.
+--
+-- El depósito «badge-photos» y su función eran de un diseño anterior de la
+-- credencial; hoy las fotos viven en «fotos». El depósito en sí (la fila de
+-- storage.buckets) no se puede borrar con SQL —Supabase lo bloquea—: se elimina
+-- desde el panel (Storage → badge-photos → Delete bucket).
+
+drop policy if exists "badge_photos_delete_own"  on storage.objects;
+drop policy if exists "badge_photos_insert_own"  on storage.objects;
+drop policy if exists "badge_photos_public_read" on storage.objects;
+drop policy if exists "badge_photos_update_own"  on storage.objects;
+drop function if exists public.owns_badge_folder(text);
+drop function if exists public.owns_badge_folder();
+
+-- Cada catálogo tenía dos políticas de lectura iguales: se queda una.
+do $$
+begin
+  if to_regclass('public.institutions')       is not null then drop policy if exists "institutions_read"       on public.institutions;       end if;
+  if to_regclass('public.university_domains') is not null then drop policy if exists "university_domains_read" on public.university_domains; end if;
+  if to_regclass('public.expertises')         is not null then drop policy if exists "expertises_read"         on public.expertises;         end if;
+end $$;
+
 do $$
 declare
   r record;
   tablas_ok  constant text[] := array[
-    'institutions', 'university_domains', 'expertises',
+    'institutions', 'university_domains', 'careers',
     'people', 'offerings', 'enrollments', 'tracks', 'hack_teams', 'hack_team_members'];
   vistas_ok  constant text[] := array['hack_roster'];
   funciones_ok constant text[] := array[
@@ -99,6 +123,15 @@ begin
 
   raise notice 'Limpieza terminada: % objeto(s) borrado(s).', borradas;
 end $$;
+
+-- ── Permisos de los catálogos: solo lectura ─────────────────────────────────
+-- Supabase da por defecto todos los permisos (insertar, borrar, vaciar…) a
+-- quien no ha iniciado sesión. La seguridad por filas (RLS) ya bloquea escribir,
+-- pero no cubre TRUNCATE; mejor que ni exista el permiso.
+
+revoke all on public.institutions       from anon, authenticated;
+revoke all on public.university_domains from anon, authenticated;
+grant select on public.institutions, public.university_domains to anon, authenticated;
 
 -- ── Opcional: empezar de cero con las CUENTAS ───────────────────────────────
 -- Borra todos los usuarios de Auth (las pruebas), y con ellos sus fichas,
