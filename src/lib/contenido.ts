@@ -11,7 +11,7 @@ export const TEMAS_BOOTCAMP = [
   },
   {
     icon: Target,
-    title: "Validación de negocio",
+    title: "Validación de negocio y estructura del pitch",
     text: "Comprobar que tu solución le importa a alguien: usuario, propuesta de valor y viabilidad.",
     detalle:
       "Comprobar que la solución le importa a alguien: quién es el usuario, qué valor le das y si es viable. Es lo que convence a un sponsor.",

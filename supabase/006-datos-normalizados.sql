@@ -483,6 +483,10 @@ begin
   end if;
 end $$;
 
+-- ── 6c. Título de la sesión 2 del bootcamp ──────────────────────────────────
+
+update public.offerings set title = 'Validación de negocio y estructura del pitch' where slug = 'bootcamp-02';
+
 -- ── 7. comprobación ─────────────────────────────────────────────────────────
 
 select

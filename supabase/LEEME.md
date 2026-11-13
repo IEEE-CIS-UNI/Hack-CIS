@@ -68,8 +68,7 @@ Conviene probar los dos una vez, porque cuál plantilla usa Supabase en cada cas
 depende de si la persona ya existía.
 
 Las imágenes están en Vercel Blob; los originales viven en `marca/correo/`. Las
-URL llevan `?v=2` para saltarse el caché cuando se vuelve a subir una imagen
-con el mismo nombre: si cambias una, sube el número en las plantillas.
+URL llevan `?v=3` para saltarse el caché: si cambias una imagen, sube ese número.
 
 Supabase no deja editar las plantillas hasta configurar SMTP propio, así que
 primero va el SMTP y después esto.

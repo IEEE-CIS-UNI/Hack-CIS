@@ -33,7 +33,7 @@ const STEPS = [
   },
   {
     title: "Gran Final",
-    when: "Sáb 5 dic · 9:00 am–5:00 pm · Auditorio CTIC",
+    when: "Sáb 5 dic · todo el día · Auditorio CTIC",
     text: "Pitch y demo frente al jurado. Un ganador por Track.",
     count: "3",
     unit: "ganadores",

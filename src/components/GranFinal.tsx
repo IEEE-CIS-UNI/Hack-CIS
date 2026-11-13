@@ -28,8 +28,8 @@ export default function GranFinal() {
             tres <span className="lav">ganadores</span>
           </h2>
           <p className="lead">
-            Sábado 5 de diciembre, de 9:00 am a 5:00 pm, en el Auditorio CTIC de la UNI. Los 15 equipos finalistas
-            hacen pitch y demo, y hay mini-retos con premios durante el día.
+            Sábado 5 de diciembre, todo el día, en el Auditorio CTIC de la UNI. Habrá feria de stands, los 15 equipos
+            finalistas hacen pitch y demo, y hay mini-retos con premios.
           </p>
 
           <div className="gf-map">

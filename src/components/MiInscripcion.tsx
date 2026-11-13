@@ -159,7 +159,7 @@ export default function MiInscripcion() {
     try {
       const { error } = await navegador().auth.signInWithOtp({
         email: correo,
-        options: { shouldCreateUser: false, emailRedirectTo: `${urlDelSitio()}/auth/confirmar?siguiente=/mi-inscripcion` },
+        options: { shouldCreateUser: false, emailRedirectTo: `${urlDelSitio()}/mi-inscripcion` },
       });
       if (error) {
         // shouldCreateUser: false hace que un correo no inscrito falle aquí.

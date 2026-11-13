@@ -101,7 +101,7 @@ comment on column public.offerings.requires_student is 'Exige correo institucion
 insert into public.offerings (slug, kind, title, position, capacity, requires_student) values
   ('hack',        'hack',     'HACK[CIS] UNI 2026',                                       0, 250,  true),
   ('bootcamp-01', 'bootcamp', 'Design Thinking & Design Sprint',                          1, null, false),
-  ('bootcamp-02', 'bootcamp', 'Validación de negocio',                                    2, null, false),
+  ('bootcamp-02', 'bootcamp', 'Validación de negocio y estructura del pitch',            2, null, false),
   ('bootcamp-03', 'bootcamp', 'Fundamentos de SDLC',                                      3, null, false),
   ('bootcamp-04', 'bootcamp', 'Desarrollo con IA y SDD',                                  4, null, false),
   ('bootcamp-05', 'bootcamp', 'Buenas prácticas de seguridad, testing y entregables',     5, null, false)
