@@ -35,7 +35,7 @@ const ITEMS = [
   },
   {
     q: "¿Cuáles son los tracks?",
-    a: "Energía ya está revelado. Los otros dos se anuncian muy pronto. Cada sponsor presenta su reto al cierre del Bootcamp, el 27 de noviembre.",
+    a: "Todavía son un secreto: los tres tracks y sus sponsors se revelan muy pronto. Cada sponsor presenta su reto al cierre del Bootcamp, el 27 de noviembre.",
   },
   {
     q: "¿Y si no vivo en Lima?",

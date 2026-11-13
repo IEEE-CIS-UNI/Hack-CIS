@@ -17,7 +17,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Check, Loader2, TriangleAlert } from "lucide-react";
 import { navegador } from "@/lib/supabase";
-import { CLAVE_BOLETO } from "@/lib/config";
+import { CLAVE_BOLETO, LINKS } from "@/lib/config";
 import { SESIONES } from "@/lib/contenido";
 import { inscripcionHack, type Resumen } from "@/lib/resumen";
 import ElegirClave from "./ElegirClave";
@@ -225,6 +225,21 @@ export default function Bienvenida() {
             <Check className="size-5" aria-hidden /> Ya puedes entrar con tu correo y tu contraseña.
           </p>
         )}
+      </div>
+
+      <div className="box">
+        <p className="box-h">Entra a la comunidad</p>
+        <p className="rg-help" style={{ marginTop: 0 }}>
+          En WhatsApp van los avisos oficiales, y en Discord el material del bootcamp y los canales de la hack.
+        </p>
+        <div className="tc-btns">
+          {LINKS.whatsapp !== "#" && (
+            <a href={LINKS.whatsapp} target="_blank" rel="noopener noreferrer" className="more">WhatsApp <ArrowRight aria-hidden size={14} /></a>
+          )}
+          {LINKS.discord !== "#" && (
+            <a href={LINKS.discord} target="_blank" rel="noopener noreferrer" className="more">Discord <ArrowRight aria-hidden size={14} /></a>
+          )}
+        </div>
       </div>
 
       <div className="rg-actions">

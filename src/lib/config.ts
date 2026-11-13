@@ -13,13 +13,14 @@ export const EVENT = {
 export const registroAbierto = () => Date.now() >= Date.parse(EVENT.registrationOpensAt);
 
 /**
- * Los «#» son los que aún no existen, no un descuido. La interfaz los trata
- * como ausentes: /bienvenida esconde el botón de Discord mientras siga así,
- * en vez de ofrecer un enlace que no lleva a ningún lado.
+ * Un «#» significa que ese enlace todavía no existe, no un descuido. La
+ * interfaz lo trata como ausente: esconde el botón en vez de ofrecer un enlace
+ * que no lleva a ningún lado.
  */
 export const LINKS = {
-  whatsapp: "#",
-  discord: "#",
+  // Comunidades oficiales del evento.
+  whatsapp: "https://chat.whatsapp.com/K2kUuRiNwT80ioQOrtQCwv",
+  discord: "https://discord.gg/tQaSGFYsD",
   // Sin el ?xtok=: ese parámetro es un testigo de quien compartió el enlace,
   // no parte de la dirección del perfil.
   linkedin: "https://www.linkedin.com/company/ieee-cis-uni/",

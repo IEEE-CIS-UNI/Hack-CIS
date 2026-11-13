@@ -56,7 +56,7 @@ function Espera() {
         <Countdown />
       </div>
       <div className="mt-8 flex flex-wrap gap-3">
-        <a href={LINKS.whatsapp} className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-lg font-bold text-ink shadow-[0_0_40px_-5px_rgba(182,156,255,0.8)] transition-all hover:scale-105 hover:bg-lavender">
+        <a href={LINKS.whatsapp} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-lg font-bold text-ink shadow-[0_0_40px_-5px_rgba(182,156,255,0.8)] transition-all hover:scale-105 hover:bg-lavender">
           Unirme al WhatsApp
         </a>
         <Link href="/" className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-transparent px-6 py-3 text-lg font-bold text-white transition-all hover:bg-white/10">

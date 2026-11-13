@@ -87,8 +87,7 @@ export default function BasesPage() {
 
           <Seccion n="03" titulo="Tracks">
             <ul>
-              <li><strong className="text-white">IA &amp; Energía</strong></li>
-              <li>Otros dos tracks, por anunciar.</li>
+              <li>Tres tracks, por anunciar.</li>
             </ul>
             <p>El track se elige al inscribirse y se puede cambiar desde tu ficha hasta el cierre del Bootcamp.</p>
           </Seccion>

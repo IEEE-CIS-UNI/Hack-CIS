@@ -25,7 +25,7 @@ export default function Community() {
         </h2>
         <div style={{ marginTop: 50 }}>
           {CHANNELS.map((c) => (
-            <a key={c.name} className="chan" href={c.href}>
+            <a key={c.name} className="chan" href={c.href} target="_blank" rel="noopener noreferrer">
               <div className="row">
                 <h3>{c.name}</h3>
                 <p>{c.text}</p>

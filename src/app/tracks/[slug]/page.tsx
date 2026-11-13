@@ -4,24 +4,22 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import PageShell from "@/components/PageShell";
-import { ENERGIA } from "@/components/Tracks";
 import UnirseTrack from "@/components/UnirseTrack";
 
-/**
- * Hoy solo Energía está revelado. Cuando se anuncien los otros dos, se suman
- * aquí (y en la tabla `tracks` de la base, con `revealed = true`).
- */
-const TRACKS_PUBLICOS = {
-  energia: {
-    nombre: "Energía",
-    sub: ENERGIA.sub,
-    desc: ENERGIA.desc,
-    tono: ENERGIA.tone,
-    sponsor: ENERGIA.sponsor,
-  },
-} as const;
+type TrackPublico = {
+  nombre: string;
+  sub: string;
+  desc: string;
+  tono: string;
+  sponsor: null | { name: string; url: string; logo: string; width: number; height: number };
+};
 
-type Slug = keyof typeof TRACKS_PUBLICOS;
+/**
+ * Hoy NINGÚN track está revelado, así que esta ruta responde 404 para todos.
+ * Cuando se anuncie uno, se agrega aquí con su ficha (y en la tabla `tracks`
+ * de la base se pone `revealed = true` y se le da su nombre y slug).
+ */
+const TRACKS_PUBLICOS: Record<string, TrackPublico> = {};
 
 export const dynamicParams = false;
 
@@ -31,13 +29,13 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const t = TRACKS_PUBLICOS[slug as Slug];
+  const t = TRACKS_PUBLICOS[slug];
   return { title: `${t?.sub ?? "Track"} · HACK[CIS] UNI 2026`, description: t?.desc };
 }
 
 export default async function TrackPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const t = TRACKS_PUBLICOS[slug as Slug];
+  const t = TRACKS_PUBLICOS[slug];
   if (!t) notFound();
 
   return (

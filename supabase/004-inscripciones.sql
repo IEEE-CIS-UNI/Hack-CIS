@@ -140,8 +140,7 @@ create table if not exists public.tracks (
 comment on column public.tracks.opens_at is 'Viernes 27/11: los equipos eligen track después del pitch de los sponsors.';
 
 insert into public.tracks (slug, name, position, revealed, sponsor_name, sponsor_url, opens_at, closes_at) values
-  ('energia',  'IA & Energía',       1, true,  'Zeia', 'https://zeia.com.pe/',
-     '2026-11-27 00:00:00-05', '2026-11-28 23:59:59-05'),
+  ('pronto-1', 'Track por anunciar', 1, false, null, null, '2026-11-27 00:00:00-05', '2026-11-28 23:59:59-05'),
   ('pronto-2', 'Track por anunciar', 2, false, null, null, '2026-11-27 00:00:00-05', '2026-11-28 23:59:59-05'),
   ('pronto-3', 'Track por anunciar', 3, false, null, null, '2026-11-27 00:00:00-05', '2026-11-28 23:59:59-05')
 on conflict (slug) do nothing;

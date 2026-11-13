@@ -260,6 +260,7 @@ a.sp-chip:hover{opacity:1;transform:translateY(-3px)}
 .sp-chip img{width:auto;height:100%;max-width:100%;object-fit:contain;opacity:1}
 .sp-chip img.sp-mark{height:100%;width:auto;max-width:none;flex:none}
 .sp-chip b{font-family:var(--display);font-weight:700;font-size:1.35rem;letter-spacing:.02em;line-height:1;color:#fff}
+.sp-tier.gen .sp-logos{gap:30px 36px}
 .sp-tier.gen .sp-chip{height:68px}
 .sp-tier.gen .sp-chip.tall{height:100px}
 .sp-tier.sup .sp-logos{gap:14px 30px}

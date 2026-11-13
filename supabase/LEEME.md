@@ -33,7 +33,7 @@ inscripción es una fila de `enrollments`.
 | `people` | una fila por persona; el DNI solo como huella (`dni_hash`) |
 | `offerings` | lo que se puede elegir; la hack tiene `capacity = 250`, el bootcamp no tiene tope |
 | `enrollments` | persona + oferta; en la hack lleva el número de inscrito y el código de Discord |
-| `tracks` | los tracks (Energía y dos por anunciar), con la ventana en que se pueden elegir |
+| `tracks` | los tres tracks (todos por anunciar), con la ventana en que se pueden elegir |
 | `hack_teams`, `hack_team_members` | el equipo (nombre, track, líder) y sus integrantes |
 
 El track ya **no** es de la persona: es del equipo, y lo elige el líder desde

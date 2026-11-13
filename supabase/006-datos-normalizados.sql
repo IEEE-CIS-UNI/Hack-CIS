@@ -469,9 +469,19 @@ left join public.careers c on c.id = p.career_id;
 revoke all on public.hack_roster from public, anon, authenticated;
 grant select on public.hack_roster to service_role;
 
--- ── 6b. Zeia ya no es sponsor del track Energía ────────────────────────────
+-- ── 6b. Los tres tracks vuelven a estar por revelar ─────────────────────────
+-- Zeia ya no es sponsor y no se sabe si el track sigue siendo Energía. Si todavía
+-- no hay equipos con ese track, se renombra; si los hubiera, solo se oculta.
 
-update public.tracks set sponsor_name = null, sponsor_url = null where slug = 'energia';
+update public.tracks set sponsor_name = null, sponsor_url = null, revealed = false, name = 'Track por anunciar'
+ where slug = 'energia';
+do $$
+begin
+  if not exists (select 1 from public.hack_teams where track_slug = 'energia')
+     and not exists (select 1 from public.tracks where slug = 'pronto-1') then
+    update public.tracks set slug = 'pronto-1' where slug = 'energia';
+  end if;
+end $$;
 
 -- ── 7. comprobación ─────────────────────────────────────────────────────────
 

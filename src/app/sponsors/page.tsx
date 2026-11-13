@@ -30,8 +30,7 @@ export default function SponsorsPage() {
       <section className="pg-sec" id="sponsor">
         <h2>Sé sponsor</h2>
         <p>
-          Patrocina un track, plantea tu reto y conoce a quienes lo resuelven. Hay un solo sponsor por track y
-          Energía ya está tomado.
+          Patrocina un track, plantea tu reto y conoce a quienes lo resuelven. Hay un solo sponsor por track.
         </p>
         <p className="pg-kick" style={{ marginTop: 28 }}>
           Qué ofrecemos
