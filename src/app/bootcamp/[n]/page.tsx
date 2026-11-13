@@ -2,11 +2,11 @@ import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays, Clock, Monitor, Play, Ticket } from "lucide-react";
+import { ArrowLeft, ArrowRight, CalendarDays, Clock, Monitor, Play, Ticket } from "lucide-react";
 import BotonInscripcion from "@/components/BotonInscripcion";
 import PageShell from "@/components/PageShell";
 import { SESIONES, sesionPorN } from "@/lib/contenido";
-import { BLOQUES, DATOS_SESION, type Ponente } from "@/lib/sesiones";
+import { BLOQUES, DATOS_SESION } from "@/lib/sesiones";
 
 /** Solo existen las sesiones del catálogo: cualquier otra ruta es 404. */
 export const dynamicParams = false;
@@ -24,21 +24,12 @@ export async function generateMetadata({ params }: { params: Promise<{ n: string
   };
 }
 
-/** Iniciales para el avatar: sin títulos (Mg., Ing.) y como máximo dos letras. */
-const iniciales = (nombre: string) =>
-  nombre
-    .replace(/^(Mg\.|Ing\.)\s+/, "")
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((w) => w[0])
-    .join("")
-    .toUpperCase();
-
-const PENDIENTE: Ponente = {
-  name: "Ponente por anunciar",
-  role: "Se confirmará pronto",
-  bio: "Su biografía aparecerá aquí cuando se confirme.",
-};
+/** Por ahora no se muestran nombres: dos cartillas genéricas hasta confirmar a cada ponente. */
+const PONENTES_POR_ANUNCIAR = [1, 2].map((k) => ({
+  name: `Ponente ${k}`,
+  role: "Próximamente",
+  bio: "Su información se publicará pronto.",
+}));
 
 export default async function SesionPage({ params }: { params: Promise<{ n: string }> }) {
   const { n } = await params;
@@ -50,7 +41,7 @@ export default async function SesionPage({ params }: { params: Promise<{ n: stri
   const i = SESIONES.findIndex((s) => s.n === n);
   const anterior = SESIONES[i - 1];
   const siguiente = SESIONES[i + 1];
-  const ponentes = [...d.ponentes, PENDIENTE, PENDIENTE].slice(0, Math.max(2, d.ponentes.length));
+  const ponentes = PONENTES_POR_ANUNCIAR;
 
   return (
     <PageShell wide>
@@ -85,16 +76,11 @@ export default async function SesionPage({ params }: { params: Promise<{ n: stri
               {ponentes.map((p, k) => (
                 <article key={`${p.name}-${k}`} className="sd-sp">
                   <div className="sd-av" aria-hidden>
-                    <span>{p === PENDIENTE ? "?" : iniciales(p.name)}</span>
+                    <span>?</span>
                   </div>
                   <h3>{p.name}</h3>
                   <p className="sd-role">{p.role}</p>
                   <p className="sd-bio">{p.bio}</p>
-                  {p.href && (
-                    <a href={p.href} target="_blank" rel="noopener noreferrer" className="sd-in" aria-label={`Perfil de LinkedIn de ${p.name}`}>
-                      LinkedIn <ArrowUpRight aria-hidden size={12} />
-                    </a>
-                  )}
                 </article>
               ))}
             </div>
