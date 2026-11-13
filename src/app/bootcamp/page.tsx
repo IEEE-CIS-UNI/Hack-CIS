@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import PageShell from "@/components/PageShell";
+import SesionCard from "@/components/SesionCard";
 import { SESIONES } from "@/lib/contenido";
 
 export const metadata: Metadata = {
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function BootcampPage() {
   return (
-    <PageShell>
+    <PageShell wide>
       <p className="pg-kick">Bootcamp</p>
       <h1 className="pg-title">
         Una semana para
@@ -28,23 +29,11 @@ export default function BootcampPage() {
       <section className="pg-sec">
         <h2>Los temas</h2>
         <p>Cada uno apunta a algo concreto que vas a necesitar durante las 100 horas del build.</p>
-        <ul className="pg-list">
-          {SESIONES.map((t) => {
-            const Icon = t.icon;
-            return (
-              <li key={t.slug}>
-                <Icon aria-hidden strokeWidth={1.6} />
-                <div style={{ flex: 1 }}>
-                  <h3>{t.title}</h3>
-                  <p>{t.detalle}</p>
-                  <Link href={`/bootcamp/${t.n}`} className="more" style={{ marginTop: 14, padding: "9px 18px" }}>
-                    Ver sesión e inscribirme <ArrowRight aria-hidden size={14} />
-                  </Link>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+        <div className="sc-grid">
+          {SESIONES.map((t) => (
+            <SesionCard key={t.slug} s={t} />
+          ))}
+        </div>
       </section>
 
       <section className="pg-sec">

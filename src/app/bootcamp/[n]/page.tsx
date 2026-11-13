@@ -1,10 +1,12 @@
+import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays, Clock, Monitor, Play, Ticket, UserRound } from "lucide-react";
 import BotonInscripcion from "@/components/BotonInscripcion";
 import PageShell from "@/components/PageShell";
 import { SESIONES, sesionPorN } from "@/lib/contenido";
+import { BLOQUES, DATOS_SESION, type Ponente } from "@/lib/sesiones";
 
 /** Solo existen las sesiones del catálogo: cualquier otra ruta es 404. */
 export const dynamicParams = false;
@@ -22,48 +24,139 @@ export async function generateMetadata({ params }: { params: Promise<{ n: string
   };
 }
 
+const PENDIENTE: Ponente = {
+  name: "Ponente por anunciar",
+  role: "Se confirmará pronto",
+  bio: "Su biografía aparecerá aquí cuando se confirme.",
+};
+
 export default async function SesionPage({ params }: { params: Promise<{ n: string }> }) {
   const { n } = await params;
   const sesion = sesionPorN(n);
   if (!sesion) notFound();
 
+  const d = DATOS_SESION[sesion.n];
   const Icono = sesion.icon;
-  const siguiente = SESIONES[SESIONES.findIndex((s) => s.n === n) + 1];
+  const i = SESIONES.findIndex((s) => s.n === n);
+  const anterior = SESIONES[i - 1];
+  const siguiente = SESIONES[i + 1];
+  const ponentes = [...d.ponentes, PENDIENTE, PENDIENTE].slice(0, Math.max(2, d.ponentes.length));
 
   return (
-    <PageShell>
-      <p className="pg-kick">Bootcamp · sesión {sesion.n}</p>
-      <h1 className="pg-title" style={{ fontSize: "clamp(2.4rem,10vw,5.2rem)" }}>{sesion.title}</h1>
-      <p className="pg-lead">{sesion.detalle}</p>
+    <PageShell wide>
+      <div className="sd" style={{ "--tone": d.tone, "--tone2": d.tone2 } as CSSProperties}>
+        <Link href="/bootcamp" className="sd-back">
+          <ArrowLeft aria-hidden size={14} /> Todas las sesiones
+        </Link>
 
-      <p className="pg-chip">23 al 27 de noviembre · virtual · abierto a todos</p>
+        {/* Título y subtítulo */}
+        <p className="pg-kick">Bootcamp · sesión {sesion.n}</p>
+        <h1 className="pg-title sd-title">{sesion.title}</h1>
+        <p className="pg-lead">{sesion.detalle}</p>
 
-      <section className="pg-sec" style={{ marginTop: 40 }}>
-        <div className="box" style={{ display: "flex", gap: 18, alignItems: "flex-start" }}>
-          <Icono aria-hidden strokeWidth={1.6} style={{ width: 34, height: 34, flex: "none", color: "var(--lav)" }} />
-          <div style={{ flex: 1 }}>
-            <p className="box-h" style={{ marginBottom: 10 }}>Inscríbete</p>
+        {/* Ponentes (izquierda) y temática (derecha) */}
+        <div className="sd-row">
+          <section aria-labelledby="sd-sp">
+            <h2 id="sd-sp" className="sd-h">Quiénes lo dictan</h2>
+            <div className="sd-speakers">
+              {ponentes.map((p, k) => (
+                <article key={`${p.name}-${k}`} className="sd-sp">
+                  <div className="sd-av" aria-hidden>
+                    <UserRound strokeWidth={1.4} />
+                  </div>
+                  <h3>{p.name}</h3>
+                  <p className="sd-role">{p.role}</p>
+                  <p className="sd-bio">{p.bio}</p>
+                  {p.href && (
+                    <a href={p.href} target="_blank" rel="noopener noreferrer" className="sd-in" aria-label={`Perfil de LinkedIn de ${p.name}`}>
+                      LinkedIn <ArrowUpRight aria-hidden size={12} />
+                    </a>
+                  )}
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="sd-about" aria-labelledby="sd-ab">
+            <h2 id="sd-ab" className="sd-h">De qué va</h2>
+            <div className="sd-ic">
+              <Icono aria-hidden strokeWidth={1.6} />
+            </div>
+            <p className="sd-desc">{d.resumen}</p>
+            <ul className="sd-topics">
+              {d.ideas.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
             <BotonInscripcion slug={sesion.slug} n={sesion.n} />
-          </div>
+          </section>
         </div>
-      </section>
 
-      <section className="pg-sec">
-        <h2>Cómo funciona</h2>
-        <ul className="pg-dots">
-          <li><b>Es gratis</b> y está abierto a cualquier persona, participes o no en la hackathon.</li>
-          <li><b>Quienes están en la hackathon</b> también pueden entrar: se inscriben con un clic desde su panel.</li>
-          <li><b>El horario y el enlace</b> de la sesión se publican aquí, y solo los ven los inscritos.</li>
-        </ul>
-      </section>
+        {/* Información práctica */}
+        <section className="sd-info" aria-label="Información de la sesión">
+          <div>
+            <CalendarDays aria-hidden size={18} />
+            <span className="hud">Fecha</span>
+            <b>{d.fecha}</b>
+          </div>
+          <div>
+            <Clock aria-hidden size={18} />
+            <span className="hud">Hora</span>
+            <b>Por confirmar</b>
+          </div>
+          <div>
+            <Monitor aria-hidden size={18} />
+            <span className="hud">Modalidad</span>
+            <b>Virtual</b>
+          </div>
+          <div>
+            <Ticket aria-hidden size={18} />
+            <span className="hud">Acceso</span>
+            <b>Gratis y abierto a todos</b>
+          </div>
+          <p>El horario y el enlace de la sesión se publican aquí, y solo los ven las personas inscritas.</p>
+        </section>
 
-      <div className="pg-cta">
-        <Link href="/bootcamp" className="more"><ArrowLeft aria-hidden size={14} /> Todas las sesiones</Link>
-        {siguiente && (
-          <Link href={`/bootcamp/${siguiente.n}`} className="more">
-            Sesión {siguiente.n} <ArrowRight aria-hidden size={14} />
-          </Link>
-        )}
+        {/* Estructura interna de la sesión (izquierda) y video (derecha) */}
+        <div className="sd-row sd-row2">
+          <section aria-labelledby="sd-tl">
+            <h2 id="sd-tl" className="sd-h">Cómo se desarrolla la sesión</h2>
+            <ol className="sd-tl">
+              {BLOQUES.map((b) => (
+                <li key={b.title}>
+                  <span className="sd-when">{b.title}</span>
+                  <h3>Por definir</h3>
+                  <p>{b.desc}</p>
+                </li>
+              ))}
+            </ol>
+          </section>
+
+          <section aria-labelledby="sd-vd">
+            <h2 id="sd-vd" className="sd-h">Mírala en YouTube</h2>
+            {/* Reemplazar por el enlace o el reproductor cuando el video esté disponible. */}
+            <div className="sd-video" role="img" aria-label="Video de la sesión, próximamente">
+              <span className="sd-play">
+                <Play aria-hidden fill="currentColor" />
+              </span>
+              <span className="hud">Próximamente</span>
+              <small>El canal de CIS publicará la sesión aquí.</small>
+            </div>
+          </section>
+        </div>
+
+        <div className="pg-cta">
+          {anterior && (
+            <Link href={`/bootcamp/${anterior.n}`} className="more">
+              <ArrowLeft aria-hidden size={14} /> Sesión {anterior.n}
+            </Link>
+          )}
+          {siguiente && (
+            <Link href={`/bootcamp/${siguiente.n}`} className="more">
+              Sesión {siguiente.n} <ArrowRight aria-hidden size={14} />
+            </Link>
+          )}
+        </div>
       </div>
     </PageShell>
   );
