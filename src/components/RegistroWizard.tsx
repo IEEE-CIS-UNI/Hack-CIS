@@ -24,12 +24,13 @@
  * obligue a empezar de nuevo. El DNI nunca entra en ese borrador.
  */
 
+import SelectorCarrera from "@/components/SelectorCarrera";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Check, Loader2, Mail, TriangleAlert, X } from "lucide-react";
 import { CLAVE_BOLETO, EVENT } from "@/lib/config";
 import { SESIONES } from "@/lib/contenido";
-import { CICLOS, SLUG_OTRA, limpiarCarrera, porArea, type Carrera } from "@/lib/carreras";
+import { CICLOS, SLUG_OTRA, limpiarCarrera, type Carrera } from "@/lib/carreras";
 import { ORIGENES, normalizarDiscord, normalizarGithub, normalizarLinkedin } from "@/lib/contacto";
 import { navegador } from "@/lib/supabase";
 import { PAISES, PAIS_POR_DEFECTO, normalizarTelefono } from "@/lib/telefono";
@@ -547,22 +548,9 @@ export default function RegistroWizard() {
       )}
 
       {actual === "carrera" && (
-        <Pregunta titulo={<>¿Qué <span>estudias</span>?</>} ayuda="Elige tu carrera de la lista. Si no está, marca «Otra carrera» y escríbela.">
+        <Pregunta titulo={<>¿Qué <span>estudias</span>?</>} ayuda="Escribe unas letras y elige tu carrera de la lista. Si no está, elige «Otra carrera» y escríbela.">
           <label className="rg-lbl" htmlFor="rg-carrera">Carrera</label>
-          <select
-            id="rg-carrera"
-            value={carreraId}
-            onChange={(e) => setCarreraId(e.target.value)}
-            className="rg-sel"
-            style={{ width: "100%" }}
-          >
-            <option value="">Elige tu carrera…</option>
-            {porArea(carreras).map(([area, lista]) => (
-              <optgroup key={area} label={area}>
-                {lista.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-              </optgroup>
-            ))}
-          </select>
+          <SelectorCarrera id="rg-carrera" carreras={carreras} valor={carreraId} alElegir={setCarreraId} />
           {carreras.length === 0 && <p className="rg-msg" style={{ marginTop: 10 }}>Cargando la lista…</p>}
           {esOtra && (
             <div style={{ marginTop: 22 }}>

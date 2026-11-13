@@ -401,6 +401,16 @@ body{-webkit-font-smoothing:antialiased}
 .rg-sel{background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.18);border-radius:12px;padding:12px;color:#fff;font-weight:600;outline:none}
 .rg-sel:focus{border-color:var(--lav)}
 .rg-sel option{background:#120a24;color:#fff}
+.cs{position:relative}
+.cs-in{padding-right:84px;text-overflow:ellipsis}
+.cs-cambiar{position:absolute;right:0;top:4px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:999px;color:var(--mist);font:600 .78rem var(--body);padding:6px 12px;cursor:pointer}
+.cs-lista{margin-top:10px;max-height:min(46vh,380px);overflow-y:auto;overscroll-behavior:contain;border:2px solid rgba(182,156,255,.35);border-radius:16px;background:rgba(18,10,36,.96);padding:6px 6px 10px;box-shadow:0 18px 40px rgba(0,0,0,.45)}
+.cs-area{margin:10px 10px 4px;font:400 .66rem/1 var(--mono,'Michroma',sans-serif);letter-spacing:.2em;text-transform:uppercase;color:var(--lav)}
+.cs-op{display:block;width:100%;text-align:left;background:transparent;border:0;border-radius:10px;padding:12px 12px;color:#fff;font:600 1rem/1.25 var(--body);cursor:pointer}
+.cs-op.on{background:rgba(122,44,245,.35)}
+.cs-op.sel::after{content:"✓";float:right;color:var(--cyan,#4de3ff)}
+.cs-vacio{padding:14px 12px;color:var(--mist);font-size:.95rem}
+
 .rg-tel{display:flex;gap:12px;align-items:flex-end}
 .rg-foot{display:flex;gap:12px;align-items:flex-start;min-height:4.4rem;padding-top:14px}
 .rg-msg{font-size:.95rem;color:var(--mist)}

@@ -17,12 +17,13 @@
  * ni una que se pueda filtrar.
  */
 
+import SelectorCarrera from "@/components/SelectorCarrera";
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Check, Loader2, LogIn, LogOut, Mail } from "lucide-react";
 import { navegador, urlDelSitio } from "@/lib/supabase";
 import { SESIONES } from "@/lib/contenido";
-import { CICLOS, SLUG_OTRA, porArea, type Carrera } from "@/lib/carreras";
+import { CICLOS, SLUG_OTRA, type Carrera } from "@/lib/carreras";
 import { api, estaEn, inscripcionHack, numeroBonito, type Resumen } from "@/lib/resumen";
 import { PAISES, PAIS_POR_DEFECTO, formatearE164, normalizarTelefono, paisPorCodigo } from "@/lib/telefono";
 import ElegirClave from "./ElegirClave";
@@ -436,14 +437,7 @@ export default function MiInscripcion() {
             <>
               <div>
                 <label className="rg-lbl" htmlFor="mi-carrera">Carrera</label>
-                <select id="mi-carrera" value={carreraId} onChange={(e) => setCarreraId(e.target.value)} className="rg-sel" style={{ width: "100%" }}>
-                  <option value="">Elige tu carrera…</option>
-                  {porArea(carreras).map(([area, lista]) => (
-                    <optgroup key={area} label={area}>
-                      {lista.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-                    </optgroup>
-                  ))}
-                </select>
+                <SelectorCarrera id="mi-carrera" carreras={carreras} valor={carreraId} alElegir={setCarreraId} />
                 {carreras.find((c) => String(c.id) === carreraId)?.slug === SLUG_OTRA && (
                   <input value={carreraOtra} onChange={(e) => setCarreraOtra(e.target.value.slice(0, 60))} placeholder="¿Cuál es tu carrera?" aria-label="Otra carrera" className="rg-input" style={{ marginTop: 14 }} />
                 )}
