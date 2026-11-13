@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays, Clock, Monitor, Play, Ticket, UserRound } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays, Clock, Monitor, Play, Ticket } from "lucide-react";
 import BotonInscripcion from "@/components/BotonInscripcion";
 import PageShell from "@/components/PageShell";
 import { SESIONES, sesionPorN } from "@/lib/contenido";
@@ -23,6 +23,16 @@ export async function generateMetadata({ params }: { params: Promise<{ n: string
     description: s?.text,
   };
 }
+
+/** Iniciales para el avatar: sin títulos (Mg., Ing.) y como máximo dos letras. */
+const iniciales = (nombre: string) =>
+  nombre
+    .replace(/^(Mg\.|Ing\.)\s+/, "")
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase();
 
 const PENDIENTE: Ponente = {
   name: "Ponente por anunciar",
@@ -45,9 +55,22 @@ export default async function SesionPage({ params }: { params: Promise<{ n: stri
   return (
     <PageShell wide>
       <div className="sd" style={{ "--tone": d.tone, "--tone2": d.tone2 } as CSSProperties}>
-        <Link href="/bootcamp" className="sd-back">
-          <ArrowLeft aria-hidden size={14} /> Todas las sesiones
-        </Link>
+        <span className="sd-wm" aria-hidden>
+          {sesion.n}
+        </span>
+
+        <div className="sd-bar">
+          <Link href="/bootcamp" className="sd-back">
+            <ArrowLeft aria-hidden size={14} /> Todas las sesiones
+          </Link>
+          <nav className="sd-steps" aria-label="Sesiones del bootcamp">
+            {SESIONES.map((x) => (
+              <Link key={x.n} href={`/bootcamp/${x.n}`} aria-current={x.n === sesion.n ? "page" : undefined} aria-label={`Sesión ${x.n}`}>
+                {x.n}
+              </Link>
+            ))}
+          </nav>
+        </div>
 
         {/* Título y subtítulo */}
         <p className="pg-kick">Bootcamp · sesión {sesion.n}</p>
@@ -62,7 +85,7 @@ export default async function SesionPage({ params }: { params: Promise<{ n: stri
               {ponentes.map((p, k) => (
                 <article key={`${p.name}-${k}`} className="sd-sp">
                   <div className="sd-av" aria-hidden>
-                    <UserRound strokeWidth={1.4} />
+                    <span>{p === PENDIENTE ? "?" : iniciales(p.name)}</span>
                   </div>
                   <h3>{p.name}</h3>
                   <p className="sd-role">{p.role}</p>

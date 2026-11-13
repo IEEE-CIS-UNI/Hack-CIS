@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import PageShell from "@/components/PageShell";
+import SemanaStrip from "@/components/SemanaStrip";
 import SesionCard from "@/components/SesionCard";
 import { SESIONES } from "@/lib/contenido";
 
@@ -25,6 +26,8 @@ export default function BootcampPage() {
       </p>
       <p className="pg-when">23–27</p>
       <span className="pg-chip">noviembre · virtual · abierto a todos</span>
+
+      <SemanaStrip />
 
       <section className="pg-sec">
         <h2>Los temas</h2>
