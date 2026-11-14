@@ -24,6 +24,7 @@
  * obligue a empezar de nuevo. El DNI nunca entra en ese borrador.
  */
 
+import { evento } from "@/lib/metricas";
 import SelectorCarrera from "@/components/SelectorCarrera";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -181,6 +182,9 @@ export default function RegistroWizard() {
       ];
   const actual = pasos[paso] ?? "plan";
 
+  // Embudo: en qué paso está la gente (sin datos personales).
+  useEffect(() => { evento("registro_paso", { paso: actual }); }, [actual]);
+
   // Lo que trae el enlace (plan y sesión) y si ya hay una cuenta abierta.
   // Se hace después del primer pintado para no discrepar con el servidor.
   useEffect(() => {
@@ -299,6 +303,7 @@ export default function RegistroWizard() {
         linkedin, github, discord, origen, sponsors,
       });
       if (datos.ok) {
+        evento("registro_enviado", { plan: plan ?? "ninguno" });
         try {
           localStorage.removeItem(BORRADOR);
           // Lo recoge /bienvenida al volver del correo. Va firmado por el
