@@ -8,7 +8,8 @@
  * Formato 1080×1350, que es el retrato de Instagram y el que menos recorta
  * cuando se sube a cualquier otro lado.
  *
- * Con foto: la foto en un círculo y el nombre debajo. Sin foto: el nombre
+ * Con foto: la foto ocupa de la mitad hacia arriba y se disuelve hacia abajo,
+ * y el nombre se apoya donde ya se fue. Sin foto: el nombre
  * (primer nombre y primer apellido) ocupa el centro, grande, con la sombra
  * apilada del título del sitio.
  */
@@ -123,11 +124,16 @@ export async function dibujarBanner(datos: DatosBanner): Promise<Blob | null> {
   }
   ctx.globalAlpha = 1;
 
+  const img = datos.foto ? await cargarImagen(datos.foto, !datos.foto.startsWith("blob:") && !datos.foto.startsWith("data:")) : null;
+
   // ── la escena: cohete y robot, abajo ──
   const escena = await cargarImagen("/scene.webp", false);
   if (escena) {
     const alto = (escena.height / escena.width) * ANCHO;
-    ctx.drawImage(escena, 0, ALTO - alto + 70, ANCHO, alto);
+    // Con foto, la escena baja y se atenúa: el texto va encima y debe leerse.
+    ctx.globalAlpha = img ? 0.4 : 1;
+    ctx.drawImage(escena, 0, ALTO - alto + (img ? 110 : 70), ANCHO, alto);
+    ctx.globalAlpha = 1;
   }
   const velo = ctx.createLinearGradient(0, ALTO - 520, 0, ALTO);
   velo.addColorStop(0, "rgba(8,3,15,0)");
@@ -135,6 +141,49 @@ export async function dibujarBanner(datos: DatosBanner): Promise<Blob | null> {
   velo.addColorStop(1, "rgba(8,3,15,0.9)");
   ctx.fillStyle = velo;
   ctx.fillRect(0, ALTO - 520, ANCHO, 520);
+
+  // ── la foto: ocupa de la mitad hacia arriba y se disuelve hacia abajo ──
+  if (img) {
+    const H = 980;
+    const capa = document.createElement("canvas");
+    capa.width = ANCHO;
+    capa.height = H;
+    const c2 = capa.getContext("2d");
+    if (c2) {
+      // «cover»: llena todo el ancho sin deformar, y sube un poco el encuadre
+      // porque en un retrato la cara queda en el tercio de arriba.
+      const k = Math.max(ANCHO / img.width, H / img.height);
+      const w = img.width * k, h = img.height * k;
+      c2.drawImage(img, (ANCHO - w) / 2, -(h - H) * 0.28, w, h);
+      // Máscara: opaca arriba, transparente abajo; lo que hay detrás (estrellas,
+      // nebulosa, escena) aparece donde la foto se va.
+      c2.globalCompositeOperation = "destination-in";
+      const m = c2.createLinearGradient(0, 0, 0, H);
+      m.addColorStop(0, "rgba(0,0,0,1)");
+      m.addColorStop(0.42, "rgba(0,0,0,1)");
+      m.addColorStop(0.66, "rgba(0,0,0,0.6)");
+      m.addColorStop(0.86, "rgba(0,0,0,0.16)");
+      m.addColorStop(1, "rgba(0,0,0,0)");
+      c2.fillStyle = m;
+      c2.fillRect(0, 0, ANCHO, H);
+      c2.globalCompositeOperation = "source-over";
+      ctx.drawImage(capa, 0, 0);
+
+      // Tinte violeta que crece hacia abajo, para que la foto sea de la marca.
+      const tinte = ctx.createLinearGradient(0, 260, 0, H);
+      tinte.addColorStop(0, "rgba(77,23,194,0)");
+      tinte.addColorStop(0.55, "rgba(77,23,194,0.36)");
+      tinte.addColorStop(1, "rgba(77,23,194,0)");   // termina en cero: sin borde duro
+      ctx.fillStyle = tinte;
+      ctx.fillRect(0, 260, ANCHO, H - 260);
+    }
+    // Sombra arriba, para que «HACK[CIS]» se lea sobre cualquier foto.
+    const arriba = ctx.createLinearGradient(0, 0, 0, 300);
+    arriba.addColorStop(0, "rgba(8,3,15,0.7)");
+    arriba.addColorStop(1, "rgba(8,3,15,0)");
+    ctx.fillStyle = arriba;
+    ctx.fillRect(0, 0, ANCHO, 300);
+  }
 
   // ── cabecera: el nombre del evento, con UNI 2026 debajo, centrado ──
   ctx.textAlign = "center";
@@ -156,46 +205,26 @@ export async function dibujarBanner(datos: DatosBanner): Promise<Blob | null> {
   // ── el anuncio ──
   ctx.fillStyle = "#4de3ff";
   ctx.font = `22px ${michroma}`;
-  ctx.fillText("Y A   E S T O Y   D E N T R O", ANCHO / 2, 275);
+  ctx.fillText("Y A   E S T O Y   D E N T R O", ANCHO / 2, img ? 668 : 275);
 
   const partes = datos.nombre.trim().toUpperCase().split(/\s+/);
   const nombre = partes[0] ?? "";
   const apellido = partes.slice(1).join(" ");
-  const img = datos.foto ? await cargarImagen(datos.foto, !datos.foto.startsWith("blob:") && !datos.foto.startsWith("data:")) : null;
-
   let y: number;
 
   if (img) {
-    // ── con foto: círculo y nombre debajo ──
-    const c = { x: ANCHO / 2, y: 485, r: 150 };
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
-    ctx.clip();
-    // Recorte cuadrado centrado: la foto llena el círculo sin deformarse.
-    const lado = Math.min(img.width, img.height);
-    ctx.drawImage(img, (img.width - lado) / 2, (img.height - lado) / 2, lado, lado,
-      c.x - c.r, c.y - c.r, c.r * 2, c.r * 2);
-    ctx.restore();
-
-    ctx.strokeStyle = "#b69cff";
-    ctx.lineWidth = 8;
-    ctx.beginPath();
-    ctx.arc(c.x, c.y, c.r + 6, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.strokeStyle = "rgba(122,44,245,0.9)";
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.arc(c.x, c.y, c.r + 22, 0, Math.PI * 2);
-    ctx.stroke();
-
+    // ── con foto: el nombre se apoya donde la foto ya se disolvió ──
     ctx.fillStyle = "#ffffff";
-    const px = ajustar(ctx, nombre, (p) => `700 ${p}px ${antonio}`, ANCHO - 140, 112, 70);
-    ctx.fillText(nombre, ANCHO / 2, 725);
+    ctx.shadowColor = "rgba(8,3,15,0.65)";
+    ctx.shadowBlur = 24;
+    const px = ajustar(ctx, nombre, (p) => `700 ${p}px ${antonio}`, ANCHO - 140, 150, 80);
+    ctx.fillText(nombre, ANCHO / 2, 815);
     ctx.fillStyle = "#b69cff";
     ctx.font = `700 ${Math.round(px * 0.62)}px ${antonio}`;
-    ctx.fillText(apellido, ANCHO / 2, 725 + Math.round(px * 0.68));
-    y = 725 + Math.round(px * 0.68) + 56;
+    ctx.fillText(apellido, ANCHO / 2, 815 + Math.round(px * 0.68));
+    ctx.shadowBlur = 0;
+    ctx.shadowColor = "transparent";
+    y = 815 + Math.round(px * 0.68) + 62;
   } else {
     // ── sin foto: el nombre es la card ──
     const px = ajustar(ctx, nombre, (p) => `700 ${p}px ${antonio}`, ANCHO - 200, 280, 110);
