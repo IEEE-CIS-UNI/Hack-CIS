@@ -279,11 +279,14 @@ export function metadatosValidos(m: unknown): m is Inscripcion {
     d.sesiones.every((s) => typeof s === "string" && validas.has(s)) &&
     (!incluyeBootcamp(plan) || d.sesiones.length > 0);
 
+  // Ojo: Supabase borra del metadato las claves que valen null (por ejemplo
+  // `career_other` o `phone` vacíos), así que «falta» y «null» significan lo mismo.
+  // Exigir `=== null` rechazaba a quien abría el correo en otro navegador, sin boleto.
   const base =
     sesionesOk &&
     typeof d.name === "string" && d.name.length > 0 &&
     typeof d.email === "string" && d.email.includes("@") &&
-    (d.phone === null || (typeof d.phone === "string" && /^\+\d{8,15}$/.test(d.phone))) &&
+    (d.phone == null || (typeof d.phone === "string" && /^\+\d{8,15}$/.test(d.phone))) &&
     [d.linkedin_url, d.github_url, d.discord_username, d.heard_from].every((x) => x === null || x === undefined || typeof x === "string");
   if (!base) return false;
 
@@ -292,8 +295,8 @@ export function metadatosValidos(m: unknown): m is Inscripcion {
   return (
     typeof d.dni_hash === "string" && d.dni_hash.startsWith("sha256:") &&
     typeof d.career_id === "number" && Number.isInteger(d.career_id) &&
-    (d.career_other === null || typeof d.career_other === "string") &&
+    (d.career_other == null || typeof d.career_other === "string") &&
     typeof d.cycle === "number" && d.cycle >= 1 && d.cycle <= 10 &&
-    (d.level === null || NIVELES.includes(d.level as Nivel))
+    (d.level == null || NIVELES.includes(d.level as Nivel))
   );
 }

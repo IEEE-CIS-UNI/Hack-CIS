@@ -104,7 +104,16 @@ export default function MiInscripcion() {
         cargarEnFormulario(datos.resumen);
         setVista({ fase: "ficha", resumen: datos.resumen });
       } else if ((datos as { sinInscripcion?: boolean }).sinInscripcion) {
-        setVista({ fase: "sinInscripcion" });
+        // Confirmó el correo pero la inscripción no llegó a guardarse (por ejemplo,
+        // abrió el enlace en otro navegador). Los datos siguen en su cuenta:
+        // se completa ahora, sin hacerle llenar nada otra vez.
+        const { datos: c } = await api("/api/completar", { metodo: "POST", token: acceso, cuerpo: {} });
+        if (c.ok && c.resumen) {
+          cargarEnFormulario(c.resumen);
+          setVista({ fase: "ficha", resumen: c.resumen });
+        } else {
+          setVista({ fase: "sinInscripcion" });
+        }
       } else {
         setVista({ fase: "sinSesion" });
       }

@@ -62,12 +62,12 @@ export async function POST(req: Request) {
   if (hayDatos) {
     const { error } = await sb.rpc("register_person", {
       p: {
-        name: meta.name, display_name: meta.display_name, phone: meta.phone, dni_hash: meta.dni_hash,
-        career_id: meta.career_id, career_other: meta.career_other, cycle: meta.cycle, level: meta.level,
+        name: meta.name, display_name: meta.display_name, phone: meta.phone ?? null, dni_hash: meta.dni_hash ?? null,
+        career_id: meta.career_id ?? null, career_other: meta.career_other ?? null, cycle: meta.cycle ?? null, level: meta.level ?? null,
         linkedin_url: meta.linkedin_url ?? null, github_url: meta.github_url ?? null,
         discord_username: meta.discord_username ?? null, heard_from: meta.heard_from ?? null,
         sponsors_consent: meta.sponsors_consent === true,
-        affiliation: meta.affiliation,
+        affiliation: meta.affiliation ?? null,
       },
     });
     if (error) {
