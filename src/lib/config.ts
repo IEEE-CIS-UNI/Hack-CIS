@@ -53,3 +53,6 @@ export const HELP_VIDEO_URL =
  * /bienvenida, por eso vive aqui y no dentro de ninguno de los dos.
  */
 export const CLAVE_BOLETO = "cishack-boleto-v1";
+
+/** Donde escribe quien necesita ayuda con su inscripción (p. ej. cambiar de correo). */
+export const CORREO_CIS = "ieee.cis@uni.edu.pe";

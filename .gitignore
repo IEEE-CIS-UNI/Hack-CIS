@@ -45,3 +45,6 @@ next-env.d.ts
 
 # video de la guía de inscripción (pesa; se comparte por YouTube)
 /marca/video/
+
+# respaldos del script de cambio de correo (datos personales)
+/scripts/.respaldos/

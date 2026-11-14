@@ -115,3 +115,7 @@ Las mismas tienen que estar en local (`.env`) y en Vercel:
 | `DNI_PEPPER` | sal del hash del DNI | **si cambia, los hashes guardados dejan de cuadrar** |
 | `INSCRIPCION_SECRETO` | firma del boleto | si cambia, los boletos en vuelo se invalidan |
 | `NEXT_PUBLIC_SITE_URL` | a dónde vuelve el correo y la imagen para compartir | `https://hackcis.lat` en producción |
+
+## `008-sumarse-a-la-hack.sql`
+
+Crea `join_hack`: quien ya tiene cuenta con **correo institucional** (por ejemplo, entró solo al bootcamp) completa DNI, carrera y ciclo y queda inscrito en la hack en un solo paso; si el cupo se llenó, no se guarda nada. Quien tiene otro correo no puede: se le cambia a mano con `node scripts/cambiar-correo.mjs` (ensayo por defecto; `--aplicar` para confirmar).

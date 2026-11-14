@@ -47,7 +47,7 @@ const PLANES: { id: Plan; titulo: string; desc: string; marca?: string }[] = [
     desc: "La hackathon (hasta 250 cupos) y el bootcamp, que es parte de la experiencia: eliges las sesiones que quieras.",
     marca: "Recomendado",
   },
-  { id: "bootcamp", titulo: "Solo bootcamp", desc: "Abierto a todos: sin DNI ni correo institucional. Eliges las sesiones." },
+  { id: "bootcamp", titulo: "Solo bootcamp", desc: "Abierto a todos: sin DNI ni correo institucional. Eliges las sesiones. Si luego quieres la hack, necesitarás tu correo institucional y tu DNI." },
 ];
 
 const NIVELES = ["Principiante", "Intermedio", "Avanzado", "Experto"] as const;
@@ -357,7 +357,7 @@ export default function RegistroWizard() {
         <p className="rg-step">Ya estás dentro</p>
         <h1 className="rg-q">Tienes<br /><span>cuenta</span></h1>
         <p className="rg-help">
-          Desde tu panel puedes inscribirte a la hackathon o a las sesiones del bootcamp que te falten.
+          Desde tu panel puedes sumar las sesiones del bootcamp que te falten y, si tu correo es institucional, inscribirte a la hackathon.
         </p>
         <div className="rg-actions">
           <Link href="/mi-inscripcion" className="more solid">Ir a mi panel <ArrowRight aria-hidden size={14} /></Link>
@@ -492,7 +492,7 @@ export default function RegistroWizard() {
           titulo={conHack ? <>¿Tu correo<br /><span>institucional</span>?</> : <>¿Cuál es<br />tu <span>correo</span>?</>}
           ayuda={conHack
             ? "El que te dio tu universidad o instituto. Te llegará ahí el enlace para confirmar."
-            : "Puede ser cualquiera. Te llegará ahí el enlace para confirmar."}
+            : "Te llegará ahí el enlace para confirmar. Si más adelante quieres sumarte a la hack, usa tu correo institucional: te pedirá tu DNI y unos datos más."}
         >
           <input
             ref={campoRef}

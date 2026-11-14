@@ -28,6 +28,7 @@ import { api, estaEn, inscripcionHack, numeroBonito, type Resumen } from "@/lib/
 import { PAISES, PAIS_POR_DEFECTO, formatearE164, normalizarTelefono, paisPorCodigo } from "@/lib/telefono";
 import ElegirClave from "./ElegirClave";
 import TarjetaHack from "./TarjetaHack";
+import SumarseHack from "./SumarseHack";
 
 const NIVELES = ["Principiante", "Intermedio", "Avanzado", "Experto"] as const;
 
@@ -339,7 +340,21 @@ export default function MiInscripcion() {
         </div>
       )}
 
-      <div className="box" style={{ marginTop: hack ? 18 : 26 }}>
+      {!hack && !p.verified && token && (
+        <div style={{ marginTop: 26 }}>
+          <SumarseHack
+            persona={p}
+            token={token}
+            carreras={carreras}
+            alListo={(nuevo) => {
+              setVista({ fase: "ficha", resumen: nuevo });
+              setAvisoInsc({ tipo: "ok", texto: "¡Listo! Ya estás inscrito en la hackathon." });
+            }}
+          />
+        </div>
+      )}
+
+      <div className="box" style={{ marginTop: hack || (!p.verified && token) ? 18 : 26 }}>
         <p className="box-h">Mis inscripciones</p>
         <ul className="rows">
           <li>
@@ -348,7 +363,7 @@ export default function MiInscripcion() {
               <small>
                 {hack
                   ? `Inscrito n.º ${numeroBonito(hack.number)} · 30 nov – 5 dic`
-                  : p.verified ? "30 nov – 5 dic · 250 cupos" : "Necesita correo institucional y DNI verificado"}
+                  : p.verified ? "30 nov – 5 dic · 250 cupos" : p.institution ? "Completa los datos de arriba para sumarte" : "Necesita correo institucional: mira arriba"}
               </small>
             </div>
             {hack ? (
