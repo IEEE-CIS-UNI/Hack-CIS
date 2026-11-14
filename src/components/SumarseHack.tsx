@@ -43,8 +43,8 @@ export default function SumarseHack({
     const cuerpo =
       `Hola, me inscribí en HACK[CIS] UNI 2026 con este correo: ${p.email}\n` +
       `Quiero participar en la hackathon, así que quiero cambiar a mi correo institucional.\n\n` +
-      `Mi correo institucional: \nMi DNI: \n\n` +
-      `El resto de mi perfil (carrera y ciclo) lo completo después desde mi panel. ¡Gracias!`;
+      `Mi correo institucional: \n\n` +
+      `Mi DNI y el resto de mi perfil (carrera y ciclo) los completo después desde mi panel. ¡Gracias!`;
     const enlace = `mailto:${CORREO_CIS}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
     return (
       <div className="box">
@@ -52,8 +52,8 @@ export default function SumarseHack({
         <p className="rg-help" style={{ marginTop: 0 }}>
           La hackathon pide correo institucional (de tu universidad o instituto), y te inscribiste con <strong>{p.email}</strong>.
           Sin problema: escríbenos <strong>desde ese mismo correo</strong> a <strong>{CORREO_CIS}</strong> con el asunto
-          «{asunto}», y cuéntanos tu correo institucional y tu DNI. Te cambiamos el correo y te avisamos; después completas
-          tu perfil aquí en tu panel.
+          «{asunto}», y cuéntanos cuál es tu correo institucional. Te cambiamos el correo y te avisamos; después entras con
+          el correo nuevo y completas aquí en tu panel tu DNI, tu carrera y tu ciclo. No nos mandes tu DNI por correo.
         </p>
         <div className="rg-actions" style={{ marginTop: 16 }}>
           <a href={enlace} className="more solid"><Mail size={14} aria-hidden /> Escribir al equipo</a>

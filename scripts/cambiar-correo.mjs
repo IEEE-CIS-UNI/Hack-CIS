@@ -8,7 +8,10 @@
  * Por defecto es un ENSAYO: hace todo dentro de una transacción, muestra qué
  * cambiaría y la deshace. Para aplicarlo de verdad, agrega  --aplicar
  *
- *   node scripts/cambiar-correo.mjs viejo@gmail.com nuevo@uni.edu.pe 12345678 --aplicar
+ *   node scripts/cambiar-correo.mjs viejo@gmail.com nuevo@uni.edu.pe --aplicar
+ *
+ * El DNI es opcional y normalmente NO se usa: la persona lo escribe ella misma en su
+ * panel después del cambio. No pidas DNI por correo.
  *
  * Qué hace, todo en una sola transacción (si algo falla, no queda nada a medias):
  *   · cambia el correo en la cuenta de acceso (auth.users y su identidad);
