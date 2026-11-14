@@ -72,7 +72,7 @@ export const UNIVERSIDADES: Universidad[] = [
   { siglas: "UCV", nombre: "Universidad César Vallejo", tipo: "privada",
     prioridad: "general", dominios: ["ucv.edu.pe"], formato: null },
   { siglas: "UPN", nombre: "Universidad Privada del Norte", tipo: "privada",
-    prioridad: "general", dominios: ["upn.edu.pe"], formato: null },
+    prioridad: "general", dominios: ["upn.edu.pe", "upn.pe"], formato: null },
   { siglas: "UA", nombre: "Universidad Autónoma del Perú", tipo: "privada",
     prioridad: "general", dominios: ["autonoma.edu.pe"], formato: null },
   { siglas: "UCAL", nombre: "Universidad de Ciencias y Artes de América Latina", tipo: "privada",
