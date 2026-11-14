@@ -23,7 +23,9 @@ export default function Metricas() {
 
   if (!id) return null;
   return (
-    <Script id="clarity" strategy="afterInteractive">
+    // El id NO puede ser «clarity»: un elemento con ese id se vuelve `window.clarity`
+    // y le gana a la función que Clarity define, así que nunca arrancaba.
+    <Script id="ms-clarity-tag" strategy="afterInteractive">
       {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script",${JSON.stringify(id)});`}
     </Script>
   );
