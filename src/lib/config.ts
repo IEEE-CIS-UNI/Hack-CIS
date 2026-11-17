@@ -20,7 +20,7 @@ export const registroAbierto = () => Date.now() >= Date.parse(EVENT.registration
 export const LINKS = {
   // Comunidades oficiales del evento.
   whatsapp: "https://chat.whatsapp.com/K2kUuRiNwT80ioQOrtQCwv",
-  discord: "https://discord.gg/tQaSGFYsD",
+  discord: "https://discord.gg/CdhVv8DBjv",
   // Sin el ?xtok=: ese parámetro es un testigo de quien compartió el enlace,
   // no parte de la dirección del perfil.
   linkedin: "https://www.linkedin.com/company/ieee-cis-uni/",
