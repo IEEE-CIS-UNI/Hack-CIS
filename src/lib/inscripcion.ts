@@ -91,6 +91,54 @@ const primera = (s: string) => texto(s).split(" ")[0] ?? "";
  * preguntarle a ella evita el caso feo: el formulario dice que sí y la base
  * dice que no.
  */
+/** Proveedores de correo comunes: también cuentan para detectar un dedazo («gmial.com»). */
+const PROVEEDORES_COMUNES = ["gmail.com", "hotmail.com", "outlook.com", "yahoo.com", "icloud.com", "live.com"];
+
+/** Distancia de edición: cuántas letras hay que cambiar, quitar, poner o intercambiar (de dos en dos). */
+function distanciaEdicion(a: string, b: string) {
+  const m = Array.from({ length: a.length + 1 }, (_, i) => Array.from({ length: b.length + 1 }, (_, j) => (i === 0 ? j : j === 0 ? i : 0)));
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      m[i][j] = Math.min(m[i - 1][j] + 1, m[i][j - 1] + 1, m[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) m[i][j] = Math.min(m[i][j], m[i - 2][j - 2] + 1);
+    }
+  }
+  return m[a.length][b.length];
+}
+
+let cacheDominios: { en: number; lista: string[] } | null = null;
+
+async function dominiosDelCatalogo(): Promise<string[]> {
+  if (cacheDominios && Date.now() - cacheDominios.en < 10 * 60_000) return cacheDominios.lista;
+  if (!SUPABASE_URL || !SUPABASE_CLAVE) return cacheDominios?.lista ?? [];
+  const sb = createClient(SUPABASE_URL, SUPABASE_CLAVE, { auth: { persistSession: false } });
+  const { data, error } = await sb.from("university_domains").select("domain");
+  if (error || !data) return cacheDominios?.lista ?? [];
+  cacheDominios = { en: Date.now(), lista: data.map((d) => d.domain as string) };
+  return cacheDominios.lista;
+}
+
+/**
+ * Si el dominio no es de ninguno conocido pero se parece mucho a uno («contiental.edu.pe»
+ * por «continental.edu.pe»), devuelve el que probablemente quiso escribir. Solo sugiere:
+ * nunca decide por la persona.
+ */
+export async function sugerirDominio(dominio: string): Promise<string | null> {
+  const d = dominio.toLowerCase();
+  const conocidos = [...(await dominiosDelCatalogo()), ...PROVEEDORES_COMUNES];
+  if (!conocidos.length) return null;
+  // Si ya es uno conocido, o cuelga de uno (alum.up.edu.pe), no hay nada que corregir.
+  if (conocidos.some((k) => d === k || d.endsWith("." + k))) return null;
+  let mejor: { dom: string; dist: number } | null = null;
+  for (const k of conocidos) {
+    if (Math.abs(k.length - d.length) > 2) continue;
+    const dist = distanciaEdicion(d, k);
+    if (dist >= 1 && dist <= 2 && (!mejor || dist < mejor.dist)) mejor = { dom: k, dist };
+  }
+  // Con textos cortos, dos cambios ya son otra cosa distinta.
+  return mejor && (mejor.dist === 1 || d.length >= 10) ? mejor.dom : null;
+}
+
 export async function universidadDelCorreo(correo: string) {
   if (!SUPABASE_URL || !SUPABASE_CLAVE) return { ok: false as const, motivo: "La base de datos no está configurada." };
 
@@ -111,9 +159,12 @@ export async function universidadDelCorreo(correo: string) {
 
   if (error) return { ok: false as const, motivo: "No pudimos consultar el catálogo de universidades." };
   if (!data) {
+    const sugerido = await sugerirDominio(dominio);
     return {
       ok: false as const,
-      motivo: `«${dominio}» no está en nuestra lista de universidades e institutos. Usa el correo que te dio la tuya, y si crees que es un error escríbenos.`,
+      motivo: sugerido
+        ? `«${dominio}» no está en nuestra lista. ¿Quisiste escribir «${correo.split("@")[0]}@${sugerido}»? Revisa que esté bien escrito.`
+        : `«${dominio}» no está en nuestra lista de universidades e institutos. Usa el correo que te dio la tuya, y si crees que es un error escríbenos.`,
     };
   }
 

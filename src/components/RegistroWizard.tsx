@@ -232,6 +232,16 @@ export default function RegistroWizard() {
       setCorreo(bien
         ? { valor, estado: "ok" }
         : { valor, estado: "error", mensaje: "Ese correo no parece estar bien escrito." });
+      if (!bien) return;
+      // Puede continuar, pero si el dominio parece un dedazo se le avisa antes de que el enlace se pierda.
+      try {
+        const { datos } = await post("/api/universidad", { correo: valor, solo_sugerir: true });
+        if (datos.ok && datos.sugerencia) {
+          setCorreo((c) => c.valor === valor
+            ? { valor, estado: "aviso", mensaje: `¿Quisiste escribir «${datos.sugerencia}»? Revisa tu correo antes de seguir: ahí te llega el enlace.` }
+            : c);
+        }
+      } catch { /* sin aviso: el formato ya pasó */ }
       return;
     }
     if (!esNuevo("correo", valor)) return;
@@ -335,7 +345,7 @@ export default function RegistroWizard() {
     (actual === "sesiones" && sesiones.length > 0) ||
     (actual === "dni" && dni.estado === "ok") ||
     (actual === "nombre" && nombres.trim().length >= 2 && apellidos.trim().length >= 2) ||
-    (actual === "correo" && correo.estado === "ok") ||
+    (actual === "correo" && (correo.estado === "ok" || (!conHack && correo.estado === "aviso"))) ||
     (actual === "celular" && (conHack ? telOk : telefono.estado === "vacio" || telOk)) ||
     (actual === "carrera" && carreraId !== "" && (!esOtra || limpiarCarrera(carreraOtra) !== null) && ciclo !== "") ||
     (actual === "redes" && redesOk) ||

@@ -7,7 +7,7 @@
  * INSERT después rechazaba.
  */
 
-import { universidadDelCorreo } from "@/lib/inscripcion";
+import { sugerirDominio, universidadDelCorreo } from "@/lib/inscripcion";
 import { dentroDelLimite, ipDe, json, leerCuerpo, RespuestaMala } from "@/lib/limite";
 
 export const runtime = "nodejs";
@@ -26,6 +26,13 @@ export async function POST(req: Request) {
   if (!correo) return json({ ok: false, motivo: "Escribe tu correo institucional." }, 422);
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(correo)) {
     return json({ ok: false, motivo: "Ese correo no parece estar bien escrito." }, 422);
+  }
+
+  // Solo bootcamp: cualquier correo vale, pero si el dominio parece un dedazo de uno
+  // conocido («contiental.edu.pe») se le avisa, porque ahí le llegaría el enlace a nadie.
+  if (cuerpo.solo_sugerir === true) {
+    const sugerido = await sugerirDominio(correo.split("@").pop()!);
+    return json({ ok: true, sugerencia: sugerido ? `${correo.split("@")[0]}@${sugerido}` : null });
   }
 
   const r = await universidadDelCorreo(correo);

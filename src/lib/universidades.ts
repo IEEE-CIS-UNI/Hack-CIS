@@ -56,7 +56,7 @@ export const UNIVERSIDADES: Universidad[] = [
   { siglas: "USIL", nombre: "Universidad San Ignacio de Loyola", tipo: "privada",
     prioridad: "general", dominios: ["usil.edu.pe"], formato: null },
   { siglas: "UPC", nombre: "Universidad Peruana de Ciencias Aplicadas", tipo: "privada",
-    prioridad: "general", dominios: ["upc.edu.pe"], formato: null },
+    prioridad: "general", dominios: ["upc.edu.pe", "upc.pe"], formato: null },
   { siglas: "UTP", nombre: "Universidad Tecnológica del Perú", tipo: "privada",
     prioridad: "general", dominios: ["utp.edu.pe"], formato: null },
   { siglas: "UTEC", nombre: "Universidad de Ingeniería y Tecnología", tipo: "privada",
