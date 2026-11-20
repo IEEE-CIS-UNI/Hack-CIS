@@ -36,10 +36,13 @@ import pg from "pg";
 const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
 const aplicar = args.includes("--aplicar");
+// --mantener-correo: NO cambia el correo de acceso; solo marca la universidad según el correo institucional dado.
+// Sirve cuando el correo institucional gasta los enlaces (UTP, Científica…) y la persona no podría entrar con él.
+const mantener = args.includes("--mantener-correo");
 const [viejoCrudo, nuevoCrudo, dniCrudo] = args.filter((a) => !a.startsWith("--"));
 
 if (!viejoCrudo || !nuevoCrudo) {
-  console.log("Uso: node scripts/cambiar-correo.mjs <correo-actual> <correo-nuevo> [dni] [--aplicar]");
+  console.log("Uso: node scripts/cambiar-correo.mjs <correo-actual> <correo-nuevo> [dni] [--mantener-correo] [--aplicar]");
   process.exit(1);
 }
 
@@ -80,7 +83,7 @@ try {
   if (viejo === nuevo) await parar("El correo nuevo es igual al actual.");
 
   const [usado] = await q("select 1 from public.people where lower(email) = $1 union all select 1 from auth.users where lower(email) = $1", [nuevo]);
-  if (usado) await parar(`El correo ${nuevo} ya lo usa otra cuenta.`);
+  if (usado && !mantener) await parar(`El correo ${nuevo} ya lo usa otra cuenta.`);
 
   const [inst] = await q(
     `select d.institution_id, i.name from public.university_domains d
@@ -101,14 +104,19 @@ try {
   const archivo = join(carpeta, `${new Date().toISOString().replace(/[:.]/g, "-")}-${persona.id}.json`);
   writeFileSync(archivo, JSON.stringify({ persona, auth, identidades: idents }, null, 1));
 
-  // Cuenta de acceso.
-  await q("update auth.users set email = $1, updated_at = now() where id = $2", [nuevo, persona.auth_user_id]);
-  await q(
-    "update auth.identities set identity_data = jsonb_set(identity_data, '{email}', to_jsonb($1::text)), updated_at = now() where user_id = $2",
-    [nuevo, persona.auth_user_id]);
+  if (mantener) {
+    // Solo la universidad: el correo de acceso (y por tanto cómo entra) queda como estaba.
+    await q("update public.people set institution_id = $1 where id = $2", [inst.institution_id, persona.id]);
+  } else {
+    // Cuenta de acceso.
+    await q("update auth.users set email = $1, updated_at = now() where id = $2", [nuevo, persona.auth_user_id]);
+    await q(
+      "update auth.identities set identity_data = jsonb_set(identity_data, '{email}', to_jsonb($1::text)), updated_at = now() where user_id = $2",
+      [nuevo, persona.auth_user_id]);
 
-  // Perfil.
-  await q("update public.people set email = $1, institution_id = $2 where id = $3", [nuevo, inst.institution_id, persona.id]);
+    // Perfil.
+    await q("update public.people set email = $1, institution_id = $2 where id = $3", [nuevo, inst.institution_id, persona.id]);
+  }
   if (dniHash && !persona.dni_hash) await q("update public.people set dni_hash = $1 where id = $2", [dniHash, persona.id]);
 
   const [despues] = await q(
