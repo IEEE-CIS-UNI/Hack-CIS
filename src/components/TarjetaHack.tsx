@@ -30,7 +30,7 @@ export default function TarjetaHack({
   persona: Persona;
   hack: Inscrito;
   token: string | null;
-  alCambiarFoto: (url: string | null) => void;
+  alCambiarFoto?: (url: string | null) => void;   // sin esto la card es de solo lectura (página /card)
 }) {
   // La foto recién elegida se ve al instante, antes de terminar de subirse.
   const [fotoLocal, setFotoLocal] = useState<string | null>(null);
@@ -108,7 +108,7 @@ export default function TarjetaHack({
         }
         // El parámetro de tiempo evita que el navegador siga mostrando la foto
         // vieja desde su caché después de reemplazarla.
-        alCambiarFoto(`${pub.publicUrl}?v=${Date.now()}`);
+        alCambiarFoto?.(`${pub.publicUrl}?v=${Date.now()}`);
         setFotoLocal(null);
       } catch {
         setFotoLocal(null);
@@ -126,7 +126,7 @@ export default function TarjetaHack({
     setSubiendo(true);
     const { datos } = await api("/api/perfil", { metodo: "PATCH", token, cuerpo: { foto: "" } });
     setSubiendo(false);
-    if (datos.ok) { setFotoLocal(null); alCambiarFoto(null); }
+    if (datos.ok) { setFotoLocal(null); alCambiarFoto?.(null); }
     else setAviso({ tipo: "error", texto: datos.motivo ?? "No pudimos quitar la foto." });
   }
 
@@ -171,21 +171,27 @@ export default function TarjetaHack({
       <div className="tc-side">
         <p className="box-h" style={{ marginBottom: 6 }}>Tu card</p>
         <h3>¡Compártela!</h3>
-        <p>
-          Sube una foto o la imagen que quieras. Si no subes ninguna, sale tu nombre y tu primer apellido.
-        </p>
+        {token ? (
+          <>
+            <p>
+              Sube una foto o la imagen que quieras. Si no subes ninguna, sale tu nombre y tu primer apellido.
+            </p>
 
-        <div className="tc-btns">
-          <button type="button" className="more solid" onClick={() => archivo.current?.click()} disabled={subiendo}>
-            {subiendo ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <Camera className="size-4" aria-hidden />}
-            {foto ? "Cambiar imagen" : "Subir imagen"}
-          </button>
-          {foto && (
-            <button type="button" className="more" onClick={quitarFoto} disabled={subiendo}>
-              <Trash2 className="size-4" aria-hidden /> Quitar
-            </button>
-          )}
-        </div>
+            <div className="tc-btns">
+              <button type="button" className="more solid" onClick={() => archivo.current?.click()} disabled={subiendo}>
+                {subiendo ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <Camera className="size-4" aria-hidden />}
+                {foto ? "Cambiar imagen" : "Subir imagen"}
+              </button>
+              {foto && (
+                <button type="button" className="more" onClick={quitarFoto} disabled={subiendo}>
+                  <Trash2 className="size-4" aria-hidden /> Quitar
+                </button>
+              )}
+            </div>
+          </>
+        ) : (
+          <p>Descárgala o compártela en tus redes.</p>
+        )}
         <input
           ref={archivo}
           type="file"
