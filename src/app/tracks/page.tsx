@@ -6,7 +6,7 @@ import { TrackList } from "@/components/Tracks";
 
 export const metadata: Metadata = {
   title: "Tracks · HACK[CIS] UNI 2026",
-  description: "Tres retos reales de empresa. Los tracks y sus sponsors se revelan pronto.",
+  description: "Tres retos reales de empresa. Ya conoces el primero: IA & Energía, con Zeia. Los otros dos se revelan pronto.",
 };
 
 export default function TracksPage() {
@@ -19,7 +19,7 @@ export default function TracksPage() {
         <span className="lav">batalla</span>
       </h1>
       <p className="pg-lead">
-        Tres sponsors, tres retos reales, y todavía son un secreto. Los revelamos muy pronto.
+        Tres sponsors, tres retos reales. Ya conoces el primero, Energía con Zeia; los otros dos los revelamos muy pronto.
       </p>
 
       <div className="pg-tracks">

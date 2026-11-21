@@ -154,7 +154,7 @@ export default function BasesPage() {
               <li>
                 Al menos <B>2 carreras distintas</B> por equipo, según la carrera elegida en la inscripción.
               </li>
-              <li>Hay <B>tres tracks</B>, y todavía son un secreto: los tracks y sus sponsors se anuncian pronto.</li>
+              <li>Hay <B>tres tracks</B>. El primero es <B>IA &amp; Energía</B>, con Zeia como sponsor; los otros dos y sus sponsors se anuncian pronto.</li>
               <li>
                 El track <B>no se elige al inscribirse</B>. El viernes 27, después del pitch de los sponsors, la
                 persona líder crea el equipo desde la página del track: pone el nombre del equipo y el DNI de
@@ -168,10 +168,17 @@ export default function BasesPage() {
           </Seccion>
 
           <Seccion n="05" titulo="Evaluación y premios">
+            <p>Premios confirmados hasta ahora:</p>
+            <ul>
+              <li><B>S/ 500</B> para el equipo ganador de cada track.</li>
+              <li><B>Sorteo de cursos en vivo</B>, durante la semana y en la Gran Final.</li>
+              <li><B>Sorteo de merch.</B></li>
+              <li>Mini-retos con premios para todas las personas que asistan a la Gran Final. Los sorteos de ese día son solo para quienes están en la sala.</li>
+            </ul>
             <Pendiente>
-              Los criterios de evaluación, la composición del jurado, los mentores y los premios dependen de
-              los acuerdos con los sponsors y aún no están cerrados. Se publican aquí y en la comunidad de
-              WhatsApp antes del inicio del Build.
+              Los criterios de evaluación, la composición del jurado y los mentores dependen de los acuerdos
+              con los sponsors y aún no están cerrados. Se publican aquí y en la comunidad de WhatsApp antes
+              del inicio del Build.
             </Pendiente>
           </Seccion>
 

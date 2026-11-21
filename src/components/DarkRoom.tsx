@@ -2,8 +2,8 @@ import Image from "next/image";
 import { TicketCountdown } from "./Countdown";
 
 /**
- * Jurados, mentores y premios todavía no están cerrados: la sección queda en
- * «Próximamente», sin la lista de créditos con nombres tachados.
+ * Jurados y mentores todavía no están cerrados (los premios ya se anunciaron, en la
+ * sección Premios): esta queda en «Próximamente», sin la lista de créditos con nombres tachados.
  */
 export default function DarkRoom() {
   return (
@@ -13,7 +13,7 @@ export default function DarkRoom() {
       <div className="wrap" style={{ paddingTop: 34 }}>
         <p className="kick">Hay algo en la oscuridad · HACK[CIS] UNI 2026 presenta</p>
         <h2 className="bk soon">Próximamente</h2>
-        <p className="sub">Mentores, jurados y premios</p>
+        <p className="sub">Mentores y jurados</p>
         <p className="film-note">Los anunciamos muy pronto.</p>
         <TicketCountdown />
       </div>

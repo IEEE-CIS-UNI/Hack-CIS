@@ -588,3 +588,17 @@ body{-webkit-font-smoothing:antialiased}
 .sd-sp:hover{border-color:var(--tone);transform:translateY(-3px)}
 .sd-info{background:linear-gradient(180deg,rgba(20,8,40,.55),rgba(8,3,15,.6));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--tone) 18%,transparent)}
 @media (prefers-reduced-motion:reduce){.sd-sp,.sd-steps a{transition:none}.sd-sp:hover{transform:none}}
+
+/* Premios y feria */
+.pr-grid{display:grid;gap:16px;margin-top:40px}
+@media (min-width:760px){.pr-grid{grid-template-columns:repeat(3,1fr)}}
+.pr{padding:clamp(22px,3vw,30px);border:1px solid rgba(182,156,255,.28);border-radius:20px;background:linear-gradient(160deg,rgba(122,44,245,.22),rgba(8,3,15,.5) 72%)}
+.pr-tag{display:block;font-family:var(--tech);font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan)}
+.pr-big{margin-top:14px;font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:clamp(2.6rem,6vw,3.8rem);line-height:.95;color:#fff;text-shadow:.03em .03em 0 var(--violet),.06em .06em 0 var(--violet2)}
+.pr h3{margin-top:14px;font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:clamp(1.25rem,2.4vw,1.6rem);line-height:1.05;color:var(--lav)}
+.pr p{margin-top:8px;color:var(--mist);font-size:.95rem;line-height:1.5}
+.pr-ic{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;border:1.5px solid var(--lav);color:var(--lav);background:radial-gradient(circle,rgba(182,156,255,.18),transparent 72%)}
+.pr-ic svg{width:24px;height:24px}
+.pr-ic + h3{margin-top:18px;color:#fff}
+.pr-nota{margin-top:22px;font-family:var(--tech);font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--lav);line-height:1.9}
+.pr-nota b{color:#fff;font-weight:400}

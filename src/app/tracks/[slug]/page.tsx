@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import PageShell from "@/components/PageShell";
 import UnirseTrack from "@/components/UnirseTrack";
+import ZeiaTrack from "@/components/ZeiaTrack";
 
 type TrackPublico = {
   nombre: string;
@@ -15,11 +16,20 @@ type TrackPublico = {
 };
 
 /**
- * Hoy NINGÚN track está revelado, así que esta ruta responde 404 para todos.
- * Cuando se anuncie uno, se agrega aquí con su ficha (y en la tabla `tracks`
- * de la base se pone `revealed = true` y se le da su nombre y slug).
+ * Hoy solo Energía está revelado (sponsor: Zeia); para los demás esta ruta responde 404.
+ * Cuando se anuncie otro, se agrega aquí con su ficha (y en la tabla `tracks` de la
+ * base se pone `revealed = true` y se le da su nombre y slug). Energía tiene página
+ * propia con el branding de Zeia (ver components/ZeiaTrack).
  */
-const TRACKS_PUBLICOS: Record<string, TrackPublico> = {};
+const TRACKS_PUBLICOS: Record<string, TrackPublico> = {
+  energia: {
+    nombre: "Energía",
+    sub: "Zeia · IA & Energía",
+    desc: "Zeia es una empresa peruana de monitoreo energético en tiempo real: sensores IoT y software que muestran dónde se va cada sol de energía. Su reto se presenta en vivo el viernes 27 de noviembre.",
+    tono: "#38e5c4",
+    sponsor: { name: "Zeia", url: "https://zeia.com.pe/", logo: "/logos/zeia.png", width: 308, height: 92 },
+  },
+};
 
 export const dynamicParams = false;
 
@@ -37,6 +47,7 @@ export default async function TrackPage({ params }: { params: Promise<{ slug: st
   const { slug } = await params;
   const t = TRACKS_PUBLICOS[slug];
   if (!t) notFound();
+  if (slug === "energia") return <ZeiaTrack slug={slug} />;
 
   return (
     <PageShell>

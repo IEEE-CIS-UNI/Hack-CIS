@@ -35,7 +35,7 @@ const ITEMS = [
   },
   {
     q: "¿Cuáles son los tracks?",
-    a: "Todavía son un secreto: los tres tracks y sus sponsors se revelan muy pronto. Cada sponsor presenta su reto al cierre del Bootcamp, el 27 de noviembre.",
+    a: "Hay tres. El primero ya está revelado: IA & Energía, con Zeia como sponsor. Los otros dos y sus sponsors se revelan muy pronto. Cada sponsor presenta su reto al cierre del Bootcamp, el 27 de noviembre.",
   },
   {
     q: "¿Y si no vivo en Lima?",

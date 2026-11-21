@@ -3,6 +3,7 @@ import Closing from "@/components/Closing";
 import Community from "@/components/Community";
 import DarkRoom from "@/components/DarkRoom";
 import Faq from "@/components/Faq";
+import Feria from "@/components/Feria";
 import Fifth from "@/components/Fifth";
 import Footer from "@/components/Footer";
 import GranFinal from "@/components/GranFinal";
@@ -10,6 +11,7 @@ import HelpVideo from "@/components/HelpVideo";
 import Hero from "@/components/Hero";
 import Mission from "@/components/Mission";
 import Nav from "@/components/Nav";
+import Premios from "@/components/Premios";
 import RescateDeSesion from "@/components/RescateDeSesion";
 import Sponsors from "@/components/Sponsors";
 import StarField from "@/components/StarField";
@@ -29,6 +31,8 @@ export default function Home() {
         <Tracks />
         <Fifth />
         <GranFinal />
+        <Feria />
+        <Premios />
         <DarkRoom />
         <Sponsors />
         <Community />
