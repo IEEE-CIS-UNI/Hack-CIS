@@ -26,7 +26,7 @@ const PRONTO = [
 export function TrackList() {
   return (
     <div className="tk-list">
-      <article className="tk" style={{ "--tone": ENERGIA.tone, "--tone2": ENERGIA.tone2 } as CSSProperties}>
+      <article className="tk is-link" style={{ "--tone": ENERGIA.tone, "--tone2": ENERGIA.tone2 } as CSSProperties}>
         <div className="tk-ic">
           <Zap aria-hidden strokeWidth={1.6} />
         </div>
@@ -37,13 +37,13 @@ export function TrackList() {
           <p className="tk-desc">{ENERGIA.desc}</p>
         </div>
         <div className="tk-meta">
-          <Link href="/tracks/energia" className="more" style={{ marginTop: 0, padding: "9px 18px" }}>
-            Ver el reto <ArrowRight aria-hidden size={14} />
+          <Link href="/tracks/energia" className="tk-more" aria-label="Conocer más sobre el track de Energía, con Zeia">
+            Click aquí para conocer más <ArrowRight aria-hidden size={13} />
           </Link>
-          <a className="tk-power" href={ENERGIA.sponsor.url} target="_blank" rel="noopener noreferrer" aria-label={`Powered by ${ENERGIA.sponsor.name}`}>
+          <span className="tk-power">
             Powered by
             <Image src={ENERGIA.sponsor.logo} width={ENERGIA.sponsor.width} height={ENERGIA.sponsor.height} alt={ENERGIA.sponsor.name} unoptimized />
-          </a>
+          </span>
         </div>
       </article>
 

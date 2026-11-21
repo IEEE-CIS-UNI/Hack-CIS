@@ -602,3 +602,18 @@ body{-webkit-font-smoothing:antialiased}
 .pr-ic + h3{margin-top:18px;color:#fff}
 .pr-nota{margin-top:22px;font-family:var(--tech);font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--lav);line-height:1.9}
 .pr-nota b{color:#fff;font-weight:400}
+
+/* Sponsors de track y aliados de difusión */
+.sp-tier.trk .sp-logos{gap:20px 36px}
+.sp-tier.trk .sp-chip{height:46px}
+.sp-tier.dif .sp-logos{gap:14px 30px}
+.sp-tier.dif .sp-chip{height:30px}
+@media (min-width:900px){
+  .sp-tier.trk .sp-chip{height:58px}
+  .sp-tier.dif .sp-chip{height:36px}
+}
+/* La tarjeta del track entera lleva a nuestra página del track */
+.tk.is-link{cursor:pointer}
+.tk-more{display:inline-flex;align-items:center;gap:8px;font-family:var(--tech);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--tone);border-bottom:1px solid color-mix(in srgb,var(--tone) 55%,transparent);padding-bottom:3px;transition:gap .3s,border-color .3s}
+.tk-more::after{content:"";position:absolute;inset:0;z-index:2}
+.tk.is-link:hover .tk-more{gap:12px;border-color:var(--tone)}

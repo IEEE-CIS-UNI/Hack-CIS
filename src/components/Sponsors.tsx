@@ -53,6 +53,27 @@ const APOYAN: Sponsor[] = [
   },
 ];
 
+/**
+ * Sponsors de track: uno por track. Hoy solo Energía está revelado (Zeia); cuando se
+ * anuncien los otros dos, se suman aquí con su logo en negativo.
+ */
+const DE_TRACK: Sponsor[] = [
+  {
+    name: "Zeia · Track Energía",
+    url: "https://zeia.com.pe/",
+    logo: { src: "/logos/zeia-blanco.png", width: 154, height: 50 },
+  },
+];
+
+/** Comunidades aliadas que ayudan a difundir el evento. */
+const DIFUSION: Sponsor[] = [
+  {
+    name: "START Perú",
+    url: "https://www.startperu.org/",
+    logo: { src: "/logos/start-peru.svg", width: 1111, height: 286 },
+  },
+];
+
 function Chip({ s }: { s: Sponsor }) {
   return (
     <a className={`sp-chip${s.tall ? " tall" : ""}`} href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.name}>
@@ -75,8 +96,8 @@ function Chip({ s }: { s: Sponsor }) {
 }
 
 /**
- * Niveles de logos: quienes organizan (las tres comunidades), los sponsors
- * del evento y quienes apoyan.
+ * Niveles de logos: quienes organizan (las tres comunidades), los sponsors de
+ * track, los sponsors del evento, quienes apoyan y los aliados de difusión.
  */
 export function Niveles() {
   return (
@@ -87,6 +108,14 @@ export function Niveles() {
           <Logo l={CIS} />
           <Logo l={PUCP} />
           <Logo l={DSC} />
+        </div>
+      </div>
+      <div className="sp-tier trk">
+        <p className="note">Sponsors de track</p>
+        <div className="sp-logos">
+          {DE_TRACK.map((s) => (
+            <Chip key={s.name} s={s} />
+          ))}
         </div>
       </div>
       <div className="sp-tier gen">
@@ -101,6 +130,14 @@ export function Niveles() {
         <p className="note">Con el apoyo de</p>
         <div className="sp-logos">
           {APOYAN.map((s) => (
+            <Chip key={s.name} s={s} />
+          ))}
+        </div>
+      </div>
+      <div className="sp-tier dif">
+        <p className="note">Aliados de difusión</p>
+        <div className="sp-logos">
+          {DIFUSION.map((s) => (
             <Chip key={s.name} s={s} />
           ))}
         </div>
