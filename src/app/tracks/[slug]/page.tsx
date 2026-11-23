@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import PageShell from "@/components/PageShell";
 import UnirseTrack from "@/components/UnirseTrack";
+import ManantialTrack from "@/components/ManantialTrack";
 import ZeiaTrack from "@/components/ZeiaTrack";
 
 type TrackPublico = {
@@ -16,10 +17,10 @@ type TrackPublico = {
 };
 
 /**
- * Hoy solo Energía está revelado (sponsor: Zeia); para los demás esta ruta responde 404.
+ * Hoy están revelados Energía (sponsor: Zeia) y Nube (sponsor: Manantial); para los demás esta ruta responde 404.
  * Cuando se anuncie otro, se agrega aquí con su ficha (y en la tabla `tracks` de la
  * base se pone `revealed = true` y se le da su nombre y slug). Energía tiene página
- * propia con el branding de Zeia (ver components/ZeiaTrack).
+ * propia con el branding de Zeia (ver components/ZeiaTrack) y Nube con el de Manantial (components/ManantialTrack).
  */
 const TRACKS_PUBLICOS: Record<string, TrackPublico> = {
   energia: {
@@ -28,6 +29,13 @@ const TRACKS_PUBLICOS: Record<string, TrackPublico> = {
     desc: "Zeia es una empresa peruana de monitoreo energético en tiempo real: sensores IoT y software que muestran dónde se va cada sol de energía. Su reto se presenta en vivo el viernes 27 de noviembre.",
     tono: "#38e5c4",
     sponsor: { name: "Zeia", url: "https://zeia.com.pe/", logo: "/logos/zeia.png", width: 308, height: 92 },
+  },
+  nube: {
+    nombre: "Nube",
+    sub: "Manantial · IA & Nube",
+    desc: "Manantial es una consultora peruana de tecnología, especialista en migración cloud, DevOps y ciberseguridad. Su reto se presenta en vivo el viernes 27 de noviembre.",
+    tono: "#ff6b6b",
+    sponsor: { name: "Manantial", url: "https://manantial.pe/", logo: "/logos/manantial-color.png", width: 3578, height: 1386 },
   },
 };
 
@@ -48,6 +56,7 @@ export default async function TrackPage({ params }: { params: Promise<{ slug: st
   const t = TRACKS_PUBLICOS[slug];
   if (!t) notFound();
   if (slug === "energia") return <ZeiaTrack slug={slug} />;
+  if (slug === "nube") return <ManantialTrack slug={slug} />;
 
   return (
     <PageShell>

@@ -59,6 +59,19 @@
 .datos span { display: inline-flex; align-items: center; gap: 8px; }
 .datos i { width: 8px; height: 8px; border-radius: 50%; background: linear-gradient(135deg, var(--cian), var(--menta)); display: inline-block; }
 
+/* hero en dos columnas: texto y, a la derecha, «Track powered by» con el logo grande */
+.heroGrid { display: grid; grid-template-columns: 1.35fr .65fr; gap: clamp(24px, 5vw, 56px); align-items: center; }
+.poder {
+  order: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; text-decoration: none;
+  padding: clamp(28px, 4vw, 44px) clamp(20px, 3vw, 32px); border-radius: 28px; background: #fff;
+  border: 1px solid var(--borde); box-shadow: 0 30px 70px -34px rgba(0, 120, 130, .55), 0 0 0 8px rgba(135, 227, 196, .22);
+  transition: transform .25s;
+}
+.poder:hover { transform: translateY(-3px); }
+.poder span { font-size: .72rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: #12a98f; }
+.poder img { width: min(100%, 300px); height: auto; display: block; }
+@media (max-width: 860px) { .heroGrid { grid-template-columns: 1fr; } .poder { order: 0; align-items: flex-start; flex-direction: row; justify-content: space-between; gap: 14px; padding: 16px 20px; border-radius: 20px; } .poder img { width: 150px; } }
+
 /* ── cifras ── */
 .cifras { padding: 8px 0 clamp(36px, 6vw, 64px); }
 .cifras .in { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }

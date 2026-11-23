@@ -27,11 +27,6 @@ type Sponsor = {
  */
 const GENERALES: Sponsor[] = [
   {
-    name: "Manantial",
-    url: "https://manantial.pe/",
-    logo: { src: "/logos/manantial.png", width: 640, height: 192 },
-  },
-  {
     name: "Futura",
     url: "https://futuradata.pe/",
     logo: { src: "/logos/futura.png", width: 340, height: 203 },
@@ -54,14 +49,19 @@ const APOYAN: Sponsor[] = [
 ];
 
 /**
- * Sponsors de track: uno por track. Hoy solo Energía está revelado (Zeia); cuando se
- * anuncien los otros dos, se suman aquí con su logo en negativo.
+ * Sponsors de track: uno por track. Hoy están revelados Energía (Zeia) y Nube (Manantial);
+ * cuando se anuncie el tercero, se suma aquí con su logo en negativo.
  */
 const DE_TRACK: Sponsor[] = [
   {
     name: "Zeia · Track Energía",
     url: "https://zeia.com.pe/",
     logo: { src: "/logos/zeia-blanco.png", width: 154, height: 50 },
+  },
+  {
+    name: "Manantial · Track Nube",
+    url: "https://manantial.pe/",
+    logo: { src: "/logos/manantial.png", width: 640, height: 192 },
   },
 ];
 

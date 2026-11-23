@@ -6,7 +6,7 @@ import { TrackList } from "@/components/Tracks";
 
 export const metadata: Metadata = {
   title: "Tracks · HACK[CIS] UNI 2026",
-  description: "Tres retos reales de empresa. Ya conoces el primero: IA & Energía, con Zeia. Los otros dos se revelan pronto.",
+  description: "Tres retos reales de empresa. Ya conoces dos: IA & Energía, con Zeia, e IA & Nube, con Manantial. El tercero se revela pronto.",
 };
 
 export default function TracksPage() {
@@ -19,7 +19,7 @@ export default function TracksPage() {
         <span className="lav">batalla</span>
       </h1>
       <p className="pg-lead">
-        Tres sponsors, tres retos reales. Ya conoces el primero, Energía con Zeia; los otros dos los revelamos muy pronto.
+        Tres sponsors, tres retos reales. Ya conoces dos, Energía con Zeia y Nube con Manantial; el tercero lo revelamos muy pronto.
       </p>
 
       <div className="pg-tracks">
@@ -33,7 +33,7 @@ export default function TracksPage() {
             <b>Cada sponsor presenta su reto</b> al cierre del Bootcamp, el viernes 27 de noviembre.
           </li>
           <li>
-            <b>El líder del equipo elige el track</b> el viernes 27, desde la página de cada track, y suma a su equipo con sus DNI.
+            <b>El líder del equipo elige el track</b> el viernes 27, desde la página de cada track: se une y, automáticamente, todo su equipo se une con él.
           </li>
           <li>
             <b>Pasan 5 equipos por track</b>, 15 en total, a construir con su agente de IA.

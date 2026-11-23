@@ -1,12 +1,12 @@
 import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Lock, Zap } from "lucide-react";
+import { ArrowRight, Cloud, Lock, Zap } from "lucide-react";
 import Sil from "./silhouettes";
 
 /**
- * Energía ya está revelado (sponsor: Zeia). Los otros dos tracks todavía no están
- * cerrados y salen como «por revelar» en vez de inventar nombres. Cuando se anuncie
+ * Energía (Zeia) y Nube (Manantial) ya están revelados. El tercer track todavía no está
+ * cerrado y sale como «por revelar» en vez de inventar un nombre. Cuando se anuncie
  * uno, se publica su ficha en /tracks/[slug] (ver app/tracks/[slug]/page.tsx) y se
  * pone `revealed = true` en la tabla `tracks`.
  */
@@ -18,10 +18,15 @@ export const ENERGIA = {
   sponsor: { name: "Zeia", url: "https://zeia.com.pe/", logo: "/logos/zeia-blanco.png", width: 154, height: 50 },
 };
 
-const PRONTO = [
-  { tone: "#8b5cf6", tone2: "#4d17c2" },
-  { tone: "#d946ef", tone2: "#8d1ba3" },
-];
+export const NUBE = {
+  sub: "IA & Nube",
+  desc: "Manantial es una consultora peruana de tecnología, especialista en migración cloud, DevOps y ciberseguridad, partner de AWS, Google Cloud y Oracle. Su reto lo presentan en vivo al cierre del Bootcamp.",
+  tone: "#ff6b6b",
+  tone2: "#912b2b",
+  sponsor: { name: "Manantial", url: "https://manantial.pe/", logo: "/logos/manantial.png", width: 640, height: 192 },
+};
+
+const PRONTO = [{ tone: "#8b5cf6", tone2: "#4d17c2" }];
 
 export function TrackList() {
   return (
@@ -43,6 +48,27 @@ export function TrackList() {
           <span className="tk-power">
             Powered by
             <Image src={ENERGIA.sponsor.logo} width={ENERGIA.sponsor.width} height={ENERGIA.sponsor.height} alt={ENERGIA.sponsor.name} unoptimized />
+          </span>
+        </div>
+      </article>
+
+      <article className="tk is-link" style={{ "--tone": NUBE.tone, "--tone2": NUBE.tone2 } as CSSProperties}>
+        <div className="tk-ic">
+          <Cloud aria-hidden strokeWidth={1.6} />
+        </div>
+        <div>
+          <span className="tk-badge">Track revelado</span>
+          <h3 className="tk-title">Nube</h3>
+          <p className="tk-sub">{NUBE.sub}</p>
+          <p className="tk-desc">{NUBE.desc}</p>
+        </div>
+        <div className="tk-meta">
+          <Link href="/tracks/nube" className="tk-more" aria-label="Conocer más sobre el track de Nube, con Manantial">
+            Click aquí para conocer más <ArrowRight aria-hidden size={13} />
+          </Link>
+          <span className="tk-power">
+            Powered by
+            <Image src={NUBE.sponsor.logo} width={NUBE.sponsor.width} height={NUBE.sponsor.height} alt={NUBE.sponsor.name} unoptimized />
           </span>
         </div>
       </article>
@@ -85,7 +111,7 @@ export default function Tracks() {
           Elige tu <span className="lav">batalla</span>
         </h2>
         <p className="lead">
-          Tres sponsors, tres retos reales. Ya conoces el primero, Energía con Zeia; los otros dos todavía son un
+          Tres sponsors, tres retos reales. Ya conoces dos: Energía con Zeia y Nube con Manantial; el tercero todavía es un
           secreto. Cada sponsor presenta su reto al cierre del Bootcamp y tú decides en cuál competir.
         </p>
 

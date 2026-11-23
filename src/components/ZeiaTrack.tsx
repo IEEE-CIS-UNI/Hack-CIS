@@ -41,7 +41,12 @@ export default function ZeiaTrack({ slug }: { slug: string }) {
 
       <main>
         <section className={s.hero}>
-          <div className={s.in}>
+          <div className={`${s.in} ${s.heroGrid}`}>
+            <a href="https://zeia.com.pe/" target="_blank" rel="noopener noreferrer" className={s.poder} aria-label="Track powered by Zeia">
+              <span>Track powered by</span>
+              <Image src="/logos/zeia.png" width={308} height={92} alt="Zeia" unoptimized priority />
+            </a>
+            <div className={s.heroTxt}>
             <span className={s.etiqueta}>Track IA &amp; Energía · HACK[CIS] UNI 2026</span>
             <h1>
               El reto de <span className={s.grad}>Zeia</span>
@@ -63,6 +68,7 @@ export default function ZeiaTrack({ slug }: { slug: string }) {
               <span><i /> El reto se presenta en vivo el vie 27 nov</span>
               <span><i /> 5 equipos pasan a la final</span>
               <span><i /> Gran Final · sáb 5 dic · UNI</span>
+            </div>
             </div>
           </div>
         </section>
