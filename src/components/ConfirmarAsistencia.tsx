@@ -145,15 +145,27 @@ export default function ConfirmarAsistencia({ modo, inicial }: { modo: Modo; ini
         </>
       )}
 
-      {a.estado === "pendiente" && !a.espera && (
+      {a.estado === "pendiente" && !a.espera && a.canjeo_discord && (
+        <>
+          <p className="pill-ok" style={{ display: "inline-flex" }}><Check size={12} aria-hidden /> Asistencia confirmada por Discord</p>
+          <p className="rg-help" style={{ marginTop: 12 }}>
+            Ya canjeaste tu código de Discord, así que contamos contigo. Si algo cambia y ya no puedes participar, avísanos para darle tu lugar a otra persona.
+          </p>
+          <div className="rg-actions" style={{ marginTop: 14 }}>
+            <button className="more" disabled={!!enviando} onClick={() => responder("no_participo")}>
+              {enviando === "no_participo" && <Loader2 className="size-4 animate-spin" aria-hidden />} Ya no podré participar
+            </button>
+          </div>
+        </>
+      )}
+
+      {a.estado === "pendiente" && !a.espera && !a.canjeo_discord && (
         <>
           <h3 className="d" style={{ fontSize: "clamp(1.4rem,4vw,1.9rem)", lineHeight: 1.05 }}>
             Confirma que <span className="lav">participarás</span>
           </h3>
           <p className="rg-help" style={{ marginTop: 10 }}>
-            {a.canjeo_discord
-              ? "Ya canjeaste tu código de Discord, así que contamos contigo. Si ya no puedes participar, avísanos."
-              : vencido
+            {vencido
                 ? `El plazo terminó el ${limite}, pero todavía puedes confirmar: tu lugar se mantiene mientras no lo necesite otra persona.`
                 : `Tienes hasta el ${limite} (hora de Lima). Quien no confirma pierde su lugar, y pasa a quien está en la lista de espera.`}
           </p>
