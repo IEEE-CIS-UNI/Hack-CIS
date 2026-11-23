@@ -68,6 +68,8 @@ export default function MiInscripcion() {
   const [claveEntrada, setClaveEntrada] = useState("");
   const [entrando, setEntrando] = useState(false);
   const [enviandoEnlace, setEnviandoEnlace] = useState(false);
+  const [codigo, setCodigo] = useState("");
+  const [verificando, setVerificando] = useState(false);
 
   /** Copia la ficha al formulario de edición. */
   const cargarEnFormulario = useCallback((r: Resumen) => {
@@ -191,6 +193,32 @@ export default function MiInscripcion() {
     }
   }
 
+  /**
+   * Entrar con el código de 6 dígitos que llega en el mismo correo que el enlace. Sirve a
+   * quien su bandeja (por ejemplo la de algunas universidades) abre el enlace antes que él
+   * y lo deja inservible: el código no se gasta porque nadie lo «visita».
+   */
+  async function entrarConCodigo(correo: string) {
+    const limpio = codigo.replace(/\D/g, "");
+    if (limpio.length !== 6) { setAviso({ tipo: "error", texto: "El código tiene 6 números." }); return; }
+    setVerificando(true);
+    setAviso(null);
+    try {
+      const { data, error } = await navegador().auth.verifyOtp({ email: correo, token: limpio, type: "email" });
+      if (error || !data.session) {
+        setAviso({ tipo: "error", texto: "Ese código no es válido o ya venció. Usa el del último correo que te llegó." });
+        return;
+      }
+      setCodigo("");
+      setVista({ fase: "cargando" });
+      await cargarFicha(data.session.access_token);
+    } catch {
+      setAviso({ tipo: "error", texto: "No pudimos conectarnos. Inténtalo de nuevo." });
+    } finally {
+      setVerificando(false);
+    }
+  }
+
   /** Inscribirse a algo más (una sesión del bootcamp, o la hack). */
   async function matricular(slug: string) {
     if (!token) return;
@@ -262,12 +290,35 @@ export default function MiInscripcion() {
   if (vista.fase === "correoEnviado") {
     return (
       <div className="rg animate-pop-in">
-        <p className="rg-step">Enlace enviado</p>
+        <p className="rg-step">Enlace y código enviados</p>
         <h1 className="rg-q">Revisa tu<br /><span>correo</span></h1>
         <p className="rg-help">
-          Te mandamos un enlace a <strong style={{ color: "#fff" }}>{vista.correo}</strong>. Ábrelo
-          desde este mismo dispositivo y entras sin contraseña.
+          Te mandamos un correo a <strong style={{ color: "#fff" }}>{vista.correo}</strong>. Toca el botón
+          que trae y entras sin contraseña. Mira también en spam.
         </p>
+        <p className="rg-help" style={{ marginTop: 18 }}>
+          ¿El enlace ya no funciona o se abrió en otro lado? Escribe aquí el <strong style={{ color: "#fff" }}>código de
+          6 números</strong> que viene en el mismo correo:
+        </p>
+        <div className="rg-body">
+          <input
+            value={codigo}
+            onChange={(e) => setCodigo(e.target.value.replace(/\D/g, "").slice(0, 6))}
+            onKeyDown={(e) => { if (e.key === "Enter") entrarConCodigo(vista.correo); }}
+            inputMode="numeric" autoComplete="one-time-code" placeholder="000000" aria-label="Código de 6 números"
+            className="rg-input" style={{ letterSpacing: "0.5em", textAlign: "center", fontSize: "1.6rem" }}
+          />
+        </div>
+        {aviso && <p className={`rg-msg ${aviso.tipo === "ok" ? "ok" : "err"}`} style={{ marginTop: 14 }}>{aviso.texto}</p>}
+        <div className="rg-actions">
+          <button onClick={() => entrarConCodigo(vista.correo)} disabled={verificando || codigo.length !== 6} className="more solid">
+            {verificando ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <LogIn className="size-4" aria-hidden />}
+            Entrar con el código
+          </button>
+          <button onClick={() => { setAviso(null); setCodigo(""); setVista({ fase: "sinSesion" }); }} className="more">
+            Volver
+          </button>
+        </div>
       </div>
     );
   }
