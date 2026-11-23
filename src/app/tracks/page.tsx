@@ -42,8 +42,8 @@ export default function TracksPage() {
             <b>Un ganador por track</b>, que se anuncia en la Gran Final del sábado 5 de diciembre.
           </li>
           <li>
-            <b>La solución es de tu equipo.</b> El sponsor del track ganador recibe solo una licencia no exclusiva
-            para evaluarla y pilotearla. <Link href="/bases" className="underline underline-offset-4">Lee las bases</Link>.
+            <b>La autoría es de tu equipo.</b> Las soluciones quedan como repositorio open source con licencia MIT,
+            a total disposición del sponsor del track para pilotearlas. <Link href="/bases" className="underline underline-offset-4">Lee las bases</Link>.
           </li>
         </ul>
       </section>

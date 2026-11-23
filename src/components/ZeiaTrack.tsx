@@ -99,8 +99,8 @@ export default function ZeiaTrack({ slug }: { slug: string }) {
                   anuncian ahí.
                 </p>
                 <p style={{ marginBottom: 0 }}>
-                  <b>La solución es de tu equipo.</b> Zeia, como sponsor del track ganador, recibe solo una licencia no
-                  exclusiva para evaluarla y pilotearla. <Link href="/bases" style={{ color: "#0a8f86", fontWeight: 600 }}>Lee las bases</Link>.
+                  <b>La autoría es de tu equipo.</b> Las soluciones quedan como repositorio open source con licencia MIT,
+                  a total disposición de Zeia para pilotearlas. <Link href="/bases" style={{ color: "#0a8f86", fontWeight: 600 }}>Lee las bases</Link>.
                 </p>
               </div>
               <div className={s.calentar}>

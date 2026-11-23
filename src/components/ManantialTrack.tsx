@@ -95,8 +95,8 @@ export default function ManantialTrack({ slug }: { slug: string }) {
                   competir. Ese día conocerás el reto completo y, si hay datos o herramientas disponibles, también se anuncian ahí.
                 </p>
                 <p style={{ marginBottom: 0 }}>
-                  <b>La solución es de tu equipo.</b> Manantial, como sponsor del track ganador, recibe solo una licencia no
-                  exclusiva para evaluarla y pilotearla. <Link href="/bases" style={{ color: "#912b2b", fontWeight: 600 }}>Lee las bases</Link>.
+                  <b>La autoría es de tu equipo.</b> Las soluciones quedan como repositorio open source con licencia MIT,
+                  a total disposición de Manantial para pilotearlas. <Link href="/bases" style={{ color: "#912b2b", fontWeight: 600 }}>Lee las bases</Link>.
                 </p>
               </div>
               <div className={s.calentar}>

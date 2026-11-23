@@ -19,7 +19,7 @@ const ITEMS = [
   },
   {
     q: "¿De quién es la solución que construyo?",
-    a: "De tu equipo. Los sponsors reciben solo una licencia no exclusiva para evaluar y pilotear la solución ganadora de su Track.",
+    a: "La autoría es de tu equipo. Las soluciones quedan como repositorio open source con licencia MIT, a total disposición de los sponsors para pilotearlas sin comprarlas.",
   },
   {
     q: "¿Cuándo y dónde es?",

@@ -11,7 +11,7 @@ import { LINKS } from "@/lib/config";
 export const metadata: Metadata = {
   title: "Bases · HACK[CIS] UNI 2026",
   description:
-    "Quién puede participar, cómo inscribirse, etapas y fechas, equipos y tracks, licencia piloto y tratamiento de datos de HACK[CIS] UNI 2026.",
+    "Quién puede participar, cómo inscribirse, etapas y fechas, equipos y tracks, licencia open source (MIT) y tratamiento de datos de HACK[CIS] UNI 2026.",
 };
 
 /**
@@ -189,16 +189,15 @@ export default function BasesPage() {
 
           <Seccion n="06" titulo="De quién es lo que construyes">
             <p>
-              <B>La solución es de tu equipo.</B> La organización no reclama propiedad sobre el código, el
+              <B>La autoría es de tu equipo.</B> La organización no reclama propiedad sobre el código, el
               diseño ni la idea.
             </p>
             <p>
-              <B>Cláusula de licencia piloto:</B> el equipo ganador de cada track otorga al sponsor de ese track
-              una licencia <B>no exclusiva, sin transferencia de propiedad</B>, con el único fin de evaluar y
-              pilotear la solución. No incluye explotación comercial ni cesión a terceros, y el equipo conserva
-              el derecho de usar, publicar y licenciar su trabajo a quien quiera.
+              <B>Open source con licencia MIT:</B> las soluciones quedan como un repositorio open source con
+              licencia MIT. El equipo conserva su autoría (su nombre en el aviso de la licencia) y la solución queda
+              a total disposición de las empresas, incluido el sponsor del track, para evaluarla y pilotearla sin
+              comprarla.
             </p>
-            <p>Los equipos que no ganan no otorgan licencia alguna.</p>
           </Seccion>
 
           <Seccion n="07" titulo="Tus datos personales">

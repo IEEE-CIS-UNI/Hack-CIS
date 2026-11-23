@@ -708,7 +708,7 @@ export default function RegistroWizard() {
             <input type="checkbox" checked={consiente} onChange={(e) => setConsiente(e.target.checked)} />
             <span>
               Autorizo el tratamiento de mis datos personales para este evento (Ley 29733) y acepto las{" "}
-              <a href="/bases">bases</a>{conHack && <>, incluida la cláusula de licencia piloto</>}.
+              <a href="/bases">bases</a>{conHack && <>, incluida la licencia open source (MIT) de las soluciones</>}.
             </span>
           </label>
 
