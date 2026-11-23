@@ -31,6 +31,10 @@ export type Inscrito = {
   code: string | null;
   redeemed: boolean;
   created_at: string;
+  /** Solo la hack: está en la lista de espera (todavía sin cupo ni código de Discord). */
+  waiting?: boolean;
+  /** Su lugar en la lista de espera (1 = el primero en subir). */
+  position?: number | null;
 };
 
 export type Equipo = {

@@ -45,7 +45,7 @@ const PLANES: { id: Plan; titulo: string; desc: string; marca?: string }[] = [
   {
     id: "hack_bootcamp",
     titulo: "Hack + Bootcamp",
-    desc: "La hackathon (hasta 250 cupos) y el bootcamp, que es parte de la experiencia: eliges las sesiones que quieras.",
+    desc: "La hackathon (250 cupos y lista de espera) y el bootcamp, que es parte de la experiencia: eliges las sesiones que quieras.",
     marca: "Recomendado",
   },
   { id: "bootcamp", titulo: "Solo bootcamp", desc: "Abierto a todos: sin DNI ni correo institucional. Eliges las sesiones. Si luego quieres la hack, necesitarás tu correo institucional y tu DNI." },
@@ -741,7 +741,7 @@ export default function RegistroWizard() {
       </div>
 
       <p className="rg-small">
-        inscripciones abiertas desde el {EVENT.registrationOpensLabel} · hack: 250 cupos · bootcamp: sin límite
+        inscripciones abiertas desde el {EVENT.registrationOpensLabel} · hack: 250 cupos + lista de espera · bootcamp: sin límite
       </p>
       <p className="rg-small" style={{ marginTop: 10 }}>
         ¿ya tienes cuenta? <a href="/mi-inscripcion">entra a tu panel</a>

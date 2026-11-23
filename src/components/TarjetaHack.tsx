@@ -215,7 +215,18 @@ export default function TarjetaHack({
 
         {aviso && <p className={`rg-msg ${aviso.tipo === "ok" ? "ok" : "err"}`} style={{ marginTop: 14 }}>{aviso.texto}</p>}
 
-        {hack.code && (
+        {hack.waiting && (
+          <div className="code" style={{ marginTop: 26 }}>
+            <p className="box-h" style={{ margin: 0 }}>Lista de espera</p>
+            <b>Puesto {hack.position ?? ""}</b>
+            <p>
+              Los 250 cupos ya se ocuparon, así que estás en la lista de espera. Si alguien libera su lugar, subes solo y
+              aquí aparece tu código de Discord. Mientras tanto puedes seguir el bootcamp y buscar equipo.
+            </p>
+          </div>
+        )}
+
+        {hack.code && !hack.waiting && (
           <div className="code" style={{ marginTop: 26 }}>
             <p className="box-h" style={{ margin: 0 }}>Tu código de Discord</p>
             <b>{codigoBonito(hack.code)}</b>

@@ -15,7 +15,7 @@ const TEXTOS: Record<string, { motivo: string; estado: number }> = {
   falta_nombre: { motivo: "Falta tu nombre.", estado: 422 },
   oferta_inexistente: { motivo: "Esa sesión no existe.", estado: 404 },
   cerrado: { motivo: "Las inscripciones a esto están cerradas.", estado: 409 },
-  cupo_lleno: { motivo: "Se llenaron los 250 cupos de la hackathon.", estado: 409 },
+  cupo_lleno: { motivo: "Se llenaron los 250 cupos de la hackathon y su lista de espera.", estado: 409 },
   requiere_verificacion: {
     motivo: "Para la hackathon necesitas verificar tu identidad con el correo institucional y tu DNI. Inscríbete con ese correo.",
     estado: 403,

@@ -76,7 +76,7 @@ export default function BasesPage() {
                 confirmarlo, no hay inscripción.
               </li>
               <li>
-                Hay <B>250 cupos</B> en la hackathon, por orden de inscripción. Al llenarse no se reservan más.
+                Hay <B>250 cupos</B> en la hackathon, por orden de inscripción. Al llenarse queda una <B>lista de espera de hasta 50 personas</B>: si alguien libera su lugar, quien sigue en la lista sube solo. Por eso se pide confirmar la asistencia antes del miércoles 25 de noviembre, 3:00 p. m. (hora de Lima); quien no confirma puede perder su lugar.
               </li>
               <li>
                 <B>Bootcamp:</B> abierto a cualquier persona, sin costo y sin límite de cupos. Puedes entrar

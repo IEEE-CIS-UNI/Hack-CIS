@@ -7,7 +7,9 @@
  * también a quienes no pueden entrar con enlaces de correo) y en el panel. Tres respuestas:
  *   pendiente    todavía no respondió,
  *   confirmado   «Confirmo que participaré»,
- *   no_participa «No podré participar» (libera su lugar para la lista de espera).
+ *   no_participa «No podré participar» (libera su lugar para la lista de espera),
+ *   vencido      no confirmó a tiempo y su lugar pasó a la lista de espera (puede volver si hay sitio).
+ * Quien está en la lista de espera (más allá del cupo 250) lo ve en lugar de los botones.
  * Quien ya canjeó su código de Discord cuenta como confirmado aunque no haya pulsado nada.
  */
 
@@ -17,11 +19,13 @@ import { navegador } from "@/lib/supabase";
 
 export type Asistencia = {
   hay_hack: boolean;
-  estado?: "pendiente" | "confirmado" | "no_participa";
+  estado?: "pendiente" | "confirmado" | "no_participa" | "vencido";
   canjeo_discord?: boolean;
   efectivo?: boolean;
   numero?: number | null;
   limite?: string;
+  espera?: boolean;
+  posicion?: number | null;
 };
 
 type Modo = { tipo: "token"; token: string } | { tipo: "panel" };
@@ -67,7 +71,11 @@ export default function ConfirmarAsistencia({ modo, inicial }: { modo: Modo; ini
     setEnviando(accion);
     setError(null);
     try { setA(await llamar(modo, accion)); }
-    catch { setError("No pudimos guardar tu respuesta. Inténtalo de nuevo en un momento."); }
+    catch (e) {
+      setError(/cupo_lleno/.test((e as Error).message)
+        ? "Ya no queda sitio: los 250 cupos y la lista de espera están llenos."
+        : "No pudimos guardar tu respuesta. Inténtalo de nuevo en un momento.");
+    }
     finally { setEnviando(null); }
   }
 
@@ -75,8 +83,25 @@ export default function ConfirmarAsistencia({ modo, inicial }: { modo: Modo; ini
   const limite = fechaLimite(a.limite);
 
   return (
-    <div className="box" style={{ marginBottom: 18, borderColor: a.estado === "no_participa" ? "rgba(255,255,255,.2)" : "rgba(77,227,255,.45)" }}>
+    <div className="box" style={{ marginBottom: 18, borderColor: a.estado === "no_participa" || a.estado === "vencido" ? "rgba(255,255,255,.2)" : "rgba(77,227,255,.45)" }}>
       <p className="box-h" style={{ color: "var(--cyan)" }}>Tu lugar en la hackathon</p>
+
+      {a.espera && a.estado === "pendiente" && (
+        <>
+          <h3 className="d" style={{ fontSize: "clamp(1.4rem,4vw,1.9rem)", lineHeight: 1.05 }}>
+            Estás en la <span className="lav">lista de espera</span>
+          </h3>
+          <p className="rg-help" style={{ marginTop: 10 }}>
+            Los 250 cupos ya se ocuparon. Tu puesto es el <strong style={{ color: "#fff" }}>{a.posicion}</strong>. Si alguien libera su
+            lugar, subes solo y te avisamos por correo. No tienes que hacer nada más; si ya no te interesa, avísanos.
+          </p>
+          <div className="rg-actions" style={{ marginTop: 14 }}>
+            <button className="more" disabled={!!enviando} onClick={() => responder("no_participo")}>
+              {enviando === "no_participo" && <Loader2 className="size-4 animate-spin" aria-hidden />} Salir de la lista
+            </button>
+          </div>
+        </>
+      )}
 
       {a.estado === "confirmado" && (
         <>
@@ -87,6 +112,20 @@ export default function ConfirmarAsistencia({ modo, inicial }: { modo: Modo; ini
           <div className="rg-actions" style={{ marginTop: 14 }}>
             <button className="more" disabled={!!enviando} onClick={() => responder("no_participo")}>
               {enviando === "no_participo" && <Loader2 className="size-4 animate-spin" aria-hidden />} Ya no podré participar
+            </button>
+          </div>
+        </>
+      )}
+
+      {a.estado === "vencido" && (
+        <>
+          <p className="rg-help" style={{ marginTop: 0 }}>
+            Tu lugar pasó a la lista de espera porque no lo confirmaste a tiempo (el plazo era el {limite}). Sigues en el bootcamp. Si todavía quieres
+            participar en la hackathon, pídelo ahora: entras con tu mismo número si aún hay sitio.
+          </p>
+          <div className="rg-actions" style={{ marginTop: 14 }}>
+            <button className="more solid" disabled={!!enviando} onClick={() => responder("confirmo")}>
+              {enviando === "confirmo" && <Loader2 className="size-4 animate-spin" aria-hidden />} Quiero participar
             </button>
           </div>
         </>
@@ -106,7 +145,7 @@ export default function ConfirmarAsistencia({ modo, inicial }: { modo: Modo; ini
         </>
       )}
 
-      {a.estado === "pendiente" && (
+      {a.estado === "pendiente" && !a.espera && (
         <>
           <h3 className="d" style={{ fontSize: "clamp(1.4rem,4vw,1.9rem)", lineHeight: 1.05 }}>
             Confirma que <span className="lav">participarás</span>

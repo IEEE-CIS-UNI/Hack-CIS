@@ -3,7 +3,7 @@ import { EVENT } from "@/lib/config";
 const ITEMS = [
   {
     q: "¿Quién puede participar?",
-    a: "Estudiantes universitarios y de institutos de todo el país, con carné o código de matrícula. Hay 250 cupos.",
+    a: "Estudiantes universitarios y de institutos de todo el país, con carné o código de matrícula. Hay 250 cupos y, al llenarse, una lista de espera de hasta 50 personas.",
   },
   {
     q: "¿Me inscribo solo o con mi equipo?",

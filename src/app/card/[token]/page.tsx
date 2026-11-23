@@ -31,7 +31,7 @@ type Datos = {
   display_name: string;
   institution: string | null;
   photo_url: string | null;
-  hack: { number: number; code: string | null; redeemed: boolean } | null;
+  hack: { number: number; code: string | null; redeemed: boolean; espera?: boolean; posicion?: number | null } | null;
   sesiones: string[];
 };
 
@@ -98,7 +98,7 @@ export default async function CardPage({ params }: { params: Promise<{ token: st
                       photo_url: d.photo_url, linkedin_url: null, github_url: null, discord_username: null,
                       sponsors_consent: false, qr_token: "", institution: d.institution, verified: true,
                     } satisfies Persona}
-                    hack={{ slug: "hack", number: d.hack.number, code: d.hack.code, redeemed: d.hack.redeemed, created_at: "" }}
+                    hack={{ slug: "hack", number: d.hack.number, code: d.hack.code, redeemed: d.hack.redeemed, created_at: "", waiting: d.hack.espera === true, position: d.hack.posicion ?? null }}
                     token={null}
                   />
                 </div>
