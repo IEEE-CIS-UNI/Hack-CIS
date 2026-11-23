@@ -120,8 +120,8 @@ export default function ConfirmarAsistencia({ modo, inicial }: { modo: Modo; ini
       {a.estado === "vencido" && (
         <>
           <p className="rg-help" style={{ marginTop: 0 }}>
-            Tu lugar pasó a la lista de espera porque no lo confirmaste a tiempo (el plazo era el {limite}). Sigues en el bootcamp. Si todavía quieres
-            participar en la hackathon, pídelo ahora: entras con tu mismo número si aún hay sitio.
+            Perdiste tu lugar en la hackathon porque no lo confirmaste a tiempo (el plazo era el {limite}). Sigues en el bootcamp. Si todavía quieres
+            participar, pídelo ahora: vuelves con tu mismo número si aún hay sitio (si ya no hay cupo, entras a la lista de espera).
           </p>
           <div className="rg-actions" style={{ marginTop: 14 }}>
             <button className="more solid" disabled={!!enviando} onClick={() => responder("confirmo")}>
