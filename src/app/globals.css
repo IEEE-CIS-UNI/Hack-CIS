@@ -540,6 +540,22 @@ body{-webkit-font-smoothing:antialiased}
 }
 @media (max-width:420px){.sd-speakers{grid-template-columns:1fr}}
 
+/* bootcamp: panel del ponente, gemelo de «De qué va» (misma caja y misma altura) */
+.sd-who{display:flex;flex-direction:column}
+.sd-who::before{background:radial-gradient(22rem 14rem at 0% 0%,color-mix(in srgb,var(--tone) 30%,transparent),transparent 70%)}
+.sd-person .sd-av{width:clamp(150px,16vw,196px);margin:6px 0 28px}
+.sd-av .sd-badge{position:absolute;right:1%;bottom:1%;width:32%;aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--tone);background:#0b0118;border:2px solid var(--tone);box-shadow:0 0 18px -2px var(--tone);z-index:1}
+.sd-av .sd-badge svg{width:50%;height:50%}
+.sd-person{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center}
+.sd-av img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.sd-person .sd-av span{font-size:clamp(2.6rem,4vw,3.4rem)}
+.sd-person h3{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:clamp(1.7rem,2.6vw,2.2rem);line-height:1;color:var(--ink)}
+.sd-person .sd-role{font-size:.58rem;margin-top:10px}
+.sd-person .sd-bio{font-family:var(--font-sora),var(--body);font-weight:300;font-size:clamp(1.02rem,1.45vw,1.22rem);line-height:1.65;letter-spacing:.01em;color:var(--ink);opacity:.95;margin-top:18px;max-width:46ch}
+.sd-person .sd-in{margin-top:24px;padding:9px 16px;border:1px solid color-mix(in srgb,var(--tone) 60%,transparent);border-radius:999px;font-size:.56rem}
+.sd-person .sd-in:hover{border-color:var(--tone)}
+@media (min-width:900px){.sd-row1{grid-template-columns:1fr 1fr;align-items:stretch}}
+
 /* bootcamp: identidad visual (órbitas, marco HUD, números con contorno, franja de la semana) */
 @keyframes sc-orbit{to{transform:rotate(360deg)}}
 .sc-ic,.sd-ic,.sd-av{position:relative}

@@ -1,6 +1,6 @@
 /**
  * Datos propios de cada sesión del bootcamp que no están en `contenido.ts`:
- * fecha, color, resumen del PDF, ideas clave y ponentes.
+ * fecha, hora, color, descripción del workshop, ideas clave y ponentes.
  *
  * Títulos, íconos y textos de la sesión salen de `SESIONES` (contenido.ts);
  * aquí se indexa por su número («01»…«05»).
@@ -11,97 +11,151 @@ export type Ponente = {
   role: string;
   bio: string;
   href?: string; // perfil de LinkedIn
+  foto?: string; // archivo en /public/fotos; sin foto se muestran las iniciales
 };
+
+export type Bloque = { title: string; desc: string };
 
 export type DatosSesion = {
   fecha: string;
+  hora: string;
   tone: string;
   tone2: string;
-  resumen: string; // descripción de la hoja de ponentes
+  resumen: string; // descripción corta (tarjetas de /bootcamp)
+  workshop?: string; // enfoque del workshop según la ponencia; si falta, se usa `resumen`
   ideas: string[];
-  ponentes: Ponente[]; // vacío = tarjetas «por anunciar»
+  bloques?: Bloque[]; // agenda de la sesión; si falta, se muestran los bloques «por definir»
+  ponentes: Ponente[]; // solo confirmados (uno por sesión)
 };
 
-const POR_COMPLETAR = "Biografía por completar.";
 const IN = "https://www.linkedin.com/in/";
 
-// Ponentes: salen de la hoja de ponentes (estado «mapeado», aún sin confirmar).
-// Solo se publican cargo, empresa y formación; los comentarios internos de la hoja no.
+// Ponentes: salen de la hoja «Bootcamp-CIS» y solo se publican los que figuran como CONFIRMADO.
+// Los comentarios internos de la hoja (contactos, teléfonos, notas) no se publican.
 export const DATOS_SESION: Record<string, DatosSesion> = {
   "01": {
     fecha: "Lun 23/11",
+    hora: "8:30 pm",
     tone: "#8b5cf6",
     tone2: "#4d17c2",
     resumen:
       "Aprende a identificar problemas reales y transformarlos en soluciones innovadoras mediante herramientas de ideación y diseño centrado en el usuario.",
-    ideas: ["Detectar problemas reales", "Ideación centrada en el usuario", "Un prototipo que se puede probar"],
+    workshop:
+      "Taller de problematización: parte del reto hacia un usuario concreto con mapas de empatía y preguntas «¿Cómo podríamos…?», forma equipo con pitch-and-join (ideas en un minuto para que otros se sumen) y define el problema de tu equipo en dos frases para probarlo rápido.",
+    ideas: ["Mapas de empatía y «¿Cómo podríamos…?»", "Formar equipo con pitch-and-join", "Tu problema en dos frases"],
+    bloques: [
+      {
+        title: "Problematización",
+        desc: "Del reto a un usuario concreto, con mapas de empatía y preguntas «¿Cómo podríamos…?» para enfocar el problema y esbozar una propuesta de valor.",
+      },
+      {
+        title: "Pitch-and-join",
+        desc: "Presentas tu idea en un minuto para que otros se sumen y se formen los equipos.",
+      },
+      {
+        title: "El problema en dos frases",
+        desc: "Cierras definiendo el problema de tu equipo en dos frases, la base para probarlo rápido.",
+      },
+    ],
     ponentes: [
-      { name: "Miluska Talavera", role: "UI/UX", bio: "Especialista en UI/UX con experiencia como docente de sistemas.", href: `${IN}miluska-talavera/` },
-      { name: "Kevin Melgarejo Solis", role: "Fundador y CEO de Uberfy", bio: "Mentor en Startup UNI.", href: `${IN}kevinmelgarejo` },
-      { name: "Juan Manuel Huamancayo Pierrend", role: "Ponente", bio: POR_COMPLETAR, href: `${IN}jmhuamancayo` },
-      { name: "Ronald Barzola", role: "Ponente", bio: POR_COMPLETAR, href: `${IN}ronaldbarzola/` },
-      { name: "Kevin Edinson Vilcherres Trinidad", role: "Ponente", bio: POR_COMPLETAR, href: `${IN}kevinedinson/` },
-      { name: "Karen Camargo Alvarez", role: "Ponente", bio: POR_COMPLETAR, href: `${IN}karencamargoalvarez/` },
+      {
+        name: "Karen Camargo Alvarez",
+        role: "Innovación y emprendimiento",
+        bio: "Experta en innovación y emprendimiento, con maestría en Gestión de la Innovación (UPC). Asesora startups y es docente universitaria.",
+        href: `${IN}karencamargoalvarez/`,
+        foto: "/fotos/karen-camargo.webp",
+      },
     ],
   },
   "02": {
     fecha: "Mar 24/11",
+    hora: "10:00 am",
     tone: "#22c7ee",
     tone2: "#0b7a96",
-    resumen: "Valida el potencial de tu idea, define tu propuesta de valor y aprende a estructurar un pitch claro y convincente.",
-    ideas: ["Propuesta de valor", "Validar con evidencia", "Estructura de un buen pitch"],
+    resumen:
+      "Valida el potencial de tu idea, define tu propuesta de valor y aprende a estructurar un pitch claro y convincente.",
+    workshop:
+      "Una buena solución con IA no basta si nadie la necesita o si no sabes contarla. Aprende a validar el problema con evidencia real, definir a quién ayudas con tu propuesta de valor y armar un pitch breve y convincente. Saldrás con un borrador de ambos, ideal si ya tienes una idea y quieres presentarla ante el jurado.",
+    ideas: [
+      "Validar el problema con evidencia real",
+      "Tu propuesta de valor en una frase",
+      "Un pitch con hilo conductor",
+    ],
+    bloques: [
+      { title: "Validar con evidencia", desc: "Comprueba que el problema es real antes de construir." },
+      { title: "Tu propuesta de valor", desc: "Define a quién ayudas y cuál es tu propuesta de valor, en una frase clara." },
+      { title: "Estructura del pitch", desc: "Arma un pitch breve con un hilo que conecte problema, solución e impacto." },
+      { title: "Ejercicio en vivo", desc: "Sales con un borrador de tu propuesta de valor y de la estructura de tu pitch." },
+    ],
     ponentes: [
-      { name: "Ghissell Loayza", role: "Negocios", bio: "Perfil orientado al negocio.", href: `${IN}gklm/` },
-      { name: "Mg. Aldo Siu", role: "Fundador de IngenIA", bio: "Magíster por la UNI FIIS. Dirige IngenIA, una consultora de IA.", href: `${IN}aldosiu/` },
-      { name: "Jorge Portilla Swayne", role: "Ponente", bio: POR_COMPLETAR, href: `${IN}jpswayne91/` },
-      { name: "Jonathan Alva", role: "Ponente", bio: POR_COMPLETAR, href: `${IN}jonathanalvaa/` },
-      { name: "Fiorella Cisneros", role: "Ponente", bio: POR_COMPLETAR, href: `${IN}fiorella-cisneros/` },
-      { name: "Mariana Zzvi", role: "Ponente", bio: POR_COMPLETAR },
+      {
+        name: "Mariana Zavaleta",
+        role: "Fundadora de Mariana Zavi",
+        bio: "Ingeniera industrial y docente de negocios. Ha asesorado a más de 100 proyectos de estudiantes y acompaña a una comunidad de 40 mil personas.",
+        href: "https://www.linkedin.com/feed/update/urn:li:activity:7427758390157860866/",
+        foto: "/fotos/mariana-zavaleta.webp",
+      },
     ],
   },
   "03": {
     fecha: "Mié 25/11",
+    hora: "4:00 pm",
     tone: "#d946ef",
     tone2: "#8d1ba3",
     resumen:
       "Conoce las etapas del ciclo de vida del desarrollo de software y cómo aplicarlas para construir un MVP de manera ágil.",
-    ideas: ["Etapas del ciclo de vida", "Del requisito al MVP", "Trabajo ágil en equipo"],
+    workshop:
+      "Un buen producto en una hackathon necesita estructura y velocidad. Recorrerás las fases del ciclo de vida del software, del levantamiento de requerimientos a las pruebas y el despliegue, y aprenderás a priorizar las funcionalidades clave para llevar tu MVP de inicio a fin.",
+    ideas: ["Del requerimiento al despliegue", "Priorizar lo que entra al MVP", "Un flujo de desarrollo ágil"],
     ponentes: [
-      { name: "Mg. Michell Alvarez", role: "INDRA", bio: "Magíster con varios años de experiencia en INDRA.", href: `${IN}michell-alvarez-cadillo-608231144/` },
-      { name: "Javier Alejandro Arteaga Gonzales", role: "Ponente", bio: POR_COMPLETAR, href: `${IN}javierargo/` },
-      { name: "Pablo Jauregui", role: "Ponente", bio: POR_COMPLETAR, href: `${IN}pablo-jaureguip/` },
+      {
+        name: "Jim Sáenz",
+        role: "Arquitecto de soluciones cloud · MCT",
+        bio: "Arquitecto cloud y Microsoft Certified Trainer. Instructor de IA generativa y Power Platform, y gerente en Ova Cognition.",
+        href: `${IN}ACoAAANd44YBTGf2hpFXDOSCtk7-Q4qneTA6Ph8`,
+        foto: "/fotos/jim-saenz.webp",
+      },
     ],
   },
   "04": {
     fecha: "Jue 26/11",
+    hora: "7:00 pm",
     tone: "#8b5cf6",
     tone2: "#4d17c2",
     resumen:
       "Explora cómo utilizar herramientas de inteligencia artificial y Spec-Driven Development para acelerar y estructurar el desarrollo de soluciones.",
     ideas: ["IA como copiloto de desarrollo", "Spec-Driven Development", "De la especificación al código"],
     ponentes: [
-      { name: "Ing. Wilmer Paucar", role: "Analítica de datos y calidad · ISAT", bio: "Egresado de la FIIS UNI. Coordina analítica de datos y calidad en ISAT.", href: `${IN}wilmerjesuspaucar/` },
-      { name: "Abel Tarazona", role: "Ponente", bio: POR_COMPLETAR, href: `${IN}abeltarazona/` },
-      { name: "Gera Flores Sempertegui", role: "Ponente", bio: POR_COMPLETAR, href: `${IN}soymissyera/` },
+      {
+        name: "Gabriel Gonza",
+        role: "Technical Lead en Ravn",
+        bio: "AI & Cloud Solutions Architect (AWS) y Claude Certified Architect. Lanza productos de IA para startups de EE. UU. y cofundó Paxsi, ganadora del fondo semilla de KOICA.",
+        href: `${IN}gadidgc/`,
+      },
     ],
   },
   "05": {
     fecha: "Vie 27/11",
+    hora: "5:00 pm",
     tone: "#22c7ee",
     tone2: "#0b7a96",
     resumen:
       "Conoce buenas prácticas de seguridad, pruebas y validación para asegurar la calidad de tu MVP y preparar los entregables finales de la hackathon.",
     ideas: ["Seguridad desde el diseño", "Pruebas y validación", "Entregables de la hackathon"],
     ponentes: [
-      { name: "Omar Palomino", role: "Especialista en ciberseguridad", bio: "Tiene su propia empresa de ciberseguridad, Kuruk.", href: `${IN}opalomino` },
-      { name: "Ing. Luis Sanchez", role: "Seguridad cloud", bio: "5 años de experiencia en NTT Data. Ha dictado cursos de seguridad, SOC y documentación de seguridad.", href: `${IN}ing-luis-gonzalo-s-0b0915100/` },
-      { name: "Oscar Campos Andía", role: "Ponente", bio: POR_COMPLETAR, href: `${IN}oscar-campos-and%C3%ADa-69060446/` },
+      {
+        name: "José Guerra",
+        role: "Arquitecto de soluciones cloud",
+        bio: "Arquitecto de soluciones cloud con 5 años de experiencia ayudando a empresas de la región a resolver sus desafíos tecnológicos.",
+        href: `${IN}jose-carlos-guerra-martinez`,
+        foto: "/fotos/jose-guerra.webp",
+      },
     ],
   },
 };
 
 /** Estructura interna de cada sesión. Aún no hay agenda explícita: 4 bloques por definir. */
-export const BLOQUES = [1, 2, 3, 4].map((n) => ({
-  title: `Bloque ${n}`,
+export const BLOQUES: Bloque[] = [1, 2, 3, 4].map(() => ({
+  title: "Por definir",
   desc: "Contenido por definir.",
 }));

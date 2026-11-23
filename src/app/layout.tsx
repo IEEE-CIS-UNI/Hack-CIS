@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Antonio, Inter, Michroma, Rubik_Mono_One } from "next/font/google";
+import { Antonio, Inter, Michroma, Rubik_Mono_One, Sora } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Metricas from "@/components/Metricas";
@@ -9,6 +9,7 @@ const antonio = Antonio({ variable: "--font-antonio", subsets: ["latin"], weight
 const rubik = Rubik_Mono_One({ variable: "--font-rubik", subsets: ["latin"], weight: "400" });
 const michroma = Michroma({ variable: "--font-michroma", subsets: ["latin"], weight: "400" });
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
+const sora = Sora({ variable: "--font-sora", subsets: ["latin"], weight: ["300", "400"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
@@ -25,7 +26,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="es"
-      className={`${antonio.variable} ${rubik.variable} ${michroma.variable} ${inter.variable}`}
+      data-scroll-behavior="smooth"
+      className={`${antonio.variable} ${rubik.variable} ${michroma.variable} ${inter.variable} ${sora.variable}`}
     >
       <body>
         {children}

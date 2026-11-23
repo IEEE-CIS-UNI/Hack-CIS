@@ -1,8 +1,9 @@
 import type { CSSProperties } from "react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, CalendarDays, Clock, Monitor, Play, Ticket } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays, Clock, Monitor, Play, Ticket } from "lucide-react";
 import BotonInscripcion from "@/components/BotonInscripcion";
 import PageShell from "@/components/PageShell";
 import { SESIONES, sesionPorN } from "@/lib/contenido";
@@ -24,12 +25,15 @@ export async function generateMetadata({ params }: { params: Promise<{ n: string
   };
 }
 
-/** Por ahora no se muestran nombres: dos cartillas genéricas hasta confirmar a cada ponente. */
-const PONENTES_POR_ANUNCIAR = [1, 2].map((k) => ({
-  name: `Ponente ${k}`,
-  role: "Próximamente",
-  bio: "Su información se publicará pronto.",
-}));
+/** Iniciales para el avatar: sin títulos (Mg., Ing.) y como máximo dos letras. */
+const iniciales = (nombre: string) =>
+  nombre
+    .replace(/^(Mg\.|Ing\.)\s+/, "")
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase();
 
 export default async function SesionPage({ params }: { params: Promise<{ n: string }> }) {
   const { n } = await params;
@@ -41,7 +45,7 @@ export default async function SesionPage({ params }: { params: Promise<{ n: stri
   const i = SESIONES.findIndex((s) => s.n === n);
   const anterior = SESIONES[i - 1];
   const siguiente = SESIONES[i + 1];
-  const ponentes = PONENTES_POR_ANUNCIAR;
+  const ponentes = d.ponentes;
 
   return (
     <PageShell wide>
@@ -56,7 +60,7 @@ export default async function SesionPage({ params }: { params: Promise<{ n: stri
           </Link>
           <nav className="sd-steps" aria-label="Sesiones del bootcamp">
             {SESIONES.map((x) => (
-              <Link key={x.n} href={`/bootcamp/${x.n}`} aria-current={x.n === sesion.n ? "page" : undefined} aria-label={`Sesión ${x.n}`}>
+              <Link key={x.n} href={`/bootcamp/${x.n}`} scroll={false} aria-current={x.n === sesion.n ? "page" : undefined} aria-label={`Sesión ${x.n}`}>
                 {x.n}
               </Link>
             ))}
@@ -69,29 +73,36 @@ export default async function SesionPage({ params }: { params: Promise<{ n: stri
         <p className="pg-lead">{sesion.detalle}</p>
 
         {/* Ponentes (izquierda) y temática (derecha) */}
-        <div className="sd-row">
-          <section aria-labelledby="sd-sp">
-            <h2 id="sd-sp" className="sd-h">Quiénes lo dictan</h2>
-            <div className="sd-speakers">
-              {ponentes.map((p, k) => (
-                <article key={`${p.name}-${k}`} className="sd-sp">
-                  <div className="sd-av" aria-hidden>
-                    <span>?</span>
+        <div className="sd-row sd-row1">
+          <section className="sd-about sd-who" aria-labelledby="sd-sp">
+            <h2 id="sd-sp" className="sd-h">Quién lo dicta</h2>
+            {ponentes.map((p, k) => (
+              <article key={`${p.name}-${k}`} className="sd-person">
+                <div className="sd-av" aria-hidden>
+                  {p.foto ? (
+                    <Image src={p.foto} width={256} height={256} unoptimized alt="" />
+                  ) : (
+                    <span>{iniciales(p.name)}</span>
+                  )}
+                  <div className="sd-badge">
+                    <Icono strokeWidth={1.7} />
                   </div>
-                  <h3>{p.name}</h3>
-                  <p className="sd-role">{p.role}</p>
-                  <p className="sd-bio">{p.bio}</p>
-                </article>
-              ))}
-            </div>
+                </div>
+                <h3>{p.name}</h3>
+                <p className="sd-role">{p.role}</p>
+                <p className="sd-bio">{p.bio}</p>
+                {p.href && (
+                  <a href={p.href} target="_blank" rel="noopener noreferrer" className="sd-in" aria-label={`Perfil de LinkedIn de ${p.name}`}>
+                    LinkedIn <ArrowUpRight aria-hidden size={12} />
+                  </a>
+                )}
+              </article>
+            ))}
           </section>
 
           <section className="sd-about" aria-labelledby="sd-ab">
             <h2 id="sd-ab" className="sd-h">De qué va</h2>
-            <div className="sd-ic">
-              <Icono aria-hidden strokeWidth={1.6} />
-            </div>
-            <p className="sd-desc">{d.resumen}</p>
+            <p className="sd-desc">{d.workshop ?? d.resumen}</p>
             <ul className="sd-topics">
               {d.ideas.map((t) => (
                 <li key={t}>{t}</li>
@@ -111,7 +122,7 @@ export default async function SesionPage({ params }: { params: Promise<{ n: stri
           <div>
             <Clock aria-hidden size={18} />
             <span className="hud">Hora</span>
-            <b>Por confirmar</b>
+            <b>{d.hora}</b>
           </div>
           <div>
             <Monitor aria-hidden size={18} />
@@ -123,7 +134,7 @@ export default async function SesionPage({ params }: { params: Promise<{ n: stri
             <span className="hud">Acceso</span>
             <b>Gratis y abierto a todos</b>
           </div>
-          <p>El horario y el enlace de la sesión se publican aquí, y solo los ven las personas inscritas.</p>
+          <p>El enlace de la sesión se publica aquí, y solo lo ven las personas inscritas.</p>
         </section>
 
         {/* Estructura interna de la sesión (izquierda) y video (derecha) */}
@@ -131,10 +142,10 @@ export default async function SesionPage({ params }: { params: Promise<{ n: stri
           <section aria-labelledby="sd-tl">
             <h2 id="sd-tl" className="sd-h">Cómo se desarrolla la sesión</h2>
             <ol className="sd-tl">
-              {BLOQUES.map((b) => (
-                <li key={b.title}>
-                  <span className="sd-when">{b.title}</span>
-                  <h3>Por definir</h3>
+              {(d.bloques ?? BLOQUES).map((b, k) => (
+                <li key={`${k}-${b.title}`}>
+                  <span className="sd-when">Bloque {k + 1}</span>
+                  <h3>{b.title}</h3>
                   <p>{b.desc}</p>
                 </li>
               ))}
