@@ -53,7 +53,7 @@ declare
   tablas_ok  constant text[] := array[
     'institutions', 'university_domains', 'careers',
     'people', 'offerings', 'enrollments', 'tracks', 'hack_teams', 'hack_team_members'];
-  vistas_ok  constant text[] := array['hack_roster'];
+  vistas_ok  constant text[] := array['hack_roster', 'sponsor_leads'];
   funciones_ok constant text[] := array[
     'touch_updated_at', 'display_name_of', 'gen_access_code', 'register_person', 'enroll_in',
     'create_team', 'leave_team', 'my_overview', 'public_counts', 'redeem_hack_code'];

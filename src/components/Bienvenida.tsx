@@ -175,7 +175,13 @@ export default function Bienvenida() {
       {avisos.hackLleno && (
         <p className="rg-msg warn box" style={{ marginTop: 22, display: "flex", gap: 10 }}>
           <TriangleAlert className="size-5 shrink-0" aria-hidden />
-          Los 250 cupos de la hackathon ya se llenaron, así que no pudimos reservarte uno. Tu inscripción al bootcamp sí quedó.
+          Los 250 cupos de la hackathon y su lista de espera ya se llenaron, así que no pudimos reservarte un lugar. Tu inscripción al bootcamp sí quedó.
+        </p>
+      )}
+      {hack?.waiting && (
+        <p className="rg-msg warn box" style={{ marginTop: 22, display: "flex", gap: 10 }}>
+          <TriangleAlert className="size-5 shrink-0" aria-hidden />
+          Los 250 cupos de la hackathon ya se ocuparon: quedaste en la lista de espera, puesto {hack.position}. Si alguien libera su lugar, subes solo y te avisamos.
         </p>
       )}
       {avisos.sinVerificar && (

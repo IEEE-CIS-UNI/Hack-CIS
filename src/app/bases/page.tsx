@@ -1,3 +1,4 @@
+import { Cinta } from "@/components/Nuevo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -75,7 +76,7 @@ export default function BasesPage() {
                 confirmarlo, no hay inscripción.
               </li>
               <li>
-                Hay <B>250 cupos</B> en la hackathon, por orden de inscripción. Al llenarse no se reservan más.
+                Hay <B>250 cupos</B> en la hackathon, por orden de inscripción. Al llenarse queda una <B>lista de espera de hasta 50 personas</B>: si alguien libera su lugar, quien sigue en la lista sube solo. Por eso se pide confirmar la asistencia antes del miércoles 25 de noviembre, 3:00 p. m. (hora de Lima); quien no confirma puede perder su lugar.
               </li>
               <li>
                 <B>Bootcamp:</B> abierto a cualquier persona, sin costo y sin límite de cupos. Puedes entrar
@@ -103,7 +104,8 @@ export default function BasesPage() {
               </li>
               <li>Para el bootcamp: nombres, apellidos y correo. El celular es opcional.</li>
               <li>
-                Opcional en ambos: LinkedIn, GitHub, usuario de Discord y cómo te enteraste del evento.
+                Opcional en ambos: LinkedIn, GitHub, usuario de Discord, cómo te enteraste del evento y si quieres que
+                las empresas sponsor te conozcan (ver la sección 07).
               </li>
             </ul>
             <p>
@@ -139,8 +141,9 @@ export default function BasesPage() {
               </li>
               <li>
                 <B>Gran Final</B> — presencial, sábado 5 de diciembre, en el Auditorio CTIC de la UNI, durante
-                todo el día. Habrá feria de stands. Para los finalistas, lo ideal es que al menos una
-                persona del equipo pueda asistir en Lima.
+                todo el día. Habrá feria de stands, y los mini-retos y premios son para{" "}
+                <B>todas las personas que asistan</B>, no solo para quienes participan en la hackathon. Para los
+                finalistas, lo ideal es que al menos una persona del equipo pueda asistir en Lima.
               </li>
             </ul>
           </Seccion>
@@ -150,13 +153,17 @@ export default function BasesPage() {
             <ul>
               <li>De <B>2 a 4 integrantes</B>, que estén inscritos en la hackathon y no tengan otro equipo.</li>
               <li>
-                Al menos <B>2 carreras distintas</B> por equipo, según la carrera elegida en la inscripción.
+                <B>El jueves 26 de noviembre se arman los equipos</B>, en una plataforma que anunciaremos pronto.
               </li>
-              <li>Hay <B>tres tracks</B>, y todavía son un secreto: los tracks y sus sponsors se anuncian pronto.</li>
               <li>
-                El track <B>no se elige al inscribirse</B>. El viernes 27, después del pitch de los sponsors, la
-                persona líder crea el equipo desde la página del track: pone el nombre del equipo y el DNI de
-                sus compañeros, y todos quedan asignados a ese track.
+                <Cinta chica /> <B>A pedido de ustedes, ya no es obligatorio</B> que el equipo tenga carreras o
+                facultades distintas: es opcional. Un equipo diverso suele complementarse mejor, pero cada quien
+                arma su equipo con quienes prefiera.
+              </li>
+              <li>Hay <B>tres tracks</B>. El primero es <B>IA &amp; Energía</B>, con Zeia como sponsor; los otros dos y sus sponsors se anuncian pronto.</li>
+              <li>
+                El track <B>no se elige al inscribirse</B>: el viernes 27, después del pitch de los sponsors, cada
+                equipo elige el suyo.
               </li>
               <li>
                 Cada equipo compite en un solo track. Mientras el plazo siga abierto, quien se equivocó puede
@@ -166,10 +173,17 @@ export default function BasesPage() {
           </Seccion>
 
           <Seccion n="05" titulo="Evaluación y premios">
+            <p>Premios confirmados hasta ahora:</p>
+            <ul>
+              <li><B>S/ 500</B> para el equipo ganador de cada track.</li>
+              <li><B>Sorteo de cursos en vivo</B>, durante la semana y en la Gran Final.</li>
+              <li><B>Sorteo de merch.</B></li>
+              <li>Mini-retos con premios para todas las personas que asistan a la Gran Final. Los sorteos de ese día son solo para quienes están en la sala.</li>
+            </ul>
             <Pendiente>
-              Los criterios de evaluación, la composición del jurado, los mentores y los premios dependen de
-              los acuerdos con los sponsors y aún no están cerrados. Se publican aquí y en la comunidad de
-              WhatsApp antes del inicio del Build.
+              Los criterios de evaluación, la composición del jurado y los mentores dependen de los acuerdos
+              con los sponsors y aún no están cerrados. Se publican aquí y en la comunidad de WhatsApp antes
+              del inicio del Build.
             </Pendiente>
           </Seccion>
 
@@ -210,6 +224,7 @@ export default function BasesPage() {
               <li>Darte acceso a la comunidad y a los canales de la hackathon en Discord.</li>
               <li>Armar y validar equipos.</li>
               <li>Estadísticas agregadas y anónimas sobre participación.</li>
+              <li>Solo si tú lo autorizas: que las empresas sponsor te conozcan (abajo te contamos cómo).</li>
             </ul>
             <p className="font-bold text-white">Qué puedes hacer</p>
             <ul>
@@ -221,9 +236,32 @@ export default function BasesPage() {
                 completa, sin condiciones y sin pedirte explicaciones.
               </li>
             </ul>
+            <p className="font-bold text-white">Las empresas sponsor y tú</p>
             <p>
-              No vendemos ni cedemos tus datos. Los sponsors reciben estadísticas agregadas, nunca tu
-              información individual sin tu permiso expreso.
+              Los sponsors apuestan por el talento joven y, al terminar el evento, les encantaría conocer a quienes
+              participaron: para ofrecer prácticas, empleo o proyectos. Por eso te invitamos a marcar, si quieres, la casilla
+              opcional <B>«Quiero que las empresas sponsor me conozcan»</B> al inscribirte.
+            </p>
+            <ul>
+              <li>
+                <B>Es tu decisión.</B> No marcarla no afecta tu participación ni tus premios.
+              </li>
+              <li>
+                <B>Qué compartiríamos:</B> tu nombre, universidad o instituto, carrera, ciclo, nivel, correo, celular, y tu
+                LinkedIn y GitHub si los pusiste. Tu DNI no, porque ni siquiera lo guardamos.
+              </li>
+              <li>
+                <B>Cuándo:</B> una sola vez, al terminar el evento, con las empresas sponsor del evento. Les pedimos que
+                usen los datos solo para contactarte por oportunidades relacionadas con el evento.
+              </li>
+              <li>
+                <B>Cámbialo cuando quieras</B> desde <Link href="/mi-inscripcion">tu panel</Link>: si lo desmarcas, dejas
+                de estar en esa lista.
+              </li>
+            </ul>
+            <p>
+              Si no lo marcas, tus datos individuales no se entregan a nadie: los sponsors solo reciben estadísticas
+              agregadas y anónimas. No vendemos tus datos.
             </p>
           </Seccion>
 
@@ -258,6 +296,12 @@ export default function BasesPage() {
               Si algo cambia, se actualiza esta página y se avisa por la comunidad de WhatsApp. Nunca se
               cambian las reglas de una etapa que ya empezó.
             </p>
+            <ul>
+              <li>
+                <Cinta chica /> <B>22 de noviembre:</B> se eliminó la regla de que el equipo tuviera al menos 2 carreras o
+                facultades distintas; ahora es opcional.
+              </li>
+            </ul>
           </Seccion>
 
           <div className="mt-16">

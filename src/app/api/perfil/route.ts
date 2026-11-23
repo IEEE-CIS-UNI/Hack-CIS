@@ -108,6 +108,9 @@ export async function PATCH(req: Request) {
     }
   }
 
+  // Que los sponsors lo conozcan al terminar el evento: opcional y se puede cambiar cuando quiera.
+  if (cuerpo.sponsors !== undefined) cambios.sponsors_consent = cuerpo.sponsors === true;
+
   // Redes y contacto: se aceptan en cualquier forma razonable y se guardan en una sola.
   for (const [campo, columna, fn] of [
     ["linkedin", "linkedin_url", normalizarLinkedin],

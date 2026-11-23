@@ -401,6 +401,16 @@ body{-webkit-font-smoothing:antialiased}
 .rg-sel{background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.18);border-radius:12px;padding:12px;color:#fff;font-weight:600;outline:none}
 .rg-sel:focus{border-color:var(--lav)}
 .rg-sel option{background:#120a24;color:#fff}
+.cs{position:relative}
+.cs-in{padding-right:84px;text-overflow:ellipsis}
+.cs-cambiar{position:absolute;right:0;top:4px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:999px;color:var(--mist);font:600 .78rem var(--body);padding:6px 12px;cursor:pointer}
+.cs-lista{margin-top:10px;max-height:min(46vh,380px);overflow-y:auto;overscroll-behavior:contain;border:2px solid rgba(182,156,255,.35);border-radius:16px;background:rgba(18,10,36,.96);padding:6px 6px 10px;box-shadow:0 18px 40px rgba(0,0,0,.45)}
+.cs-area{margin:10px 10px 4px;font:400 .66rem/1 var(--mono,'Michroma',sans-serif);letter-spacing:.2em;text-transform:uppercase;color:var(--lav)}
+.cs-op{display:block;width:100%;text-align:left;background:transparent;border:0;border-radius:10px;padding:12px 12px;color:#fff;font:600 1rem/1.25 var(--body);cursor:pointer}
+.cs-op.on{background:rgba(122,44,245,.35)}
+.cs-op.sel::after{content:"✓";float:right;color:var(--cyan,#4de3ff)}
+.cs-vacio{padding:14px 12px;color:var(--mist);font-size:.95rem}
+
 .rg-tel{display:flex;gap:12px;align-items:flex-end}
 .rg-foot{display:flex;gap:12px;align-items:flex-start;min-height:4.4rem;padding-top:14px}
 .rg-msg{font-size:.95rem;color:var(--mist)}
@@ -594,3 +604,48 @@ body{-webkit-font-smoothing:antialiased}
 .sd-sp:hover{border-color:var(--tone);transform:translateY(-3px)}
 .sd-info{background:linear-gradient(180deg,rgba(20,8,40,.55),rgba(8,3,15,.6));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--tone) 18%,transparent)}
 @media (prefers-reduced-motion:reduce){.sd-sp,.sd-steps a{transition:none}.sd-sp:hover{transform:none}}
+
+/* Premios y feria */
+.pr-grid{display:grid;gap:16px;margin-top:40px}
+@media (min-width:760px){.pr-grid{grid-template-columns:repeat(3,1fr)}}
+.pr{padding:clamp(22px,3vw,30px);border:1px solid rgba(182,156,255,.28);border-radius:20px;background:linear-gradient(160deg,rgba(122,44,245,.22),rgba(8,3,15,.5) 72%)}
+.pr-tag{display:block;font-family:var(--tech);font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan)}
+.pr-big{margin-top:14px;font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:clamp(2.6rem,6vw,3.8rem);line-height:.95;color:#fff;text-shadow:.03em .03em 0 var(--violet),.06em .06em 0 var(--violet2)}
+.pr h3{margin-top:14px;font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:clamp(1.25rem,2.4vw,1.6rem);line-height:1.05;color:var(--lav)}
+.pr p{margin-top:8px;color:var(--mist);font-size:.95rem;line-height:1.5}
+.pr-ic{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;border:1.5px solid var(--lav);color:var(--lav);background:radial-gradient(circle,rgba(182,156,255,.18),transparent 72%)}
+.pr-ic svg{width:24px;height:24px}
+.pr-ic + h3{margin-top:18px;color:#fff}
+.pr-nota{margin-top:22px;font-family:var(--tech);font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--lav);line-height:1.9}
+.pr-nota b{color:#fff;font-weight:400}
+
+/* Sponsors de track y aliados de difusión */
+.sp-tier.trk .sp-logos{gap:20px 36px}
+.sp-tier.trk .sp-chip{height:46px}
+.sp-tier.dif .sp-logos{gap:14px 30px}
+.sp-tier.dif .sp-chip{height:30px}
+@media (min-width:900px){
+  .sp-tier.trk .sp-chip{height:58px}
+  .sp-tier.dif .sp-chip{height:36px}
+}
+/* La tarjeta del track entera lleva a nuestra página del track */
+.tk.is-link{cursor:pointer}
+.tk-more{display:inline-flex;align-items:center;gap:8px;font-family:var(--tech);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--tone);border-bottom:1px solid color-mix(in srgb,var(--tone) 55%,transparent);padding-bottom:3px;transition:gap .3s,border-color .3s}
+.tk-more::after{content:"";position:absolute;inset:0;z-index:2}
+.tk.is-link:hover .tk-more{gap:12px;border-color:var(--tone)}
+
+/* La cinta «NUEVO» (cinta adhesiva pegada) y el aviso de novedades */
+.cinta{position:absolute;top:-16px;left:50%;z-index:2;display:inline-block;transform:translateX(-50%) rotate(-4deg);filter:drop-shadow(0 7px 10px rgba(0,0,0,.45))}
+.cinta>span{display:block;padding:9px 30px 8px;font-family:var(--display);font-weight:700;font-size:1.25rem;letter-spacing:.2em;line-height:1;text-transform:uppercase;color:#2b1a05;
+  background:repeating-linear-gradient(135deg,rgba(255,255,255,.2) 0 5px,transparent 5px 11px),linear-gradient(180deg,#ffe27a,#ffc93c);
+  clip-path:polygon(0 0,4% 14%,0 28%,4% 42%,0 56%,4% 70%,0 84%,3% 100%,100% 100%,96% 86%,100% 72%,96% 58%,100% 44%,96% 30%,100% 16%,97% 0)}
+.cinta.chica{position:relative;top:0;left:0;margin:0 10px 0 2px;vertical-align:middle;transform:rotate(-3deg)}
+.cinta.chica>span{padding:5px 18px 4px;font-size:.8rem}
+.aviso-nuevo{padding:clamp(34px,7vh,64px) 0 0}
+.aviso-caja{position:relative;text-align:center;padding:clamp(28px,4vw,38px) clamp(20px,4vw,34px) clamp(20px,3vw,28px);border:1px solid rgba(182,156,255,.38);border-radius:20px;background:linear-gradient(160deg,rgba(122,44,245,.28),rgba(8,3,15,.6) 72%)}
+.aviso-t{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:clamp(1.6rem,4.4vw,2.6rem);line-height:1;color:#fff;margin-top:6px}
+.aviso-p{margin:12px auto 0;color:var(--mist);font-size:clamp(.98rem,1.5vw,1.12rem);line-height:1.55;max-width:46rem}
+.aviso-p b{color:#fff;font-weight:700}
+.aviso-l{display:inline-flex;align-items:center;gap:8px;margin-top:16px;font-family:var(--tech);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--lav);border-bottom:1px solid rgba(182,156,255,.5);padding-bottom:3px}
+.aviso-l:hover{color:#fff;border-color:#fff}
+.nuevo-fila{display:flex;align-items:flex-start;gap:6px}

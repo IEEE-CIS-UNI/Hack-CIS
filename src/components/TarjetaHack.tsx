@@ -30,7 +30,7 @@ export default function TarjetaHack({
   persona: Persona;
   hack: Inscrito;
   token: string | null;
-  alCambiarFoto: (url: string | null) => void;
+  alCambiarFoto?: (url: string | null) => void;   // sin esto la card es de solo lectura (página /card)
 }) {
   // La foto recién elegida se ve al instante, antes de terminar de subirse.
   const [fotoLocal, setFotoLocal] = useState<string | null>(null);
@@ -53,6 +53,7 @@ export default function TarjetaHack({
         universidad: persona.institution,
         numero: hack.number,
         foto,
+        enEspera: hack.waiting === true,
       });
       if (!vivo || !b) return;
       blob.current = b;
@@ -63,7 +64,7 @@ export default function TarjetaHack({
       vivo = false;
       if (url) URL.revokeObjectURL(url);
     };
-  }, [persona.display_name, persona.institution, hack.number, foto]);
+  }, [persona.display_name, persona.institution, hack.number, hack.waiting, foto]);
 
   const subirFoto = useCallback(
     async (f: File) => {
@@ -108,7 +109,7 @@ export default function TarjetaHack({
         }
         // El parámetro de tiempo evita que el navegador siga mostrando la foto
         // vieja desde su caché después de reemplazarla.
-        alCambiarFoto(`${pub.publicUrl}?v=${Date.now()}`);
+        alCambiarFoto?.(`${pub.publicUrl}?v=${Date.now()}`);
         setFotoLocal(null);
       } catch {
         setFotoLocal(null);
@@ -126,7 +127,7 @@ export default function TarjetaHack({
     setSubiendo(true);
     const { datos } = await api("/api/perfil", { metodo: "PATCH", token, cuerpo: { foto: "" } });
     setSubiendo(false);
-    if (datos.ok) { setFotoLocal(null); alCambiarFoto(null); }
+    if (datos.ok) { setFotoLocal(null); alCambiarFoto?.(null); }
     else setAviso({ tipo: "error", texto: datos.motivo ?? "No pudimos quitar la foto." });
   }
 
@@ -141,7 +142,9 @@ export default function TarjetaHack({
     const hecho = await compartir(
       blob.current,
       nombreArchivo,
-      "¡Ya estoy dentro de HACK[CIS] UNI 2026 · The Agentic Era! hackcis.lat",
+      hack.waiting
+        ? "¡Me inscribí a HACK[CIS] UNI 2026 · The Agentic Era! hackcis.lat"
+        : "¡Ya estoy dentro de HACK[CIS] UNI 2026 · The Agentic Era! hackcis.lat",
     );
     if (!hecho) descargar(blob.current, nombreArchivo);
   }
@@ -171,21 +174,27 @@ export default function TarjetaHack({
       <div className="tc-side">
         <p className="box-h" style={{ marginBottom: 6 }}>Tu card</p>
         <h3>¡Compártela!</h3>
-        <p>
-          Sube una foto o la imagen que quieras. Si no subes ninguna, sale tu nombre y tu primer apellido.
-        </p>
+        {token ? (
+          <>
+            <p>
+              Sube una foto o la imagen que quieras. Si no subes ninguna, sale tu nombre y tu primer apellido.
+            </p>
 
-        <div className="tc-btns">
-          <button type="button" className="more solid" onClick={() => archivo.current?.click()} disabled={subiendo}>
-            {subiendo ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <Camera className="size-4" aria-hidden />}
-            {foto ? "Cambiar imagen" : "Subir imagen"}
-          </button>
-          {foto && (
-            <button type="button" className="more" onClick={quitarFoto} disabled={subiendo}>
-              <Trash2 className="size-4" aria-hidden /> Quitar
-            </button>
-          )}
-        </div>
+            <div className="tc-btns">
+              <button type="button" className="more solid" onClick={() => archivo.current?.click()} disabled={subiendo}>
+                {subiendo ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <Camera className="size-4" aria-hidden />}
+                {foto ? "Cambiar imagen" : "Subir imagen"}
+              </button>
+              {foto && (
+                <button type="button" className="more" onClick={quitarFoto} disabled={subiendo}>
+                  <Trash2 className="size-4" aria-hidden /> Quitar
+                </button>
+              )}
+            </div>
+          </>
+        ) : (
+          <p>Descárgala o compártela en tus redes.</p>
+        )}
         <input
           ref={archivo}
           type="file"
@@ -209,7 +218,18 @@ export default function TarjetaHack({
 
         {aviso && <p className={`rg-msg ${aviso.tipo === "ok" ? "ok" : "err"}`} style={{ marginTop: 14 }}>{aviso.texto}</p>}
 
-        {hack.code && (
+        {hack.waiting && (
+          <div className="code" style={{ marginTop: 26 }}>
+            <p className="box-h" style={{ margin: 0 }}>Lista de espera</p>
+            <b>Puesto {hack.position ?? ""}</b>
+            <p>
+              Los 250 cupos ya se ocuparon, así que estás en la lista de espera. Si alguien libera su lugar, subes solo y
+              aquí aparece tu código de Discord. Mientras tanto puedes seguir el bootcamp y buscar equipo.
+            </p>
+          </div>
+        )}
+
+        {hack.code && !hack.waiting && (
           <div className="code" style={{ marginTop: 26 }}>
             <p className="box-h" style={{ margin: 0 }}>Tu código de Discord</p>
             <b>{codigoBonito(hack.code)}</b>

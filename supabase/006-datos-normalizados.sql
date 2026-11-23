@@ -189,6 +189,27 @@ alter table public.people add  constraint people_carrera_coherente check (
   (career_other is null) or (career_other = btrim(career_other) and char_length(career_other) between 3 and 60)
 ) not valid;
 
+-- Consentimiento (opcional y revocable) para que, al terminar el evento, las
+-- empresas sponsor conozcan a quien lo autorice. Sin marcar, la persona solo
+-- cuenta en estadísticas agregadas.
+alter table public.people add column if not exists sponsors_consent    boolean not null default false;
+alter table public.people add column if not exists sponsors_consent_at timestamptz;
+
+create or replace function public.people_consent_stamp()
+returns trigger language plpgsql as $$
+begin
+  if tg_op = 'INSERT' then
+    new.sponsors_consent_at := case when new.sponsors_consent then now() end;
+  elsif new.sponsors_consent is distinct from old.sponsors_consent then
+    new.sponsors_consent_at := case when new.sponsors_consent then now() end;
+  end if;
+  return new;
+end $$;
+
+drop trigger if exists people_consent on public.people;
+create trigger people_consent before insert or update on public.people
+  for each row execute function public.people_consent_stamp();
+
 -- ── 4. lo que no se usa ─────────────────────────────────────────────────────
 
 alter table public.people drop column if exists qr_token;
@@ -197,7 +218,7 @@ drop table  if exists public.expertises cascade;
 
 -- Los permisos de edición se rehacen sobre las columnas que quedan.
 revoke update on public.people from authenticated;
-grant update (phone, career_id, career_other, cycle, level, photo_url, linkedin_url, github_url, discord_username, affiliation)
+grant update (phone, career_id, career_other, cycle, level, photo_url, linkedin_url, github_url, discord_username, affiliation, sponsors_consent)
   on public.people to authenticated;
 
 -- Dos columnas de los catálogos que nada usa: si la institución tiene licencia
@@ -253,7 +274,7 @@ begin
   insert into public.people
     (auth_user_id, name, display_name, email, phone, dni_hash, institution_id,
      affiliation, career_id, career_other, cycle, level,
-     linkedin_url, github_url, discord_username, heard_from)
+     linkedin_url, github_url, discord_username, heard_from, sponsors_consent)
   values
     (uid, nombre,
      coalesce(nullif(btrim(p ->> 'display_name'), ''), public.display_name_of(nombre)),
@@ -268,7 +289,8 @@ begin
      nullif(btrim(p ->> 'linkedin_url'), ''),
      nullif(btrim(p ->> 'github_url'), ''),
      nullif(btrim(p ->> 'discord_username'), ''),
-     nullif(btrim(p ->> 'heard_from'), ''))
+     nullif(btrim(p ->> 'heard_from'), ''),
+     coalesce((p ->> 'sponsors_consent')::boolean, false))
   returning id into pid;
 
   return jsonb_build_object('id', pid, 'nuevo', true);
@@ -375,6 +397,7 @@ begin
       'level', per.level, 'affiliation', per.affiliation, 'photo_url', per.photo_url,
       'linkedin_url', per.linkedin_url, 'github_url', per.github_url,
       'discord_username', per.discord_username,
+      'sponsors_consent', per.sponsors_consent,
       'institution', per.inst_name,
       'verified', (per.institution_id is not null and per.dni_hash is not null)),
     'enrollments', coalesce((
@@ -486,6 +509,31 @@ end $$;
 -- ── 6c. Título de la sesión 2 del bootcamp ──────────────────────────────────
 
 update public.offerings set title = 'Validación de negocio y estructura del pitch' where slug = 'bootcamp-02';
+
+-- ── 6d. La base para las empresas sponsor: SOLO quien lo autorizó ───────────
+-- Es lo que se entrega al terminar el evento. Nunca incluye el DNI (ni siquiera
+-- su huella). Solo la clave de servicio puede leerla.
+
+create or replace view public.sponsor_leads as
+select p.name                                   as nombre_completo,
+       p.email, p.phone                         as celular,
+       i.name                                   as institucion,
+       coalesce(case when c.slug = 'otra' then p.career_other end, c.name) as carrera,
+       p.cycle                                  as ciclo,
+       p.level                                  as nivel,
+       p.linkedin_url, p.github_url,
+       exists (select 1 from public.enrollments e where e.person_id = p.id and e.offering_slug = 'hack') as participo_en_hackathon,
+       ht.name                                  as equipo,
+       p.sponsors_consent_at                    as autorizo_el
+from public.people p
+left join public.institutions i on i.id = p.institution_id
+left join public.careers c on c.id = p.career_id
+left join public.hack_team_members tm on tm.person_id = p.id
+left join public.hack_teams ht on ht.id = tm.team_id
+where p.sponsors_consent;
+
+revoke all on public.sponsor_leads from public, anon, authenticated;
+grant select on public.sponsor_leads to service_role;
 
 -- ── 7. comprobación ─────────────────────────────────────────────────────────
 

@@ -24,12 +24,15 @@
  * obligue a empezar de nuevo. El DNI nunca entra en ese borrador.
  */
 
+import { evento } from "@/lib/metricas";
+import SelectorCarrera from "@/components/SelectorCarrera";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Check, Loader2, Mail, TriangleAlert, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ArrowLeft, ArrowRight, Check, Loader2, LogIn, Mail, TriangleAlert, X } from "lucide-react";
 import { CLAVE_BOLETO, EVENT } from "@/lib/config";
 import { SESIONES } from "@/lib/contenido";
-import { CICLOS, SLUG_OTRA, limpiarCarrera, porArea, type Carrera } from "@/lib/carreras";
+import { CICLOS, SLUG_OTRA, limpiarCarrera, type Carrera } from "@/lib/carreras";
 import { ORIGENES, normalizarDiscord, normalizarGithub, normalizarLinkedin } from "@/lib/contacto";
 import { navegador } from "@/lib/supabase";
 import { PAISES, PAIS_POR_DEFECTO, normalizarTelefono } from "@/lib/telefono";
@@ -42,10 +45,10 @@ const PLANES: { id: Plan; titulo: string; desc: string; marca?: string }[] = [
   {
     id: "hack_bootcamp",
     titulo: "Hack + Bootcamp",
-    desc: "La hackathon (hasta 250 cupos) y el bootcamp, que es parte de la experiencia: eliges las sesiones que quieras.",
+    desc: "La hackathon (250 cupos y lista de espera) y el bootcamp, que es parte de la experiencia: eliges las sesiones que quieras.",
     marca: "Recomendado",
   },
-  { id: "bootcamp", titulo: "Solo bootcamp", desc: "Abierto a todos: sin DNI ni correo institucional. Eliges las sesiones." },
+  { id: "bootcamp", titulo: "Solo bootcamp", desc: "Abierto a todos: sin DNI ni correo institucional. Eliges las sesiones. Si luego quieres la hack, necesitarás tu correo institucional y tu DNI." },
 ];
 
 const NIVELES = ["Principiante", "Intermedio", "Avanzado", "Experto"] as const;
@@ -158,10 +161,17 @@ export default function RegistroWizard() {
   const [nombres, setNombres] = useState(() => leerBorrador().nombres ?? "");
   const [apellidos, setApellidos] = useState(() => leerBorrador().apellidos ?? "");
   const [consiente, setConsiente] = useState(false);
+  const [sponsors, setSponsors] = useState(false);
 
   const [universidad, setUniversidad] = useState("");
   const [enviando, setEnviando] = useState(false);
   const [resultado, setResultado] = useState<{ ok: boolean; correo?: string; motivo?: string } | null>(null);
+  // El código de 6 números que viene en el correo: otra puerta cuando el enlace no sirve
+  // (algunas bandejas, como las de ciertas universidades, lo abren antes que la persona).
+  const router = useRouter();
+  const [codigoCorreo, setCodigoCorreo] = useState("");
+  const [verificandoCodigo, setVerificandoCodigo] = useState(false);
+  const [errorCodigo, setErrorCodigo] = useState<string | null>(null);
   const campoRef = useRef<HTMLInputElement>(null);
 
   const conHack = plan === "hack_bootcamp";
@@ -178,6 +188,9 @@ export default function RegistroWizard() {
         "confirmar",
       ];
   const actual = pasos[paso] ?? "plan";
+
+  // Embudo: en qué paso está la gente (sin datos personales).
+  useEffect(() => { evento("registro_paso", { paso: actual }); }, [actual]);
 
   // Lo que trae el enlace (plan y sesión) y si ya hay una cuenta abierta.
   // Se hace después del primer pintado para no discrepar con el servidor.
@@ -226,6 +239,16 @@ export default function RegistroWizard() {
       setCorreo(bien
         ? { valor, estado: "ok" }
         : { valor, estado: "error", mensaje: "Ese correo no parece estar bien escrito." });
+      if (!bien) return;
+      // Puede continuar, pero si el dominio parece un dedazo se le avisa antes de que el enlace se pierda.
+      try {
+        const { datos } = await post("/api/universidad", { correo: valor, solo_sugerir: true });
+        if (datos.ok && datos.sugerencia) {
+          setCorreo((c) => c.valor === valor
+            ? { valor, estado: "aviso", mensaje: `¿Quisiste escribir «${datos.sugerencia}»? Revisa tu correo antes de seguir: ahí te llega el enlace.` }
+            : c);
+        }
+      } catch { /* sin aviso: el formato ya pasó */ }
       return;
     }
     if (!esNuevo("correo", valor)) return;
@@ -294,9 +317,10 @@ export default function RegistroWizard() {
         plan, sesiones: conBootcamp ? sesiones : [],
         dni: dni.valor, correo: correo.valor, telefono: telefono.valor, pais,
         carrera_id: Number(carreraId), carrera_otra: carreraOtra, ciclo: Number(ciclo), nivel, nombres, apellidos,
-        linkedin, github, discord, origen,
+        linkedin, github, discord, origen, sponsors,
       });
       if (datos.ok) {
+        evento("registro_enviado", { plan: plan ?? "ninguno" });
         try {
           localStorage.removeItem(BORRADOR);
           // Lo recoge /bienvenida al volver del correo. Va firmado por el
@@ -328,7 +352,7 @@ export default function RegistroWizard() {
     (actual === "sesiones" && sesiones.length > 0) ||
     (actual === "dni" && dni.estado === "ok") ||
     (actual === "nombre" && nombres.trim().length >= 2 && apellidos.trim().length >= 2) ||
-    (actual === "correo" && correo.estado === "ok") ||
+    (actual === "correo" && (correo.estado === "ok" || (!conHack && correo.estado === "aviso"))) ||
     (actual === "celular" && (conHack ? telOk : telefono.estado === "vacio" || telOk)) ||
     (actual === "carrera" && carreraId !== "" && (!esOtra || limpiarCarrera(carreraOtra) !== null) && ciclo !== "") ||
     (actual === "redes" && redesOk) ||
@@ -350,13 +374,33 @@ export default function RegistroWizard() {
         <p className="rg-step">Ya estás dentro</p>
         <h1 className="rg-q">Tienes<br /><span>cuenta</span></h1>
         <p className="rg-help">
-          Desde tu panel puedes inscribirte a la hackathon o a las sesiones del bootcamp que te falten.
+          Desde tu panel puedes sumar las sesiones del bootcamp que te falten y, si tu correo es institucional, inscribirte a la hackathon.
         </p>
         <div className="rg-actions">
           <Link href="/mi-inscripcion" className="more solid">Ir a mi panel <ArrowRight aria-hidden size={14} /></Link>
         </div>
       </div>
     );
+  }
+
+  async function confirmarConCodigo(correo: string) {
+    const limpio = codigoCorreo.replace(/\D/g, "");
+    if (limpio.length !== 6) { setErrorCodigo("El código tiene 6 números."); return; }
+    setVerificandoCodigo(true);
+    setErrorCodigo(null);
+    try {
+      const { data, error } = await navegador().auth.verifyOtp({ email: correo, token: limpio, type: "email" });
+      if (error || !data.session) {
+        setErrorCodigo("Ese código no es válido o ya venció. Usa el del último correo que te llegó.");
+        return;
+      }
+      // Con la sesión abierta, /bienvenida termina la inscripción igual que si hubiera tocado el enlace.
+      router.push("/bienvenida");
+    } catch {
+      setErrorCodigo("No pudimos conectarnos. Inténtalo de nuevo.");
+    } finally {
+      setVerificandoCodigo(false);
+    }
   }
 
   // ── pantalla de resultado ──
@@ -371,6 +415,29 @@ export default function RegistroWizard() {
             Ábrelo y toca el enlace para confirmar tu inscripción. Si no aparece en un par de
             minutos, mira en spam o promociones.
           </p>
+          <p className="rg-help" style={{ marginTop: 18 }}>
+            ¿El enlace no funciona o se abrió en otro lado? Escribe aquí el{" "}
+            <strong style={{ color: "#fff" }}>código de 6 números</strong> que viene en el mismo correo:
+          </p>
+          <div className="rg-body">
+            <input
+              value={codigoCorreo}
+              onChange={(e) => setCodigoCorreo(e.target.value.replace(/\D/g, "").slice(0, 6))}
+              onKeyDown={(e) => { if (e.key === "Enter" && resultado.correo) confirmarConCodigo(resultado.correo); }}
+              inputMode="numeric" autoComplete="one-time-code" placeholder="000000" aria-label="Código de 6 números"
+              className="rg-input" style={{ letterSpacing: "0.5em", textAlign: "center", fontSize: "1.6rem" }}
+            />
+          </div>
+          {errorCodigo && <p className="rg-msg err" style={{ marginTop: 14 }}>{errorCodigo}</p>}
+          <div className="rg-actions">
+            <button
+              onClick={() => resultado.correo && confirmarConCodigo(resultado.correo)}
+              disabled={verificandoCodigo || codigoCorreo.length !== 6} className="more solid"
+            >
+              {verificandoCodigo ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <LogIn className="size-4" aria-hidden />}
+              Confirmar con el código
+            </button>
+          </div>
           <p className="rg-small" style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <Mail className="size-4" aria-hidden /> Tu lugar queda reservado al confirmar
           </p>
@@ -485,7 +552,7 @@ export default function RegistroWizard() {
           titulo={conHack ? <>¿Tu correo<br /><span>institucional</span>?</> : <>¿Cuál es<br />tu <span>correo</span>?</>}
           ayuda={conHack
             ? "El que te dio tu universidad o instituto. Te llegará ahí el enlace para confirmar."
-            : "Puede ser cualquiera. Te llegará ahí el enlace para confirmar."}
+            : "Te llegará ahí el enlace para confirmar. Si más adelante quieres sumarte a la hack, usa tu correo institucional: te pedirá tu DNI y unos datos más."}
         >
           <input
             ref={campoRef}
@@ -546,22 +613,9 @@ export default function RegistroWizard() {
       )}
 
       {actual === "carrera" && (
-        <Pregunta titulo={<>¿Qué <span>estudias</span>?</>} ayuda="Elige tu carrera de la lista. Si no está, marca «Otra carrera» y escríbela.">
+        <Pregunta titulo={<>¿Qué <span>estudias</span>?</>} ayuda="Escribe unas letras y elige tu carrera de la lista. Si no está, elige «Otra carrera» y escríbela.">
           <label className="rg-lbl" htmlFor="rg-carrera">Carrera</label>
-          <select
-            id="rg-carrera"
-            value={carreraId}
-            onChange={(e) => setCarreraId(e.target.value)}
-            className="rg-sel"
-            style={{ width: "100%" }}
-          >
-            <option value="">Elige tu carrera…</option>
-            {porArea(carreras).map(([area, lista]) => (
-              <optgroup key={area} label={area}>
-                {lista.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-              </optgroup>
-            ))}
-          </select>
+          <SelectorCarrera id="rg-carrera" carreras={carreras} valor={carreraId} alElegir={setCarreraId} />
           {carreras.length === 0 && <p className="rg-msg" style={{ marginTop: 10 }}>Cargando la lista…</p>}
           {esOtra && (
             <div style={{ marginTop: 22 }}>
@@ -657,6 +711,15 @@ export default function RegistroWizard() {
               <a href="/bases">bases</a>{conHack && <>, incluida la cláusula de licencia piloto</>}.
             </span>
           </label>
+
+          <label className="rg-consent">
+            <input type="checkbox" checked={sponsors} onChange={(e) => setSponsors(e.target.checked)} />
+            <span>
+              <strong style={{ color: "#fff" }}>Opcional:</strong> quiero que las empresas sponsor me conozcan. Al terminar
+              el evento compartirán mi perfil (nombre, universidad, carrera, ciclo, correo, celular y mis redes) para
+              oportunidades de prácticas y empleo. Puedo cambiarlo cuando quiera desde mi panel.
+            </span>
+          </label>
         </Pregunta>
       )}
 
@@ -678,7 +741,7 @@ export default function RegistroWizard() {
       </div>
 
       <p className="rg-small">
-        inscripciones abiertas desde el {EVENT.registrationOpensLabel} · hack: 250 cupos · bootcamp: sin límite
+        inscripciones abiertas desde el {EVENT.registrationOpensLabel} · hack: 250 cupos + lista de espera · bootcamp: sin límite
       </p>
       <p className="rg-small" style={{ marginTop: 10 }}>
         ¿ya tienes cuenta? <a href="/mi-inscripcion">entra a tu panel</a>

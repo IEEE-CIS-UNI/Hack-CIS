@@ -1,3 +1,4 @@
+import { Cinta } from "@/components/Nuevo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -43,8 +44,8 @@ export default function BootcampPage() {
         <h2>Cómo sigue</h2>
         <ul className="pg-dots">
           <li>
-            <b>Durante la semana</b> armas tu equipo: de 2 a 4 integrantes, de al menos 2 carreras o facultades
-            distintas.
+            <b>Durante la semana</b> armas tu equipo: de 2 a 4 integrantes, de las carreras o facultades que quieran.{" "}
+            <Cinta chica /> A pedido de ustedes, ya no es obligatorio que sean distintas.
           </li>
           <li>
             <b>Viernes 27 de noviembre:</b> cada sponsor presenta su reto y eliges en qué track competir.

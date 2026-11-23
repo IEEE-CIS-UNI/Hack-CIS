@@ -6,7 +6,7 @@
  * cifran AQUÍ, con la misma sal que la inscripción: la base solo compara
  * huellas y el número nunca viaja ni se guarda. La función `create_team` hace
  * todo o nada y valida el tamaño, que estén inscritos, que no tengan equipo y
- * que haya al menos 2 carreras distintas.
+ * (ya no se exige que haya carreras distintas: desde el 22/11 es opcional).
  *
  * Esta ruta responde cuál de los DNI falló (por posición) y, al acertar,
  * solo el primer nombre y apellido de cada integrante: es lo justo para que el líder

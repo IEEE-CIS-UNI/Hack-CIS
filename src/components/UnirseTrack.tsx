@@ -153,7 +153,7 @@ export default function UnirseTrack({ slug }: { slug: string }) {
     <div>
       <p className="rg-help" style={{ marginTop: 0 }}>
         Tú eres la persona líder. Ponle nombre al equipo y escribe el DNI de tus compañeros (de 1 a 3). Tienen que estar
-        inscritos en la hackathon y ser de al menos 2 carreras distintas entre todos.
+        inscritos en la hackathon. No importa si son de la misma carrera o de carreras distintas.
       </p>
 
       <div className="rg-two" style={{ marginTop: 22 }}>

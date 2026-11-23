@@ -40,7 +40,7 @@ El track ya **no** es de la persona: es del equipo, y lo elige el líder desde
 la página del track. Nadie escribe directo en `enrollments` ni en los equipos:
 pasa por funciones (`register_person`, `enroll_in`, `create_team`,
 `leave_team`) que hacen cumplir el tope de 250, la elegibilidad y las reglas de
-equipo (2 a 4 personas, al menos 2 carreras distintas, ya inscritos, sin
+equipo (2 a 4 personas, ya inscritos, sin
 equipo). Lo que había en `hackers` se **copia** a `people` con el mismo id; las
 tablas viejas (`hackers`, `teams`, `sponsors`) no se tocan.
 
@@ -115,3 +115,7 @@ Las mismas tienen que estar en local (`.env`) y en Vercel:
 | `DNI_PEPPER` | sal del hash del DNI | **si cambia, los hashes guardados dejan de cuadrar** |
 | `INSCRIPCION_SECRETO` | firma del boleto | si cambia, los boletos en vuelo se invalidan |
 | `NEXT_PUBLIC_SITE_URL` | a dónde vuelve el correo y la imagen para compartir | `https://hackcis.lat` en producción |
+
+## `008-sumarse-a-la-hack.sql`
+
+Crea `join_hack`: quien ya tiene cuenta con **correo institucional** (por ejemplo, entró solo al bootcamp) completa DNI, carrera y ciclo y queda inscrito en la hack en un solo paso; si el cupo se llenó, no se guarda nada. Quien tiene otro correo no puede: se le cambia a mano con `node scripts/cambiar-correo.mjs` (ensayo por defecto; `--aplicar` para confirmar).

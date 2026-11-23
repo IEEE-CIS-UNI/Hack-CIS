@@ -15,11 +15,14 @@ const TEXTOS: Record<string, { motivo: string; estado: number }> = {
   falta_nombre: { motivo: "Falta tu nombre.", estado: 422 },
   oferta_inexistente: { motivo: "Esa sesión no existe.", estado: 404 },
   cerrado: { motivo: "Las inscripciones a esto están cerradas.", estado: 409 },
-  cupo_lleno: { motivo: "Se llenaron los 250 cupos de la hackathon.", estado: 409 },
+  cupo_lleno: { motivo: "Se llenaron los 250 cupos de la hackathon y su lista de espera.", estado: 409 },
   requiere_verificacion: {
     motivo: "Para la hackathon necesitas verificar tu identidad con el correo institucional y tu DNI. Inscríbete con ese correo.",
     estado: 403,
   },
+  falta_dni: { motivo: "Escribe tu DNI.", estado: 422 },
+  falta_celular: { motivo: "La hackathon pide tu celular, para coordinar con tu equipo.", estado: 422 },
+  ciclo_invalido: { motivo: "Elige en qué ciclo estás, del 1 al 10.", estado: 422 },
   sin_hack: { motivo: "Para formar un equipo primero tienes que estar inscrito en la hackathon.", estado: 403 },
   ya_tiene_equipo: { motivo: "Ya perteneces a un equipo.", estado: 409 },
   track_inexistente: { motivo: "Ese track todavía no está disponible.", estado: 404 },
@@ -34,7 +37,6 @@ const TEXTOS: Record<string, { motivo: string; estado: number }> = {
   },
   dni_propio: { motivo: "Ese es tu propio DNI: el equipo ya te incluye a ti.", estado: 422 },
   carrera_invalida: { motivo: "Elige tu carrera de la lista; si no está, marca «Otra carrera» y escríbela.", estado: 422 },
-  carreras_iguales: { motivo: "El equipo necesita al menos 2 carreras o facultades distintas.", estado: 422 },
 };
 
 export function traducirError(mensaje: string | null | undefined, codigoPg?: string): Traduccion {

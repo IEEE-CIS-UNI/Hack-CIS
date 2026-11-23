@@ -20,7 +20,7 @@ export const registroAbierto = () => Date.now() >= Date.parse(EVENT.registration
 export const LINKS = {
   // Comunidades oficiales del evento.
   whatsapp: "https://chat.whatsapp.com/K2kUuRiNwT80ioQOrtQCwv",
-  discord: "https://discord.gg/tQaSGFYsD",
+  discord: "https://discord.gg/CdhVv8DBjv",
   // Sin el ?xtok=: ese parámetro es un testigo de quien compartió el enlace,
   // no parte de la dirección del perfil.
   linkedin: "https://www.linkedin.com/company/ieee-cis-uni/",
@@ -42,7 +42,10 @@ export const WA_MENTOR = waRRPP(
   "Hola, vi en la web de HACK[CIS] UNI 2026 que puedo postular como mentor o jurado y quisiera más información."
 );
 
-export const HELP_VIDEO_URL = process.env.NEXT_PUBLIC_HELP_VIDEO_URL ?? "";
+/** El video «cómo me inscribo» (Vercel Blob). Se puede reemplazar con NEXT_PUBLIC_HELP_VIDEO_URL. */
+export const HELP_VIDEO_URL =
+  process.env.NEXT_PUBLIC_HELP_VIDEO_URL ||
+  "https://korg7p4oh5xkmcg2.public.blob.vercel-storage.com/como-inscribirse.mp4";
 
 /**
  * Donde el navegador guarda el boleto firmado entre que se envia el
@@ -50,3 +53,6 @@ export const HELP_VIDEO_URL = process.env.NEXT_PUBLIC_HELP_VIDEO_URL ?? "";
  * /bienvenida, por eso vive aqui y no dentro de ninguno de los dos.
  */
 export const CLAVE_BOLETO = "cishack-boleto-v1";
+
+/** Donde escribe quien necesita ayuda con su inscripción (p. ej. cambiar de correo). */
+export const CORREO_CIS = "ieee.cis@uni.edu.pe";

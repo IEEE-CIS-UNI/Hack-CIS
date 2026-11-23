@@ -17,16 +17,19 @@
  * ni una que se pueda filtrar.
  */
 
+import SelectorCarrera from "@/components/SelectorCarrera";
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Check, Loader2, LogIn, LogOut, Mail } from "lucide-react";
 import { navegador, urlDelSitio } from "@/lib/supabase";
 import { SESIONES } from "@/lib/contenido";
-import { CICLOS, SLUG_OTRA, porArea, type Carrera } from "@/lib/carreras";
+import { CICLOS, SLUG_OTRA, type Carrera } from "@/lib/carreras";
 import { api, estaEn, inscripcionHack, numeroBonito, type Resumen } from "@/lib/resumen";
 import { PAISES, PAIS_POR_DEFECTO, formatearE164, normalizarTelefono, paisPorCodigo } from "@/lib/telefono";
 import ElegirClave from "./ElegirClave";
 import TarjetaHack from "./TarjetaHack";
+import SumarseHack from "./SumarseHack";
+import ConfirmarAsistencia from "./ConfirmarAsistencia";
 
 const NIVELES = ["Principiante", "Intermedio", "Avanzado", "Experto"] as const;
 
@@ -54,6 +57,7 @@ export default function MiInscripcion() {
   const [linkedin, setLinkedin] = useState("");
   const [github, setGithub] = useState("");
   const [discord, setDiscord] = useState("");
+  const [sponsors, setSponsors] = useState(false);
 
   const [guardando, setGuardando] = useState(false);
   const [aviso, setAviso] = useState<Aviso>(null);
@@ -64,6 +68,8 @@ export default function MiInscripcion() {
   const [claveEntrada, setClaveEntrada] = useState("");
   const [entrando, setEntrando] = useState(false);
   const [enviandoEnlace, setEnviandoEnlace] = useState(false);
+  const [codigo, setCodigo] = useState("");
+  const [verificando, setVerificando] = useState(false);
 
   /** Copia la ficha al formulario de edición. */
   const cargarEnFormulario = useCallback((r: Resumen) => {
@@ -79,6 +85,7 @@ export default function MiInscripcion() {
     setLinkedin(p.linkedin_url ?? "");
     setGithub(p.github_url ?? "");
     setDiscord(p.discord_username ?? "");
+    setSponsors(p.sponsors_consent === true);
   }, []);
 
   // El catálogo de carreras, para el selector de «Mis datos».
@@ -100,7 +107,16 @@ export default function MiInscripcion() {
         cargarEnFormulario(datos.resumen);
         setVista({ fase: "ficha", resumen: datos.resumen });
       } else if ((datos as { sinInscripcion?: boolean }).sinInscripcion) {
-        setVista({ fase: "sinInscripcion" });
+        // Confirmó el correo pero la inscripción no llegó a guardarse (por ejemplo,
+        // abrió el enlace en otro navegador). Los datos siguen en su cuenta:
+        // se completa ahora, sin hacerle llenar nada otra vez.
+        const { datos: c } = await api("/api/completar", { metodo: "POST", token: acceso, cuerpo: {} });
+        if (c.ok && c.resumen) {
+          cargarEnFormulario(c.resumen);
+          setVista({ fase: "ficha", resumen: c.resumen });
+        } else {
+          setVista({ fase: "sinInscripcion" });
+        }
       } else {
         setVista({ fase: "sinSesion" });
       }
@@ -177,6 +193,32 @@ export default function MiInscripcion() {
     }
   }
 
+  /**
+   * Entrar con el código de 6 dígitos que llega en el mismo correo que el enlace. Sirve a
+   * quien su bandeja (por ejemplo la de algunas universidades) abre el enlace antes que él
+   * y lo deja inservible: el código no se gasta porque nadie lo «visita».
+   */
+  async function entrarConCodigo(correo: string) {
+    const limpio = codigo.replace(/\D/g, "");
+    if (limpio.length !== 6) { setAviso({ tipo: "error", texto: "El código tiene 6 números." }); return; }
+    setVerificando(true);
+    setAviso(null);
+    try {
+      const { data, error } = await navegador().auth.verifyOtp({ email: correo, token: limpio, type: "email" });
+      if (error || !data.session) {
+        setAviso({ tipo: "error", texto: "Ese código no es válido o ya venció. Usa el del último correo que te llegó." });
+        return;
+      }
+      setCodigo("");
+      setVista({ fase: "cargando" });
+      await cargarFicha(data.session.access_token);
+    } catch {
+      setAviso({ tipo: "error", texto: "No pudimos conectarnos. Inténtalo de nuevo." });
+    } finally {
+      setVerificando(false);
+    }
+  }
+
   /** Inscribirse a algo más (una sesión del bootcamp, o la hack). */
   async function matricular(slug: string) {
     if (!token) return;
@@ -209,7 +251,7 @@ export default function MiInscripcion() {
       const { datos } = await api("/api/perfil", {
         metodo: "PATCH", token,
         cuerpo: {
-          telefono, pais, linkedin, github, discord,
+          telefono, pais, linkedin, github, discord, sponsors,
           ...(carreraId ? { carrera_id: Number(carreraId), carrera_otra: carreraOtra } : {}),
           ...(ciclo ? { ciclo: Number(ciclo) } : {}),
           nivel: nivel || null,
@@ -248,12 +290,35 @@ export default function MiInscripcion() {
   if (vista.fase === "correoEnviado") {
     return (
       <div className="rg animate-pop-in">
-        <p className="rg-step">Enlace enviado</p>
+        <p className="rg-step">Enlace y código enviados</p>
         <h1 className="rg-q">Revisa tu<br /><span>correo</span></h1>
         <p className="rg-help">
-          Te mandamos un enlace a <strong style={{ color: "#fff" }}>{vista.correo}</strong>. Ábrelo
-          desde este mismo dispositivo y entras sin contraseña.
+          Te mandamos un correo a <strong style={{ color: "#fff" }}>{vista.correo}</strong>. Toca el botón
+          que trae y entras sin contraseña. Mira también en spam.
         </p>
+        <p className="rg-help" style={{ marginTop: 18 }}>
+          ¿El enlace ya no funciona o se abrió en otro lado? Escribe aquí el <strong style={{ color: "#fff" }}>código de
+          6 números</strong> que viene en el mismo correo:
+        </p>
+        <div className="rg-body">
+          <input
+            value={codigo}
+            onChange={(e) => setCodigo(e.target.value.replace(/\D/g, "").slice(0, 6))}
+            onKeyDown={(e) => { if (e.key === "Enter") entrarConCodigo(vista.correo); }}
+            inputMode="numeric" autoComplete="one-time-code" placeholder="000000" aria-label="Código de 6 números"
+            className="rg-input" style={{ letterSpacing: "0.5em", textAlign: "center", fontSize: "1.6rem" }}
+          />
+        </div>
+        {aviso && <p className={`rg-msg ${aviso.tipo === "ok" ? "ok" : "err"}`} style={{ marginTop: 14 }}>{aviso.texto}</p>}
+        <div className="rg-actions">
+          <button onClick={() => entrarConCodigo(vista.correo)} disabled={verificando || codigo.length !== 6} className="more solid">
+            {verificando ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <LogIn className="size-4" aria-hidden />}
+            Entrar con el código
+          </button>
+          <button onClick={() => { setAviso(null); setCodigo(""); setVista({ fase: "sinSesion" }); }} className="more">
+            Volver
+          </button>
+        </div>
       </div>
     );
   }
@@ -336,7 +401,27 @@ export default function MiInscripcion() {
         </div>
       )}
 
-      <div className="box" style={{ marginTop: hack ? 18 : 26 }}>
+      {hack && (
+        <div style={{ marginTop: 26 }}>
+          <ConfirmarAsistencia modo={{ tipo: "panel" }} />
+        </div>
+      )}
+
+      {!hack && !p.verified && token && (
+        <div style={{ marginTop: 26 }}>
+          <SumarseHack
+            persona={p}
+            token={token}
+            carreras={carreras}
+            alListo={(nuevo) => {
+              setVista({ fase: "ficha", resumen: nuevo });
+              setAvisoInsc({ tipo: "ok", texto: "¡Listo! Ya estás inscrito en la hackathon." });
+            }}
+          />
+        </div>
+      )}
+
+      <div className="box" style={{ marginTop: hack || (!p.verified && token) ? 18 : 26 }}>
         <p className="box-h">Mis inscripciones</p>
         <ul className="rows">
           <li>
@@ -345,7 +430,7 @@ export default function MiInscripcion() {
               <small>
                 {hack
                   ? `Inscrito n.º ${numeroBonito(hack.number)} · 30 nov – 5 dic`
-                  : p.verified ? "30 nov – 5 dic · 250 cupos" : "Necesita correo institucional y DNI verificado"}
+                  : p.verified ? "30 nov – 5 dic · 250 cupos" : p.institution ? "Completa los datos de arriba para sumarte" : "Necesita correo institucional: mira arriba"}
               </small>
             </div>
             {hack ? (
@@ -434,14 +519,7 @@ export default function MiInscripcion() {
             <>
               <div>
                 <label className="rg-lbl" htmlFor="mi-carrera">Carrera</label>
-                <select id="mi-carrera" value={carreraId} onChange={(e) => setCarreraId(e.target.value)} className="rg-sel" style={{ width: "100%" }}>
-                  <option value="">Elige tu carrera…</option>
-                  {porArea(carreras).map(([area, lista]) => (
-                    <optgroup key={area} label={area}>
-                      {lista.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-                    </optgroup>
-                  ))}
-                </select>
+                <SelectorCarrera id="mi-carrera" carreras={carreras} valor={carreraId} alElegir={setCarreraId} />
                 {carreras.find((c) => String(c.id) === carreraId)?.slug === SLUG_OTRA && (
                   <input value={carreraOtra} onChange={(e) => setCarreraOtra(e.target.value.slice(0, 60))} placeholder="¿Cuál es tu carrera?" aria-label="Otra carrera" className="rg-input" style={{ marginTop: 14 }} />
                 )}
@@ -476,6 +554,15 @@ export default function MiInscripcion() {
             <input id="mi-in" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} placeholder="https://linkedin.com/in/tuusuario" className="rg-input" />
           </div>
         </div>
+
+        <label className="rg-consent" style={{ marginTop: 26 }}>
+          <input type="checkbox" checked={sponsors} onChange={(e) => setSponsors(e.target.checked)} />
+          <span>
+            <strong style={{ color: "#fff" }}>Quiero que las empresas sponsor me conozcan.</strong> Al terminar el evento
+            compartirán mi perfil (nombre, universidad, carrera, ciclo, correo, celular y mis redes) para oportunidades de
+            prácticas y empleo. Puedo cambiarlo cuando quiera.
+          </span>
+        </label>
 
         <div className="rg-actions">
           <button onClick={guardar} disabled={guardando} className="more solid">

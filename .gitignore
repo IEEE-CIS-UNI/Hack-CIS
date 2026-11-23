@@ -42,3 +42,9 @@ next-env.d.ts
 
 # padrón institucional: datos personales de terceros, nunca al repo
 /datos/padron.csv
+
+# video de la guía de inscripción (pesa; se comparte por YouTube)
+/marca/video/
+
+# respaldos del script de cambio de correo (datos personales)
+/scripts/.respaldos/

@@ -3,11 +3,11 @@ import { EVENT } from "@/lib/config";
 const ITEMS = [
   {
     q: "¿Quién puede participar?",
-    a: "Estudiantes universitarios y de institutos de todo el país, con carné o código de matrícula. Hay 250 cupos.",
+    a: "Estudiantes universitarios y de institutos de todo el país, con carné o código de matrícula. Hay 250 cupos y, al llenarse, una lista de espera de hasta 50 personas.",
   },
   {
     q: "¿Me inscribo solo o con mi equipo?",
-    a: "Te inscribes solo. Armas tu equipo durante el Bootcamp: de 2 a 4 integrantes, de al menos 2 carreras o facultades distintas.",
+    a: "Te inscribes solo. Armas tu equipo durante el Bootcamp: de 2 a 4 integrantes, de las carreras o facultades que quieran (nuevo: a pedido de ustedes, ya no es obligatorio que sean distintas).",
   },
   {
     q: "¿Qué pasa si no paso a finalista?",
@@ -35,7 +35,7 @@ const ITEMS = [
   },
   {
     q: "¿Cuáles son los tracks?",
-    a: "Todavía son un secreto: los tres tracks y sus sponsors se revelan muy pronto. Cada sponsor presenta su reto al cierre del Bootcamp, el 27 de noviembre.",
+    a: "Hay tres. El primero ya está revelado: IA & Energía, con Zeia como sponsor. Los otros dos y sus sponsors se revelan muy pronto. Cada sponsor presenta su reto al cierre del Bootcamp, el 27 de noviembre.",
   },
   {
     q: "¿Y si no vivo en Lima?",
