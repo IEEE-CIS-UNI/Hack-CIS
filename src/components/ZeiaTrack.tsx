@@ -135,7 +135,7 @@ export default function ZeiaTrack({ slug }: { slug: string }) {
             <div className={s.pasos}>
               <div className={s.paso}><b>El viernes 27 de noviembre</b>, después del pitch de los sponsors, cada equipo elige su track.</div>
               <div className={s.paso}><b>El líder</b> crea el equipo: pone el nombre y los DNI de sus compañeros, y todos quedan asignados de una vez.</div>
-              <div className={s.paso}><b>Equipos de 2 a 4 personas</b>, con al menos 2 carreras o facultades distintas.</div>
+              <div className={s.paso}><b>Equipos de 2 a 4 personas</b>, de las carreras o facultades que quieran. <span className={s.nuevo}>Nuevo</span> A pedido de ustedes, ya no es obligatorio que sean distintas.</div>
               <div className={s.paso}><b>Antes del sábado 28 por la noche</b> el equipo entrega su primera propuesta. Pasan 5 equipos por track.</div>
             </div>
             <p className={s.nota}>

@@ -40,7 +40,7 @@ El track ya **no** es de la persona: es del equipo, y lo elige el líder desde
 la página del track. Nadie escribe directo en `enrollments` ni en los equipos:
 pasa por funciones (`register_person`, `enroll_in`, `create_team`,
 `leave_team`) que hacen cumplir el tope de 250, la elegibilidad y las reglas de
-equipo (2 a 4 personas, al menos 2 carreras distintas, ya inscritos, sin
+equipo (2 a 4 personas, ya inscritos, sin
 equipo). Lo que había en `hackers` se **copia** a `people` con el mismo id; las
 tablas viejas (`hackers`, `teams`, `sponsors`) no se tocan.
 

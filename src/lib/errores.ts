@@ -37,7 +37,6 @@ const TEXTOS: Record<string, { motivo: string; estado: number }> = {
   },
   dni_propio: { motivo: "Ese es tu propio DNI: el equipo ya te incluye a ti.", estado: 422 },
   carrera_invalida: { motivo: "Elige tu carrera de la lista; si no está, marca «Otra carrera» y escríbela.", estado: 422 },
-  carreras_iguales: { motivo: "El equipo necesita al menos 2 carreras o facultades distintas.", estado: 422 },
 };
 
 export function traducirError(mensaje: string | null | undefined, codigoPg?: string): Traduccion {

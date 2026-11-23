@@ -77,7 +77,7 @@ export default async function TrackPage({ params }: { params: Promise<{ slug: st
         <ul className="pg-dots">
           <li><b>El viernes 27 de noviembre</b>, después del pitch de los sponsors, cada equipo elige su track.</li>
           <li><b>El líder</b> crea el equipo: pone el nombre y los DNI de sus compañeros, y todos quedan asignados de una vez.</li>
-          <li><b>Equipos de 2 a 4 personas</b>, con al menos 2 carreras o facultades distintas.</li>
+          <li><b>Equipos de 2 a 4 personas</b>, de las carreras o facultades que quieran: a pedido de ustedes, ya no es obligatorio que sean distintas.</li>
           <li><b>Antes del sábado 28 por la noche</b> el equipo entrega su primera propuesta.</li>
         </ul>
       </section>

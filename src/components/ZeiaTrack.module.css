@@ -100,6 +100,7 @@
 .paso::before { content: counter(paso); position: absolute; left: 20px; top: 20px; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; color: var(--tinta); background: linear-gradient(135deg, var(--cian), var(--menta)); }
 .paso b { color: var(--tinta); font-weight: 600; }
 .nota { margin: 22px 0 0; font-size: .86rem; }
+.nuevo { display: inline-block; margin-right: 6px; padding: 1px 10px; background: linear-gradient(180deg, #ffe27a, #ffc93c); color: #2b1a05; font-weight: 700; font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; transform: rotate(-3deg); }
 .nota a { color: #0a8f86; font-weight: 600; }
 
 /* ── únete (recuadro oscuro de Zeia con acentos menta) ── */

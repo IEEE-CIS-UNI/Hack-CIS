@@ -1,3 +1,4 @@
+import { Cinta } from "@/components/Nuevo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -152,7 +153,9 @@ export default function BasesPage() {
             <ul>
               <li>De <B>2 a 4 integrantes</B>, que estén inscritos en la hackathon y no tengan otro equipo.</li>
               <li>
-                Al menos <B>2 carreras distintas</B> por equipo, según la carrera elegida en la inscripción.
+                <Cinta chica /> <B>A pedido de ustedes, ya no es obligatorio</B> que el equipo tenga carreras o
+                facultades distintas: es opcional. Un equipo diverso suele complementarse mejor, pero cada quien
+                arma su equipo con quienes prefiera.
               </li>
               <li>Hay <B>tres tracks</B>. El primero es <B>IA &amp; Energía</B>, con Zeia como sponsor; los otros dos y sus sponsors se anuncian pronto.</li>
               <li>
@@ -291,6 +294,12 @@ export default function BasesPage() {
               Si algo cambia, se actualiza esta página y se avisa por la comunidad de WhatsApp. Nunca se
               cambian las reglas de una etapa que ya empezó.
             </p>
+            <ul>
+              <li>
+                <Cinta chica /> <B>22 de noviembre:</B> se eliminó la regla de que el equipo tuviera al menos 2 carreras o
+                facultades distintas; ahora es opcional.
+              </li>
+            </ul>
           </Seccion>
 
           <div className="mt-16">

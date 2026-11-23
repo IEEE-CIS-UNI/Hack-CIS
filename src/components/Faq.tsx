@@ -7,7 +7,7 @@ const ITEMS = [
   },
   {
     q: "¿Me inscribo solo o con mi equipo?",
-    a: "Te inscribes solo. Armas tu equipo durante el Bootcamp: de 2 a 4 integrantes, de al menos 2 carreras o facultades distintas.",
+    a: "Te inscribes solo. Armas tu equipo durante el Bootcamp: de 2 a 4 integrantes, de las carreras o facultades que quieran (nuevo: a pedido de ustedes, ya no es obligatorio que sean distintas).",
   },
   {
     q: "¿Qué pasa si no paso a finalista?",
