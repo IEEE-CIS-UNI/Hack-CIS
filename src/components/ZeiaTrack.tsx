@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Poppins } from "next/font/google";
-import { ArrowLeft, ArrowRight, BarChart3, BellRing, Gauge, Power, Receipt, Zap } from "lucide-react";
+import { ArrowLeft, BarChart3, BellRing, Gauge, Power, Receipt, Zap } from "lucide-react";
 import UnirseTrack from "@/components/UnirseTrack";
+import HeroSponsor from "@/components/HeroSponsor";
 import s from "./ZeiaTrack.module.css";
 
 /**
@@ -40,38 +41,19 @@ export default function ZeiaTrack({ slug }: { slug: string }) {
       </header>
 
       <main>
-        <section className={s.hero}>
-          <div className={`${s.in} ${s.heroGrid}`}>
-            <a href="https://zeia.com.pe/" target="_blank" rel="noopener noreferrer" className={s.poder} aria-label="Track powered by Zeia">
-              <span>Track powered by</span>
-              <Image src="/logos/zeia.png" width={308} height={92} alt="Zeia" unoptimized priority />
-            </a>
-            <div className={s.heroTxt}>
-            <span className={s.etiqueta}>Track IA &amp; Energía · HACK[CIS] UNI 2026</span>
-            <h1>
-              El reto de <span className={s.grad}>Zeia</span>
-            </h1>
-            <p className={s.lead}>
-              Zeia es una empresa peruana de <strong>monitoreo energético en tiempo real</strong>. Instala sensores en los
-              tableros eléctricos, conecta todo a la nube y da visibilidad total sobre cada sol que se consume. En HACK[CIS]
-              propone un reto real para resolver junto a un agente de IA, el quinto miembro de tu equipo.
-            </p>
-            <div className={s.acciones}>
-              <a href="#unete" className={`${s.btn} ${s.principal}`}>
-                Unirme a este track <ArrowRight aria-hidden size={16} />
-              </a>
-              <a href="https://zeia.com.pe/" target="_blank" rel="noopener noreferrer" className={`${s.btn} ${s.borde}`}>
-                Conocer Zeia ↗
-              </a>
-            </div>
-            <div className={s.datos}>
-              <span><i /> El reto se presenta en vivo el vie 27 nov</span>
-              <span><i /> 5 equipos pasan a la final</span>
-              <span><i /> Gran Final · sáb 5 dic · UNI</span>
-            </div>
-            </div>
-          </div>
-        </section>
+        <HeroSponsor
+          etiqueta="IA & Energía" nombre="Zeia" url="https://zeia.com.pe/"
+          logo="/logos/zeia.png" logoAncho={308} logoAlto={92} logoMostrado={340}
+          tema={{
+            fondo: "radial-gradient(900px 480px at 88% -8%, rgba(135,227,196,.5), transparent 62%), radial-gradient(700px 480px at -8% 24%, rgba(0,183,215,.16), transparent 62%), #fff",
+            tinta: "#1f292e", texto: "#4d5a63", acento: "#00b7d7", acento2: "#4fd9b8", cinta: "#87e3c4", cintaTexto: "#1f292e", botonTexto: "#1f292e",
+          }}
+          datos={["El reto se presenta en vivo el vie 27 nov", "5 equipos pasan a la final", "Gran Final · sáb 5 dic · UNI"]}
+        >
+          Zeia es una empresa peruana de <strong>monitoreo energético en tiempo real</strong>. Instala sensores en los tableros
+          eléctricos, conecta todo a la nube y da visibilidad total sobre cada sol que se consume. En HACK[CIS] propone un reto
+          real para resolver junto a un agente de IA, el quinto miembro de tu equipo.
+        </HeroSponsor>
 
         <section className={s.cifras}>
           <div className={s.in}>

@@ -30,48 +30,8 @@
 .volver:hover { color: var(--tinta); }
 .volver b { color: var(--tinta); font-weight: 600; }
 
-/* ── héroe (vino oscuro, como la portada de Manantial) ── */
-.hero {
-  padding: clamp(48px, 9vw, 96px) 0 clamp(40px, 7vw, 72px);
-  color: #fff;
-  background:
-    radial-gradient(800px 420px at 90% 110%, rgba(255, 107, 107, .38), transparent 62%),
-    radial-gradient(600px 420px at -6% 0%, rgba(145, 43, 43, .6), transparent 62%),
-    linear-gradient(135deg, #2b0d10, #4a1517 55%, #6b1d1d);
-}
-.etiqueta {
-  display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px;
-  background: rgba(255, 255, 255, .12); color: #ffd5d5; font-size: .78rem; font-weight: 600; letter-spacing: .02em;
-}
-.hero h1 { margin: 20px 0 0; color: #fff; font-weight: 700; font-size: clamp(2.5rem, 8vw, 4.6rem); line-height: 1.05; letter-spacing: -.02em; }
-.grad { color: var(--coral); }
-.lead { margin: 22px 0 0; max-width: 700px; font-size: clamp(1.02rem, 2.4vw, 1.2rem); color: #f3dcdc; }
-.lead strong { color: #fff; font-weight: 600; }
-.acciones { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
-.btn {
-  display: inline-flex; align-items: center; gap: 8px; padding: 14px 26px; border-radius: 999px; font-weight: 600; font-size: .95rem;
-  text-decoration: none; cursor: pointer; border: 2px solid transparent; transition: transform .2s, box-shadow .2s, background .2s;
-}
-.btn.principal { background: #fff; color: var(--rojo); box-shadow: 0 8px 24px -10px rgba(0, 0, 0, .6); }
-.btn.principal:hover { background: var(--coral); color: #fff; transform: translateY(-2px); }
-.btn.borde { border-color: rgba(255, 255, 255, .7); color: #fff; background: transparent; }
-.btn.borde:hover { background: #fff; color: var(--rojo); }
-.datos { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 30px; font-size: .86rem; color: #f3dcdc; }
-.datos span { display: inline-flex; align-items: center; gap: 8px; }
-.datos i { width: 8px; height: 8px; border-radius: 50%; background: var(--coral); display: inline-block; }
-
-/* hero en dos columnas: texto y, a la derecha, «Track powered by» con el logo grande */
-.heroGrid { display: grid; grid-template-columns: 1.35fr .65fr; gap: clamp(24px, 5vw, 56px); align-items: center; }
-.poder {
-  order: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; text-decoration: none;
-  padding: clamp(28px, 4vw, 44px) clamp(20px, 3vw, 32px); border-radius: 28px; background: rgba(20, 5, 7, .55);
-  border: 1px solid rgba(255, 141, 141, .35); box-shadow: 0 30px 70px -34px rgba(0, 0, 0, .8), 0 0 0 8px rgba(255, 107, 107, .12);
-  transition: transform .25s;
-}
-.poder:hover { transform: translateY(-3px); }
-.poder span { font-size: .72rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: #ffb3b3; }
-.poder img { width: min(100%, 320px); height: auto; display: block; }
-@media (max-width: 860px) { .heroGrid { grid-template-columns: 1fr; } .poder { order: 0; align-items: center; flex-direction: row; justify-content: space-between; gap: 14px; padding: 16px 20px; border-radius: 20px; } .poder img { width: 160px; } }
+.lead { margin: 22px 0 0; max-width: 700px; font-size: clamp(1.02rem, 2.4vw, 1.2rem); }
+.lead strong { color: var(--tinta); font-weight: 600; }
 
 /* ── cifras ── */
 .cifras { padding: clamp(28px, 5vw, 48px) 0 clamp(36px, 6vw, 64px); }

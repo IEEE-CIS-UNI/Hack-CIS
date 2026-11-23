@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Poppins } from "next/font/google";
-import { Activity, ArrowLeft, ArrowRight, Database, Headset, PiggyBank } from "lucide-react";
+import { Activity, ArrowLeft, Database, Headset, PiggyBank } from "lucide-react";
 import UnirseTrack from "@/components/UnirseTrack";
+import HeroSponsor from "@/components/HeroSponsor";
 import s from "./ManantialTrack.module.css";
 
 /**
@@ -37,38 +38,19 @@ export default function ManantialTrack({ slug }: { slug: string }) {
       </header>
 
       <main>
-        <section className={s.hero}>
-          <div className={`${s.in} ${s.heroGrid}`}>
-            <a href="https://manantial.pe/" target="_blank" rel="noopener noreferrer" className={s.poder} aria-label="Track powered by Manantial">
-              <span>Track powered by</span>
-              <Image src="/logos/manantial.png" width={640} height={192} alt="Manantial" unoptimized priority />
-            </a>
-            <div className={s.heroTxt}>
-            <span className={s.etiqueta}>Track IA &amp; Nube · HACK[CIS] UNI 2026</span>
-            <h1>
-              El reto de <span className={s.grad}>Manantial</span>
-            </h1>
-            <p className={s.lead}>
-              Manantial es una consultora peruana de tecnología que conecta <strong>innovación con personas</strong> para lograr
-              grandes resultados. Especialistas en migración cloud, DevOps y ciberseguridad, ayudan a las empresas a acelerar su
-              transformación digital. En HACK[CIS] propone un reto real para resolver junto a un agente de IA, el quinto miembro de tu equipo.
-            </p>
-            <div className={s.acciones}>
-              <a href="#unete" className={`${s.btn} ${s.principal}`}>
-                Unirme a este track <ArrowRight aria-hidden size={16} />
-              </a>
-              <a href="https://manantial.pe/" target="_blank" rel="noopener noreferrer" className={`${s.btn} ${s.borde}`}>
-                Conocer Manantial ↗
-              </a>
-            </div>
-            <div className={s.datos}>
-              <span><i /> El reto se presenta en vivo el vie 27 nov</span>
-              <span><i /> 5 equipos pasan a la final</span>
-              <span><i /> Gran Final · sáb 5 dic · UNI</span>
-            </div>
-            </div>
-          </div>
-        </section>
+        <HeroSponsor
+          etiqueta="IA & Nube" nombre="Manantial" url="https://manantial.pe/"
+          logo="/logos/manantial-color.png" logoAncho={3578} logoAlto={1386} logoMostrado={520}
+          tema={{
+            fondo: "radial-gradient(760px 440px at 100% 0, rgba(255,107,107,.26), transparent 62%), radial-gradient(640px 440px at 0 100%, rgba(145,43,43,.16), transparent 62%), #fff",
+            tinta: "#212529", texto: "#4a4f55", acento: "#912b2b", acento2: "#ff6b6b", cinta: "#912b2b", cintaTexto: "#ffffff", botonTexto: "#ffffff",
+          }}
+          datos={["El reto se presenta en vivo el vie 27 nov", "5 equipos pasan a la final", "Gran Final · sáb 5 dic · UNI"]}
+        >
+          Manantial es una consultora peruana de tecnología que conecta <strong>innovación con personas</strong> para lograr
+          grandes resultados. Especialistas en migración cloud, DevOps y ciberseguridad, ayudan a las empresas a acelerar su
+          transformación digital. En HACK[CIS] propone un reto real para resolver junto a un agente de IA, el quinto miembro de tu equipo.
+        </HeroSponsor>
 
         <section className={s.cifras}>
           <div className={s.in}>
