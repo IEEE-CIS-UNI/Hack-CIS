@@ -19,6 +19,7 @@ export type Bloque = { title: string; desc: string };
 export type DatosSesion = {
   fecha: string;
   hora: string;
+  horario: string; // inicio y fin, para la tarjeta de Zoom
   tone: string;
   tone2: string;
   resumen: string; // descripción corta (tarjetas de /bootcamp)
@@ -36,6 +37,7 @@ export const DATOS_SESION: Record<string, DatosSesion> = {
   "01": {
     fecha: "Lun 23/11",
     hora: "8:30 pm",
+    horario: "8:30 pm – 11:30 pm",
     tone: "#8b5cf6",
     tone2: "#4d17c2",
     resumen:
@@ -70,6 +72,7 @@ export const DATOS_SESION: Record<string, DatosSesion> = {
   "02": {
     fecha: "Mar 24/11",
     hora: "10:00 am",
+    horario: "10:00 am – 1:00 pm",
     tone: "#22c7ee",
     tone2: "#0b7a96",
     resumen:
@@ -100,6 +103,7 @@ export const DATOS_SESION: Record<string, DatosSesion> = {
   "03": {
     fecha: "Mié 25/11",
     hora: "4:00 pm",
+    horario: "4:00 pm – 7:00 pm",
     tone: "#d946ef",
     tone2: "#8d1ba3",
     resumen:
@@ -120,6 +124,7 @@ export const DATOS_SESION: Record<string, DatosSesion> = {
   "04": {
     fecha: "Jue 26/11",
     hora: "7:00 pm",
+    horario: "7:00 pm – 10:00 pm",
     tone: "#8b5cf6",
     tone2: "#4d17c2",
     resumen:
@@ -137,6 +142,7 @@ export const DATOS_SESION: Record<string, DatosSesion> = {
   "05": {
     fecha: "Vie 27/11",
     hora: "5:00 pm",
+    horario: "5:00 pm – 8:00 pm",
     tone: "#22c7ee",
     tone2: "#0b7a96",
     resumen:

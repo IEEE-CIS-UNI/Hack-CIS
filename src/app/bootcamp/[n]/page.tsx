@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays, Clock, Monitor, Play, Ticket } from "lucide-react";
 import BotonInscripcion from "@/components/BotonInscripcion";
 import PageShell from "@/components/PageShell";
+import UnirseZoom from "@/components/UnirseZoom";
 import { SESIONES, sesionPorN } from "@/lib/contenido";
 import { BLOQUES, DATOS_SESION } from "@/lib/sesiones";
 
@@ -136,6 +137,9 @@ export default async function SesionPage({ params }: { params: Promise<{ n: stri
           </div>
           <p>El enlace de la sesión se publica aquí, y solo lo ven las personas inscritas.</p>
         </section>
+
+        {/* Enlace de Zoom: a todo el ancho, solo para quien está inscrito a la sesión */}
+        <UnirseZoom slug={sesion.slug} n={sesion.n} fecha={d.fecha} horario={d.horario} />
 
         {/* Estructura interna de la sesión (izquierda) y video (derecha) */}
         <div className="sd-row sd-row2">

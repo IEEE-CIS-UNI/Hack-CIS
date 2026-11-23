@@ -649,3 +649,16 @@ body{-webkit-font-smoothing:antialiased}
 .aviso-l{display:inline-flex;align-items:center;gap:8px;margin-top:16px;font-family:var(--tech);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--lav);border-bottom:1px solid rgba(182,156,255,.5);padding-bottom:3px}
 .aviso-l:hover{color:#fff;border-color:#fff}
 .nuevo-fila{display:flex;align-items:flex-start;gap:6px}
+
+/* Tarjeta de Zoom de cada sesión del bootcamp (a todo el ancho, sobre la agenda y el video) */
+.sd-zoom{display:grid;gap:20px;align-items:center;margin-top:clamp(28px,5vh,48px);padding:clamp(22px,3vw,32px);border-radius:28px;border:1px solid color-mix(in srgb,var(--tone) 55%,transparent);background:radial-gradient(520px 220px at 0 0,color-mix(in srgb,var(--tone) 28%,transparent),transparent 70%),linear-gradient(180deg,rgba(20,8,40,.62),rgba(8,3,15,.66));box-shadow:0 0 0 1px color-mix(in srgb,var(--tone) 14%,transparent) inset,0 18px 50px -28px var(--tone)}
+.sd-zoom-txt .hud{font-size:.6rem;color:color-mix(in srgb,var(--tone) 50%,#fff)}
+.sd-zoom-txt h2{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:clamp(1.6rem,3vw,2.3rem);line-height:1;margin:6px 0 12px;color:#fff}
+.sd-zoom-cuando{display:flex;flex-wrap:wrap;gap:8px 22px;color:var(--mist);font-size:.98rem}
+.sd-zoom-cuando span{display:inline-flex;align-items:center;gap:8px}.sd-zoom-cuando svg{color:var(--tone)}
+.sd-zoom-acc{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.sd-zoom-acc small{color:var(--mist);font-size:.85rem}.sd-zoom-acc small a{color:#fff;text-decoration:underline;text-underline-offset:3px}
+.sd-zoom-acc .more.vivo{animation:zmPulso 1.8s infinite}
+@keyframes zmPulso{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--tone) 70%,transparent)}70%{box-shadow:0 0 0 14px transparent}100%{box-shadow:0 0 0 0 transparent}}
+@media (min-width:760px){.sd-zoom{grid-template-columns:1.2fr 1fr}.sd-zoom-acc{align-items:flex-end;text-align:right}}
+
