@@ -162,9 +162,8 @@ export default function BasesPage() {
               </li>
               <li>Hay <B>tres tracks</B>. El primero es <B>IA &amp; Energía</B>, con Zeia como sponsor; los otros dos y sus sponsors se anuncian pronto.</li>
               <li>
-                El track <B>no se elige al inscribirse</B>. El viernes 27, después del pitch de los sponsors, la
-                persona líder crea el equipo desde la página del track: pone el nombre del equipo y el DNI de
-                sus compañeros, y todos quedan asignados a ese track.
+                El track <B>no se elige al inscribirse</B>: el viernes 27, después del pitch de los sponsors, cada
+                equipo elige el suyo.
               </li>
               <li>
                 Cada equipo compite en un solo track. Mientras el plazo siga abierto, quien se equivocó puede
