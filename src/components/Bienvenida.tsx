@@ -84,6 +84,7 @@ export default function Bienvenida() {
         }
 
         setToken(sesion.access_token);
+        window.dispatchEvent(new Event("hackcis:sesion"));   // el botón de arriba pasa a «Mi panel»
         // Con tope de tiempo: una promesa sin cortar deja la pantalla girando
         // para siempre, que es justo lo que no puede pasar aquí.
         setEstado({ fase: "cargando", paso: "guardando tu inscripción" });

@@ -20,7 +20,7 @@
 import SelectorCarrera from "@/components/SelectorCarrera";
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Check, Loader2, LogIn, LogOut, Mail } from "lucide-react";
+import { ArrowRight, Check, Loader2, LogIn, LogOut, Mail, Video } from "lucide-react";
 import { navegador, urlDelSitio } from "@/lib/supabase";
 import { SESIONES } from "@/lib/contenido";
 import { CICLOS, SLUG_OTRA, type Carrera } from "@/lib/carreras";
@@ -63,6 +63,9 @@ export default function MiInscripcion() {
   const [aviso, setAviso] = useState<Aviso>(null);
   const [ocupado, setOcupado] = useState<string | null>(null);
   const [avisoInsc, setAvisoInsc] = useState<Aviso>(null);
+  // Enlaces de Zoom de las sesiones a las que está inscrita (salen de la base; solo los entrega a quien inició sesión).
+  const [enlaces, setEnlaces] = useState<Record<string, { url: string; id: string; inicio: string | null; fin: string | null }>>({});
+  const [ahora, setAhora] = useState<number | null>(null);
 
   const [correoEntrada, setCorreoEntrada] = useState("");
   const [claveEntrada, setClaveEntrada] = useState("");
@@ -101,6 +104,7 @@ export default function MiInscripcion() {
   /** Pide la ficha al servidor y decide qué pantalla mostrar. */
   const cargarFicha = useCallback(async (acceso: string) => {
     setToken(acceso);
+    window.dispatchEvent(new Event("hackcis:sesion"));   // el botón de arriba pasa a «Mi panel»
     try {
       const { datos } = await api("/api/perfil", { token: acceso });
       if (datos.ok && datos.resumen) {
@@ -124,6 +128,21 @@ export default function MiInscripcion() {
       setVista({ fase: "sinSesion" });
     }
   }, [cargarEnFormulario]);
+
+  const hayFicha = vista.fase === "ficha";
+  useEffect(() => {
+    if (!hayFicha) return;
+    let vivo = true;
+    (async () => {
+      try {
+        const { data } = await navegador().rpc("mis_enlaces");
+        if (!vivo) return;
+        setAhora(Date.now());
+        setEnlaces(Object.fromEntries(((data as { slug: string; url: string; id: string; inicio: string | null; fin: string | null }[] | null) ?? []).map((e) => [e.slug, e])));
+      } catch { /* sin enlaces: el botón simplemente no aparece y queda la página de la sesión */ }
+    })();
+    return () => { vivo = false; };
+  }, [hayFicha]);
 
   /** Entrar con correo y contraseña. */
   async function entrarConClave() {
@@ -273,6 +292,7 @@ export default function MiInscripcion() {
 
   async function salir() {
     await navegador().auth.signOut();
+    window.dispatchEvent(new Event("hackcis:sesion"));   // el botón de arriba vuelve a «Inscríbete»
     setVista({ fase: "sinSesion" });
     setToken(null);
   }
@@ -423,6 +443,10 @@ export default function MiInscripcion() {
 
       <div className="box" style={{ marginTop: hack || (!p.verified && token) ? 18 : 26 }}>
         <p className="box-h">Mis inscripciones</p>
+        <p style={{ margin: "0 0 14px", color: "var(--mist)", fontSize: ".92rem", lineHeight: 1.5 }}>
+          Cuando empiece tu sesión del bootcamp, entra a esta misma página y toca <b style={{ color: "#fff" }}>«Unirme en Zoom»</b>:
+          el enlace está aquí mientras la sesión está en curso. También lo ves en la página de cada sesión y en tu card privada.
+        </p>
         <ul className="rows">
           <li>
             <div>
@@ -448,7 +472,21 @@ export default function MiInscripcion() {
                 <small>Bootcamp · virtual</small>
               </div>
               {estaEn(r, s.slug) ? (
-                <Link href={`/bootcamp/${s.n}`} className="pill-ok"><Check size={12} aria-hidden /> inscrito</Link>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", justifyContent: "flex-end" }}>
+                  {(() => {
+                    const z = enlaces[s.slug];
+                    if (!z) return null;
+                    const vivo = ahora != null && z.inicio && z.fin ? ahora >= new Date(z.inicio).getTime() - 15 * 60_000 && ahora <= new Date(z.fin).getTime() : false;
+                    const termino = ahora != null && z.fin ? ahora > new Date(z.fin).getTime() : false;
+                    if (termino) return null;
+                    return (
+                      <a href={z.url} target="_blank" rel="noopener noreferrer" className={`more solid${vivo ? " vivo" : ""}`} style={{ padding: "8px 14px", marginTop: 0 }}>
+                        <Video aria-hidden size={14} /> {vivo ? "En vivo · Unirme" : "Unirme en Zoom"}
+                      </a>
+                    );
+                  })()}
+                  <Link href={`/bootcamp/${s.n}`} className="pill-ok"><Check size={12} aria-hidden /> inscrito</Link>
+                </div>
               ) : (
                 <button className="more" style={{ marginTop: 0 }} disabled={ocupado === s.slug} onClick={() => matricular(s.slug)}>
                   {ocupado === s.slug && <Loader2 className="size-4 animate-spin" aria-hidden />} Inscribirme

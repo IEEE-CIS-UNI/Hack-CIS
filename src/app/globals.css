@@ -661,4 +661,4 @@ body{-webkit-font-smoothing:antialiased}
 .sd-zoom-acc .more.vivo{animation:zmPulso 1.8s infinite}
 @keyframes zmPulso{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--tone) 70%,transparent)}70%{box-shadow:0 0 0 14px transparent}100%{box-shadow:0 0 0 0 transparent}}
 @media (min-width:760px){.sd-zoom{grid-template-columns:1.2fr 1fr}.sd-zoom-acc{align-items:flex-end;text-align:right}}
-
+.rows .more.vivo{--tone:#8b5cf6;animation:zmPulso 1.8s infinite}

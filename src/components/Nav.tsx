@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 
 const LINKS = [
@@ -16,7 +16,31 @@ const LINKS = [
   { href: "/#faq", label: "FAQ" },
 ];
 
+/**
+ * ¿Hay una sesión iniciada en este navegador? Se lee del almacenamiento donde Supabase la guarda, sin cargar su librería
+ * (el menú está en todas las páginas y la portada debe seguir liviana). En el servidor siempre es «no».
+ */
+function haySesion() {
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && /^sb-.+-auth-token$/.test(k)) {
+        const v = JSON.parse(localStorage.getItem(k) ?? "null");
+        if (v?.refresh_token || v?.access_token) return true;
+      }
+    }
+  } catch { /* sin almacenamiento: se muestra «Inscríbete» */ }
+  return false;
+}
+// «storage» avisa de cambios hechos en OTRAS pestañas; la sesión que se abre o se cierra en esta misma pestaña avisa con «hackcis:sesion».
+const alCambiarSesion = (aviso: () => void) => {
+  window.addEventListener("storage", aviso);
+  window.addEventListener("hackcis:sesion", aviso);
+  return () => { window.removeEventListener("storage", aviso); window.removeEventListener("hackcis:sesion", aviso); };
+};
+
 export default function Nav() {
+  const conSesion = useSyncExternalStore(alCambiarSesion, haySesion, () => false);
   const [open, setOpen] = useState(false);
   const closeRef = useRef<HTMLButtonElement>(null);
   const openRef = useRef<HTMLButtonElement>(null);
@@ -48,9 +72,15 @@ export default function Nav() {
           <small>UNI 2026</small>
         </Link>
         <div className="top-r">
-          <a href="/registro" className="pill solid">
-            Inscríbete
-          </a>
+          {conSesion ? (
+            <Link href="/mi-inscripcion" className="pill solid">
+              Mi panel
+            </Link>
+          ) : (
+            <a href="/registro" className="pill solid">
+              Inscríbete
+            </a>
+          )}
           <button ref={openRef} type="button" className="pill line" aria-expanded={open} aria-controls="menu" onClick={() => setOpen(true)}>
             Menú ≡
           </button>
