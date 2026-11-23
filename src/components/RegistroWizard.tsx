@@ -28,7 +28,8 @@ import { evento } from "@/lib/metricas";
 import SelectorCarrera from "@/components/SelectorCarrera";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Check, Loader2, Mail, TriangleAlert, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ArrowLeft, ArrowRight, Check, Loader2, LogIn, Mail, TriangleAlert, X } from "lucide-react";
 import { CLAVE_BOLETO, EVENT } from "@/lib/config";
 import { SESIONES } from "@/lib/contenido";
 import { CICLOS, SLUG_OTRA, limpiarCarrera, type Carrera } from "@/lib/carreras";
@@ -165,6 +166,12 @@ export default function RegistroWizard() {
   const [universidad, setUniversidad] = useState("");
   const [enviando, setEnviando] = useState(false);
   const [resultado, setResultado] = useState<{ ok: boolean; correo?: string; motivo?: string } | null>(null);
+  // El código de 6 números que viene en el correo: otra puerta cuando el enlace no sirve
+  // (algunas bandejas, como las de ciertas universidades, lo abren antes que la persona).
+  const router = useRouter();
+  const [codigoCorreo, setCodigoCorreo] = useState("");
+  const [verificandoCodigo, setVerificandoCodigo] = useState(false);
+  const [errorCodigo, setErrorCodigo] = useState<string | null>(null);
   const campoRef = useRef<HTMLInputElement>(null);
 
   const conHack = plan === "hack_bootcamp";
@@ -376,6 +383,26 @@ export default function RegistroWizard() {
     );
   }
 
+  async function confirmarConCodigo(correo: string) {
+    const limpio = codigoCorreo.replace(/\D/g, "");
+    if (limpio.length !== 6) { setErrorCodigo("El código tiene 6 números."); return; }
+    setVerificandoCodigo(true);
+    setErrorCodigo(null);
+    try {
+      const { data, error } = await navegador().auth.verifyOtp({ email: correo, token: limpio, type: "email" });
+      if (error || !data.session) {
+        setErrorCodigo("Ese código no es válido o ya venció. Usa el del último correo que te llegó.");
+        return;
+      }
+      // Con la sesión abierta, /bienvenida termina la inscripción igual que si hubiera tocado el enlace.
+      router.push("/bienvenida");
+    } catch {
+      setErrorCodigo("No pudimos conectarnos. Inténtalo de nuevo.");
+    } finally {
+      setVerificandoCodigo(false);
+    }
+  }
+
   // ── pantalla de resultado ──
   if (resultado) {
     if (resultado.ok) {
@@ -388,6 +415,29 @@ export default function RegistroWizard() {
             Ábrelo y toca el enlace para confirmar tu inscripción. Si no aparece en un par de
             minutos, mira en spam o promociones.
           </p>
+          <p className="rg-help" style={{ marginTop: 18 }}>
+            ¿El enlace no funciona o se abrió en otro lado? Escribe aquí el{" "}
+            <strong style={{ color: "#fff" }}>código de 6 números</strong> que viene en el mismo correo:
+          </p>
+          <div className="rg-body">
+            <input
+              value={codigoCorreo}
+              onChange={(e) => setCodigoCorreo(e.target.value.replace(/\D/g, "").slice(0, 6))}
+              onKeyDown={(e) => { if (e.key === "Enter" && resultado.correo) confirmarConCodigo(resultado.correo); }}
+              inputMode="numeric" autoComplete="one-time-code" placeholder="000000" aria-label="Código de 6 números"
+              className="rg-input" style={{ letterSpacing: "0.5em", textAlign: "center", fontSize: "1.6rem" }}
+            />
+          </div>
+          {errorCodigo && <p className="rg-msg err" style={{ marginTop: 14 }}>{errorCodigo}</p>}
+          <div className="rg-actions">
+            <button
+              onClick={() => resultado.correo && confirmarConCodigo(resultado.correo)}
+              disabled={verificandoCodigo || codigoCorreo.length !== 6} className="more solid"
+            >
+              {verificandoCodigo ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <LogIn className="size-4" aria-hidden />}
+              Confirmar con el código
+            </button>
+          </div>
           <p className="rg-small" style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <Mail className="size-4" aria-hidden /> Tu lugar queda reservado al confirmar
           </p>
