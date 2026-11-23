@@ -29,6 +29,7 @@ import { PAISES, PAIS_POR_DEFECTO, formatearE164, normalizarTelefono, paisPorCod
 import ElegirClave from "./ElegirClave";
 import TarjetaHack from "./TarjetaHack";
 import SumarseHack from "./SumarseHack";
+import ConfirmarAsistencia from "./ConfirmarAsistencia";
 
 const NIVELES = ["Principiante", "Intermedio", "Avanzado", "Experto"] as const;
 
@@ -346,6 +347,12 @@ export default function MiInscripcion() {
             token={token}
             alCambiarFoto={(url) => setVista({ fase: "ficha", resumen: { ...r, person: { ...p, photo_url: url } } })}
           />
+        </div>
+      )}
+
+      {hack && (
+        <div style={{ marginTop: 26 }}>
+          <ConfirmarAsistencia modo={{ tipo: "panel" }} />
         </div>
       )}
 

@@ -3,6 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
 import StarField from "@/components/StarField";
+import ConfirmarAsistencia, { type Asistencia } from "@/components/ConfirmarAsistencia";
 import TarjetaHack from "@/components/TarjetaHack";
 import { SESIONES } from "@/lib/contenido";
 import { SUPABASE_CLAVE, SUPABASE_URL } from "@/lib/supabase";
@@ -42,9 +43,18 @@ async function leer(token: string): Promise<Datos | null> {
   return data as Datos;
 }
 
+/** Estado de su confirmación de asistencia a la hackathon (null si el enlace no es válido). */
+async function leerAsistencia(token: string): Promise<Asistencia | null> {
+  if (!/^[a-f0-9]{32}$/.test(token) || !SUPABASE_URL || !SUPABASE_CLAVE) return null;
+  const sb = createClient(SUPABASE_URL, SUPABASE_CLAVE, { auth: { persistSession: false } });
+  const { data } = await sb.rpc("asistencia_por_token", { p_token: token });
+  return (data as Asistencia | null) ?? null;
+}
+
 export default async function CardPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
   const d = await leer(token);
+  const asistencia = d ? await leerAsistencia(token) : null;
 
   return (
     <>
@@ -74,7 +84,13 @@ export default async function CardPage({ params }: { params: Promise<{ token: st
               </p>
 
               {d.hack && (
-                <div className="box" style={{ marginTop: 26 }}>
+                <div style={{ marginTop: 26 }}>
+                  <ConfirmarAsistencia modo={{ tipo: "token", token }} inicial={asistencia} />
+                </div>
+              )}
+
+              {d.hack && (
+                <div className="box" style={{ marginTop: 0 }}>
                   <TarjetaHack
                     persona={{
                       id: "", name: d.display_name, display_name: d.display_name, email: "", phone: null,
