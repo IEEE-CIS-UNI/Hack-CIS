@@ -53,6 +53,7 @@ export default function TarjetaHack({
         universidad: persona.institution,
         numero: hack.number,
         foto,
+        enEspera: hack.waiting === true,
       });
       if (!vivo || !b) return;
       blob.current = b;
@@ -63,7 +64,7 @@ export default function TarjetaHack({
       vivo = false;
       if (url) URL.revokeObjectURL(url);
     };
-  }, [persona.display_name, persona.institution, hack.number, foto]);
+  }, [persona.display_name, persona.institution, hack.number, hack.waiting, foto]);
 
   const subirFoto = useCallback(
     async (f: File) => {
@@ -141,7 +142,9 @@ export default function TarjetaHack({
     const hecho = await compartir(
       blob.current,
       nombreArchivo,
-      "¡Ya estoy dentro de HACK[CIS] UNI 2026 · The Agentic Era! hackcis.lat",
+      hack.waiting
+        ? "¡Me inscribí a HACK[CIS] UNI 2026 · The Agentic Era! hackcis.lat"
+        : "¡Ya estoy dentro de HACK[CIS] UNI 2026 · The Agentic Era! hackcis.lat",
     );
     if (!hecho) descargar(blob.current, nombreArchivo);
   }

@@ -20,6 +20,8 @@ export type DatosBanner = {
   universidad: string | null;
   numero: number | null;
   foto: string | null;
+  /** En lista de espera: la card no dice «ya estoy dentro». */
+  enEspera?: boolean;
 };
 
 const ANCHO = 1080;
@@ -205,7 +207,7 @@ export async function dibujarBanner(datos: DatosBanner): Promise<Blob | null> {
   // ── el anuncio ──
   ctx.fillStyle = "#4de3ff";
   ctx.font = `22px ${michroma}`;
-  ctx.fillText("Y A   E S T O Y   D E N T R O", ANCHO / 2, img ? 668 : 275);
+  ctx.fillText(datos.enEspera ? "E N   L I S T A   D E   E S P E R A" : "Y A   E S T O Y   D E N T R O", ANCHO / 2, img ? 668 : 275);
 
   const partes = datos.nombre.trim().toUpperCase().split(/\s+/);
   const nombre = partes[0] ?? "";
