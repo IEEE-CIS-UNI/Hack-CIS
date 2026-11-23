@@ -153,6 +153,9 @@ export default function BasesPage() {
             <ul>
               <li>De <B>2 a 4 integrantes</B>, que estén inscritos en la hackathon y no tengan otro equipo.</li>
               <li>
+                <B>El jueves 26 de noviembre se arman los equipos</B>, en una plataforma que anunciaremos pronto.
+              </li>
+              <li>
                 <Cinta chica /> <B>A pedido de ustedes, ya no es obligatorio</B> que el equipo tenga carreras o
                 facultades distintas: es opcional. Un equipo diverso suele complementarse mejor, pero cada quien
                 arma su equipo con quienes prefiera.

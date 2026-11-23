@@ -25,6 +25,9 @@ export default function AvisoEquipos({ enlace = true }: { enlace?: boolean }) {
             Ya <b>no es obligatorio</b> que tu equipo tenga carreras o facultades distintas. Armen su equipo, de 2 a 4
             personas, con quienes quieran. <b>¡Aprovechen el bootcamp para formar equipos!</b>
           </p>
+          <p className="aviso-p">
+            <b>El jueves 26 de noviembre se arman los equipos</b>, en una plataforma que anunciaremos muy pronto.
+          </p>
           {enlace && (
             <Link href="/bases" className="aviso-l">
               Ver las bases <ArrowRight aria-hidden size={13} />
