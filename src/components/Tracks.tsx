@@ -1,14 +1,11 @@
 import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Cloud, Lock, Zap } from "lucide-react";
-import Sil from "./silhouettes";
+import { ArrowRight, Cloud, Landmark, Zap } from "lucide-react";
 
 /**
- * Energía (Zeia) y Nube (Manantial) ya están revelados. El tercer track todavía no está
- * cerrado y sale como «por revelar» en vez de inventar un nombre. Cuando se anuncie
- * uno, se publica su ficha en /tracks/[slug] (ver app/tracks/[slug]/page.tsx) y se
- * pone `revealed = true` en la tabla `tracks`.
+ * Los tres tracks están revelados: Energía (Zeia), Cloud (Manantial) y Fintech (Millennium). Cada ficha vive en
+ * /tracks/[slug] (ver app/tracks/[slug]/page.tsx) y su fila en la tabla `tracks` tiene `revealed = true`.
  */
 export const ENERGIA = {
   sub: "IA & Energía",
@@ -18,15 +15,21 @@ export const ENERGIA = {
   sponsor: { name: "Zeia", url: "https://zeia.com.pe/", logo: "/logos/zeia-blanco.png", width: 154, height: 50 },
 };
 
-export const NUBE = {
-  sub: "IA & Nube",
+export const CLOUD = {
+  sub: "IA & Cloud",
   desc: "Manantial es una consultora peruana de tecnología, especialista en migración cloud, DevOps y ciberseguridad, partner de AWS, Google Cloud y Oracle. Su reto lo presentan en vivo al cierre del Bootcamp.",
   tone: "#ff6b6b",
   tone2: "#912b2b",
   sponsor: { name: "Manantial", url: "https://manantial.pe/", logo: "/logos/manantial.png", width: 640, height: 192 },
 };
 
-const PRONTO = [{ tone: "#8b5cf6", tone2: "#4d17c2" }];
+export const FINTECH = {
+  sub: "IA & Fintech",
+  desc: "Millennium es un grupo peruano de finanzas con foco en la inclusión financiera impulsada por IA: ayuda a conductores a conseguir su moto o su taxi como herramienta de trabajo, con las marcas Lima Bikes y Lizzo. Su reto lo presentan en vivo al cierre del Bootcamp.",
+  tone: "#35a7e6",
+  tone2: "#0068a9",
+  sponsor: { name: "Millennium", url: "https://millennium.ky/", logo: "/logos/millennium-blanco.png", width: 640, height: 274 },
+};
 
 export function TrackList() {
   return (
@@ -52,52 +55,47 @@ export function TrackList() {
         </div>
       </article>
 
-      <article className="tk is-link" style={{ "--tone": NUBE.tone, "--tone2": NUBE.tone2 } as CSSProperties}>
+      <article className="tk is-link" style={{ "--tone": CLOUD.tone, "--tone2": CLOUD.tone2 } as CSSProperties}>
         <div className="tk-ic">
           <Cloud aria-hidden strokeWidth={1.6} />
         </div>
         <div>
           <span className="tk-badge">Track revelado</span>
-          <h3 className="tk-title">Nube</h3>
-          <p className="tk-sub">{NUBE.sub}</p>
-          <p className="tk-desc">{NUBE.desc}</p>
+          <h3 className="tk-title">Cloud</h3>
+          <p className="tk-sub">{CLOUD.sub}</p>
+          <p className="tk-desc">{CLOUD.desc}</p>
         </div>
         <div className="tk-meta">
-          <Link href="/tracks/nube" className="tk-more" aria-label="Conocer más sobre el track de Nube, con Manantial">
+          <Link href="/tracks/cloud" className="tk-more" aria-label="Conocer más sobre el track de Cloud, con Manantial">
             Click aquí para conocer más <ArrowRight aria-hidden size={13} />
           </Link>
           <span className="tk-power">
             Powered by
-            <Image src={NUBE.sponsor.logo} width={NUBE.sponsor.width} height={NUBE.sponsor.height} alt={NUBE.sponsor.name} unoptimized />
+            <Image src={CLOUD.sponsor.logo} width={CLOUD.sponsor.width} height={CLOUD.sponsor.height} alt={CLOUD.sponsor.name} unoptimized />
           </span>
         </div>
       </article>
 
-      {PRONTO.map((t, i) => (
-        <article
-          key={i}
-          className="tk is-locked"
-          style={{ "--tone": t.tone, "--tone2": t.tone2 } as CSSProperties}
-        >
-          <div className="tk-ic">
-            <Lock aria-hidden strokeWidth={1.6} />
-          </div>
-          <div>
-            <h3 className="tk-title">Por revelar</h3>
-            <p className="tk-sub">Track por revelar</p>
-            <p className="tk-desc">Muy pronto sabrás de qué va y quién lo presenta.</p>
-          </div>
-          <div className="tk-meta">
-            <span style={{ width: 84, color: t.tone, opacity: 0.55 }}>
-              <Sil kind="building" />
-            </span>
-            <span>
-              <Lock size={12} aria-hidden style={{ verticalAlign: -1, marginRight: 4 }} />
-              Sponsor por revelar
-            </span>
-          </div>
-        </article>
-      ))}
+      <article className="tk is-link" style={{ "--tone": FINTECH.tone, "--tone2": FINTECH.tone2 } as CSSProperties}>
+        <div className="tk-ic">
+          <Landmark aria-hidden strokeWidth={1.6} />
+        </div>
+        <div>
+          <span className="tk-badge">Track revelado</span>
+          <h3 className="tk-title">Fintech</h3>
+          <p className="tk-sub">{FINTECH.sub}</p>
+          <p className="tk-desc">{FINTECH.desc}</p>
+        </div>
+        <div className="tk-meta">
+          <Link href="/tracks/fintech" className="tk-more" aria-label="Conocer más sobre el track de Fintech, con Millennium">
+            Click aquí para conocer más <ArrowRight aria-hidden size={13} />
+          </Link>
+          <span className="tk-power">
+            Powered by
+            <Image src={FINTECH.sponsor.logo} width={FINTECH.sponsor.width} height={FINTECH.sponsor.height} alt={FINTECH.sponsor.name} unoptimized />
+          </span>
+        </div>
+      </article>
     </div>
   );
 }
@@ -111,8 +109,8 @@ export default function Tracks() {
           Elige tu <span className="lav">batalla</span>
         </h2>
         <p className="lead">
-          Tres sponsors, tres retos reales. Ya conoces dos: Energía con Zeia y Nube con Manantial; el tercero todavía es un
-          secreto. Cada sponsor presenta su reto al cierre del Bootcamp y tú decides en cuál competir.
+          Tres sponsors, tres retos reales: Energía con Zeia, Cloud con Manantial y Fintech con Millennium. Cada sponsor
+          presenta su reto al cierre del Bootcamp y tú decides en cuál competir.
         </p>
 
         <TrackList />

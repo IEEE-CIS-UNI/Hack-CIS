@@ -7,7 +7,7 @@ import HeroSponsor from "@/components/HeroSponsor";
 import s from "./ManantialTrack.module.css";
 
 /**
- * La página del reto de Manantial (sponsor del track «IA & Nube»).
+ * La página del reto de Manantial (sponsor del track «IA & Cloud»).
  *
  * Todo su branding es el de Manantial (manantial.pe): el rojo vino de su logo y de su portada, el coral de sus
  * acentos, Poppins y fondo claro. Los textos sobre qué hace Manantial salen de su propia web. El reto en sí se
@@ -39,7 +39,7 @@ export default function ManantialTrack({ slug }: { slug: string }) {
 
       <main>
         <HeroSponsor
-          etiqueta="IA & Nube" nombre="Manantial" url="https://manantial.pe/"
+          etiqueta="IA & Cloud" nombre="Manantial" url="https://manantial.pe/"
           logo="/logos/manantial-color.png" logoAncho={3578} logoAlto={1386} logoMostrado={520}
           tema={{
             fondo: "radial-gradient(760px 440px at 100% 0, rgba(255,107,107,.26), transparent 62%), radial-gradient(640px 440px at 0 100%, rgba(145,43,43,.16), transparent 62%), #fff",
@@ -86,7 +86,7 @@ export default function ManantialTrack({ slug }: { slug: string }) {
         <section className={s.sec}>
           <div className={s.in}>
             <p className={s.sobre}>El reto</p>
-            <h2>Un problema real de nube, resuelto con IA</h2>
+            <h2>Un problema real de cloud, resuelto con IA</h2>
             <div className={s.reto}>
               <div className={s.retoCaja}>
                 <h3>Manantial lo presenta en vivo el viernes 27 de noviembre</h3>

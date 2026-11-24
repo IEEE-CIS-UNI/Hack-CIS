@@ -1,0 +1,120 @@
+/*
+ * Página del reto de Millennium. TODO el branding de esta página es el de Millennium (millennium.ky):
+ * azul de su isotipo, azul marino de su nombre, tipografía geométrica y fondo claro. No usa la paleta violeta de
+ * HACK[CIS] salvo en el recuadro de «Únete», que es un recuadro azul marino con acentos celeste.
+ */
+.mil {
+  --azul: #0068a9;
+  --azul2: #0a5a92;
+  --marino: #101e4b;
+  --cielo: #35a7e6;
+  --tinta: #101e4b;
+  --texto: #46536b;
+  --suave: #f3f8fc;
+  --borde: #dfeaf3;
+  position: relative;
+  z-index: 5;
+  min-height: 100vh;
+  background: #fff;
+  color: var(--texto);
+  line-height: 1.65;
+  font-size: 16px;
+}
+.in { width: min(1080px, 100% - 40px); margin: 0 auto; }
+
+/* ── barra superior ── */
+.barra { position: sticky; top: 0; z-index: 20; background: rgba(255, 255, 255, .94); backdrop-filter: blur(10px); border-bottom: 1px solid var(--borde); }
+.barra .in { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; }
+.logo { display: block; height: 38px; width: auto; }
+.volver { font-size: .82rem; font-weight: 500; color: var(--texto); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+.volver:hover { color: var(--tinta); }
+.volver b { color: var(--tinta); font-weight: 600; }
+
+.lead { margin: 22px 0 0; max-width: 700px; font-size: clamp(1.02rem, 2.4vw, 1.2rem); }
+.lead strong { color: var(--tinta); font-weight: 600; }
+
+/* ── cifras ── */
+.cifras { padding: clamp(28px, 5vw, 48px) 0 clamp(36px, 6vw, 64px); }
+.cifras .in { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.cifra { padding: 22px 22px 20px; border-radius: 20px; background: var(--suave); border: 1px solid var(--borde); }
+.cifra b { display: block; font-size: clamp(1.5rem, 4.2vw, 2.1rem); font-weight: 800; line-height: 1.1; color: var(--azul); }
+.cifra span { display: block; margin-top: 6px; font-size: .86rem; color: var(--texto); }
+
+/* ── secciones ── */
+.sec { padding: clamp(40px, 7vw, 76px) 0; }
+.sec.gris { background: var(--suave); }
+.sec h2 { margin: 0; color: var(--tinta); font-weight: 700; font-size: clamp(1.6rem, 4.6vw, 2.4rem); line-height: 1.15; letter-spacing: -.01em; }
+.sec .sub { margin: 12px 0 0; max-width: 680px; }
+.sec .lead { color: var(--texto); }
+.sobre { margin: 0 0 8px; font-size: .78rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--azul); }
+
+.tarjetas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 30px; }
+.tarjeta { padding: 24px; border-radius: 20px; background: #fff; border: 1px solid var(--borde); transition: transform .2s, box-shadow .2s; }
+.tarjeta:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -22px rgba(0, 104, 169, .45); }
+.ico { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; background: linear-gradient(135deg, rgba(0, 104, 169, .1), rgba(53, 167, 230, .28)); color: var(--azul); }
+.tarjeta h3 { margin: 16px 0 6px; color: var(--tinta); font-weight: 600; font-size: 1.05rem; }
+.tarjeta p { margin: 0; font-size: .92rem; }
+.fuente { margin: 22px 0 0; font-size: .8rem; color: #8a8f95; }
+.fuente a { color: var(--azul); }
+
+/* ── el reto ── */
+.reto { display: grid; grid-template-columns: 1.15fr .85fr; gap: 22px; margin-top: 30px; }
+.retoCaja { padding: clamp(24px, 4vw, 34px); border-radius: 24px; background: linear-gradient(150deg, rgba(53, 167, 230, .2), rgba(0, 104, 169, .08)); border: 1px solid rgba(0, 104, 169, .28); }
+.retoCaja h3 { margin: 0 0 10px; color: var(--tinta); font-weight: 700; font-size: 1.4rem; line-height: 1.2; }
+.retoCaja p { margin: 0 0 12px; }
+.calentar { padding: clamp(22px, 4vw, 30px); border-radius: 24px; background: #fff; border: 1px solid var(--borde); }
+.calentar h3 { margin: 0 0 12px; color: var(--tinta); font-weight: 600; font-size: 1.05rem; }
+.lista { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.lista li { position: relative; padding-left: 22px; font-size: .94rem; }
+.lista li::before { content: ""; position: absolute; left: 0; top: .62em; width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(135deg, var(--azul), var(--cielo)); }
+.lista li b { color: var(--tinta); font-weight: 600; }
+
+/* ── pasos ── */
+.pasos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 30px; counter-reset: paso; }
+.paso { counter-increment: paso; position: relative; padding: 22px 22px 22px 70px; border-radius: 20px; background: #fff; border: 1px solid var(--borde); font-size: .95rem; }
+.paso::before { content: counter(paso); position: absolute; left: 20px; top: 20px; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; color: #fff; background: linear-gradient(135deg, var(--azul), var(--cielo)); }
+.paso b { color: var(--tinta); font-weight: 600; }
+.nota { margin: 22px 0 0; font-size: .86rem; }
+.nuevo { display: inline-block; margin-right: 6px; padding: 1px 10px; background: linear-gradient(180deg, #ffe27a, #ffc93c); color: #2b1a05; font-weight: 700; font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; transform: rotate(-3deg); }
+
+/* ── únete (recuadro azul marino de Millennium con acentos celeste) ── */
+.unete { padding: clamp(40px, 7vw, 76px) 0; }
+.oscuro {
+  --lav: #a9d9f5; --mist: #cfe3f2; --violet: #35a7e6; --violet2: #0068a9; --cyan: #7cc4ee;
+  padding: clamp(24px, 5vw, 44px); border-radius: 28px; color: #fff;
+  background: radial-gradient(520px 320px at 100% 0, rgba(53, 167, 230, .3), transparent 65%), var(--marino);
+}
+.unete h2 { margin: 0; color: var(--tinta); font-weight: 700; font-size: clamp(1.6rem, 4.6vw, 2.4rem); line-height: 1.15; letter-spacing: -.01em; }
+.unete .sub { margin: 12px 0 0; max-width: 640px; }
+.oscuro h2 { color: #fff; }
+.oscuro .sub { color: #cfe3f2; }
+.oscuro :global(.box) { border-color: rgba(124, 196, 238, .35); background: rgba(255, 255, 255, .06); margin-top: 22px; }
+.oscuro :global(.more.solid) { background: var(--cielo); color: #101e4b; border-color: var(--cielo); }
+.oscuro :global(.more.solid:hover) { background: #fff; border-color: #fff; color: var(--azul); }
+
+/* ── pie ── */
+.pie { padding: 30px 0 44px; border-top: 1px solid var(--borde); background: #fff; }
+.pie .in { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; font-size: .84rem; }
+.pie a { color: var(--texto); text-decoration: none; font-weight: 500; }
+.pie a:hover { color: var(--tinta); text-decoration: underline; }
+.pie .fila { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+.logoPie { height: 42px; width: auto; }
+.pieOscuro { display: inline-flex; align-items: center; gap: 12px; padding: 10px 18px; border-radius: 14px; background: var(--marino); }
+.pieOscuro span { color: #cfe3f2; font-size: .78rem; }
+
+@media (max-width: 960px) {
+  .tarjetas { grid-template-columns: 1fr; }
+}
+@media (max-width: 860px) {
+  .reto { grid-template-columns: 1fr; }
+}
+@media (max-width: 620px) {
+  .cifras .in { grid-template-columns: 1fr; }
+  .tarjetas { grid-template-columns: 1fr; }
+  .pasos { grid-template-columns: 1fr; }
+  .volver span { display: none; }
+}
+
+/* tarjetas de las marcas del grupo: cada una con su logo */
+.marca { height: 58px; display: flex; align-items: center; }
+.marcaLogo { height: 54px; width: auto; max-width: 100%; object-fit: contain; display: block; }

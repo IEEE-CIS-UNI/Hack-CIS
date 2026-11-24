@@ -6,7 +6,7 @@ import { TrackList } from "@/components/Tracks";
 
 export const metadata: Metadata = {
   title: "Tracks · HACK[CIS] UNI 2026",
-  description: "Tres retos reales de empresa. Ya conoces dos: IA & Energía, con Zeia, e IA & Nube, con Manantial. El tercero se revela pronto.",
+  description: "Tres retos reales de empresa: IA & Energía, con Zeia; IA & Cloud, con Manantial; e IA & Fintech, con Millennium.",
 };
 
 export default function TracksPage() {
@@ -19,7 +19,7 @@ export default function TracksPage() {
         <span className="lav">batalla</span>
       </h1>
       <p className="pg-lead">
-        Tres sponsors, tres retos reales. Ya conoces dos, Energía con Zeia y Nube con Manantial; el tercero lo revelamos muy pronto.
+        Tres sponsors, tres retos reales: Energía con Zeia, Cloud con Manantial y Fintech con Millennium.
       </p>
 
       <div className="pg-tracks">

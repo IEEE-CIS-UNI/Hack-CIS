@@ -145,8 +145,9 @@ section{position:relative}
 
 /* tracks: filas grandes con letras de bloques */
 .tk-list{margin-top:44px;border-bottom:1px solid rgba(255,255,255,.14)}
-.tk{position:relative;display:grid;grid-template-columns:auto 1fr;gap:18px 26px;align-items:center;padding:clamp(24px,4vw,40px) 0;border-top:1px solid rgba(255,255,255,.14);overflow:hidden;transition:.4s}
-.tk::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,color-mix(in srgb,var(--tone) 24%,transparent),transparent 70%);opacity:0;transition:.4s;z-index:-1}
+.tk{position:relative;display:grid;grid-template-columns:auto 1fr;gap:18px 26px;align-items:center;padding:clamp(24px,4vw,40px) 0;border-top:1px solid rgba(255,255,255,.14);transition:.4s}
+/* el brillo al pasar el mouse va de canto a canto de la pantalla, no solo del ancho de la lista (body ya recorta lo que sobra) */
+.tk::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%);background:linear-gradient(90deg,color-mix(in srgb,var(--tone) 26%,transparent),color-mix(in srgb,var(--tone) 7%,transparent) 62%,transparent);opacity:0;transition:.4s;z-index:-1;pointer-events:none}
 .tk:hover::before{opacity:1}
 .tk-ic{width:clamp(64px,8vw,96px);aspect-ratio:1;border-radius:50%;border:2px solid var(--tone);display:flex;align-items:center;justify-content:center;color:var(--tone);background:radial-gradient(circle,color-mix(in srgb,var(--tone) 22%,transparent),transparent 70%)}
 .tk-ic svg{width:46%;height:46%}

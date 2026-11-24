@@ -7,6 +7,7 @@ import PageShell from "@/components/PageShell";
 import UnirseTrack from "@/components/UnirseTrack";
 import ManantialTrack from "@/components/ManantialTrack";
 import ZeiaTrack from "@/components/ZeiaTrack";
+import MillenniumTrack from "@/components/MillenniumTrack";
 
 type TrackPublico = {
   nombre: string;
@@ -17,10 +18,11 @@ type TrackPublico = {
 };
 
 /**
- * Hoy están revelados Energía (sponsor: Zeia) y Nube (sponsor: Manantial); para los demás esta ruta responde 404.
+ * Hoy están revelados Energía (sponsor: Zeia), Cloud (sponsor: Manantial) y Fintech (sponsor: Millennium); para los demás esta ruta responde 404.
  * Cuando se anuncie otro, se agrega aquí con su ficha (y en la tabla `tracks` de la
  * base se pone `revealed = true` y se le da su nombre y slug). Energía tiene página
- * propia con el branding de Zeia (ver components/ZeiaTrack) y Nube con el de Manantial (components/ManantialTrack).
+ * propia con el branding de Zeia (ver components/ZeiaTrack), Cloud con el de Manantial (components/ManantialTrack) y
+ * Fintech con el de Millennium (components/MillenniumTrack).
  */
 const TRACKS_PUBLICOS: Record<string, TrackPublico> = {
   energia: {
@@ -30,12 +32,19 @@ const TRACKS_PUBLICOS: Record<string, TrackPublico> = {
     tono: "#38e5c4",
     sponsor: { name: "Zeia", url: "https://zeia.com.pe/", logo: "/logos/zeia.png", width: 308, height: 92 },
   },
-  nube: {
-    nombre: "Nube",
-    sub: "Manantial · IA & Nube",
+  cloud: {
+    nombre: "Cloud",
+    sub: "Manantial · IA & Cloud",
     desc: "Manantial es una consultora peruana de tecnología, especialista en migración cloud, DevOps y ciberseguridad. Su reto se presenta en vivo el viernes 27 de noviembre.",
     tono: "#ff6b6b",
     sponsor: { name: "Manantial", url: "https://manantial.pe/", logo: "/logos/manantial-color.png", width: 3578, height: 1386 },
+  },
+  fintech: {
+    nombre: "Fintech",
+    sub: "Millennium · IA & Fintech",
+    desc: "Millennium es un grupo peruano de finanzas con foco en la inclusión financiera impulsada por IA, con las marcas Lima Bikes y Lizzo. Su reto se presenta en vivo el viernes 27 de noviembre.",
+    tono: "#35a7e6",
+    sponsor: { name: "Millennium", url: "https://millennium.ky/", logo: "/logos/millennium-color.png", width: 1000, height: 429 },
   },
 };
 
@@ -56,7 +65,8 @@ export default async function TrackPage({ params }: { params: Promise<{ slug: st
   const t = TRACKS_PUBLICOS[slug];
   if (!t) notFound();
   if (slug === "energia") return <ZeiaTrack slug={slug} />;
-  if (slug === "nube") return <ManantialTrack slug={slug} />;
+  if (slug === "cloud") return <ManantialTrack slug={slug} />;
+  if (slug === "fintech") return <MillenniumTrack slug={slug} />;
 
   return (
     <PageShell>

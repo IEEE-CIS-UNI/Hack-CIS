@@ -160,7 +160,7 @@ export default function BasesPage() {
                 facultades distintas: es opcional. Un equipo diverso suele complementarse mejor, pero cada quien
                 arma su equipo con quienes prefiera.
               </li>
-              <li>Hay <B>tres tracks</B>. Ya están revelados <B>IA &amp; Energía</B>, con Zeia como sponsor, e <B>IA &amp; Nube</B>, con Manantial; el tercero y su sponsor se anuncian pronto.</li>
+              <li>Hay <B>tres tracks</B>. Son <B>IA &amp; Energía</B>, con Zeia como sponsor; <B>IA &amp; Cloud</B>, con Manantial; e <B>IA &amp; Fintech</B>, con Millennium.</li>
               <li>
                 El track <B>no se elige al inscribirse</B>: el viernes 27, después del pitch de los sponsors, cada
                 equipo elige el suyo.
