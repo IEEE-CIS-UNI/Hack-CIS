@@ -25,30 +25,63 @@ const ERRORES: Record<string, string> = {
   sin_participantes: "No quedan participantes en la ruleta.",
 };
 const motivo = (m: string) => { const k = Object.keys(ERRORES).find((x) => m.includes(x)); return k ? ERRORES[k] : "No pudimos completar la acción. Inténtalo de nuevo."; };
-const COLORES = ["#7a2cf5", "#b69cff", "#38e5c4", "#ff5fb0", "#ffd84d", "#4d7cff"];
 
-function Ruleta({ nombres, rot }: { nombres: string[]; rot: number }) {
+function Ruleta({ nombres, rot, ganador }: { nombres: string[]; rot: number; ganador: number | null }) {
   const ref = useRef<HTMLCanvasElement>(null);
+  const [fuentes, setFuentes] = useState(0);
+  useEffect(() => { document.fonts?.ready.then(() => setFuentes(1)).catch(() => {}); }, []);
   useEffect(() => {
     const c = ref.current; if (!c) return;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2), L = 560;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2), L = 640;
     c.width = L * dpr; c.height = L * dpr;
     const g = c.getContext("2d"); if (!g) return;
+    const tech = getComputedStyle(c).fontFamily || "sans-serif";
     g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, L, L);
-    const R = L / 2 - 8, n = Math.max(nombres.length, 1), a = (2 * Math.PI) / n;
-    g.save(); g.translate(L / 2, L / 2); g.rotate(rot - Math.PI / 2);
+    const M = L / 2, R = M - 14, Rw = R - 30, n = Math.max(nombres.length, 1), a = (2 * Math.PI) / n;
+
+    // halo y anillos fijos
+    const halo = g.createRadialGradient(M, M, Rw * 0.6, M, M, R + 12);
+    halo.addColorStop(0, "rgba(122,44,245,0)"); halo.addColorStop(1, "rgba(122,44,245,.45)");
+    g.fillStyle = halo; g.beginPath(); g.arc(M, M, R + 12, 0, 2 * Math.PI); g.fill();
+    g.save(); g.shadowColor = "rgba(182,156,255,.9)"; g.shadowBlur = 22; g.strokeStyle = "#b69cff"; g.lineWidth = 3;
+    g.beginPath(); g.arc(M, M, R, 0, 2 * Math.PI); g.stroke(); g.restore();
+    g.strokeStyle = "rgba(182,156,255,.35)"; g.lineWidth = 1; g.beginPath(); g.arc(M, M, Rw + 4, 0, 2 * Math.PI); g.stroke();
+
+    // marcas del borde (giran con la rueda)
+    g.save(); g.translate(M, M); g.rotate(rot);
+    for (let d = 0; d < 120; d++) {
+      const ang = (d / 120) * 2 * Math.PI, largo = d % 5 === 0 ? 14 : 6;
+      g.strokeStyle = d % 5 === 0 ? "rgba(255,255,255,.8)" : "rgba(182,156,255,.45)"; g.lineWidth = d % 5 === 0 ? 2 : 1;
+      g.beginPath(); g.moveTo(Math.cos(ang) * (R - 6), Math.sin(ang) * (R - 6)); g.lineTo(Math.cos(ang) * (R - 6 - largo), Math.sin(ang) * (R - 6 - largo)); g.stroke();
+    }
+    g.restore();
+
+    // casillas
+    g.save(); g.translate(M, M); g.rotate(rot - Math.PI / 2);
     for (let i = 0; i < n; i++) {
-      g.beginPath(); g.moveTo(0, 0); g.arc(0, 0, R, i * a, (i + 1) * a); g.closePath();
-      g.fillStyle = nombres.length ? COLORES[i % COLORES.length] : "#2a1650"; g.fill();
-      if (n <= 60) { g.strokeStyle = "rgba(10,4,24,.55)"; g.lineWidth = 1; g.stroke(); }
-      if (n <= 36 && nombres[i]) {
-        g.save(); g.rotate((i + 0.5) * a); g.fillStyle = "#12071f"; g.font = `700 ${n > 20 ? 13 : 16}px Poppins, sans-serif`; g.textAlign = "right"; g.textBaseline = "middle";
-        g.fillText(nombres[i], R - 16, 0); g.restore();
+      const win = ganador === i;
+      const f = g.createRadialGradient(0, 0, 40, 0, 0, Rw);
+      if (win) { f.addColorStop(0, "#b69cff"); f.addColorStop(1, "#ffffff"); }
+      else if (i % 2) { f.addColorStop(0, "#1a0a38"); f.addColorStop(1, "#4a1fa8"); }
+      else { f.addColorStop(0, "#10051f"); f.addColorStop(1, "#2a1163"); }
+      g.beginPath(); g.moveTo(0, 0); g.arc(0, 0, Rw, i * a, (i + 1) * a); g.closePath(); g.fillStyle = nombres.length ? f : "#1a0a38"; g.fill();
+      g.strokeStyle = "rgba(182,156,255,.38)"; g.lineWidth = 1; g.stroke();
+      if (n <= 40 && nombres[i]) {
+        g.save(); g.rotate((i + 0.5) * a); g.fillStyle = win ? "#12071f" : "#f1eaff"; g.textAlign = "right"; g.textBaseline = "middle";
+        g.font = `${win ? 700 : 400} ${n > 24 ? 10 : n > 14 ? 12 : 14}px ${tech}`;
+        g.fillText(nombres[i].toUpperCase(), Rw - 18, 0); g.restore();
       }
     }
     g.restore();
-    g.beginPath(); g.arc(L / 2, L / 2, 34, 0, 2 * Math.PI); g.fillStyle = "#12071f"; g.fill(); g.lineWidth = 4; g.strokeStyle = "#fff"; g.stroke();
-  }, [nombres, rot]);
+
+    // centro
+    g.save(); g.shadowColor = "rgba(122,44,245,.9)"; g.shadowBlur = 24;
+    g.beginPath(); g.arc(M, M, 62, 0, 2 * Math.PI); g.fillStyle = "#0a0414"; g.fill(); g.restore();
+    g.strokeStyle = "#b69cff"; g.lineWidth = 2; g.beginPath(); g.arc(M, M, 62, 0, 2 * Math.PI); g.stroke();
+    g.strokeStyle = "rgba(255,255,255,.55)"; g.lineWidth = 1; g.beginPath(); g.arc(M, M, 52, 0, 2 * Math.PI); g.stroke();
+    g.fillStyle = "#fff"; g.textAlign = "center"; g.textBaseline = "middle"; g.font = `400 15px ${tech}`; g.fillText("HACK", M, M - 8);
+    g.fillStyle = "#b69cff"; g.font = `400 13px ${tech}`; g.fillText("[CIS]", M, M + 11);
+  }, [nombres, rot, ganador, fuentes]);
   return <canvas ref={ref} className={s.canvas} aria-label="Ruleta del sorteo" />;
 }
 
@@ -63,6 +96,8 @@ export default function Sorteo() {
   const [girando, setGirando] = useState(false);
   const [premio, setPremio] = useState<string | null>(null);
   const [contactos, setContactos] = useState<Contacto[] | null>(null);
+  const [vista, setVista] = useState<string[] | null>(null);
+  const [ganIdx, setGanIdx] = useState<number | null>(null);
   const pausa = useRef(false);
 
   const cargar = useCallback(async () => {
@@ -114,20 +149,20 @@ export default function Sorteo() {
 
   async function girar() {
     if (!e?.ruleta?.length || girando) return;
-    setGirando(true); setPremio(null); setMsg(null); pausa.current = true;
+    setGirando(true); setPremio(null); setMsg(null); setGanIdx(null); setRot(0); setVista(e.ruleta); pausa.current = true;
     const { data, error } = await navegador().rpc("sorteo_girar");
     if (error) { pausa.current = false; setGirando(false); setMsg({ t: "err", x: motivo(error.message) }); await cargar(); return; }
     const r = data as { indice: number; nombre: string };
     const n = e.ruleta.length, a = (2 * Math.PI) / n;
     const salto = (Math.random() - 0.5) * a * 0.7;
-    const inicio = rot % (2 * Math.PI);
+    const inicio = 0;
     const destino = -(r.indice + 0.5) * a + salto + 2 * Math.PI * 7;
     const dur = 7000, t0 = performance.now();
     const paso = (t: number) => {
       const p = Math.min((t - t0) / dur, 1), f = 1 - Math.pow(1 - p, 4);
       setRot(inicio + (destino - inicio) * f);
       if (p < 1) requestAnimationFrame(paso);
-      else { setPremio(r.nombre); setGirando(false); pausa.current = false; cargar(); }
+      else { setPremio(r.nombre); setGanIdx(r.indice); setGirando(false); pausa.current = false; cargar(); }
     };
     requestAnimationFrame(paso);
   }
@@ -208,8 +243,8 @@ export default function Sorteo() {
       {e.admin && (
         <div className={s.escena}>
           <div className={s.puntero} aria-hidden />
-          <Ruleta nombres={e.ruleta ?? []} rot={rot} />
-          {premio && !girando && <div className={s.ganador} role="status"><Trophy aria-hidden size={26} /> {premio}</div>}
+          <Ruleta nombres={vista ?? e.ruleta ?? []} rot={rot} ganador={ganIdx} />
+          {premio && !girando && <div className={s.cinta} role="status"><span className={s.cintaTit}>Ganador {ganIdx !== null ? "" : ""}</span><b>{premio}</b></div>}
           <button type="button" className={`more solid ${s.girar}`} onClick={girar} disabled={girando || !(e.ruleta?.length) || faltan <= 0}>
             {girando ? "Girando…" : faltan <= 0 ? "Sorteo completo" : `Girar la ruleta (${e.ganadores.length + 1} de ${e.premios})`}
           </button>
