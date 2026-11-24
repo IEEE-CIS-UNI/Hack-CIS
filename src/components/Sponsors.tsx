@@ -4,6 +4,7 @@ import { ArrowRight, GraduationCap, Handshake } from "lucide-react";
 import { WA_MENTOR, WA_SPONSOR } from "@/lib/config";
 import { APOYO_ROLES, SPONSOR_OFRECE } from "@/lib/contenido";
 import { LOGOS } from "./Logos";
+import SponsorAnimado from "./SponsorAnimado";
 
 const [CIS, DSC] = LOGOS;
 
@@ -20,6 +21,8 @@ type Sponsor = {
   text?: { name: string; sub?: string };
   /** Logo con nombre y lema apilados: necesita más altura para leerse. */
   tall?: boolean;
+  /** Si lo tiene, el sponsor «hace su entrada» al llegar a la sección. */
+  entrada?: { mensaje: string; color: string };
 };
 
 /**
@@ -32,6 +35,14 @@ const GENERALES: Sponsor[] = [
     url: "https://futuradata.pe/",
     logo: { src: "/logos/futura.png", width: 340, height: 203 },
     tall: true,
+  },
+  {
+    name: "ToDoStudents",
+    url: "https://todostudents.com/",
+    logo: { src: "/logos/todostudents-blanco.png", width: 640, height: 216 },
+    tall: true,
+    /** Entra con un destello naranja y un globo (ver SponsorAnimado). */
+    entrada: { mensaje: "¡Vengo con la merch y mucho más!", color: "#EF5F18" },
   },
 ];
 
@@ -136,9 +147,13 @@ export function Niveles() {
       <div className="sp-tier gen">
         <p className="note">Sponsors del evento</p>
         <div className="sp-logos">
-          {GENERALES.map((s) => (
-            <Chip key={s.name} s={s} />
-          ))}
+          {GENERALES.map((s) =>
+            s.entrada && s.url ? (
+              <SponsorAnimado key={s.name} nombre={s.name} url={s.url} logo={s.logo} mensaje={s.entrada.mensaje} color={s.entrada.color} />
+            ) : (
+              <Chip key={s.name} s={s} />
+            ),
+          )}
         </div>
       </div>
       <div className="sp-tier sup">
