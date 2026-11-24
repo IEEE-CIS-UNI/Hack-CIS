@@ -60,12 +60,18 @@ function Ruleta({ nombres, rot, ganador }: { nombres: string[]; rot: number; gan
     g.save(); g.translate(M, M); g.rotate(rot - Math.PI / 2);
     for (let i = 0; i < n; i++) {
       const win = ganador === i;
-      const f = g.createRadialGradient(0, 0, 40, 0, 0, Rw);
-      if (win) { f.addColorStop(0, "#b69cff"); f.addColorStop(1, "#ffffff"); }
-      else if (i % 2) { f.addColorStop(0, "#1a0a38"); f.addColorStop(1, "#4a1fa8"); }
-      else { f.addColorStop(0, "#10051f"); f.addColorStop(1, "#2a1163"); }
+      // con muchas casillas, color plano: 250 degradados por cuadro harían tropezar la animación en equipos modestos
+      let f: string | CanvasGradient;
+      if (n > 40) f = win ? "#ffffff" : i % 2 ? "#3a1688" : "#1d0b42";
+      else {
+        const gr = g.createRadialGradient(0, 0, 40, 0, 0, Rw);
+        if (win) { gr.addColorStop(0, "#b69cff"); gr.addColorStop(1, "#ffffff"); }
+        else if (i % 2) { gr.addColorStop(0, "#1a0a38"); gr.addColorStop(1, "#4a1fa8"); }
+        else { gr.addColorStop(0, "#10051f"); gr.addColorStop(1, "#2a1163"); }
+        f = gr;
+      }
       g.beginPath(); g.moveTo(0, 0); g.arc(0, 0, Rw, i * a, (i + 1) * a); g.closePath(); g.fillStyle = nombres.length ? f : "#1a0a38"; g.fill();
-      g.strokeStyle = "rgba(182,156,255,.38)"; g.lineWidth = 1; g.stroke();
+      if (n <= 90) { g.strokeStyle = "rgba(182,156,255,.38)"; g.lineWidth = 1; g.stroke(); }
       if (n <= 40 && nombres[i]) {
         g.save(); g.rotate((i + 0.5) * a); g.fillStyle = win ? "#12071f" : "#f1eaff"; g.textAlign = "right"; g.textBaseline = "middle";
         g.font = `${win ? 700 : 400} ${n > 24 ? 10 : n > 14 ? 12 : 14}px ${tech}`;
