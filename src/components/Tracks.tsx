@@ -25,9 +25,9 @@ export const CLOUD = {
 
 export const FINTECH = {
   sub: "IA & Fintech",
-  desc: "Millennium es un grupo peruano de finanzas con foco en la inclusión financiera impulsada por IA: ayuda a conductores a conseguir su moto o su taxi como herramienta de trabajo, con las marcas Lima Bikes y Lizzo. Su reto lo presentan en vivo al cierre del Bootcamp.",
-  tone: "#35a7e6",
-  tone2: "#0068a9",
+  desc: "Millennium es un grupo peruano de finanzas con foco en la inclusión financiera impulsada por IA, con las marcas Lima Bikes y Lizzo. Su reto lo presentan en vivo al cierre del Bootcamp. El equipo ganador se lleva S/ 1 000 y cada integrante, una carta oferta para trabajar en Millennium.",
+  tone: "#ffc93c",
+  tone2: "#b8860b",
   sponsor: { name: "Millennium", url: "https://millennium.ky/", logo: "/logos/millennium-blanco.png", width: 640, height: 274 },
 };
 
@@ -76,12 +76,12 @@ export function TrackList() {
         </div>
       </article>
 
-      <article className="tk is-link" style={{ "--tone": FINTECH.tone, "--tone2": FINTECH.tone2 } as CSSProperties}>
+      <article className="tk is-link is-gold" style={{ "--tone": FINTECH.tone, "--tone2": FINTECH.tone2 } as CSSProperties}>
         <div className="tk-ic">
           <Landmark aria-hidden strokeWidth={1.6} />
         </div>
         <div>
-          <span className="tk-badge">Track revelado</span>
+          <span className="tk-badge">★ Track dorado</span>
           <h3 className="tk-title">Fintech</h3>
           <p className="tk-sub">{FINTECH.sub}</p>
           <p className="tk-desc">{FINTECH.desc}</p>
@@ -109,7 +109,7 @@ export default function Tracks() {
           Elige tu <span className="lav">batalla</span>
         </h2>
         <p className="lead">
-          Tres sponsors, tres retos reales: Energía con Zeia, Cloud con Manantial y Fintech con Millennium. Cada sponsor
+          Tres sponsors, tres retos reales: Energía con Zeia, Cloud con Manantial y Fintech con Millennium, el track dorado. Cada sponsor
           presenta su reto al cierre del Bootcamp y tú decides en cuál competir.
         </p>
 

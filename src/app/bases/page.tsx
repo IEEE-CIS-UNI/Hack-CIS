@@ -133,7 +133,7 @@ export default function BasesPage() {
               </li>
               <li>
                 <B>Finalistas</B> — el lunes 30 de noviembre a las 6:00 pm se anuncian los{" "}
-                <B>15 equipos</B> que pasan, 5 por track. Los demás se llevan todo lo aprendido.
+                <B>25 equipos</B> que pasan: 5 en Energía, 5 en Cloud y 15 en Fintech. Los demás se llevan todo lo aprendido.
               </li>
               <li>
                 <B>Build</B> — unas 100 horas, desde el lunes 30 de noviembre por la noche hasta la Gran Final,
@@ -160,7 +160,7 @@ export default function BasesPage() {
                 facultades distintas: es opcional. Un equipo diverso suele complementarse mejor, pero cada quien
                 arma su equipo con quienes prefiera.
               </li>
-              <li>Hay <B>tres tracks</B>. Son <B>IA &amp; Energía</B>, con Zeia como sponsor; <B>IA &amp; Cloud</B>, con Manantial; e <B>IA &amp; Fintech</B>, con Millennium.</li>
+              <li>Hay <B>tres tracks</B>. Son <B>IA &amp; Energía</B>, con Zeia como sponsor; <B>IA &amp; Cloud</B>, con Manantial; e <B>IA &amp; Fintech</B>, con Millennium: el <B>track dorado</B>.</li>
               <li>
                 El track <B>no se elige al inscribirse</B>: el viernes 27, después del pitch de los sponsors, cada
                 equipo elige el suyo.
@@ -175,7 +175,8 @@ export default function BasesPage() {
           <Seccion n="05" titulo="Evaluación y premios">
             <p>Premios confirmados hasta ahora:</p>
             <ul>
-              <li><B>S/ 500</B> para el equipo ganador de cada track.</li>
+              <li><B>S/ 500</B> para el equipo ganador de los tracks Energía y Cloud.</li>
+              <li><B>Track dorado (Fintech, con Millennium):</B> <B>S/ 1 000</B> para el equipo ganador y una <B>carta oferta para cada integrante</B> para entrar a trabajar en Millennium, con una entrevista de por medio.</li>
               <li><B>Sorteo de cursos en vivo</B>, durante la semana y en la Gran Final.</li>
               <li><B>Sorteo de merch.</B></li>
               <li>Mini-retos con premios para todas las personas que asistan a la Gran Final. Los sorteos de ese día son solo para quienes están en la sala.</li>

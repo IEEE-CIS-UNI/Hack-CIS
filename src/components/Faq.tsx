@@ -11,7 +11,7 @@ const ITEMS = [
   },
   {
     q: "¿Qué pasa si no paso a finalista?",
-    a: "Pasan 15 equipos al build. Si no pasas, igual te llevas el Bootcamp: entrenamiento en prototipado rápido y pitch, además de la comunidad.",
+    a: "Pasan 25 equipos al build: 5 de Energía, 5 de Cloud y 15 de Fintech, el track dorado. Si no pasas, igual te llevas el Bootcamp: entrenamiento en prototipado rápido y pitch, además de la comunidad.",
   },
   {
     q: "¿Necesito experiencia con IA?",
@@ -31,11 +31,11 @@ const ITEMS = [
   },
   {
     q: "¿Cuánto dura el build?",
-    a: "Unas 100 horas, desde el lunes 30 de noviembre por la noche hasta la Gran Final del sábado 5 de diciembre. Solo construyen los 15 equipos finalistas.",
+    a: "Unas 100 horas, desde el lunes 30 de noviembre por la noche hasta la Gran Final del sábado 5 de diciembre. Solo construyen los 25 equipos que pasan.",
   },
   {
     q: "¿Cuáles son los tracks?",
-    a: "Hay tres: IA & Energía, con Zeia como sponsor; IA & Cloud, con Manantial; e IA & Fintech, con Millennium. Cada sponsor presenta su reto al cierre del Bootcamp, el 27 de noviembre.",
+    a: "Hay tres: IA & Energía, con Zeia como sponsor; IA & Cloud, con Manantial; e IA & Fintech, con Millennium, el track dorado. Cada sponsor presenta su reto al cierre del Bootcamp, el 27 de noviembre.",
   },
   {
     q: "¿Y si no vivo en Lima?",

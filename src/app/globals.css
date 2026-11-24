@@ -617,6 +617,12 @@ body{-webkit-font-smoothing:antialiased}
 .pr-ic{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;border:1.5px solid var(--lav);color:var(--lav);background:radial-gradient(circle,rgba(182,156,255,.18),transparent 72%)}
 .pr-ic svg{width:24px;height:24px}
 .pr-ic + h3{margin-top:18px;color:#fff}
+@media (min-width:760px){.pr-grid.cuatro{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1100px){.pr-grid.cuatro{grid-template-columns:repeat(4,1fr)}}
+.pr.dorado{border-color:rgba(255,201,60,.65);background:linear-gradient(160deg,rgba(255,201,60,.22),rgba(8,3,15,.5) 72%);box-shadow:0 0 40px -14px rgba(255,201,60,.55)}
+.pr.dorado .pr-tag{color:#ffc93c}
+.pr.dorado .pr-big{text-shadow:.03em .03em 0 #b8860b,.06em .06em 0 #7a5a05}
+.pr.dorado h3{color:#ffd95a}
 .pr-nota{margin-top:22px;font-family:var(--tech);font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--lav);line-height:1.9}
 .pr-nota b{color:#fff;font-weight:400}
 
@@ -634,6 +640,11 @@ body{-webkit-font-smoothing:antialiased}
 .tk-more{display:inline-flex;align-items:center;gap:8px;font-family:var(--tech);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--tone);border-bottom:1px solid color-mix(in srgb,var(--tone) 55%,transparent);padding-bottom:3px;transition:gap .3s,border-color .3s}
 .tk-more::after{content:"";position:absolute;inset:0;z-index:2}
 .tk.is-link:hover .tk-more{gap:12px;border-color:var(--tone)}
+/* track dorado: brillo dorado siempre encendido (sin animación, para celulares viejos) y una insignia rellena */
+.tk.is-gold::before{opacity:.7;background:linear-gradient(90deg,color-mix(in srgb,var(--tone) 38%,transparent),color-mix(in srgb,var(--tone) 12%,transparent) 62%,transparent)}
+.tk.is-gold:hover::before{opacity:1}
+.tk.is-gold .tk-badge{background:var(--tone);color:#2b1a00;border-color:var(--tone);font-weight:700}
+.tk.is-gold .tk-ic{box-shadow:0 0 36px -6px var(--tone)}
 
 /* La cinta «NUEVO» (cinta adhesiva pegada) y el aviso de novedades */
 .cinta{position:absolute;top:-16px;left:50%;z-index:2;display:inline-block;transform:translateX(-50%) rotate(-4deg);filter:drop-shadow(0 7px 10px rgba(0,0,0,.45))}
@@ -649,6 +660,11 @@ body{-webkit-font-smoothing:antialiased}
 .aviso-p b{color:#fff;font-weight:700}
 .aviso-l{display:inline-flex;align-items:center;gap:8px;margin-top:16px;font-family:var(--tech);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--lav);border-bottom:1px solid rgba(182,156,255,.5);padding-bottom:3px}
 .aviso-l:hover{color:#fff;border-color:#fff}
+/* aviso «ATENCIÓN» del track dorado: la misma cinta, en dorado intenso */
+.cinta.atencion>span{background:repeating-linear-gradient(135deg,rgba(255,255,255,.22) 0 5px,transparent 5px 11px),linear-gradient(180deg,#ffd95a,#f59e0b);font-size:1.4rem;padding:10px 38px 9px}
+.aviso-caja.dorada{border-color:rgba(255,201,60,.7);background:radial-gradient(520px 260px at 50% 0,rgba(255,201,60,.26),transparent 70%),linear-gradient(160deg,rgba(122,44,245,.22),rgba(8,3,15,.65) 72%);box-shadow:0 0 56px -14px rgba(255,201,60,.55)}
+.aviso-caja.dorada .oro{color:#ffd95a}
+.aviso-logo{display:block;margin:18px auto 0;height:54px;width:auto;opacity:.95}
 .nuevo-fila{display:flex;align-items:flex-start;gap:6px}
 
 /* Tarjeta de Zoom de cada sesión del bootcamp (a todo el ancho, sobre la agenda y el video) */

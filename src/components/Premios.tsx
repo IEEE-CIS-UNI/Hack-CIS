@@ -1,7 +1,8 @@
-import { GraduationCap, Shirt, Trophy } from "lucide-react";
+import { Briefcase, GraduationCap, Shirt, Trophy } from "lucide-react";
 
 const PREMIOS = [
-  { icono: Trophy, tag: "Equipos ganadores", grande: "S/ 500", titulo: "Por track", texto: "Para el equipo ganador de cada uno de los tres tracks." },
+  { icono: Trophy, tag: "Equipos ganadores", grande: "S/ 500", titulo: "Energía y Cloud", texto: "Para el equipo ganador de cada uno de estos dos tracks." },
+  { icono: Briefcase, tag: "★ Track dorado", grande: "S/ 1 000", titulo: "Fintech · Millennium", texto: "Para el equipo ganador, más una carta oferta para cada integrante para entrar a trabajar en Millennium, con una entrevista de por medio.", dorado: true },
   { icono: GraduationCap, tag: "En vivo", grande: "Cursos", titulo: "Sorteo en vivo", texto: "Sorteamos cursos durante la semana y en la Gran Final." },
   { icono: Shirt, tag: "Para ti", grande: "Merch", titulo: "Sorteo de merch", texto: "También sorteamos merch durante el evento." },
 ];
@@ -22,9 +23,9 @@ export default function Premios() {
           premios entre todas las personas que asistan.
         </p>
 
-        <div className="pr-grid">
+        <div className="pr-grid cuatro">
           {PREMIOS.map((p) => (
-            <article key={p.titulo} className="pr">
+            <article key={p.titulo} className={`pr${p.dorado ? " dorado" : ""}`}>
               <span className="pr-tag">{p.tag}</span>
               <div className="pr-big">{p.grande}</div>
               <h3>{p.titulo}</h3>

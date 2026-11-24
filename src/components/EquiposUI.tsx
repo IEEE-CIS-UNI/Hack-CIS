@@ -87,7 +87,7 @@ export function Pronto({ abre, cierra, nota }: { abre: string; cierra: string; n
           <li><b>Completa tu perfil.</b> Tus habilidades y una frase para que otras personas te encuentren y te inviten.</li>
           <li><b>Crea tu equipo o únete a uno.</b> De 2 a 4 personas, de las carreras o facultades que quieran. Invita, pide unirte y coordínense por WhatsApp.</li>
         </ol>
-        <p className={s.sub}><b style={{ color: "#fff" }}>Sin equipo no podrás enviar tu solución</b> ni ser evaluado para pasar a los 15 equipos finalistas.</p>
+        <p className={s.sub}><b style={{ color: "#fff" }}>Sin equipo no podrás enviar tu solución</b> ni ser evaluado para pasar a los 25 equipos que construyen.</p>
         <div className="rg-actions">
           <Link href="/mi-inscripcion" className="more solid">Ir a mi panel <ArrowRight aria-hidden size={14} /></Link>
           <Link href="/bases" className="more">Leer las bases</Link>

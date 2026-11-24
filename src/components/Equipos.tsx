@@ -163,7 +163,7 @@ export default function Equipos() {
     <div className={s.col}>
       <div className={s.aviso}>
         <span aria-hidden>⚠</span>
-        <p><b>Sin equipo no podrás enviar tu solución</b> ni ser evaluado para pasar a los 15 equipos finalistas. Los equipos son de 2 a 4 personas; arma el tuyo o únete a uno antes del <b>{fechaLima(e.cierra)}</b></p>
+        <p><b>Sin equipo no podrás enviar tu solución</b> ni ser evaluado para pasar a los 25 equipos que construyen. Los equipos son de 2 a 4 personas; arma el tuyo o únete a uno antes del <b>{fechaLima(e.cierra)}</b></p>
       </div>
 
       {aviso && <p className={`rg-msg ${aviso.tipo === "ok" ? "ok" : "err"}`}>{aviso.texto}</p>}

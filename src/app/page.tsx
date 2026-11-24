@@ -8,7 +8,7 @@ import Fifth from "@/components/Fifth";
 import Footer from "@/components/Footer";
 import GranFinal from "@/components/GranFinal";
 import HelpVideo from "@/components/HelpVideo";
-import AvisoEquipos from "@/components/Nuevo";
+import AvisoEquipos, { AvisoTrackDorado } from "@/components/Nuevo";
 import Hero from "@/components/Hero";
 import Mission from "@/components/Mission";
 import Nav from "@/components/Nav";
@@ -27,6 +27,7 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
+        <AvisoTrackDorado />
         <AvisoEquipos />
         <Mission />
         <Bootcamp />

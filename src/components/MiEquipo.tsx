@@ -181,7 +181,7 @@ export default function MiEquipo() {
 
       <div className="box">
         <p className="box-h">Entregables · primera propuesta</p>
-        <p className={s.sub}>Cualquiera del equipo puede completarlos. La primera propuesta se entrega <b>hasta la noche del sábado 28 de noviembre</b>. Sin equipo y sin entregables no se puede pasar a la selección de los 15 finalistas.</p>
+        <p className={s.sub}>Cualquiera del equipo puede completarlos. La primera propuesta se entrega <b>hasta la noche del sábado 28 de noviembre</b>. Sin equipo y sin entregables no se puede pasar a la selección de los 25 equipos que construyen.</p>
         <ul className={s.estado}>
           <li><Check size={16} aria-hidden className={eq.repo_url ? s.ok : ""} style={{ opacity: eq.repo_url ? 1 : .3 }} /> Repositorio creado</li>
           <li><Check size={16} aria-hidden className={eq.slides_url ? s.ok : ""} style={{ opacity: eq.slides_url ? 1 : .3 }} /> PDF con las láminas de la solución</li>

@@ -75,7 +75,7 @@ export const APOYO_ROLES = [
   },
   {
     role: "Jurado de la Gran Final",
-    text: "Evalúas los pitch y las demos de los 15 finalistas el sábado 5 de diciembre.",
+    text: "Evalúas los pitch y las demos de los finalistas el sábado 5 de diciembre.",
   },
   {
     role: "Jurado del filtro inicial",

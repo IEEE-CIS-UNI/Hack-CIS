@@ -6,7 +6,7 @@ import { TrackList } from "@/components/Tracks";
 
 export const metadata: Metadata = {
   title: "Tracks · HACK[CIS] UNI 2026",
-  description: "Tres retos reales de empresa: IA & Energía, con Zeia; IA & Cloud, con Manantial; e IA & Fintech, con Millennium.",
+  description: "Tres retos reales de empresa: IA & Energía, con Zeia; IA & Cloud, con Manantial; e IA & Fintech, con Millennium, el track dorado.",
 };
 
 export default function TracksPage() {
@@ -19,7 +19,7 @@ export default function TracksPage() {
         <span className="lav">batalla</span>
       </h1>
       <p className="pg-lead">
-        Tres sponsors, tres retos reales: Energía con Zeia, Cloud con Manantial y Fintech con Millennium.
+        Tres sponsors, tres retos reales: Energía con Zeia, Cloud con Manantial y Fintech con Millennium, el track dorado: S/ 1 000 y una carta oferta para cada integrante del equipo ganador.
       </p>
 
       <div className="pg-tracks">
@@ -36,7 +36,10 @@ export default function TracksPage() {
             <b>El líder del equipo elige el track</b> el viernes 27, desde la página de cada track: se une y, automáticamente, todo su equipo se une con él.
           </li>
           <li>
-            <b>Pasan 5 equipos por track</b>, 15 en total, a construir con su agente de IA.
+            <b>Pasan 25 equipos a construir</b> con su agente de IA: 5 en Energía, 5 en Cloud y 15 en Fintech, el track dorado.
+          </li>
+          <li>
+            <b>Fintech acepta hasta 40 equipos</b>, para los primeros que lo elijan. Energía y Cloud no tienen tope. En la Gran Final se anuncian, en el auditorio, los 5 equipos de Fintech que hacen pitch.
           </li>
           <li>
             <b>Un ganador por track</b>, que se anuncia en la Gran Final del sábado 5 de diciembre.

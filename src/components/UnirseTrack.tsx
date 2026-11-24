@@ -1,205 +1,179 @@
 "use client";
 
 /**
- * «Quiero unirme a este track»: el líder crea el equipo.
+ * «Elegir este track»: el LÍDER del equipo elige el track de todo su equipo.
  *
- * El líder pone el nombre del equipo y los DNI de los demás (de 1 a 3). Al
- * enviar, la base crea el equipo y asigna a todos de una vez, con ese nombre y
- * con el track de esta página. Los DNI viajan al servidor, que los cifra: ni
- * se guardan ni vuelven al navegador.
+ * Los equipos se arman antes, en /equipos (jueves 26 como máximo). El viernes 27, después del pitch de los sponsors, el líder
+ * entra a la página del track que quiere y toca el botón: todo su equipo queda en ese track. Algunos tracks tienen tope de
+ * equipos (Fintech: 40): si ya está lleno, la base lo rechaza y aquí se avisa para que elija otro.
  *
- * Según quién mira, esta pantalla muestra una cosa u otra:
- *
- *   sin cuenta / sin hack   -> qué hacer primero
- *   ya tiene equipo         -> su equipo
- *   antes del viernes 27    -> cuándo se abre
- *   después del cierre      -> que ya cerró
- *   dentro de la ventana    -> el formulario
+ * Según quién mira:
+ *   sin cuenta                -> entrar
+ *   sin equipo                -> armarlo en /equipos
+ *   integrante que no lidera  -> el track lo elige su líder
+ *   antes de que abra         -> cuándo abre
+ *   después del cierre        -> que ya cerró
+ *   líder dentro de fechas    -> el botón (con al menos 2 integrantes)
  */
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Check, Loader2, Plus, X } from "lucide-react";
+import { ArrowRight, Check, Loader2, Users } from "lucide-react";
 import { navegador } from "@/lib/supabase";
-import { api, estaEn, type Equipo, type Resumen } from "@/lib/resumen";
+import { llamar, type MiEquipoDetalle } from "@/lib/equipos";
+import { fechaLima } from "./EquiposUI";
 
-type Ventana = { opens_at: string | null; closes_at: string | null; revealed: boolean };
+type Ventana = { name: string; opens_at: string | null; closes_at: string | null };
+type Cupo = { slug: string; tope: number | null; ocupados: number };
 
 type Carga =
   | { f: "cargando" }
-  | { f: "listo"; token: string | null; resumen: Resumen | null; ventana: Ventana | null; ahora: number };
-
-const fecha = (iso: string) =>
-  new Date(iso).toLocaleDateString("es-PE", { weekday: "long", day: "numeric", month: "long", timeZone: "America/Lima" });
-
-function EquipoVista({ equipo }: { equipo: Equipo }) {
-  return (
-    <div>
-      <p className="box-h">Tu equipo</p>
-      <p style={{ fontFamily: "var(--display)", fontWeight: 700, textTransform: "uppercase", fontSize: "2.2rem", lineHeight: 1 }}>
-        {equipo.name}
-      </p>
-      <p className="rg-help" style={{ marginTop: 6 }}>
-        Track: <strong style={{ color: "#fff" }}>{equipo.track_name ?? "se elige el viernes 27"}</strong>
-      </p>
-      <ul className="team-list" style={{ marginTop: 12 }}>
-        {equipo.members.map((m) => (
-          <li key={m.name}>
-            <Check size={14} aria-hidden className="text-glow" /> <b>{m.name}</b>
-            {m.leader && <span className="pill-ok">líder</span>}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+  | { f: "listo"; sesion: boolean; equipo: MiEquipoDetalle | null; ventana: Ventana | null; cupo: Cupo | null; ahora: number };
 
 export default function UnirseTrack({ slug }: { slug: string }) {
   const [carga, setCarga] = useState<Carga>({ f: "cargando" });
-  const [nombre, setNombre] = useState("");
-  const [dnis, setDnis] = useState<string[]>([""]);
   const [enviando, setEnviando] = useState(false);
-  const [error, setError] = useState<{ motivo: string; posicion?: number } | null>(null);
-  const [equipoNuevo, setEquipoNuevo] = useState<Equipo | null>(null);
+  const [aviso, setAviso] = useState<{ tipo: "ok" | "error"; texto: string } | null>(null);
+
+  const cargar = useCallback(async () => {
+    try {
+      const sb = navegador();
+      const [{ data: v }, { data: sesion }, c] = await Promise.all([
+        sb.from("tracks").select("name, opens_at, closes_at").eq("slug", slug).maybeSingle(),
+        sb.auth.getSession(),
+        llamar<Cupo[]>("track_cupos"),
+      ]);
+      const hay = !!sesion.session;
+      const eq = hay ? await llamar<MiEquipoDetalle | null>("mi_equipo_detalle") : null;
+      setCarga({
+        f: "listo", sesion: hay, equipo: eq && eq.ok ? eq.data : null, ventana: (v as Ventana | null) ?? null,
+        cupo: c.ok ? (c.data.find((x) => x.slug === slug) ?? null) : null, ahora: Date.now(),
+      });
+    } catch {
+      setCarga({ f: "listo", sesion: false, equipo: null, ventana: null, cupo: null, ahora: Date.now() });
+    }
+  }, [slug]);
 
   useEffect(() => {
-    let vivo = true;
-    (async () => {
-      try {
-        const sb = navegador();
-        const { data: v } = await sb
-          .from("tracks").select("opens_at, closes_at, revealed").eq("slug", slug).maybeSingle();
-        const { data } = await sb.auth.getSession();
-        const token = data.session?.access_token ?? null;
-        let resumen: Resumen | null = null;
-        if (token) {
-          const { datos } = await api("/api/perfil", { token });
-          resumen = (datos.resumen as Resumen | undefined) ?? null;
-        }
-        if (vivo) setCarga({ f: "listo", token, resumen, ventana: (v as Ventana | null) ?? null, ahora: Date.now() });
-      } catch {
-        if (vivo) setCarga({ f: "listo", token: null, resumen: null, ventana: null, ahora: Date.now() });
-      }
-    })();
-    return () => { vivo = false; };
-  }, [slug]);
+    // Consulta al abrir la página; los estados se fijan cuando responde la base.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    cargar();
+  }, [cargar]);
 
   if (carga.f === "cargando") {
     return <p className="rg-help" style={{ display: "flex", gap: 10, alignItems: "center" }}><Loader2 className="size-5 animate-spin" aria-hidden /> Un segundo…</p>;
   }
 
-  const { token, resumen, ventana, ahora } = carga;
-  const equipo = equipoNuevo ?? resumen?.team ?? null;
+  const { sesion, equipo, ventana, cupo, ahora } = carga;
+  const abre = ventana?.opens_at ? Date.parse(ventana.opens_at) : null;
+  const cierra = ventana?.closes_at ? Date.parse(ventana.closes_at) : null;
+  const lleno = !!cupo && cupo.tope !== null && cupo.ocupados >= cupo.tope;
+  const quedan = cupo && cupo.tope !== null ? Math.max(0, cupo.tope - cupo.ocupados) : null;
 
-  if (equipo) return <EquipoVista equipo={equipo} />;
+  const cupos = cupo && cupo.tope !== null && (
+    <p className="rg-small" style={{ marginTop: 14 }}>
+      {lleno
+        ? <>Este track ya llegó a su tope de <strong>{cupo.tope} equipos</strong>. Elige otro.</>
+        : <>Este track acepta hasta <strong>{cupo.tope} equipos</strong>: quedan <strong>{quedan}</strong> lugares, para los primeros en elegirlo.</>}
+    </p>
+  );
 
-  if (!token || !resumen) {
+  async function elegir() {
+    setEnviando(true); setAviso(null);
+    const r = await llamar("equipo_elegir_track", { p_track: slug });
+    setEnviando(false);
+    if (!r.ok) { setAviso({ tipo: "error", texto: r.motivo }); await cargar(); return; }
+    setAviso({ tipo: "ok", texto: "¡Listo! Todo tu equipo quedó en este track." });
+    await cargar();
+  }
+
+  if (!sesion) {
     return (
       <div>
         <p className="rg-help" style={{ marginTop: 0 }}>
-          Para formar un equipo tienes que estar inscrito en la hackathon. Entra con tu cuenta o inscríbete.
+          El track lo elige la persona líder de cada equipo. Para formar equipo tienes que estar inscrito en la hackathon. Entra a tu panel.
         </p>
         <div className="rg-actions" style={{ marginTop: 18 }}>
           <Link href="/mi-inscripcion" className="more solid">Entrar a mi panel <ArrowRight aria-hidden size={14} /></Link>
-          <Link href="/registro?plan=hack_bootcamp" className="more">Inscribirme a la hack</Link>
+          <Link href="/equipos" className="more">Armar mi equipo</Link>
         </div>
+        {cupos}
       </div>
     );
   }
 
-  if (!estaEn(resumen, "hack")) {
+  if (!equipo) {
     return (
       <div>
         <p className="rg-help" style={{ marginTop: 0 }}>
-          Primero tienes que estar inscrito en la hackathon. Desde tu panel puedes hacerlo si tu identidad ya está verificada.
+          Primero arma tu equipo, de 2 a 4 personas. Después, el viernes 27, su líder elige el track.
         </p>
         <div className="rg-actions" style={{ marginTop: 18 }}>
-          <Link href="/mi-inscripcion" className="more solid">Ir a mi panel <ArrowRight aria-hidden size={14} /></Link>
+          <Link href="/equipos" className="more solid"><Users aria-hidden size={14} /> Armar mi equipo <ArrowRight aria-hidden size={14} /></Link>
         </div>
+        {cupos}
       </div>
     );
   }
 
-  if (ventana?.opens_at && ahora < Date.parse(ventana.opens_at)) {
+  const esteTrack = equipo.track?.slug === slug;
+  const lider = equipo.miembros.find((m) => m.lider)?.nombre;
+
+  if (esteTrack) {
+    return (
+      <div>
+        <p className="box-h">Tu equipo</p>
+        <p style={{ fontFamily: "var(--display)", fontWeight: 700, textTransform: "uppercase", fontSize: "2.2rem", lineHeight: 1 }}>{equipo.nombre}</p>
+        <p className="rg-msg ok" style={{ marginTop: 12 }}><Check size={14} aria-hidden style={{ display: "inline", verticalAlign: -2 }} /> Tu equipo ya está en este track.</p>
+        {aviso && <p className={`rg-msg ${aviso.tipo === "ok" ? "ok" : "err"}`}>{aviso.texto}</p>}
+        <div className="rg-actions"><Link href="/equipos/mi-equipo" className="more">Ir a mi equipo <ArrowRight aria-hidden size={14} /></Link></div>
+      </div>
+    );
+  }
+
+  const antes = abre !== null && ahora < abre;
+  const despues = cierra !== null && ahora > cierra;
+
+  if (antes) {
     return (
       <div>
         <p className="rg-msg" style={{ fontSize: "1.1rem" }}>
-          Los equipos se arman el <strong>{fecha(ventana.opens_at)}</strong>, después del pitch de los sponsors.
+          La elección de track se abre el <strong>{fechaLima(ventana!.opens_at!)}</strong>, después del pitch de los sponsors.
         </p>
-        <p className="rg-small">Entonces aquí aparece el botón para unirte a este track.</p>
+        <p className="rg-small">Entonces aquí aparece el botón para que la persona líder elija este track para todo el equipo.</p>
+        {cupos}
       </div>
     );
   }
-  if (ventana?.closes_at && ahora > Date.parse(ventana.closes_at)) {
-    return <p className="rg-msg warn">Ya cerró la elección de track.</p>;
-  }
+  if (despues) return <p className="rg-msg warn">Ya cerró la elección de track.</p>;
 
-  const actualizar = (i: number, v: string) =>
-    setDnis((d) => d.map((x, j) => (j === i ? v.replace(/\D/g, "").slice(0, 8) : x)));
-
-  const puede = nombre.trim().length >= 3 && dnis.every((d) => d.length === 8);
-
-  async function enviar() {
-    setEnviando(true);
-    setError(null);
-    const { datos } = await api("/api/equipo", { metodo: "POST", token, cuerpo: { track: slug, nombre, dnis } });
-    setEnviando(false);
-    const resumenNuevo = datos.resumen as Resumen | undefined;
-    if (datos.ok && resumenNuevo?.team) setEquipoNuevo(resumenNuevo.team);
-    else setError({ motivo: datos.motivo ?? "No pudimos crear el equipo.", posicion: datos.posicion });
+  if (!equipo.soy_lider) {
+    return (
+      <div>
+        <p className="rg-help" style={{ marginTop: 0 }}>
+          El track lo elige la persona líder de tu equipo{lider ? <>: <strong style={{ color: "#fff" }}>{lider}</strong></> : ""}. Coordínense por WhatsApp.
+        </p>
+        {equipo.track && <p className="rg-small">Su track actual es <strong style={{ color: "#fff" }}>{equipo.track.nombre}</strong>.</p>}
+        {cupos}
+      </div>
+    );
   }
 
   return (
     <div>
       <p className="rg-help" style={{ marginTop: 0 }}>
-        Tú eres la persona líder. Ponle nombre al equipo y escribe el DNI de tus compañeros (de 1 a 3). Tienen que estar
-        inscritos en la hackathon. No importa si son de la misma carrera o de carreras distintas.
+        Eres la persona líder de <strong style={{ color: "#fff" }}>{equipo.nombre}</strong>. Al elegir este track, todo tu equipo queda en él.
+        {equipo.track ? <> Hoy están en <strong style={{ color: "#fff" }}>{equipo.track.nombre}</strong>; puedes cambiarlo mientras siga abierta la elección.</> : null}
       </p>
-
-      <div className="rg-two" style={{ marginTop: 22 }}>
-        <div>
-          <label className="rg-lbl" htmlFor="eq-nombre">Nombre del equipo</label>
-          <input id="eq-nombre" value={nombre} onChange={(e) => setNombre(e.target.value.slice(0, 40))}
-            placeholder="Los Cuervos" autoComplete="off" className="rg-input" />
-        </div>
-
-        {dnis.map((d, i) => (
-          <div key={i}>
-            <label className="rg-lbl" htmlFor={`eq-dni-${i}`}>DNI del integrante {i + 1}</label>
-            <div style={{ display: "flex", alignItems: "flex-end", gap: 10 }}>
-              <input id={`eq-dni-${i}`} value={d} onChange={(e) => actualizar(i, e.target.value)}
-                inputMode="numeric" autoComplete="off" placeholder="8 dígitos" className="rg-input dni tabular-nums"
-                style={error?.posicion === i + 1 ? { borderColor: "#ff7ae6" } : undefined} />
-              {dnis.length > 1 && (
-                <button type="button" className="rg-chip rg-year" aria-label={`Quitar integrante ${i + 1}`}
-                  onClick={() => setDnis((x) => x.filter((_, j) => j !== i))}><X size={16} aria-hidden /></button>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {dnis.length < 3 && (
-        <div className="rg-actions" style={{ marginTop: 18 }}>
-          <button type="button" className="more" onClick={() => setDnis((d) => [...d, ""])}>
-            <Plus size={14} aria-hidden /> Añadir integrante
-          </button>
-        </div>
-      )}
-
-      {error && (
-        <p className="rg-msg err" style={{ marginTop: 16 }}>
-          {error.posicion ? `Integrante ${error.posicion}: ` : ""}{error.motivo}
-        </p>
-      )}
-
+      {equipo.n < 2 && <p className="rg-msg warn" style={{ marginTop: 12 }}>Necesitan al menos 2 integrantes para elegir track.</p>}
+      {aviso && <p className={`rg-msg ${aviso.tipo === "ok" ? "ok" : "err"}`} style={{ marginTop: 12 }}>{aviso.texto}</p>}
       <div className="rg-actions">
-        <button className="more solid" disabled={!puede || enviando} onClick={enviar}>
+        <button className="more solid" disabled={enviando || lleno || equipo.n < 2} onClick={elegir}>
           {enviando && <Loader2 className="size-4 animate-spin" aria-hidden />}
-          Quiero unirme a este track <ArrowRight aria-hidden size={14} />
+          {lleno ? "Track lleno" : "Elegir este track para mi equipo"} {!lleno && <ArrowRight aria-hidden size={14} />}
         </button>
       </div>
-      <p className="rg-small">Al crear el equipo, todos quedan asignados a este reto.</p>
+      {cupos}
     </div>
   );
 }

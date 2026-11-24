@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Plus_Jakarta_Sans } from "next/font/google";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Briefcase, Trophy } from "lucide-react";
 import UnirseTrack from "@/components/UnirseTrack";
 import HeroSponsor from "@/components/HeroSponsor";
 import s from "./MillenniumTrack.module.css";
@@ -51,17 +51,17 @@ export default function MillenniumTrack({ slug }: { slug: string }) {
 
       <main>
         <HeroSponsor
-          etiqueta="IA & Fintech" nombre="Millennium" url="https://millennium.ky/"
+          etiqueta="dorado · IA & Fintech" nombre="Millennium" url="https://millennium.ky/"
           logo="/logos/millennium-color.png" logoAncho={1000} logoAlto={429} logoMostrado={380}
           tema={{
             fondo: "radial-gradient(760px 440px at 100% 0, rgba(0,104,169,.22), transparent 62%), radial-gradient(640px 440px at 0 100%, rgba(0,104,169,.10), transparent 62%), #fff",
-            tinta: "#101e4b", texto: "#46536b", acento: "#0068a9", acento2: "#35a7e6", cinta: "#101e4b", cintaTexto: "#ffffff", botonTexto: "#ffffff",
+            tinta: "#101e4b", texto: "#46536b", acento: "#0068a9", acento2: "#35a7e6", cinta: "#f2b705", cintaTexto: "#101e4b", botonTexto: "#ffffff",
           }}
-          datos={["El reto se presenta en vivo el vie 27 nov", "5 equipos pasan a la final", "Gran Final · sáb 5 dic · UNI"]}
+          datos={["★ Track dorado: S/ 1 000 + cartas oferta", "Hasta 40 equipos · 15 construyen", "Gran Final · sáb 5 dic · UNI"]}
         >
           Millennium es un grupo peruano de finanzas con foco en la <strong>inclusión financiera impulsada por IA</strong>: ayuda a
           conductores a conseguir su moto o su taxi como herramienta de trabajo, a través de sus marcas Lima Bikes y Lizzo. En
-          HACK[CIS] propone un reto real de fintech para resolver junto a un agente de IA, el quinto miembro de tu equipo.
+          HACK[CIS] propone un reto real de fintech para resolver junto a un agente de IA, el quinto miembro de tu equipo. Es el <strong>track dorado</strong>: el equipo ganador se lleva S/ 1 000 y cada integrante recibe una carta oferta para trabajar en Millennium.
         </HeroSponsor>
 
         <section className={s.cifras}>
@@ -69,6 +69,27 @@ export default function MillenniumTrack({ slug }: { slug: string }) {
             <div className={s.cifra}><b>3 marcas</b><span>Millennium, Lima Bikes y Lizzo</span></div>
             <div className={s.cifra}><b>2 y 4 ruedas</b><span>motos y vehículos de trabajo para conductores</span></div>
             <div className={s.cifra}><b>IA + finanzas</b><span>inclusión financiera para quienes más la necesitan</span></div>
+          </div>
+        </section>
+
+        <section className={s.dorado}>
+          <div className={s.in}>
+            <p className={s.sobreOro}>★ Track dorado</p>
+            <h2>Un premio que va más allá del dinero</h2>
+            <div className={s.premios}>
+              <article className={s.premio}>
+                <Trophy aria-hidden size={26} strokeWidth={1.8} />
+                <b>S/ 1 000</b>
+                <h3>Para el equipo ganador</h3>
+                <p>El aporte de Millennium va íntegro al premio del equipo que gane el track Fintech.</p>
+              </article>
+              <article className={s.premio}>
+                <Briefcase aria-hidden size={26} strokeWidth={1.8} />
+                <b>Carta oferta</b>
+                <h3>Para todo el equipo ganador</h3>
+                <p>Todo el equipo ganador recibe cartas oferta para trabajar en Millennium: una para cada integrante, con una entrevista de por medio.</p>
+              </article>
+            </div>
           </div>
         </section>
 
@@ -134,10 +155,10 @@ export default function MillenniumTrack({ slug }: { slug: string }) {
               <div className={s.paso}><b>El viernes 27 de noviembre</b>, después del pitch de los sponsors, cada equipo elige su track.</div>
               <div className={s.paso}><b>El líder</b> se une al track y, automáticamente, todo su equipo se une con él.</div>
               <div className={s.paso}><b>Equipos de 2 a 4 personas</b>, de las carreras o facultades que quieran. <span className={s.nuevo}>Nuevo</span> A pedido de ustedes, ya no es obligatorio que sean distintas.</div>
-              <div className={s.paso}><b>Antes del sábado 28 por la noche</b> el equipo entrega su primera propuesta. Pasan 5 equipos por track.</div>
+              <div className={s.paso}><b>Antes del sábado 28 por la noche</b> el equipo entrega su primera propuesta. Fintech acepta hasta <b>40 equipos</b> (los primeros en elegirlo) y <b>15 pasan a construir</b>.</div>
             </div>
             <p className={s.nota}>
-              El ganador del track se anuncia en la Gran Final del sábado 5 de diciembre, en el Auditorio CTIC de la UNI.
+              En la Gran Final del sábado 5 de diciembre, en el Auditorio CTIC de la UNI, se anuncian los 5 equipos de Fintech que hacen pitch y, al final, el ganador del track.
             </p>
           </div>
         </section>

@@ -44,6 +44,7 @@ const ERRORES: Record<string, string> = {
   track_inexistente: "Ese track no está disponible.",
   track_aun_no: "Todavía no se abre la elección de track.",
   track_cerrado: "La elección de track ya cerró.",
+  track_lleno: "Este track ya llegó a su tope de equipos. Elige otro.",
   url_invalida: "Revisa el enlace: debe empezar con https:// (y el grupo de WhatsApp con https://chat.whatsapp.com/).",
   habilidad_invalida: "Elige hasta 5 habilidades de la lista.",
   frase_larga: "La frase puede tener hasta 140 caracteres.",

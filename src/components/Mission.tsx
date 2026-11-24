@@ -20,8 +20,8 @@ const STEPS = [
   {
     title: "Finalistas",
     when: "Lun 30 nov · 6:00 pm",
-    text: "Pasan 15 equipos, 5 por Track. Los demás se llevan todo lo aprendido.",
-    count: "15",
+    text: "Pasan 25 equipos: 5 en Energía, 5 en Cloud y 15 en Fintech. Los demás se llevan todo lo aprendido.",
+    count: "25",
     unit: "equipos",
   },
   {
