@@ -25,6 +25,7 @@ const ERRORES: Record<string, string> = {
   sorteo_completo: "Ya salieron todos los ganadores.",
   sin_participantes: "No quedan participantes en la ruleta.",
 };
+const CURSOS = ["Desarrollo Web", "UX/UI", "IA aplicada", "Metodologías Ágiles", "Desarrollo y programación"];
 const CLAVE = "sorteo-control";
 const llave = () => { try { return sessionStorage.getItem(CLAVE); } catch { return null; } };
 const guardarLlave = (v: string | null) => { try { if (v) sessionStorage.setItem(CLAVE, v); else sessionStorage.removeItem(CLAVE); } catch { /* sin almacenamiento */ } };
@@ -211,7 +212,9 @@ export default function Sorteo() {
       <div className="box">
         <p className="box-h">Se sortean</p>
         <h2 className={s.premio}>{e.titulo}</h2>
-        <p className={s.sub}>{e.premios} ganadores. Cada uno elige el curso que quiera del catálogo de <a href="https://www.we-educacion.com/" target="_blank" rel="noopener noreferrer">WE Educación</a>, totalmente cubierto. Participan quienes estén <b>inscritos en el bootcamp desde la web</b> y sigan en la sesión cuando se abra el sorteo.</p>
+        <p className={s.sub}>Con el apoyo de <a href="https://www.we-educacion.com/" target="_blank" rel="noopener noreferrer">We Educación Ejecutiva</a>, aliada de la hackathon. Los {e.premios} ganadores eligen uno de estos cursos, totalmente cubierto:</p>
+        <ul className={s.cursos}>{CURSOS.map((c) => <li key={c}>{c}</li>)}</ul>
+        <p className={s.sub}>Participan quienes estén <b>inscritos en el bootcamp desde la web</b> y sigan en la sesión cuando se abra el sorteo.</p>
       </div>
 
       {!e.admin && (
