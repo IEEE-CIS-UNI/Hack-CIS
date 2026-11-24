@@ -175,7 +175,7 @@ export default function BasesPage() {
           <Seccion n="05" titulo="Evaluación y premios">
             <p>Premios confirmados hasta ahora:</p>
             <ul>
-              <li><B>S/ 500</B> para el equipo ganador de los tracks Energía y Cloud.</li>
+              <li><B>S/ 500</B> para el equipo ganador de cada uno de los tracks Energía y Cloud (en total, <B>S/ 2 000</B> en premios entre los tres tracks).</li>
               <li><B>Track dorado (Fintech, con Millennium):</B> <B>S/ 1 000</B> para el equipo ganador y una <B>carta oferta para cada integrante</B> para entrar a trabajar en Millennium, con una entrevista de por medio.</li>
               <li><B>Sorteo de cursos en vivo</B>, durante la semana y en la Gran Final.</li>
               <li><B>Sorteo de merch.</B></li>
