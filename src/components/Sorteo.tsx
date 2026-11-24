@@ -12,7 +12,7 @@ import { Loader2, Lock, Trophy } from "lucide-react";
 import { navegador } from "@/lib/supabase";
 import s from "./Sorteo.module.css";
 
-type Estado = { abierto: boolean; premios: number; titulo: string; admin: boolean; participantes: number; ganadores: string[]; ruleta: string[] | null };
+type Estado = { control_ok: boolean; abierto: boolean; premios: number; titulo: string; admin: boolean; participantes: number; ganadores: string[]; ruleta: string[] | null };
 type Contacto = { orden: number; nombre: string; correo: string; celular: string | null };
 
 const ERRORES: Record<string, string> = {
@@ -21,9 +21,13 @@ const ERRORES: Record<string, string> = {
   no_inscrito: "Ese correo no está inscrito en el bootcamp. Usa el correo con el que te registraste en la web.",
   ya_participa: "Ese correo ya está participando. ¡Mucha suerte!",
   no_admin: "Esta cuenta no puede moderar el sorteo.",
+  control_perdido: "Otra sesión de moderación tomó el control. Esta quedó en solo lectura: usa «Tomar el control» si quieres volver a moderar desde aquí.",
   sorteo_completo: "Ya salieron todos los ganadores.",
   sin_participantes: "No quedan participantes en la ruleta.",
 };
+const CLAVE = "sorteo-control";
+const llave = () => { try { return sessionStorage.getItem(CLAVE); } catch { return null; } };
+const guardarLlave = (v: string | null) => { try { if (v) sessionStorage.setItem(CLAVE, v); else sessionStorage.removeItem(CLAVE); } catch { /* sin almacenamiento */ } };
 const motivo = (m: string) => { const k = Object.keys(ERRORES).find((x) => m.includes(x)); return k ? ERRORES[k] : "No pudimos completar la acción. Inténtalo de nuevo."; };
 
 function Ruleta({ nombres, rot, ganador }: { nombres: string[]; rot: number; ganador: number | null }) {
@@ -109,7 +113,7 @@ export default function Sorteo() {
   const cargar = useCallback(async () => {
     if (pausa.current) return;
     try {
-      const { data, error } = await navegador().rpc("sorteo_estado");
+      const { data, error } = await navegador().rpc("sorteo_estado", { p_control: llave() });
       if (!error && data && !pausa.current) setE(data as Estado);
     } catch { /* se reintenta en el siguiente ciclo */ }
   }, []);
@@ -144,11 +148,24 @@ export default function Sorteo() {
     const { error } = await navegador().auth.signInWithPassword({ email: mCorreo.trim(), password: mClave });
     setOcupado(false);
     if (error) { setMsg({ t: "err", x: "Correo o contraseña incorrectos." }); return; }
-    setMClave(""); await cargar();
+    setMClave(""); await tomarControl(); await cargar();
+  }
+
+  // Quien toma el control invalida la llave de cualquier otra sesión de moderación (solo hay una a la vez).
+  async function tomarControl() {
+    const { data, error } = await navegador().rpc("sorteo_tomar_control");
+    if (error) { setMsg({ t: "err", x: motivo(error.message) }); return; }
+    guardarLlave(data as string); setMsg(null); await cargar();
+  }
+
+  async function salir() {
+    guardarLlave(null); setPremio(null); setContactos(null); setVista(null); setGanIdx(null); setRot(0); setMsg(null); setMod(false);
+    try { await navegador().auth.signOut(); } catch { /* aunque falle, la llave ya no existe */ }
+    await cargar();
   }
 
   async function abrir(v: boolean) {
-    const { error } = await navegador().rpc("sorteo_abrir", { p_abierto: v });
+    const { error } = await navegador().rpc("sorteo_abrir", { p_abierto: v, p_control: llave() });
     if (error) setMsg({ t: "err", x: motivo(error.message) });
     await cargar();
   }
@@ -156,7 +173,7 @@ export default function Sorteo() {
   async function girar() {
     if (!e?.ruleta?.length || girando) return;
     setGirando(true); setPremio(null); setMsg(null); setGanIdx(null); setRot(0); setVista(e.ruleta); pausa.current = true;
-    const { data, error } = await navegador().rpc("sorteo_girar");
+    const { data, error } = await navegador().rpc("sorteo_girar", { p_control: llave() });
     if (error) { pausa.current = false; setGirando(false); setMsg({ t: "err", x: motivo(error.message) }); await cargar(); return; }
     const r = data as { indice: number; nombre: string };
     const n = e.ruleta.length, a = (2 * Math.PI) / n;
@@ -174,13 +191,13 @@ export default function Sorteo() {
   }
 
   async function verContactos() {
-    const { data, error } = await navegador().rpc("sorteo_ganadores_contacto");
+    const { data, error } = await navegador().rpc("sorteo_ganadores_contacto", { p_control: llave() });
     if (error) setMsg({ t: "err", x: motivo(error.message) }); else setContactos(data as Contacto[]);
   }
 
   async function reiniciar() {
     if (!window.confirm("¿Borrar a todos los participantes y ganadores y cerrar el sorteo?")) return;
-    const { error } = await navegador().rpc("sorteo_reiniciar");
+    const { error } = await navegador().rpc("sorteo_reiniciar", { p_control: llave() });
     if (error) setMsg({ t: "err", x: motivo(error.message) });
     setPremio(null); setContactos(null); await cargar();
   }
@@ -227,15 +244,22 @@ export default function Sorteo() {
       {e.admin && (
         <div className="box">
           <p className="box-h">Moderación</p>
+          {!e.control_ok && (
+            <div className="rg-actions" style={{ marginBottom: 12 }}>
+              <p className={`rg-msg err`} style={{ margin: 0 }}>{llave() ? "Otra sesión de moderación tomó el control." : "Hay una sesión de moderación abierta en otro lugar."} Aquí solo puedes mirar.</p>
+              <button type="button" className="more solid" style={{ marginTop: 0 }} onClick={tomarControl}>Tomar el control</button>
+            </div>
+          )}
           <div className={s.fila}>
             <span className="pill-ok">{e.participantes} participantes</span>
             <span className="pill-ok">{e.ruleta?.length ?? 0} en la ruleta</span>
             <span className="pill-ok" style={{ opacity: e.abierto ? 1 : .7 }}>{e.abierto ? "registro abierto" : "registro cerrado"}</span>
           </div>
           <div className="rg-actions">
-            <button type="button" className={`more${e.abierto ? "" : " solid"}`} style={{ marginTop: 0 }} onClick={() => abrir(!e.abierto)} disabled={girando}>{e.abierto ? "Cerrar registro" : "Abrir registro"}</button>
-            <button type="button" className="more" style={{ marginTop: 0 }} onClick={verContactos}>Ver contactos de ganadores</button>
-            <button type="button" className={`more ${s.peligro}`} style={{ marginTop: 0 }} onClick={reiniciar} disabled={girando}>Reiniciar</button>
+            <button type="button" className={`more${e.abierto ? "" : " solid"}`} style={{ marginTop: 0 }} onClick={() => abrir(!e.abierto)} disabled={girando || !e.control_ok}>{e.abierto ? "Cerrar registro" : "Abrir registro"}</button>
+            <button type="button" className="more" style={{ marginTop: 0 }} onClick={verContactos} disabled={!e.control_ok}>Ver contactos de ganadores</button>
+            <button type="button" className={`more ${s.peligro}`} style={{ marginTop: 0 }} onClick={reiniciar} disabled={girando || !e.control_ok}>Reiniciar</button>
+            <button type="button" className="more" style={{ marginTop: 0 }} onClick={salir} disabled={girando}>Salir de la sesión</button>
           </div>
           {msg && <p className={`rg-msg ${msg.t === "ok" ? "ok" : "err"}`}>{msg.x}</p>}
           {contactos && (
@@ -250,8 +274,8 @@ export default function Sorteo() {
         <div className={s.escena}>
           <div className={s.puntero} aria-hidden />
           <Ruleta nombres={vista ?? e.ruleta ?? []} rot={rot} ganador={ganIdx} />
-          {premio && !girando && <div className={s.cinta} role="status"><span className={s.cintaTit}>Ganador {ganIdx !== null ? "" : ""}</span><b>{premio}</b></div>}
-          <button type="button" className={`more solid ${s.girar}`} onClick={girar} disabled={girando || !(e.ruleta?.length) || faltan <= 0}>
+          {premio && !girando && <div className={s.cinta} role="status"><span className={s.cintaTit}>Ganador</span><b>{premio}</b></div>}
+          <button type="button" className={`more solid ${s.girar}`} onClick={girar} disabled={girando || !e.control_ok || !(e.ruleta?.length) || faltan <= 0}>
             {girando ? "Girando…" : faltan <= 0 ? "Sorteo completo" : `Girar la ruleta (${e.ganadores.length + 1} de ${e.premios})`}
           </button>
         </div>
