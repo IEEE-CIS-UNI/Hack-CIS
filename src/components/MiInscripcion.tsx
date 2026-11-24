@@ -253,15 +253,6 @@ export default function MiInscripcion() {
     }
   }
 
-  async function salirDelEquipo() {
-    if (!token) return;
-    setOcupado("equipo");
-    const { datos } = await api("/api/equipo", { metodo: "DELETE", token });
-    setOcupado(null);
-    if (datos.ok && datos.resumen) setVista({ fase: "ficha", resumen: datos.resumen });
-    else setAvisoInsc({ tipo: "error", texto: datos.motivo ?? "No pudimos sacarte del equipo." });
-  }
-
   async function guardar() {
     if (!token) return;
     setGuardando(true);
@@ -506,7 +497,7 @@ export default function MiInscripcion() {
               <p style={{ fontFamily: "var(--display)", fontWeight: 700, textTransform: "uppercase", fontSize: "1.8rem", lineHeight: 1 }}>
                 {r.team.name}
               </p>
-              <p className="rg-help" style={{ marginTop: 6 }}>Track: <strong style={{ color: "#fff" }}>{r.team.track_name}</strong></p>
+              <p className="rg-help" style={{ marginTop: 6 }}>Track: <strong style={{ color: "#fff" }}>{r.team.track_name ?? "se elige el viernes 27"}</strong></p>
               <ul className="team-list" style={{ marginTop: 12 }}>
                 {r.team.members.map((m) => (
                   <li key={m.name}>
@@ -514,17 +505,15 @@ export default function MiInscripcion() {
                   </li>
                 ))}
               </ul>
-              <button className="more" style={{ marginTop: 14 }} disabled={ocupado === "equipo"} onClick={salirDelEquipo}>
-                {ocupado === "equipo" && <Loader2 className="size-4 animate-spin" aria-hidden />} Salir del equipo
-              </button>
+              <Link href="/equipos/mi-equipo" className="more solid" style={{ marginTop: 14 }}>Ir a mi equipo <ArrowRight aria-hidden size={14} /></Link>
             </>
           ) : (
             <>
               <p className="rg-help" style={{ marginTop: 0 }}>
-                Todavía no tienes equipo. El viernes 27 de noviembre, después del pitch de los sponsors, el líder elige
-                un track y suma a su equipo con sus DNI.
+                Todavía no tienes equipo. La plataforma para armarlo se abre el miércoles 25 de noviembre a las 10:00 p. m. y
+                cierra el jueves 26 a las 11:59 p. m. Después, el viernes 27, el líder de cada equipo elige el track.
               </p>
-              <Link href="/tracks" className="more" style={{ marginTop: 14 }}>Ver los tracks <ArrowRight aria-hidden size={14} /></Link>
+              <Link href="/equipos" className="more solid" style={{ marginTop: 14 }}>Arma tu equipo <ArrowRight aria-hidden size={14} /></Link>
             </>
           )}
         </div>

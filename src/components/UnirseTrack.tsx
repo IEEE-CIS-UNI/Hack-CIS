@@ -40,7 +40,7 @@ function EquipoVista({ equipo }: { equipo: Equipo }) {
         {equipo.name}
       </p>
       <p className="rg-help" style={{ marginTop: 6 }}>
-        Track: <strong style={{ color: "#fff" }}>{equipo.track_name}</strong>
+        Track: <strong style={{ color: "#fff" }}>{equipo.track_name ?? "se elige el viernes 27"}</strong>
       </p>
       <ul className="team-list" style={{ marginTop: 12 }}>
         {equipo.members.map((m) => (

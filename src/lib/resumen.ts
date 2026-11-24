@@ -41,7 +41,7 @@ export type Equipo = {
   id: string;
   name: string;
   track: string;
-  track_name: string;
+  track_name: string | null;
   is_leader: boolean;
   members: { name: string; leader: boolean }[];
 };
