@@ -8,9 +8,11 @@ export const LOGOS = [
     alt: "IEEE Student Branch UNI e IEEE Computational Intelligence Society",
     cls: "l-cis",
   },
-  { src: "/logos/dsc-pucp.webp", width: 852, height: 410, alt: "Developer Student Club PUCP", cls: "l-pucp" },
   { src: "/logos/dsc-uni.webp", width: 848, height: 815, alt: "Developer Student Club UNI", cls: "l-dsc" },
 ];
+
+/** DSC PUCP apoya el evento (nivel «Con el apoyo de»); no es parte del equipo organizador. */
+export const DSC_PUCP = { src: "/logos/dsc-pucp.webp", width: 852, height: 410, alt: "Developer Student Club PUCP", cls: "l-pucp" };
 
 export default function Logos({ size = "sm", align = "center" }: { size?: "sm" | "lg"; align?: "center" | "left" }) {
   return (

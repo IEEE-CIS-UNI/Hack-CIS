@@ -63,7 +63,7 @@ export default function BasesPage() {
             Reglas del<br /><span className="text-lavender">juego</span>
           </h1>
           <p className="mt-6 text-lg text-mist/85">
-            HACK[CIS] UNI 2026 · The Agentic Era. Organizado por IEEE CIS UNI, DSC PUCP y DSC UNI.
+            HACK[CIS] UNI 2026 · The Agentic Era. Organizado por IEEE CIS UNI y DSC UNI.
             Una hackathon nacional de 100 horas, con un bootcamp virtual de preparación y una
             Gran Final presencial.
           </p>

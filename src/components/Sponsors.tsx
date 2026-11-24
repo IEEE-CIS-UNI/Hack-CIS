@@ -5,7 +5,7 @@ import { WA_MENTOR, WA_SPONSOR } from "@/lib/config";
 import { APOYO_ROLES, SPONSOR_OFRECE } from "@/lib/contenido";
 import { LOGOS } from "./Logos";
 
-const [CIS, PUCP, DSC] = LOGOS;
+const [CIS, DSC] = LOGOS;
 
 function Logo({ l }: { l: (typeof LOGOS)[number] }) {
   return <Image src={l.src} width={l.width} height={l.height} alt={l.alt} className={l.cls} unoptimized />;
@@ -13,7 +13,8 @@ function Logo({ l }: { l: (typeof LOGOS)[number] }) {
 
 type Sponsor = {
   name: string;
-  url: string;
+  /** Sin enlace, el logo se muestra sin link. */
+  url?: string;
   logo: { src: string; width: number; height: number };
   /** Para marcas cuyo logo es solo el ícono y el nombre va en texto. */
   text?: { name: string; sub?: string };
@@ -46,6 +47,10 @@ const APOYAN: Sponsor[] = [
     logo: { src: "/logos/mayugo.png", width: 144, height: 144 },
     text: { name: "MayuGo" },
   },
+  {
+    name: "DSC PUCP",
+    logo: { src: "/logos/dsc-pucp.webp", width: 852, height: 410 },
+  },
 ];
 
 /**
@@ -75,8 +80,10 @@ const DIFUSION: Sponsor[] = [
 ];
 
 function Chip({ s }: { s: Sponsor }) {
+  const Envoltura = s.url ? "a" : "div";
+  const enlace = s.url ? { href: s.url, target: "_blank", rel: "noopener noreferrer" } : {};
   return (
-    <a className={`sp-chip${s.tall ? " tall" : ""}`} href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.name}>
+    <Envoltura className={`sp-chip${s.tall ? " tall" : ""}`} aria-label={s.name} {...enlace}>
       <Image
         src={s.logo.src}
         width={s.logo.width}
@@ -91,12 +98,12 @@ function Chip({ s }: { s: Sponsor }) {
           {s.text.sub && <small>{s.text.sub}</small>}
         </span>
       )}
-    </a>
+    </Envoltura>
   );
 }
 
 /**
- * Niveles de logos: quienes organizan (las tres comunidades), los sponsors de
+ * Niveles de logos: quienes organizan (IEEE CIS UNI y DSC UNI), los sponsors de
  * track, los sponsors del evento, quienes apoyan y los aliados de difusión.
  */
 export function Niveles() {
@@ -106,7 +113,6 @@ export function Niveles() {
         <p className="note">Organizan</p>
         <div className="sp-logos">
           <Logo l={CIS} />
-          <Logo l={PUCP} />
           <Logo l={DSC} />
         </div>
       </div>
