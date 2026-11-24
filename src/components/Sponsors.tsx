@@ -48,6 +48,11 @@ const APOYAN: Sponsor[] = [
     text: { name: "MayuGo" },
   },
   {
+    name: "Datux Perú",
+    url: "https://www.datuxonline.com/",
+    logo: { src: "/logos/datux.png", width: 640, height: 218 },
+  },
+  {
     name: "DSC PUCP",
     logo: { src: "/logos/dsc-pucp.webp", width: 852, height: 410 },
   },
