@@ -133,7 +133,7 @@ export default function BasesPage() {
               </li>
               <li>
                 <B>Finalistas</B> — el lunes 30 de noviembre a las 6:00 pm se anuncian los{" "}
-                <B>25 equipos</B> que pasan: 5 en Energía, 5 en Cloud y 15 en Fintech. Los demás se llevan todo lo aprendido.
+                <B>25 equipos</B> que pasan: 5 en Energía, 5 en Cloud y 15 en Fintech. En la Gran Final hacen pitch <B>15 finalistas, 5 por track</B>: los 15 de Fintech se reducen a 5 en el auditorio. Los demás se llevan todo lo aprendido.
               </li>
               <li>
                 <B>Build</B> — unas 100 horas, desde el lunes 30 de noviembre por la noche hasta la Gran Final,

@@ -39,7 +39,7 @@ export default function TracksPage() {
             <b>Pasan 25 equipos a construir</b> con su agente de IA: 5 en Energía, 5 en Cloud y 15 en Fintech, el track dorado.
           </li>
           <li>
-            <b>Fintech acepta hasta 40 equipos</b>, para los primeros que lo elijan. Energía y Cloud no tienen tope. En la Gran Final se anuncian, en el auditorio, los 5 equipos de Fintech que hacen pitch.
+            <b>Fintech acepta hasta 40 equipos</b>, para los primeros que lo elijan. Energía y Cloud no tienen tope. En la Gran Final se anuncian, en el auditorio, los 5 equipos de Fintech que hacen pitch: al final hacen pitch 15 finalistas, 5 por track.
           </li>
           <li>
             <b>Un ganador por track</b>, que se anuncia en la Gran Final del sábado 5 de diciembre.

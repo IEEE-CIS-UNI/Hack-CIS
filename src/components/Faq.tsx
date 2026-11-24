@@ -11,7 +11,7 @@ const ITEMS = [
   },
   {
     q: "¿Qué pasa si no paso a finalista?",
-    a: "Pasan 25 equipos al build: 5 de Energía, 5 de Cloud y 15 de Fintech, el track dorado. Si no pasas, igual te llevas el Bootcamp: entrenamiento en prototipado rápido y pitch, además de la comunidad.",
+    a: "Pasan 25 equipos al build: 5 de Energía, 5 de Cloud y 15 de Fintech, el track dorado. Al final hacen pitch 15 finalistas, 5 por track. Si no pasas, igual te llevas el Bootcamp: entrenamiento en prototipado rápido y pitch, además de la comunidad.",
   },
   {
     q: "¿Necesito experiencia con IA?",
