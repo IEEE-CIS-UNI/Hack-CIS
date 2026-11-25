@@ -34,7 +34,7 @@ const ALIADOS = {
   },
   mayugo: {
     nombre: "MayuGo", url: "https://www.mayugo.net/",
-    elige: (n: number) => `Los ${n} ganadores eligen su beca en el orden en que salen en la ruleta, mientras queden cupos en el curso:`,
+    elige: (n: number) => `Los ${n} ganadores eligen la beca del curso que quieran:`,
     cursos: ["Excel Avanzado", "Optimización Industrial con Modelamiento Matemático", "Métodos de pronósticos", "Programación de rutas",
       "Flujo de caja para la evaluación de proyectos", "Finanzas para ingenieros", "Habilidades blandas para la dirección de personas"],
   },
