@@ -179,6 +179,8 @@ export const UNIVERSIDADES: Universidad[] = [
     prioridad: "general", dominios: ["cibertec.edu.pe"], formato: null },
   { siglas: "IDAT", nombre: "Instituto IDAT", tipo: "instituto",
     prioridad: "general", dominios: ["idat.edu.pe"], formato: null },
+  { siglas: "IESTP-JP", nombre: "Instituto de Educación Superior Tecnológico Público José Pardo", tipo: "instituto",
+    prioridad: "general", dominios: ["jpardo.edu.pe"], formato: null },
 ];
 
 const POR_DOMINIO = new Map<string, Universidad>();
