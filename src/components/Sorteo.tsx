@@ -15,6 +15,7 @@ import { desde } from "@/lib/enlaces";
 
 type Estado = { control_ok: boolean; abierto: boolean; premios: number; titulo: string; admin: boolean; participantes: number; ganadores: string[]; ruleta: string[] | null };
 type Contacto = { orden: number; nombre: string; correo: string; celular: string | null };
+type Eleccion = { nombre: string; correo: string; celular: string | null; curso: string | null };
 
 const ERRORES: Record<string, string> = {
   sorteo_cerrado: "El sorteo todavía no está abierto. Se abre al final de la sesión.",
@@ -35,7 +36,7 @@ const ALIADOS = {
   },
   mayugo: {
     nombre: "MayuGo", url: desde("https://www.mayugo.net/"),
-    elige: (n: number) => `Los ${n} ganadores eligen la beca del curso que quieran:`,
+    elige: (n: number) => `Los ${n} ganadores reciben por correo el enlace para elegir su beca: quien elige primero, escoge primero, mientras queden cupos.`,
     cursos: ["Excel Avanzado", "Optimización Industrial con Modelamiento Matemático", "Métodos de pronósticos", "Programación de rutas",
       "Flujo de caja para la evaluación de proyectos", "Finanzas para ingenieros", "Habilidades blandas para la dirección de personas"],
   },
@@ -122,6 +123,7 @@ export default function Sorteo() {
   const [premio, setPremio] = useState<string | null>(null);
   const [contactos, setContactos] = useState<Contacto[] | null>(null);
   const [vista, setVista] = useState<string[] | null>(null);
+  const [becas, setBecas] = useState<Eleccion[] | null>(null);
   const [ganIdx, setGanIdx] = useState<number | null>(null);
   const pausa = useRef(false);
 
@@ -210,6 +212,11 @@ export default function Sorteo() {
     if (error) setMsg({ t: "err", x: motivo(error.message) }); else setContactos(data as Contacto[]);
   }
 
+  async function verBecas() {
+    const { data, error } = await navegador().rpc("sorteo_elecciones");
+    if (error) setMsg({ t: "err", x: motivo(error.message) }); else setBecas(data as Eleccion[]);
+  }
+
   async function reiniciar() {
     if (!window.confirm("¿Borrar a todos los participantes y ganadores y cerrar el sorteo?")) return;
     const { error } = await navegador().rpc("sorteo_reiniciar", { p_control: llave() });
@@ -276,10 +283,16 @@ export default function Sorteo() {
           <div className="rg-actions">
             <button type="button" className={`more${e.abierto ? "" : " solid"}`} style={{ marginTop: 0 }} onClick={() => abrir(!e.abierto)} disabled={girando || !e.control_ok}>{e.abierto ? "Cerrar registro" : "Abrir registro"}</button>
             <button type="button" className="more" style={{ marginTop: 0 }} onClick={verContactos} disabled={!e.control_ok}>Ver contactos de ganadores</button>
+            <button type="button" className="more" style={{ marginTop: 0 }} onClick={verBecas}>Ver becas elegidas</button>
             <button type="button" className={`more ${s.peligro}`} style={{ marginTop: 0 }} onClick={reiniciar} disabled={girando || !e.control_ok}>Reiniciar</button>
             <button type="button" className="more" style={{ marginTop: 0 }} onClick={salir} disabled={girando}>Salir de la sesión</button>
           </div>
           {msg && <p className={`rg-msg ${msg.t === "ok" ? "ok" : "err"}`}>{msg.x}</p>}
+          {becas && (
+            <ul className={s.contactos}>
+              {becas.length === 0 ? <li>Aún no hay ganadores con beca por elegir.</li> : becas.map((c) => <li key={c.correo}><b>{c.nombre}</b> · {c.correo}{c.celular ? ` · ${c.celular}` : ""} → {c.curso ?? "pendiente de elegir"}</li>)}
+            </ul>
+          )}
           {contactos && (
             <ul className={s.contactos}>
               {contactos.length === 0 ? <li>Aún no hay ganadores.</li> : contactos.map((c) => <li key={c.orden}><b>{c.orden}. {c.nombre}</b> · {c.correo}{c.celular ? ` · ${c.celular}` : ""}</li>)}

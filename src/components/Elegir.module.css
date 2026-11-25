@@ -1,0 +1,12 @@
+/* /elige: elección de la beca ganada. */
+.sub { margin: 8px 0 0; color: var(--mist); font-size: .95rem; line-height: 1.55; }
+.etiqueta { display: block; margin: 16px 0 6px; font: 400 .62rem var(--tech); letter-spacing: .2em; text-transform: uppercase; color: var(--lav); }
+.lista { display: grid; gap: 10px; margin-top: 16px; }
+.curso { display: flex; gap: 14px; align-items: center; padding: 14px 16px; border-radius: 16px; border: 1px solid rgba(182, 156, 255, .35); background: rgba(122, 44, 245, .14); cursor: pointer; }
+.curso input { width: 20px; height: 20px; flex: none; accent-color: #7a2cf5; }
+.curso b { display: block; color: #fff; font: 600 .98rem/1.35 var(--body); }
+.curso small { display: block; margin-top: 3px; color: var(--lav); font-size: .8rem; }
+.marcado { border-color: #ffc93c; background: rgba(255, 201, 60, .14); }
+.agotado { opacity: .45; cursor: not-allowed; }
+.agotado b { text-decoration: line-through; }
+.elegido { display: flex; gap: 12px; align-items: center; margin-top: 12px; font: 700 clamp(1.5rem, 5vw, 2.2rem)/1.15 var(--display); text-transform: uppercase; color: #ffd95a; }
