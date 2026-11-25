@@ -22,9 +22,8 @@ export const metadata: Metadata = {
  * contenido sale de lo que el sitio ya afirma (fechas, cupos, tracks, reglas de
  * equipo) y de cómo está hecho el sistema de inscripción, no de supuestos.
  *
- * Lo que todavía no está decidido aparece marcado como pendiente en vez de
- * rellenarse con algo verosímil: unas bases con un dato inventado son peores
- * que unas bases con un hueco honesto.
+ * Lo que todavía no está decidido se omite en vez de rellenarse con algo verosímil: unas bases con un dato
+ * inventado son peores que unas bases con un hueco.
  */
 
 function Seccion({ n, titulo, children }: { n: string; titulo: string; children: React.ReactNode }) {
@@ -39,15 +38,32 @@ function Seccion({ n, titulo, children }: { n: string; titulo: string; children:
   );
 }
 
-function Pendiente({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="rounded-xl border border-amber-300/30 bg-amber-300/5 px-4 py-3 text-amber-200/90">
-      <strong className="font-bold">Por definir.</strong> {children}
-    </p>
-  );
-}
-
 const B = ({ children }: { children: React.ReactNode }) => <strong className="text-white">{children}</strong>;
+
+/** Rúbrica de la primera propuesta: con ella se eligen los 25 equipos que construyen. Suma 100. */
+const RUBRICA: [string, string, number][] = [
+  ["Problema y reto del track", "Entiende el reto del sponsor y lo plantea con claridad: a quién afecta y por qué importa.", 20],
+  ["Solución propuesta", "Responde al problema, aporta valor y se explica en pocas líneas.", 20],
+  ["Uso de agentes de IA", "Qué hará el agente, con qué herramientas y por qué la solución lo necesita.", 20],
+  ["Viabilidad y plan de desarrollo", "Alcanzable en 100 horas: alcance realista, hitos y roles del equipo.", 20],
+  ["Estructura de la propuesta", "Incluye problema, solución, tecnología, plan y uso de IA. Ordenada y legible.", 20],
+];
+/** [track, equipos que pasan a construir, finalistas que hacen pitch] */
+const PASAN: [string, string, string][] = [
+  ["IA & Energía (Zeia)", "5", "5"],
+  ["IA & Cloud (Manantial)", "5", "5"],
+  ["IA & Fintech (Millennium), track dorado", "15", "5 de los 15"],
+];
+/** Rúbrica de la Gran Final: peso de cada criterio en porcentaje. */
+const RUBRICA_FINAL: [string, number][] = [
+  ["Impacto en el negocio (reto del track)", 50],
+  ["Viabilidad técnica y prototipo", 20],
+  ["Creatividad de la solución", 20],
+  ["Uso de agentes de IA", 5],
+  ["Calidad del pitch final", 5],
+];
+const celda = "border-b border-white/10 px-2.5 py-3 text-left align-top sm:px-3";
+const cabeza = `${celda} hud text-lavender max-sm:!text-[0.5rem] max-sm:!tracking-[0.08em]`;
 
 export default function BasesPage() {
   return (
@@ -77,6 +93,10 @@ export default function BasesPage() {
               </li>
               <li>
                 Hay <B>250 cupos</B> en la hackathon, por orden de inscripción. Al llenarse queda una <B>lista de espera de hasta 50 personas</B>: si alguien libera su lugar, quien sigue en la lista sube solo. Por eso se pide confirmar la asistencia antes del miércoles 25 de noviembre, 3:00 p. m. (hora de Lima); quien no confirma puede perder su lugar.
+              </li>
+              <li>
+                Quien sube de la lista de espera tiene su <B>propio plazo para confirmar</B>, indicado en el correo. Quien
+                pierde su lugar por no confirmar y quiere volver, entra <B>al final de la fila</B>, si aún hay sitio.
               </li>
               <li>
                 <B>Bootcamp:</B> abierto a cualquier persona, sin costo y sin límite de cupos. Puedes entrar
@@ -129,21 +149,26 @@ export default function BasesPage() {
                 <B>Viernes 27 de noviembre, 8:30 p. m.</B> — presentación de sponsors: cada uno expone su reto y, durante esa sesión, se activa la elección de track.
               </li>
               <li>
-                <B>Propuesta</B> — cada equipo entrega su primera propuesta, hasta la noche del sábado 28.
+                <B>Propuesta</B> — cada equipo entrega su primera propuesta <B>hasta el sábado 28 de noviembre a las 11:59 p. m.</B>, en la página <Link href="/equipos/mi-equipo">«Mi equipo»</Link>: enlace al repositorio, PDF con las láminas e idea. Sin equipo no se puede entregar.
               </li>
               <li>
                 <B>Finalistas</B> — el lunes 30 de noviembre a las 6:00 pm se anuncian los{" "}
-                <B>25 equipos</B> que pasan: 5 en Energía, 5 en Cloud y 15 en Fintech. En la Gran Final hacen pitch <B>15 finalistas, 5 por track</B>: los 15 de Fintech se reducen a 5 en el auditorio. Los demás se llevan todo lo aprendido.
+                <B>25 equipos</B> que pasan: 5 en Energía, 5 en Cloud y 15 en Fintech. En la Gran Final hacen pitch <B>15 finalistas, 5 por track</B>: los 5 de Fintech los elige Millennium entre sus 15 y se anuncian en la misma Gran Final. Los demás se llevan todo lo aprendido.
               </li>
               <li>
                 <B>Build</B> — unas 100 horas, desde el lunes 30 de noviembre por la noche hasta la Gran Final,
-                con mentores y mini-retos con premios.
+                con mentores y mini-retos con premios. La solución debe responder al reto que el sponsor presenta el
+                viernes 27; puedes apoyarte en herramientas, librerías y código abierto existentes.
               </li>
               <li>
                 <B>Gran Final</B> — presencial, sábado 5 de diciembre, en el Auditorio CTIC de la UNI, durante
                 todo el día. Habrá feria de stands, y los mini-retos y premios son para{" "}
                 <B>todas las personas que asistan</B>, no solo para quienes participan en la hackathon. Para los
                 finalistas, lo ideal es que al menos una persona del equipo pueda asistir en Lima.
+              </li>
+              <li>
+                <B>Pitch final</B> — formato libre: cada equipo finalista tiene <B>hasta 4 minutos</B> de pitch y{" "}
+                <B>hasta 2 minutos</B> de preguntas.
               </li>
             </ul>
           </Seccion>
@@ -166,14 +191,65 @@ export default function BasesPage() {
                 equipo elige el suyo.
               </li>
               <li>
-                Cada equipo compite en un solo track. Mientras el plazo siga abierto, quien se equivocó puede
-                salir de su equipo desde su panel.
+                Lo elige la <B>persona líder</B> para todo el equipo, que necesita al menos <B>2 integrantes</B>. La elección
+                se activa en vivo durante la presentación y <B>cierra el sábado 28 a las 11:59 p. m.</B>
+              </li>
+              <li>
+                <B>Fintech acepta hasta 40 equipos</B>, por orden de elección. Energía y Cloud no tienen tope.
+              </li>
+              <li>
+                Cada equipo compite en un solo track. Mientras la elección siga abierta, la persona líder puede
+                cambiarlo (a Fintech, solo si queda cupo).
               </li>
             </ul>
           </Seccion>
 
           <Seccion n="05" titulo="Evaluación y premios">
-            <p>Premios confirmados hasta ahora:</p>
+            <p className="font-bold text-white">Ronda 1 · selección de los 25 equipos (100 puntos)</p>
+            <p>Se califica la primera propuesta de cada equipo con esta rúbrica:</p>
+            <div className="overflow-hidden rounded-xl border border-white/15">
+              <table className="w-full border-collapse text-[0.95rem]">
+                <thead><tr><th scope="col" className={cabeza}>Criterio y qué se revisa</th><th scope="col" className={`${cabeza} w-20 !text-right`}>Puntos</th></tr></thead>
+                <tbody>
+                  {RUBRICA.map(([criterio, revisa, puntos]) => (
+                    <tr key={criterio}><td className={celda}><B>{criterio}</B><br />{revisa}</td><td className={`${celda} !text-right font-bold text-white`}>{puntos}</td></tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="mt-4 font-bold text-white">Proceso de selección</p>
+            <ul>
+              <li>Cada propuesta la revisan <B>2 revisores internos</B> por separado; el puntaje final es el <B>promedio</B>.</li>
+              <li>Si la diferencia entre ambos supera los <B>15 puntos</B>, un <B>tercer revisor</B> también la puntúa y se promedian los dos puntajes más cercanos.</li>
+              <li>Pasan a construir <B>25 equipos</B>: los de mayor puntaje en cada track, según la tabla.</li>
+              <li><B>Desempate:</B> mayor puntaje en «Solución propuesta»; si sigue el empate, en «Viabilidad y plan de desarrollo».</li>
+              <li><B>Conflicto de interés:</B> quien revisa lo declara si conoce a un equipo, y no lo puntúa.</li>
+            </ul>
+            <div className="overflow-hidden rounded-xl border border-white/15">
+              <table className="w-full border-collapse text-[0.95rem]">
+                <thead><tr><th scope="col" className={cabeza}>Track</th><th scope="col" className={cabeza}>Construyen</th><th scope="col" className={cabeza}>Pitch final</th></tr></thead>
+                <tbody>
+                  {PASAN.map(([track, construyen, pitch]) => (
+                    <tr key={track}><td className={celda}><B>{track}</B></td><td className={celda}>{construyen}</td><td className={celda}>{pitch}</td></tr>
+                  ))}
+                  <tr><td className={celda}><B>Total</B></td><td className={`${celda} font-bold text-white`}>25</td><td className={`${celda} font-bold text-white`}>15</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>En Fintech, los 5 finalistas los elige <B>Millennium</B> entre los 15 que construyen y se anuncian en la misma Gran Final.</p>
+            <p className="mt-4 font-bold text-white">Gran Final · rúbrica de evaluación</p>
+            <div className="overflow-hidden rounded-xl border border-white/15">
+              <table className="w-full border-collapse text-[0.95rem]">
+                <thead><tr><th scope="col" className={cabeza}>Criterio</th><th scope="col" className={`${cabeza} w-20 !text-right`}>Peso</th></tr></thead>
+                <tbody>
+                  {RUBRICA_FINAL.map(([criterio, peso]) => (
+                    <tr key={criterio}><td className={celda}><B>{criterio}</B></td><td className={`${celda} !text-right font-bold text-white`}>{peso}%</td></tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="mt-4 font-bold text-white">Premios</p>
+            <p>Premios confirmados hasta ahora. Se entregan <B>en vivo en la Gran Final</B> o, a más tardar, en <B>5 días hábiles</B>:</p>
             <ul>
               <li><B>S/ 500</B> para el equipo ganador de cada uno de los tracks Energía y Cloud (en total, <B>S/ 2 000</B> en premios entre los tres tracks).</li>
               <li><B>Track dorado (Fintech, con Millennium):</B> <B>S/ 1 000</B> para el equipo ganador y una <B>carta oferta para cada integrante</B> para entrar a trabajar en Millennium, con una entrevista de por medio.</li>
@@ -181,11 +257,6 @@ export default function BasesPage() {
               <li><B>Sorteo de merch.</B></li>
               <li>Mini-retos con premios para todas las personas que asistan a la Gran Final. Los sorteos de ese día son solo para quienes están en la sala.</li>
             </ul>
-            <Pendiente>
-              Los criterios de evaluación, la composición del jurado y los mentores dependen de los acuerdos
-              con los sponsors y aún no están cerrados. Se publican aquí y en la comunidad de WhatsApp antes
-              del inicio del Build.
-            </Pendiente>
           </Seccion>
 
           <Seccion n="06" titulo="De quién es lo que construyes">
@@ -212,7 +283,7 @@ export default function BasesPage() {
               <li>Tu universidad o instituto (la deducimos del dominio de tu correo), tu carrera, tu ciclo y tu nivel.</li>
               <li>
                 Tu DNI <B>no se guarda</B>: de él solo conservamos una huella criptográfica irreversible, que
-                sirve para impedir inscripciones duplicadas y para que tu líder pueda sumarte a su equipo, y nada más.
+                sirve para impedir inscripciones duplicadas, y nada más.
               </li>
               <li>Si los das: tu LinkedIn, tu GitHub, tu usuario de Discord, tu foto o imagen y cómo te enteraste del evento.</li>
               <li>Tus inscripciones (hackathon y sesiones del bootcamp) y tu equipo.</li>
@@ -232,7 +303,8 @@ export default function BasesPage() {
               <li>
                 Pedir que borremos tu inscripción escribiéndonos por{" "}
                 <a href={LINKS.instagram} target="_blank" rel="noopener noreferrer">Instagram</a> o{" "}
-                <a href={LINKS.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>. La eliminamos
+                <a href={LINKS.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>, o al correo{" "}
+                <a href="mailto:ieee.cis@uni.edu.pe">ieee.cis@uni.edu.pe</a>. La eliminamos
                 completa, sin condiciones y sin pedirte explicaciones.
               </li>
             </ul>
@@ -297,6 +369,10 @@ export default function BasesPage() {
               cambian las reglas de una etapa que ya empezó.
             </p>
             <ul>
+              <li>
+                <Cinta chica /> <B>25 de noviembre:</B> se publicaron las rúbricas y el proceso de selección, la presentación
+                de sponsors quedó el viernes 27 a las 8:30 p. m. y se detallaron los plazos de tracks, entrega y premios.
+              </li>
               <li>
                 <Cinta chica /> <B>22 de noviembre:</B> se eliminó la regla de que el equipo tuviera al menos 2 carreras o
                 facultades distintas; ahora es opcional.
