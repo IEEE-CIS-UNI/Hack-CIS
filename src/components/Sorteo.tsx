@@ -25,7 +25,20 @@ const ERRORES: Record<string, string> = {
   sorteo_completo: "Ya salieron todos los ganadores.",
   sin_participantes: "No quedan participantes en la ruleta.",
 };
-const CURSOS = ["Desarrollo Web", "UX/UI", "IA aplicada", "Metodologías Ágiles", "Desarrollo y programación"];
+// Quién regala los premios del día y qué cursos se pueden elegir. Se elige según el título guardado en la base (sorteo_config).
+const ALIADOS = {
+  we: {
+    nombre: "We Educación Ejecutiva", url: "https://www.we-educacion.com/",
+    elige: (n: number) => `Los ${n} ganadores eligen uno de estos cursos, totalmente cubierto:`,
+    cursos: ["Desarrollo Web", "UX/UI", "IA aplicada", "Metodologías Ágiles", "Desarrollo y programación"],
+  },
+  mayugo: {
+    nombre: "MayuGo", url: "https://www.mayugo.net/",
+    elige: (n: number) => `Los ${n} ganadores eligen su beca en el orden en que salen en la ruleta, mientras queden cupos en el curso:`,
+    cursos: ["Excel Avanzado", "Optimización Industrial con Modelamiento Matemático", "Métodos de pronósticos", "Programación de rutas",
+      "Flujo de caja para la evaluación de proyectos", "Finanzas para ingenieros", "Habilidades blandas para la dirección de personas"],
+  },
+};
 const CLAVE = "sorteo-control";
 const llave = () => { try { return sessionStorage.getItem(CLAVE); } catch { return null; } };
 const guardarLlave = (v: string | null) => { try { if (v) sessionStorage.setItem(CLAVE, v); else sessionStorage.removeItem(CLAVE); } catch { /* sin almacenamiento */ } };
@@ -206,14 +219,15 @@ export default function Sorteo() {
   if (!e) return <p className="rg-help" style={{ display: "flex", gap: 12, alignItems: "center", marginTop: 26 }}><Loader2 className="size-6 animate-spin text-lavender" aria-hidden /> Cargando…</p>;
 
   const faltan = e.premios - e.ganadores.length;
+  const aliado = /mayugo/i.test(e.titulo) ? ALIADOS.mayugo : ALIADOS.we;
 
   return (
     <div className={s.col}>
       <div className="box">
         <p className="box-h">Se sortean</p>
         <h2 className={s.premio}>{e.titulo}</h2>
-        <p className={s.sub}>Con el apoyo de <a href="https://www.we-educacion.com/" target="_blank" rel="noopener noreferrer">We Educación Ejecutiva</a>, aliada de la hackathon. Los {e.premios} ganadores eligen uno de estos cursos, totalmente cubierto:</p>
-        <ul className={s.cursos}>{CURSOS.map((c) => <li key={c}>{c}</li>)}</ul>
+        <p className={s.sub}>Con el apoyo de <a href={aliado.url} target="_blank" rel="noopener noreferrer">{aliado.nombre}</a>, aliado de la hackathon. {aliado.elige(e.premios)}</p>
+        <ul className={s.cursos}>{aliado.cursos.map((c) => <li key={c}>{c}</li>)}</ul>
         <p className={s.sub}>Participan quienes estén <b>inscritos en el bootcamp desde la web</b> y sigan en la sesión cuando se abra el sorteo.</p>
       </div>
 

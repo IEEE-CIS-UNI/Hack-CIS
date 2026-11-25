@@ -4,7 +4,7 @@ import Sorteo from "@/components/Sorteo";
 
 export const metadata: Metadata = {
   title: "Sorteo en vivo · HACK[CIS] UNI 2026",
-  description: "Sorteo en vivo de 3 cursos de WE Educación para quienes se queden hasta el final del bootcamp.",
+  description: "Sorteo en vivo de cursos y becas para quienes se queden hasta el final de las sesiones del bootcamp.",
   robots: { index: false },
 };
 
