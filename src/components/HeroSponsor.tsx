@@ -42,7 +42,7 @@ export default function HeroSponsor({
       <div className={s.in}>
         <span className={s.etiqueta}>Track {etiqueta} · HACK[CIS] UNI 2026</span>
 
-        <a href={url} target="_blank" rel="noopener noreferrer" className={s.lockup} aria-label={`Track powered by ${nombre}`}>
+        <a href={url} target="_blank" rel="noopener" className={s.lockup} aria-label={`Track powered by ${nombre}`}>
           <span className={s.cinta}><span>Track powered by</span></span>
           <Image src={logo} width={logoAncho} height={logoAlto} alt={nombre} unoptimized priority className={s.logo} />
         </a>
@@ -57,7 +57,7 @@ export default function HeroSponsor({
           <a href="#unete" className={`${s.btn} ${s.principal}`}>
             Unirme a este track <ArrowRight aria-hidden size={16} />
           </a>
-          <a href={url} target="_blank" rel="noopener noreferrer" className={`${s.btn} ${s.borde}`}>
+          <a href={url} target="_blank" rel="noopener" className={`${s.btn} ${s.borde}`}>
             Conocer {nombre} ↗
           </a>
         </div>

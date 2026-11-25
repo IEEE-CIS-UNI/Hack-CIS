@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Cloud, Landmark, Zap } from "lucide-react";
+import { desde } from "@/lib/enlaces";
 
 /**
  * Los tres tracks están revelados: Energía (Zeia), Cloud (Manantial) y Fintech (Millennium). Cada ficha vive en
@@ -12,7 +13,7 @@ export const ENERGIA = {
   desc: "Zeia es una empresa peruana de monitoreo energético en tiempo real: sensores IoT y software que muestran dónde se va cada sol de energía. Su reto lo presentan en vivo al cierre del Bootcamp.",
   tone: "#38e5c4",
   tone2: "#0b8f7a",
-  sponsor: { name: "Zeia", url: "https://zeia.com.pe/", logo: "/logos/zeia-blanco.png", width: 154, height: 50 },
+  sponsor: { name: "Zeia", url: desde("https://zeia.com.pe/"), logo: "/logos/zeia-blanco.png", width: 154, height: 50 },
 };
 
 export const CLOUD = {
@@ -20,7 +21,7 @@ export const CLOUD = {
   desc: "Manantial es una consultora peruana de tecnología, especialista en migración cloud, DevOps y ciberseguridad, partner de AWS, Google Cloud y Oracle. Su reto lo presentan en vivo al cierre del Bootcamp.",
   tone: "#ff6b6b",
   tone2: "#912b2b",
-  sponsor: { name: "Manantial", url: "https://manantial.pe/", logo: "/logos/manantial.png", width: 640, height: 192 },
+  sponsor: { name: "Manantial", url: desde("https://manantial.pe/"), logo: "/logos/manantial.png", width: 640, height: 192 },
 };
 
 export const FINTECH = {
@@ -28,7 +29,7 @@ export const FINTECH = {
   desc: "Millennium es un grupo peruano de finanzas con foco en la inclusión financiera impulsada por IA, con las marcas Lima Bikes y Lizzo. Su reto lo presentan en vivo al cierre del Bootcamp. El equipo ganador se lleva S/ 1 000 y cada integrante, una carta oferta para trabajar en Millennium.",
   tone: "#ffc93c",
   tone2: "#b8860b",
-  sponsor: { name: "Millennium", url: "https://millennium.ky/", logo: "/logos/millennium-blanco.png", width: 640, height: 274 },
+  sponsor: { name: "Millennium", url: desde("https://millennium.ky/"), logo: "/logos/millennium-blanco.png", width: 640, height: 274 },
 };
 
 export function TrackList() {

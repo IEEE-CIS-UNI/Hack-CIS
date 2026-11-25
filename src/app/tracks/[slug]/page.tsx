@@ -8,6 +8,7 @@ import UnirseTrack from "@/components/UnirseTrack";
 import ManantialTrack from "@/components/ManantialTrack";
 import ZeiaTrack from "@/components/ZeiaTrack";
 import MillenniumTrack from "@/components/MillenniumTrack";
+import { desde } from "@/lib/enlaces";
 
 type TrackPublico = {
   nombre: string;
@@ -30,21 +31,21 @@ const TRACKS_PUBLICOS: Record<string, TrackPublico> = {
     sub: "Zeia · IA & Energía",
     desc: "Zeia es una empresa peruana de monitoreo energético en tiempo real: sensores IoT y software que muestran dónde se va cada sol de energía. Su reto se presenta en vivo el viernes 27 de noviembre.",
     tono: "#38e5c4",
-    sponsor: { name: "Zeia", url: "https://zeia.com.pe/", logo: "/logos/zeia.png", width: 308, height: 92 },
+    sponsor: { name: "Zeia", url: desde("https://zeia.com.pe/"), logo: "/logos/zeia.png", width: 308, height: 92 },
   },
   cloud: {
     nombre: "Cloud",
     sub: "Manantial · IA & Cloud",
     desc: "Manantial es una consultora peruana de tecnología, especialista en migración cloud, DevOps y ciberseguridad. Su reto se presenta en vivo el viernes 27 de noviembre.",
     tono: "#ff6b6b",
-    sponsor: { name: "Manantial", url: "https://manantial.pe/", logo: "/logos/manantial-color.png", width: 3578, height: 1386 },
+    sponsor: { name: "Manantial", url: desde("https://manantial.pe/"), logo: "/logos/manantial-color.png", width: 3578, height: 1386 },
   },
   fintech: {
     nombre: "Fintech",
     sub: "Millennium · IA & Fintech",
     desc: "Millennium es un grupo peruano de finanzas con foco en la inclusión financiera impulsada por IA, con las marcas Lima Bikes y Lizzo. Su reto se presenta en vivo el viernes 27 de noviembre.",
     tono: "#35a7e6",
-    sponsor: { name: "Millennium", url: "https://millennium.ky/", logo: "/logos/millennium-color.png", width: 1000, height: 429 },
+    sponsor: { name: "Millennium", url: desde("https://millennium.ky/"), logo: "/logos/millennium-color.png", width: 1000, height: 429 },
   },
 };
 
@@ -76,7 +77,7 @@ export default async function TrackPage({ params }: { params: Promise<{ slug: st
 
       {t.sponsor && (
         <a
-          href={t.sponsor.url} target="_blank" rel="noopener noreferrer"
+          href={t.sponsor.url} target="_blank" rel="noopener"
           className="tk-power" style={{ marginTop: 28, display: "inline-flex", fontFamily: "var(--tech)", fontSize: ".56rem", letterSpacing: ".18em", textTransform: "uppercase", color: "var(--mist)", alignItems: "center", gap: 14 }}
         >
           Powered by

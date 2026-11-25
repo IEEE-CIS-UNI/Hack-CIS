@@ -11,6 +11,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Loader2, Lock, Trophy } from "lucide-react";
 import { navegador } from "@/lib/supabase";
 import s from "./Sorteo.module.css";
+import { desde } from "@/lib/enlaces";
 
 type Estado = { control_ok: boolean; abierto: boolean; premios: number; titulo: string; admin: boolean; participantes: number; ganadores: string[]; ruleta: string[] | null };
 type Contacto = { orden: number; nombre: string; correo: string; celular: string | null };
@@ -28,12 +29,12 @@ const ERRORES: Record<string, string> = {
 // Quién regala los premios del día y qué cursos se pueden elegir. Se elige según el título guardado en la base (sorteo_config).
 const ALIADOS = {
   we: {
-    nombre: "We Educación Ejecutiva", url: "https://www.we-educacion.com/",
+    nombre: "We Educación Ejecutiva", url: desde("https://www.we-educacion.com/"),
     elige: (n: number) => `Los ${n} ganadores eligen uno de estos cursos, totalmente cubierto:`,
     cursos: ["Desarrollo Web", "UX/UI", "IA aplicada", "Metodologías Ágiles", "Desarrollo y programación"],
   },
   mayugo: {
-    nombre: "MayuGo", url: "https://www.mayugo.net/",
+    nombre: "MayuGo", url: desde("https://www.mayugo.net/"),
     elige: (n: number) => `Los ${n} ganadores eligen la beca del curso que quieran:`,
     cursos: ["Excel Avanzado", "Optimización Industrial con Modelamiento Matemático", "Métodos de pronósticos", "Programación de rutas",
       "Flujo de caja para la evaluación de proyectos", "Finanzas para ingenieros", "Habilidades blandas para la dirección de personas"],
@@ -226,7 +227,7 @@ export default function Sorteo() {
       <div className="box">
         <p className="box-h">Se sortean</p>
         <h2 className={s.premio}>{e.titulo}</h2>
-        <p className={s.sub}>Con el apoyo de <a href={aliado.url} target="_blank" rel="noopener noreferrer">{aliado.nombre}</a>, aliado de la hackathon. {aliado.elige(e.premios)}</p>
+        <p className={s.sub}>Con el apoyo de <a href={aliado.url} target="_blank" rel="noopener">{aliado.nombre}</a>, aliado de la hackathon. {aliado.elige(e.premios)}</p>
         <ul className={s.cursos}>{aliado.cursos.map((c) => <li key={c}>{c}</li>)}</ul>
         <p className={s.sub}>Participan quienes estén <b>inscritos en el bootcamp desde la web</b> y sigan en la sesión cuando se abra el sorteo.</p>
       </div>

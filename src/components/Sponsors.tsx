@@ -4,7 +4,8 @@ import { ArrowRight, GraduationCap, Handshake } from "lucide-react";
 import { WA_MENTOR, WA_SPONSOR } from "@/lib/config";
 import { APOYO_ROLES, SPONSOR_OFRECE } from "@/lib/contenido";
 import { LOGOS } from "./Logos";
-import SponsorAnimado from "./SponsorAnimado";
+import SponsorMensaje from "./SponsorMensaje";
+import { desde } from "@/lib/enlaces";
 
 const [CIS, DSC] = LOGOS;
 
@@ -21,8 +22,10 @@ type Sponsor = {
   text?: { name: string; sub?: string };
   /** Logo con nombre y lema apilados: necesita más altura para leerse. */
   tall?: boolean;
-  /** Si lo tiene, el sponsor «hace su entrada» al llegar a la sección. */
-  entrada?: { mensaje: string; color: string };
+  /** Logos apilados (ícono sobre el nombre): necesitan más altura para leerse igual que los demás. */
+  grande?: boolean;
+  /** Un globo de conversación sobre el logo: a qué viene este sponsor. */
+  saludo?: { mensaje: string; color: string };
 };
 
 /**
@@ -32,35 +35,42 @@ type Sponsor = {
 const GENERALES: Sponsor[] = [
   {
     name: "Futura",
-    url: "https://futuradata.pe/",
+    url: desde("https://futuradata.pe/"),
     logo: { src: "/logos/futura.png", width: 340, height: 203 },
     tall: true,
+    saludo: { mensaje: "¡Vengo con cursos y más!", color: "#5FD4FF" },
   },
   {
     name: "ToDoStudents",
-    url: "https://todostudents.com/",
+    url: desde("https://todostudents.com/"),
     logo: { src: "/logos/todostudents-blanco.png", width: 640, height: 216 },
     tall: true,
-    /** Entra con un destello naranja y un globo (ver SponsorAnimado). */
-    entrada: { mensaje: "¡Vengo con la merch y mucho más!", color: "#EF5F18" },
+    saludo: { mensaje: "¡Vengo con la merch y mucho más!", color: "#EF5F18" },
+  },
+  {
+    name: "Sol AI",
+    url: desde("https://www.buildsol.ai/"),
+    logo: { src: "/logos/sol-ai-blanco.svg", width: 990, height: 465 },
+    tall: true,
+    saludo: { mensaje: "¡Vengo a hacer hablar a tu proyecto!", color: "#FFC93C" },
   },
 ];
 
 const APOYAN: Sponsor[] = [
   {
     name: "We Educación Ejecutiva",
-    url: "https://www.we-educacion.com/",
+    url: desde("https://www.we-educacion.com/"),
     logo: { src: "/logos/we-educacion.png", width: 420, height: 181 },
   },
   {
     name: "MayuGo",
-    url: "https://www.mayugo.net/",
+    url: desde("https://www.mayugo.net/"),
     logo: { src: "/logos/mayugo.png", width: 144, height: 144 },
     text: { name: "MayuGo" },
   },
   {
     name: "Datux Perú",
-    url: "https://www.datuxonline.com/",
+    url: desde("https://www.datuxonline.com/"),
     logo: { src: "/logos/datux.png", width: 640, height: 218 },
   },
   {
@@ -75,18 +85,19 @@ const APOYAN: Sponsor[] = [
 const DE_TRACK: Sponsor[] = [
   {
     name: "Zeia · Track Energía",
-    url: "https://zeia.com.pe/",
+    url: desde("https://zeia.com.pe/"),
     logo: { src: "/logos/zeia-blanco.png", width: 154, height: 50 },
   },
   {
     name: "Manantial · Track Cloud",
-    url: "https://manantial.pe/",
+    url: desde("https://manantial.pe/"),
     logo: { src: "/logos/manantial.png", width: 640, height: 192 },
   },
   {
     name: "Millennium · Track Fintech",
-    url: "https://millennium.ky/",
+    url: desde("https://millennium.ky/"),
     logo: { src: "/logos/millennium-blanco.png", width: 640, height: 274 },
+    grande: true,
   },
 ];
 
@@ -94,16 +105,16 @@ const DE_TRACK: Sponsor[] = [
 const DIFUSION: Sponsor[] = [
   {
     name: "START Perú",
-    url: "https://www.startperu.org/",
+    url: desde("https://www.startperu.org/"),
     logo: { src: "/logos/start-peru.svg", width: 1111, height: 286 },
   },
 ];
 
 function Chip({ s }: { s: Sponsor }) {
   const Envoltura = s.url ? "a" : "div";
-  const enlace = s.url ? { href: s.url, target: "_blank", rel: "noopener noreferrer" } : {};
+  const enlace = s.url ? { href: s.url, target: "_blank", rel: "noopener" } : {};
   return (
-    <Envoltura className={`sp-chip${s.tall ? " tall" : ""}`} aria-label={s.name} {...enlace}>
+    <Envoltura className={`sp-chip${s.tall ? " tall" : ""}${s.grande ? " grande" : ""}`} aria-label={s.name} {...enlace}>
       <Image
         src={s.logo.src}
         width={s.logo.width}
@@ -148,8 +159,8 @@ export function Niveles() {
         <p className="note">Sponsors del evento</p>
         <div className="sp-logos">
           {GENERALES.map((s) =>
-            s.entrada && s.url ? (
-              <SponsorAnimado key={s.name} nombre={s.name} url={s.url} logo={s.logo} mensaje={s.entrada.mensaje} color={s.entrada.color} />
+            s.saludo && s.url ? (
+              <SponsorMensaje key={s.name} nombre={s.name} url={s.url} logo={s.logo} mensaje={s.saludo.mensaje} color={s.saludo.color} />
             ) : (
               <Chip key={s.name} s={s} />
             ),

@@ -5,6 +5,7 @@ import { Activity, ArrowLeft, Database, Headset, PiggyBank } from "lucide-react"
 import UnirseTrack from "@/components/UnirseTrack";
 import HeroSponsor from "@/components/HeroSponsor";
 import s from "./ManantialTrack.module.css";
+import { desde } from "@/lib/enlaces";
 
 /**
  * La página del reto de Manantial (sponsor del track «IA & Cloud»).
@@ -27,7 +28,7 @@ export default function ManantialTrack({ slug }: { slug: string }) {
     <div className={`${s.man} ${poppins.className}`}>
       <header className={s.barra}>
         <div className={s.in}>
-          <a href="https://manantial.pe/" target="_blank" rel="noopener noreferrer" aria-label="Manantial">
+          <a href={desde("https://manantial.pe/")} target="_blank" rel="noopener" aria-label="Manantial">
             <Image src="/logos/manantial-color.png" width={3578} height={1386} alt="Manantial" unoptimized className={s.logo} priority />
           </a>
           <Link href="/tracks" className={s.volver}>
@@ -39,7 +40,7 @@ export default function ManantialTrack({ slug }: { slug: string }) {
 
       <main>
         <HeroSponsor
-          etiqueta="IA & Cloud" nombre="Manantial" url="https://manantial.pe/"
+          etiqueta="IA & Cloud" nombre="Manantial" url={desde("https://manantial.pe/")}
           logo="/logos/manantial-color.png" logoAncho={3578} logoAlto={1386} logoMostrado={520}
           tema={{
             fondo: "radial-gradient(760px 440px at 100% 0, rgba(255,107,107,.26), transparent 62%), radial-gradient(640px 440px at 0 100%, rgba(145,43,43,.16), transparent 62%), #fff",
@@ -78,7 +79,7 @@ export default function ManantialTrack({ slug }: { slug: string }) {
               ))}
             </div>
             <p className={s.fuente}>
-              Información de <a href="https://manantial.pe/" target="_blank" rel="noopener noreferrer">manantial.pe</a>.
+              Información de <a href={desde("https://manantial.pe/")} target="_blank" rel="noopener">manantial.pe</a>.
             </p>
           </div>
         </section>
@@ -146,7 +147,7 @@ export default function ManantialTrack({ slug }: { slug: string }) {
 
       <footer className={s.pie}>
         <div className={s.in}>
-          <a href="https://manantial.pe/" target="_blank" rel="noopener noreferrer" className={s.pieOscuro} aria-label="Powered by Manantial">
+          <a href={desde("https://manantial.pe/")} target="_blank" rel="noopener" className={s.pieOscuro} aria-label="Powered by Manantial">
             <span>Track powered by</span>
             <Image src="/logos/manantial.png" width={640} height={192} alt="Manantial" unoptimized className={s.logoPie} />
           </a>

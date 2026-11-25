@@ -642,6 +642,9 @@ body{-webkit-font-smoothing:antialiased}
 .tk-more{display:inline-flex;align-items:center;gap:8px;font-family:var(--tech);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--tone);border-bottom:1px solid color-mix(in srgb,var(--tone) 55%,transparent);padding-bottom:3px;transition:gap .3s,border-color .3s}
 .tk-more::after{content:"";position:absolute;inset:0;z-index:2}
 .tk.is-link:hover .tk-more{gap:12px;border-color:var(--tone)}
+/* Millennium apila ícono y nombre: más alto para que su nombre se lea como los demás */
+.sp-tier.trk .sp-chip.grande{height:68px}
+@media(min-width:900px){.sp-tier.trk .sp-chip.grande{height:84px}}
 /* track dorado: brillo dorado siempre encendido (sin animación, para celulares viejos) y una insignia rellena */
 .tk.is-gold::before{opacity:.7;background:linear-gradient(90deg,color-mix(in srgb,var(--tone) 38%,transparent),color-mix(in srgb,var(--tone) 12%,transparent) 62%,transparent)}
 .tk.is-gold:hover::before{opacity:1}

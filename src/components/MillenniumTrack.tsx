@@ -5,6 +5,7 @@ import { ArrowLeft, Briefcase, Trophy } from "lucide-react";
 import UnirseTrack from "@/components/UnirseTrack";
 import HeroSponsor from "@/components/HeroSponsor";
 import s from "./MillenniumTrack.module.css";
+import { desde } from "@/lib/enlaces";
 
 /**
  * La página del reto de Millennium (sponsor del track «IA & Fintech»).
@@ -39,7 +40,7 @@ export default function MillenniumTrack({ slug }: { slug: string }) {
     <div className={`${s.mil} ${jakarta.className}`}>
       <header className={s.barra}>
         <div className={s.in}>
-          <a href="https://millennium.ky/" target="_blank" rel="noopener noreferrer" aria-label="Millennium">
+          <a href={desde("https://millennium.ky/")} target="_blank" rel="noopener" aria-label="Millennium">
             <Image src="/logos/millennium-color.png" width={1000} height={429} alt="Millennium" unoptimized className={s.logo} priority />
           </a>
           <Link href="/tracks" className={s.volver}>
@@ -51,7 +52,7 @@ export default function MillenniumTrack({ slug }: { slug: string }) {
 
       <main>
         <HeroSponsor
-          etiqueta="dorado · IA & Fintech" nombre="Millennium" url="https://millennium.ky/"
+          etiqueta="dorado · IA & Fintech" nombre="Millennium" url={desde("https://millennium.ky/")}
           logo="/logos/millennium-color.png" logoAncho={1000} logoAlto={429} logoMostrado={380}
           tema={{
             fondo: "radial-gradient(760px 440px at 100% 0, rgba(0,104,169,.22), transparent 62%), radial-gradient(640px 440px at 0 100%, rgba(0,104,169,.10), transparent 62%), #fff",
@@ -113,7 +114,7 @@ export default function MillenniumTrack({ slug }: { slug: string }) {
               ))}
             </div>
             <p className={s.fuente}>
-              Información de <a href="https://millennium.ky/" target="_blank" rel="noopener noreferrer">millennium.ky</a>.
+              Información de <a href={desde("https://millennium.ky/")} target="_blank" rel="noopener">millennium.ky</a>.
             </p>
           </div>
         </section>
@@ -181,7 +182,7 @@ export default function MillenniumTrack({ slug }: { slug: string }) {
 
       <footer className={s.pie}>
         <div className={s.in}>
-          <a href="https://millennium.ky/" target="_blank" rel="noopener noreferrer" className={s.pieOscuro} aria-label="Powered by Millennium">
+          <a href={desde("https://millennium.ky/")} target="_blank" rel="noopener" className={s.pieOscuro} aria-label="Powered by Millennium">
             <span>Track powered by</span>
             <Image src="/logos/millennium-blanco.png" width={640} height={274} alt="Millennium" unoptimized className={s.logoPie} />
           </a>

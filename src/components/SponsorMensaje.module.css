@@ -1,0 +1,15 @@
+/* Sponsor del evento con un globo que dice a qué viene. Todo quieto, sin animaciones. */
+.caja { display: inline-flex; flex-direction: column; align-items: center; gap: 12px; }
+.logo { display: block; height: 100px; width: auto; max-width: 100%; }
+
+.globo {
+  position: relative; white-space: nowrap;
+  padding: 7px 16px; border-radius: 999px; background: var(--marca); color: #1a0a02;
+  font: 700 .78rem/1 var(--body); letter-spacing: .01em;
+}
+.globo::after { content: ""; position: absolute; left: 50%; bottom: -6px; width: 12px; height: 12px; background: var(--marca); transform: translateX(-50%) rotate(45deg); border-radius: 2px; }
+
+@media (max-width: 520px) {
+  .logo { height: 76px; }
+  .globo { font-size: .7rem; padding: 6px 12px; }
+}

@@ -5,6 +5,7 @@ import { ArrowLeft, BarChart3, BellRing, Gauge, Power, Receipt, Zap } from "luci
 import UnirseTrack from "@/components/UnirseTrack";
 import HeroSponsor from "@/components/HeroSponsor";
 import s from "./ZeiaTrack.module.css";
+import { desde } from "@/lib/enlaces";
 
 /**
  * La página del reto de Zeia (sponsor del track «IA & Energía»).
@@ -30,7 +31,7 @@ export default function ZeiaTrack({ slug }: { slug: string }) {
     <div className={`${s.zeia} ${poppins.className}`}>
       <header className={s.barra}>
         <div className={s.in}>
-          <a href="https://zeia.com.pe/" target="_blank" rel="noopener noreferrer" aria-label="Zeia">
+          <a href={desde("https://zeia.com.pe/")} target="_blank" rel="noopener" aria-label="Zeia">
             <Image src="/logos/zeia.png" width={308} height={92} alt="Zeia" unoptimized className={s.logo} priority />
           </a>
           <Link href="/tracks" className={s.volver}>
@@ -42,7 +43,7 @@ export default function ZeiaTrack({ slug }: { slug: string }) {
 
       <main>
         <HeroSponsor
-          etiqueta="IA & Energía" nombre="Zeia" url="https://zeia.com.pe/"
+          etiqueta="IA & Energía" nombre="Zeia" url={desde("https://zeia.com.pe/")}
           logo="/logos/zeia.png" logoAncho={308} logoAlto={92} logoMostrado={340}
           tema={{
             fondo: "radial-gradient(900px 480px at 88% -8%, rgba(135,227,196,.5), transparent 62%), radial-gradient(700px 480px at -8% 24%, rgba(0,183,215,.16), transparent 62%), #fff",
@@ -81,7 +82,7 @@ export default function ZeiaTrack({ slug }: { slug: string }) {
               ))}
             </div>
             <p className={s.fuente}>
-              Información de <a href="https://zeia.com.pe/" target="_blank" rel="noopener noreferrer">zeia.com.pe</a>.
+              Información de <a href={desde("https://zeia.com.pe/")} target="_blank" rel="noopener">zeia.com.pe</a>.
             </p>
           </div>
         </section>
@@ -150,7 +151,7 @@ export default function ZeiaTrack({ slug }: { slug: string }) {
 
       <footer className={s.pie}>
         <div className={s.in}>
-          <a href="https://zeia.com.pe/" target="_blank" rel="noopener noreferrer" className={s.pieOscuro} aria-label="Powered by Zeia">
+          <a href={desde("https://zeia.com.pe/")} target="_blank" rel="noopener" className={s.pieOscuro} aria-label="Powered by Zeia">
             <span>Track powered by</span>
             <Image src="/logos/zeia-blanco.png" width={154} height={50} alt="Zeia" unoptimized className={s.logoPie} />
           </a>
