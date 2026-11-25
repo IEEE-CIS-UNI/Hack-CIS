@@ -14,7 +14,8 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, Check, ExternalLink, Loader2, MessageCircle, Users } from "lucide-react";
 import { navegador } from "@/lib/supabase";
 import { llamar, type EstadoEquipos, type MiEquipoDetalle, type Pendientes, type PersonaBusca } from "@/lib/equipos";
-import { Boton, Habilidades, SelectorHabilidades, TarjetaPersona, fechaLima } from "./EquiposUI";
+import { Boton, Habilidades, SelectorHabilidades, TarjetaPersona } from "./EquiposUI";
+import AperturaTrack from "./AperturaTrack";
 import s from "./Equipos.module.css";
 
 type Pista = { slug: string; name: string; sponsor_name: string | null; opens_at: string | null; closes_at: string | null };
@@ -75,6 +76,13 @@ export default function MiEquipo() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     cargar();
   }, [cargar]);
+
+  // Solo refresca los tracks (sin recargar la página, para no borrar lo que se esté escribiendo).
+  const refrescarTracks = useCallback(async () => {
+    const { data } = await navegador().from("tracks").select("slug, name, sponsor_name, opens_at, closes_at").eq("revealed", true).order("position");
+    if (data) setPistas(data as Pista[]);
+    setAhora(Date.now());
+  }, []);
 
   async function accion(clave: string, fn: () => Promise<Res>, exito?: string) {
     setOcupado(clave); setAviso(null);
@@ -201,10 +209,12 @@ export default function MiEquipo() {
       <div className="box">
         <p className="box-h">Track</p>
         {eq.track && pistaActual && <p className={s.sub}>Su track actual es <b style={{ color: "#fff" }}>{eq.track.nombre}</b>{eq.track.sponsor ? ` (${eq.track.sponsor})` : ""}.</p>}
-        {!eq.soy_lider && <p className={s.sub}>El track lo elige la persona líder, el viernes 27 después del pitch de los sponsors. Todo el equipo queda en ese track.</p>}
+        {!eq.soy_lider && <p className={s.sub}>El track lo elige la persona líder, durante la presentación de sponsors del viernes 27 (8:30 p. m.). Todo el equipo queda en ese track.</p>}
+        {!eq.soy_lider && !algunaAbierta && proxima && <AperturaTrack abre={proxima} alCambiar={refrescarTracks} />}
         {eq.soy_lider && (
           <>
-            <p className={s.sub}>{algunaAbierta ? "Elige el track del equipo. Todo el equipo queda en él; puedes cambiarlo mientras la elección siga abierta." : proxima ? `La elección de track se abre el ${fechaLima(proxima)} (hora de Lima), después del pitch de los sponsors.` : "La elección de track todavía no está abierta."}</p>
+            {algunaAbierta ? <p className={s.sub}>Elige el track del equipo. Todo el equipo queda en él; puedes cambiarlo mientras la elección siga abierta.</p>
+              : proxima ? <AperturaTrack abre={proxima} alCambiar={refrescarTracks} /> : <p className={s.sub}>La elección de track todavía no está abierta.</p>}
             <div className={s.tracks}>
               {pistas.map((p) => (
                 <label key={p.slug} className={s.trackopt} style={{ opacity: ventanaAbierta(p) ? 1 : .55 }}>

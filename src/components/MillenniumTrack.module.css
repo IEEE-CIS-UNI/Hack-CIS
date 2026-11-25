@@ -79,6 +79,8 @@
 
 /* ── únete (recuadro azul marino de Millennium con acentos celeste) ── */
 .unete { padding: clamp(40px, 7vw, 76px) 0; }
+/* cuenta regresiva de la elección de track, con los colores del sponsor */
+.unete { --ap-fondo: #081436; --ap-borde: rgba(53, 167, 230, .45); --ap-acento: #35a7e6; --ap-suave: #bcd6ee; --ap-brillo: rgba(53, 167, 230, .75); }
 .oscuro {
   --lav: #a9d9f5; --mist: #cfe3f2; --violet: #35a7e6; --violet2: #0068a9; --cyan: #7cc4ee;
   padding: clamp(24px, 5vw, 44px); border-radius: 28px; color: #fff;

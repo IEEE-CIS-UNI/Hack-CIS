@@ -1,0 +1,10 @@
+/* Aviso y cuenta regresiva de la elección de track. Colores de HACK[CIS] por defecto; cada página de sponsor define los suyos
+   con las variables --ap-* (fondo, borde, acento, suave y brillo). */
+.caja { margin-top: 14px; padding: 22px 22px 20px; border-radius: 20px; text-align: center; background: var(--ap-fondo, #12071f); color: #f4f7fa; border: 1px solid var(--ap-borde, rgba(182, 156, 255, .45)); }
+.viva { border-color: var(--ap-acento, #ffc93c); box-shadow: 0 0 40px -14px var(--ap-brillo, rgba(255, 201, 60, .75)); }
+.k { margin: 0; font: 400 .7rem var(--tech); letter-spacing: .24em; text-transform: uppercase; color: var(--ap-acento, #ffd95a); }
+.t { margin: 10px 0 0; font: 500 1.02rem/1.5 var(--body); }
+.t b { color: #fff; }
+.reloj { margin: 6px 0 0; font: 700 clamp(4rem, 18vw, 6.5rem)/1 var(--display); letter-spacing: .02em; color: #fff; font-variant-numeric: tabular-nums; }
+.reloj i { font-style: normal; color: var(--ap-acento, #ffd95a); padding: 0 .04em; }
+.n { margin: 10px 0 0; font: 400 .85rem/1.5 var(--body); color: var(--ap-suave, #c9bbf0); }

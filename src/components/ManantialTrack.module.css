@@ -79,6 +79,8 @@
 
 /* ── únete (recuadro vino oscuro de Manantial con acentos coral) ── */
 .unete { padding: clamp(40px, 7vw, 76px) 0; }
+/* cuenta regresiva de la elección de track, con los colores del sponsor */
+.unete { --ap-fondo: #2b0d10; --ap-borde: rgba(255, 155, 155, .4); --ap-acento: #ff8f8f; --ap-suave: #f0cccc; --ap-brillo: rgba(255, 107, 107, .7); }
 .oscuro {
   --lav: #ffb3b3; --mist: #f3d6d6; --violet: #ff6b6b; --violet2: #912b2b; --cyan: #ff8d8d;
   padding: clamp(24px, 5vw, 44px); border-radius: 28px; color: #fff;

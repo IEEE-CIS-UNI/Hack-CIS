@@ -26,7 +26,7 @@ const TEXTOS: Record<string, { motivo: string; estado: number }> = {
   sin_hack: { motivo: "Para formar un equipo primero tienes que estar inscrito en la hackathon.", estado: 403 },
   ya_tiene_equipo: { motivo: "Ya perteneces a un equipo.", estado: 409 },
   track_inexistente: { motivo: "Ese track todavía no está disponible.", estado: 404 },
-  track_aun_no: { motivo: "Todavía no se abre la elección de track. Será el viernes 27 de noviembre.", estado: 409 },
+  track_aun_no: { motivo: "Todavía no se abre la elección de track. Se activa en la presentación de sponsors del viernes 27, 8:30 p. m.", estado: 409 },
   track_cerrado: { motivo: "Ya cerró la elección de track.", estado: 409 },
   nombre_invalido: { motivo: "El nombre del equipo debe tener entre 3 y 40 caracteres.", estado: 422 },
   tamano_equipo: { motivo: "Un equipo es de 2 a 4 personas: tú y de 1 a 3 compañeros.", estado: 422 },

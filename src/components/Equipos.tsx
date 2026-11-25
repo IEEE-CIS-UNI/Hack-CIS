@@ -242,7 +242,7 @@ export default function Equipos() {
 
       <div className="box">
         <p className="box-h">Crear un equipo</p>
-        <p className={s.sub}>Quien crea el equipo es la persona líder: invita gente o acepta solicitudes. Todavía no eligen track; eso se hace el viernes 27, después del pitch de los sponsors.</p>
+        <p className={s.sub}>Quien crea el equipo es la persona líder: invita gente o acepta solicitudes. Todavía no eligen track; eso se hace el viernes 27, en la presentación de sponsors de las 8:30 p. m.</p>
         {!creando ? (
           <div className="rg-actions"><Boton solido alClick={() => setCreando(true)}>Crear mi equipo</Boton></div>
         ) : (

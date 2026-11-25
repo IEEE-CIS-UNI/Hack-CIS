@@ -90,9 +90,9 @@ export default function ManantialTrack({ slug }: { slug: string }) {
             <h2>Un problema real de cloud, resuelto con IA</h2>
             <div className={s.reto}>
               <div className={s.retoCaja}>
-                <h3>Manantial lo presenta en vivo el viernes 27 de noviembre</h3>
+                <h3>Manantial lo presenta en vivo el viernes 27, 8:30 p. m.</h3>
                 <p>
-                  Al cierre del Bootcamp, Manantial explica el problema que quiere resolver y cada equipo decide en qué track
+                  En la presentación de sponsors, Manantial explica el problema que quiere resolver y cada equipo decide en qué track
                   competir. Ese día conocerás el reto completo y, si hay datos o herramientas disponibles, también se anuncian ahí.
                 </p>
                 <p style={{ marginBottom: 0 }}>
@@ -118,7 +118,7 @@ export default function ManantialTrack({ slug }: { slug: string }) {
             <p className={s.sobre}>Cómo participar</p>
             <h2>Del Bootcamp a la Gran Final</h2>
             <div className={s.pasos}>
-              <div className={s.paso}><b>El viernes 27 de noviembre</b>, después del pitch de los sponsors, cada equipo elige su track.</div>
+              <div className={s.paso}><b>El viernes 27 de noviembre</b>, durante la presentación de sponsors (8:30 p. m.), cada equipo elige su track.</div>
               <div className={s.paso}><b>El líder</b> se une al track y, automáticamente, todo su equipo se une con él.</div>
               <div className={s.paso}><b>Equipos de 2 a 4 personas</b>, de las carreras o facultades que quieran. <span className={s.nuevo}>Nuevo</span> A pedido de ustedes, ya no es obligatorio que sean distintas.</div>
               <div className={s.paso}><b>Antes del sábado 28 por la noche</b> el equipo entrega su primera propuesta. Pasan 5 equipos por track.</div>
@@ -135,7 +135,7 @@ export default function ManantialTrack({ slug }: { slug: string }) {
               <p className={s.sobre} style={{ color: "#ff8d8d" }}>Únete a este track</p>
               <h2>¿Listos para el reto de Manantial?</h2>
               <p className={`${s.lead} ${s.sub}`} style={{ marginTop: 12, color: "#f3d6d6" }}>
-                El líder del equipo se une desde aquí, el viernes 27 de noviembre.
+                El líder del equipo se une desde aquí, el viernes 27, cuando se active la elección.
               </p>
               <div className="box">
                 <UnirseTrack slug={slug} />

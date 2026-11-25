@@ -29,21 +29,21 @@ const TRACKS_PUBLICOS: Record<string, TrackPublico> = {
   energia: {
     nombre: "Energía",
     sub: "Zeia · IA & Energía",
-    desc: "Zeia es una empresa peruana de monitoreo energético en tiempo real: sensores IoT y software que muestran dónde se va cada sol de energía. Su reto se presenta en vivo el viernes 27 de noviembre.",
+    desc: "Zeia es una empresa peruana de monitoreo energético en tiempo real: sensores IoT y software que muestran dónde se va cada sol de energía. Su reto se presenta en vivo el viernes 27 de noviembre a las 8:30 p. m.",
     tono: "#38e5c4",
     sponsor: { name: "Zeia", url: desde("https://zeia.com.pe/"), logo: "/logos/zeia.png", width: 308, height: 92 },
   },
   cloud: {
     nombre: "Cloud",
     sub: "Manantial · IA & Cloud",
-    desc: "Manantial es una consultora peruana de tecnología, especialista en migración cloud, DevOps y ciberseguridad. Su reto se presenta en vivo el viernes 27 de noviembre.",
+    desc: "Manantial es una consultora peruana de tecnología, especialista en migración cloud, DevOps y ciberseguridad. Su reto se presenta en vivo el viernes 27 de noviembre a las 8:30 p. m.",
     tono: "#ff6b6b",
     sponsor: { name: "Manantial", url: desde("https://manantial.pe/"), logo: "/logos/manantial-color.png", width: 3578, height: 1386 },
   },
   fintech: {
     nombre: "Fintech",
     sub: "Millennium · IA & Fintech",
-    desc: "Millennium es un grupo peruano de finanzas con foco en la inclusión financiera impulsada por IA, con las marcas Lima Bikes y Lizzo. Su reto se presenta en vivo el viernes 27 de noviembre.",
+    desc: "Millennium es un grupo peruano de finanzas con foco en la inclusión financiera impulsada por IA, con las marcas Lima Bikes y Lizzo. Su reto se presenta en vivo el viernes 27 de noviembre a las 8:30 p. m.",
     tono: "#35a7e6",
     sponsor: { name: "Millennium", url: desde("https://millennium.ky/"), logo: "/logos/millennium-color.png", width: 1000, height: 429 },
   },
@@ -95,7 +95,7 @@ export default async function TrackPage({ params }: { params: Promise<{ slug: st
       <section className="pg-sec">
         <h2>Cómo funciona</h2>
         <ul className="pg-dots">
-          <li><b>El viernes 27 de noviembre</b>, después del pitch de los sponsors, cada equipo elige su track.</li>
+          <li><b>El viernes 27 de noviembre</b>, durante la presentación de sponsors (8:30 p. m.), cada equipo elige su track.</li>
           <li><b>El líder</b> se une al track y, automáticamente, todo su equipo se une con él.</li>
           <li><b>Equipos de 2 a 4 personas</b>, de las carreras o facultades que quieran: a pedido de ustedes, ya no es obligatorio que sean distintas.</li>
           <li><b>Antes del sábado 28 por la noche</b> el equipo entrega su primera propuesta.</li>

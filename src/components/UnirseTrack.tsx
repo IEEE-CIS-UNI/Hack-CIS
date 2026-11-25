@@ -3,7 +3,7 @@
 /**
  * «Elegir este track»: el LÍDER del equipo elige el track de todo su equipo.
  *
- * Los equipos se arman antes, en /equipos (jueves 26 como máximo). El viernes 27, después del pitch de los sponsors, el líder
+ * Los equipos se arman antes, en /equipos (jueves 26 como máximo). El viernes 27, en la presentación de sponsors, el líder
  * entra a la página del track que quiere y toca el botón: todo su equipo queda en ese track. Algunos tracks tienen tope de
  * equipos (Fintech: 40): si ya está lleno, la base lo rechaza y aquí se avisa para que elija otro.
  *
@@ -20,8 +20,8 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Check, Loader2, Users } from "lucide-react";
 import { navegador } from "@/lib/supabase";
+import AperturaTrack from "./AperturaTrack";
 import { llamar, type MiEquipoDetalle } from "@/lib/equipos";
-import { fechaLima } from "./EquiposUI";
 
 type Ventana = { name: string; opens_at: string | null; closes_at: string | null };
 type Cupo = { slug: string; tope: number | null; ocupados: number };
@@ -137,10 +137,8 @@ export default function UnirseTrack({ slug }: { slug: string }) {
   if (antes) {
     return (
       <div>
-        <p className="rg-msg" style={{ fontSize: "1.1rem" }}>
-          La elección de track se abre el <strong>{fechaLima(ventana!.opens_at!)}</strong>, después del pitch de los sponsors.
-        </p>
-        <p className="rg-small">Entonces aquí aparece el botón para que la persona líder elija este track para todo el equipo.</p>
+        <AperturaTrack abre={ventana!.opens_at!} alCambiar={cargar} nota={slug === "fintech" ? undefined : "El líder del equipo elige este track para todo el equipo."} />
+        <p className="rg-small" style={{ marginTop: 12 }}>Al abrirse, aquí aparece el botón para que la persona líder elija este track para todo el equipo.</p>
         {cupos}
       </div>
     );

@@ -13,7 +13,7 @@ export default function EquiposPage() {
     <PageShell>
       <p className="pg-kick">Hackathon</p>
       <h1 className="pg-title">Arma tu<br /><span className="lav">equipo</span></h1>
-      <p className="pg-lead">De 2 a 4 personas, de las carreras o facultades que quieran. Primero se arma el equipo; el viernes 27, después del pitch de los sponsors, el líder elige el track.</p>
+      <p className="pg-lead">De 2 a 4 personas, de las carreras o facultades que quieran. Primero se arma el equipo; el viernes 27, en la presentación de sponsors de las 8:30 p. m., el líder elige el track.</p>
       <Equipos />
     </PageShell>
   );

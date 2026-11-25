@@ -30,10 +30,10 @@ export default function TracksPage() {
         <h2>Cómo funcionan</h2>
         <ul className="pg-dots">
           <li>
-            <b>Cada sponsor presenta su reto</b> al cierre del Bootcamp, el viernes 27 de noviembre.
+            <b>Cada sponsor presenta su reto</b> el viernes 27 de noviembre a las 8:30 p. m.
           </li>
           <li>
-            <b>El líder del equipo elige el track</b> el viernes 27, desde la página de cada track: se une y, automáticamente, todo su equipo se une con él.
+            <b>El líder del equipo elige el track</b> cuando se active durante esa presentación, desde la página de cada track: se une y, automáticamente, todo su equipo se une con él.
           </li>
           <li>
             <b>Pasan 25 equipos a construir</b> con su agente de IA: 5 en Energía, 5 en Cloud y 15 en Fintech, el track dorado.

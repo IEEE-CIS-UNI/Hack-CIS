@@ -21,7 +21,7 @@ export default function Bootcamp() {
             <span>nov · virtual</span>
             <ul>
               <li>Armas tu equipo de 2 a 4 personas</li>
-              <li>Cierra con el pitch de los sponsors, el 27/11</li>
+              <li>Pitch de los sponsors: 27/11, 8:30 p. m.</li>
               <li>Mismo material para todos</li>
             </ul>
           </div>

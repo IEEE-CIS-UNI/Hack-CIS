@@ -513,7 +513,7 @@ export default function MiInscripcion() {
             <>
               <p className="rg-help" style={{ marginTop: 0 }}>
                 Todavía no tienes equipo. La plataforma para armarlo se abre el miércoles 25 de noviembre a las 8:00 p. m. y
-                cierra el jueves 26 a las 11:59 p. m. Después, el viernes 27, el líder de cada equipo elige el track.
+                cierra el jueves 26 a las 11:59 p. m. Después, el viernes 27 a las 8:30 p. m., en la presentación de sponsors, el líder de cada equipo elige el track.
               </p>
               <Link href="/equipos" className="more solid" style={{ marginTop: 14 }}>Arma tu equipo <ArrowRight aria-hidden size={14} /></Link>
             </>

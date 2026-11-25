@@ -126,7 +126,7 @@ export default function BasesPage() {
                 {SESIONES.map((s) => s.title).join("; ")}.
               </li>
               <li>
-                <B>Viernes 27 de noviembre</B> — los sponsors presentan su reto y los equipos eligen track.
+                <B>Viernes 27 de noviembre, 8:30 p. m.</B> — presentación de sponsors: cada uno expone su reto y, durante esa sesión, se activa la elección de track.
               </li>
               <li>
                 <B>Propuesta</B> — cada equipo entrega su primera propuesta, hasta la noche del sábado 28.
@@ -162,7 +162,7 @@ export default function BasesPage() {
               </li>
               <li>Hay <B>tres tracks</B>. Son <B>IA &amp; Energía</B>, con Zeia como sponsor; <B>IA &amp; Cloud</B>, con Manantial; e <B>IA &amp; Fintech</B>, con Millennium: el <B>track dorado</B>.</li>
               <li>
-                El track <B>no se elige al inscribirse</B>: el viernes 27, después del pitch de los sponsors, cada
+                El track <B>no se elige al inscribirse</B>: el viernes 27, durante la presentación de sponsors (8:30 p. m.), cada
                 equipo elige el suyo.
               </li>
               <li>

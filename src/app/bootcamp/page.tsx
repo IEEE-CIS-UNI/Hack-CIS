@@ -48,7 +48,7 @@ export default function BootcampPage() {
             <Cinta chica /> A pedido de ustedes, ya no es obligatorio que sean distintas.
           </li>
           <li>
-            <b>Viernes 27 de noviembre:</b> cada sponsor presenta su reto y eliges en qué track competir.
+            <b>Viernes 27 de noviembre, 8:30 p. m.:</b> cada sponsor presenta su reto y eliges en qué track competir.
           </li>
           <li>
             <b>Hasta el sábado 28 por la noche</b> tu equipo entrega su propuesta.
