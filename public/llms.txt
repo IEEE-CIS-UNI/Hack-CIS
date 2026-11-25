@@ -1,0 +1,50 @@
+# HACK[CIS] UNI 2026 · The Agentic Era
+
+> Hackathon nacional de inteligencia artificial agéntica en el Perú, para estudiantes de universidades e institutos. Equipos de 2 a 4 personas construyen con un agente de IA como quinto integrante. Sitio oficial: https://hackcis.lat
+
+## Organizan
+- IEEE CIS UNI (capítulo de la IEEE Computational Intelligence Society en la Universidad Nacional de Ingeniería)
+- DSC UNI (Developer Student Club de la UNI)
+
+Solo esas dos agrupaciones organizan esta edición. DSC PUCP figura como apoyo, no como organizador.
+"CIS" aquí significa Computational Intelligence Society (IEEE); no tiene relación con el Center for Internet Security.
+
+## Fechas (hora de Lima, 2026)
+- Bootcamp virtual: del lunes 23 al viernes 27 de noviembre. Abierto a todos y sin costo.
+- Armado de equipos: del miércoles 25 (8:00 p. m.) al jueves 26 de noviembre, en https://hackcis.lat/equipos
+- Elección de track: viernes 27, después del pitch de los sponsors.
+- Construcción (unas 100 horas): del lunes 30 de noviembre por la noche al sábado 5 de diciembre.
+- Gran Final presencial: sábado 5 de diciembre, Auditorio CTIC de la UNI, Lima.
+
+## Participación
+- Para la hackathon: estudiantes de universidades e institutos del país. 250 cupos y lista de espera.
+- Pasan 25 equipos a construir (5 en Energía, 5 en Cloud y 15 en Fintech) y 15 finalistas hacen pitch, 5 por track.
+- Las soluciones quedan como código abierto con licencia MIT; la autoría es del equipo.
+
+## Tracks
+- IA & Energía, con Zeia: https://hackcis.lat/tracks/energia
+- IA & Cloud, con Manantial: https://hackcis.lat/tracks/cloud
+- IA & Fintech, con Millennium (track dorado): https://hackcis.lat/tracks/fintech
+
+## Premios
+- S/ 2 000 en premios: S/ 1 000 para el equipo ganador de Fintech y S/ 500 para el de cada uno de los otros dos tracks.
+- Cada integrante del equipo ganador de Fintech recibe una carta oferta de Millennium, con una entrevista de por medio.
+- Sorteos de cursos y merch.
+
+## Sponsors y aliados
+- Sponsors de track: Zeia, Manantial, Millennium.
+- Sponsors del evento: Futura, ToDoStudents, Sol AI.
+- Con el apoyo de: We Educación Ejecutiva, MayuGo, Datux Perú, DSC PUCP.
+- Aliados de difusión: START Perú.
+
+## Páginas
+- Inicio: https://hackcis.lat/
+- Bases y reglamento: https://hackcis.lat/bases
+- Bootcamp: https://hackcis.lat/bootcamp
+- Sponsors: https://hackcis.lat/sponsors
+- Inscripción: https://hackcis.lat/registro
+
+## Contacto
+- ieee.cis@uni.edu.pe
+- https://www.linkedin.com/company/ieee-cis-uni/
+- https://www.instagram.com/ieeecisuni

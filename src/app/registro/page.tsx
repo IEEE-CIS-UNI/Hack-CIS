@@ -10,6 +10,7 @@ import { LINKS, registroAbierto } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "Inscripción · HACK[CIS] UNI 2026",
+  description: "Inscríbete a HACK[CIS] UNI 2026: Bootcamp virtual de IA abierto a todos y hackathon para estudiantes de universidades e institutos del Perú.",
 };
 
 /**

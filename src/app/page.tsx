@@ -17,10 +17,12 @@ import RescateDeSesion from "@/components/RescateDeSesion";
 import Sponsors from "@/components/Sponsors";
 import StarField from "@/components/StarField";
 import Tracks from "@/components/Tracks";
+import { DATOS_ESTRUCTURADOS, jsonLd } from "@/lib/seo";
 
 export default function Home() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(DATOS_ESTRUCTURADOS) }} />
       <RescateDeSesion />
       <StarField />
       <div className="nebula" aria-hidden />

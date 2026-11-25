@@ -3,6 +3,7 @@ import { Antonio, Inter, Michroma, Rubik_Mono_One, Sora } from "next/font/google
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Metricas from "@/components/Metricas";
+import { DESCRIPCION, NOMBRE, TITULO } from "@/lib/seo";
 import "./globals.css";
 
 const antonio = Antonio({ variable: "--font-antonio", subsets: ["latin"], weight: ["400", "700"] });
@@ -13,9 +14,12 @@ const sora = Sora({ variable: "--font-sora", subsets: ["latin"], weight: ["300",
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
-  title: "HACK[CIS] UNI 2026 · The Agentic Era",
-  description:
-    "Hackathon nacional de 100 horas para universitarios y estudiantes de institutos: resuelve un reto real de empresa con un agente de IA como 5to miembro de tu equipo.",
+  title: TITULO,
+  description: DESCRIPCION,
+  applicationName: NOMBRE,
+  alternates: { canonical: "./" },
+  openGraph: { siteName: NOMBRE, locale: "es_PE", type: "website" },
+  twitter: { card: "summary_large_image" },
 };
 
 export const viewport: Viewport = {

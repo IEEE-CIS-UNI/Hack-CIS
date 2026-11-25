@@ -1,6 +1,11 @@
 import { EVENT } from "@/lib/config";
+import { jsonLd } from "@/lib/seo";
 
 const ITEMS = [
+  {
+    q: "¿Qué es HACK[CIS] UNI 2026 y quién lo organiza?",
+    a: "Es una hackathon nacional de IA agéntica en el Perú: The Agentic Era. La organizan IEEE CIS UNI y DSC UNI. Reúne un Bootcamp virtual, unas 100 horas de construcción y una Gran Final presencial en la UNI, en Lima.",
+  },
   {
     q: "¿Quién puede participar?",
     a: "Estudiantes universitarios y de institutos de todo el país, con carné o código de matrícula. Hay 250 cupos y, al llenarse, una lista de espera de hasta 50 personas.",
@@ -26,8 +31,8 @@ const ITEMS = [
     a: "El Bootcamp es virtual, del 23 al 27 de noviembre. El hackathon va del 30 de noviembre al 5 de diciembre, y la Gran Final es presencial el sábado 5 en el Auditorio CTIC de la UNI.",
   },
   {
-    q: "¿Cuándo abren las inscripciones?",
-    a: `El ${EVENT.registrationOpensLabel}. Los cupos son limitados, así que entra a la comunidad para enterarte primero.`,
+    q: "¿Cómo me inscribo?",
+    a: `En hackcis.lat/registro; las inscripciones abrieron el ${EVENT.registrationOpensLabel}. El Bootcamp está abierto a todos; la hackathon tiene cupos limitados y lista de espera.`,
   },
   {
     q: "¿Cuánto dura el build?",
@@ -46,6 +51,7 @@ const ITEMS = [
 export default function Faq() {
   return (
     <section id="faq" className="pad">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: ITEMS.map((i) => ({ "@type": "Question", name: i.q, acceptedAnswer: { "@type": "Answer", text: i.a } })) }) }} />
       <div className="wrap faq">
         <div>
           <span className="label">Dudas</span>
