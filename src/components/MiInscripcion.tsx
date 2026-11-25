@@ -30,6 +30,7 @@ import ElegirClave from "./ElegirClave";
 import TarjetaHack from "./TarjetaHack";
 import SumarseHack from "./SumarseHack";
 import ConfirmarAsistencia from "./ConfirmarAsistencia";
+import { hackAbierta } from "@/lib/config";
 
 const NIVELES = ["Principiante", "Intermedio", "Avanzado", "Experto"] as const;
 
@@ -418,7 +419,7 @@ export default function MiInscripcion() {
         </div>
       )}
 
-      {!hack && !p.verified && token && (
+      {!hack && !p.verified && token && hackAbierta() && (
         <div style={{ marginTop: 26 }}>
           <SumarseHack
             persona={p}
@@ -445,12 +446,13 @@ export default function MiInscripcion() {
               <small>
                 {hack
                   ? `Inscrito n.º ${numeroBonito(hack.number)} · 30 nov – 5 dic`
-                  : p.verified ? "30 nov – 5 dic · 250 cupos" : p.institution ? "Completa los datos de arriba para sumarte" : "Necesita correo institucional: mira arriba"}
+                  : !hackAbierta() ? "Las inscripciones a la hackathon ya cerraron"
+                  : p.verified ? "30 nov – 5 dic · cierra el 25 nov, 11:59 p. m." : p.institution ? "Completa los datos de arriba para sumarte" : "Necesita correo institucional: mira arriba"}
               </small>
             </div>
             {hack ? (
               <span className="pill-ok"><Check size={12} aria-hidden /> inscrito</span>
-            ) : p.verified ? (
+            ) : p.verified && hackAbierta() ? (
               <button className="more" style={{ marginTop: 0 }} disabled={ocupado === "hack"} onClick={() => matricular("hack")}>
                 {ocupado === "hack" && <Loader2 className="size-4 animate-spin" aria-hidden />} Inscribirme
               </button>

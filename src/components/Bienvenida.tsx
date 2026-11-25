@@ -23,7 +23,7 @@ import { inscripcionHack, type Resumen } from "@/lib/resumen";
 import ElegirClave from "./ElegirClave";
 import TarjetaHack from "./TarjetaHack";
 
-type Avisos = { hackLleno?: boolean; sinVerificar?: boolean; sesiones?: string[] };
+type Avisos = { hackLleno?: boolean; hackCerrada?: boolean; sinVerificar?: boolean; sesiones?: string[] };
 
 type Estado =
   | { fase: "cargando"; paso: string }
@@ -177,6 +177,12 @@ export default function Bienvenida() {
         <p className="rg-msg warn box" style={{ marginTop: 22, display: "flex", gap: 10 }}>
           <TriangleAlert className="size-5 shrink-0" aria-hidden />
           Los 250 cupos de la hackathon y su lista de espera ya se llenaron, así que no pudimos reservarte un lugar. Tu inscripción al bootcamp sí quedó.
+        </p>
+      )}
+      {avisos.hackCerrada && (
+        <p className="rg-msg warn box" style={{ marginTop: 22, display: "flex", gap: 10 }}>
+          <TriangleAlert className="size-5 shrink-0" aria-hidden />
+          Las inscripciones a la hackathon ya cerraron, así que no pudimos reservarte un lugar. Tu inscripción al bootcamp sí quedó.
         </p>
       )}
       {hack?.waiting && (

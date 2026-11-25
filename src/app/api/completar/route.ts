@@ -57,7 +57,7 @@ export async function POST(req: Request) {
     return json({ ok: false, motivo: "Los datos no coinciden con el correo que confirmaste." }, 422);
   }
 
-  const avisos: { hackLleno?: boolean; sinVerificar?: boolean; sesiones?: string[] } = {};
+  const avisos: { hackLleno?: boolean; hackCerrada?: boolean; sinVerificar?: boolean; sesiones?: string[] } = {};
 
   if (hayDatos) {
     const { error } = await sb.rpc("register_person", {
@@ -82,6 +82,7 @@ export async function POST(req: Request) {
         const t = traducirError(e.message, e.code);
         if (/cupo_lleno/.test(e.message)) avisos.hackLleno = true;
         else if (/requiere_verificacion/.test(e.message)) avisos.sinVerificar = true;
+        else if (/cerrado/.test(e.message)) avisos.hackCerrada = true;   // confirmó su correo después del cierre: queda el bootcamp
         else { console.error("[completar] enroll_in hack:", e); return json({ ok: false, motivo: t.motivo }, t.estado); }
       }
     }

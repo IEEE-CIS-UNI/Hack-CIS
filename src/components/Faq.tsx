@@ -32,7 +32,7 @@ const ITEMS = [
   },
   {
     q: "¿Cómo me inscribo?",
-    a: `En hackcis.lat/registro; las inscripciones abrieron el ${EVENT.registrationOpensLabel}. El Bootcamp está abierto a todos; la hackathon tiene cupos limitados y lista de espera.`,
+    a: `En hackcis.lat/registro; las inscripciones abrieron el ${EVENT.registrationOpensLabel}. El Bootcamp está abierto a todos; la hackathon tiene cupos limitados y lista de espera, y sus inscripciones cierran el miércoles 25 de noviembre a las 11:59 p. m.`,
   },
   {
     q: "¿Cuánto dura el build?",

@@ -88,7 +88,7 @@ export default function BasesPage() {
           </Seccion>
 
           <Seccion n="02" titulo="Cómo inscribirte">
-            <p>Las inscripciones abren el <B>13 de noviembre de 2026</B>. Hay dos formas de entrar:</p>
+            <p>Las inscripciones abren el <B>13 de noviembre de 2026</B>. Las de la <B>hackathon cierran el miércoles 25 de noviembre a las 11:59 p. m.</B> (hora de Lima); el bootcamp sigue abierto. Hay dos formas de entrar:</p>
             <ul>
               <li>
                 <B>Hack + Bootcamp:</B> la hackathon y las sesiones del bootcamp que quieras. El bootcamp va

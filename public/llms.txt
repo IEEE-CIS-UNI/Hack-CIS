@@ -18,6 +18,7 @@ Solo esas dos agrupaciones organizan esta edición. DSC PUCP figura como apoyo, 
 
 ## Participación
 - Para la hackathon: estudiantes de universidades e institutos del país. 250 cupos y lista de espera.
+- Las inscripciones a la hackathon cierran el miércoles 25 de noviembre a las 11:59 p. m.; el Bootcamp sigue abierto.
 - Pasan 25 equipos a construir (5 en Energía, 5 en Cloud y 15 en Fintech) y 15 finalistas hacen pitch, 5 por track.
 - Las soluciones quedan como código abierto con licencia MIT; la autoría es del equipo.
 

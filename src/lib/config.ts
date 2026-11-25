@@ -13,6 +13,14 @@ export const EVENT = {
 export const registroAbierto = () => Date.now() >= Date.parse(EVENT.registrationOpensAt);
 
 /**
+ * Cierre de inscripciones a la HACKATHON (el bootcamp sigue abierto). La base lo hace cumplir (supabase/033); esto solo
+ * ajusta lo que se muestra. Si cambia la fecha, cambiar las dos.
+ */
+export const HACK_CIERRA = "2026-11-26T00:00:00-05:00";
+export const HACK_CIERRA_TEXTO = "miércoles 25 de noviembre, 11:59 p. m.";
+export const hackAbierta = () => Date.now() < Date.parse(HACK_CIERRA);
+
+/**
  * Un «#» significa que ese enlace todavía no existe, no un descuido. La
  * interfaz lo trata como ausente: esconde el botón en vez de ofrecer un enlace
  * que no lleva a ningún lado.

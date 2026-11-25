@@ -30,7 +30,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, Check, Loader2, LogIn, Mail, TriangleAlert, X } from "lucide-react";
-import { CLAVE_BOLETO, EVENT } from "@/lib/config";
+import { CLAVE_BOLETO, EVENT, HACK_CIERRA_TEXTO, hackAbierta } from "@/lib/config";
 import { SESIONES } from "@/lib/contenido";
 import { CICLOS, SLUG_OTRA, limpiarCarrera, type Carrera } from "@/lib/carreras";
 import { ORIGENES, normalizarDiscord, normalizarGithub, normalizarLinkedin } from "@/lib/contacto";
@@ -200,7 +200,8 @@ export default function RegistroWizard() {
       await Promise.resolve();
       if (!vivo) return;
       const e = leerEnlace();
-      if (e.plan) { setPlan(e.plan); setSesiones(e.sesiones); setPaso(1); }
+      if (e.plan === "hack_bootcamp" && !hackAbierta()) { setSesiones(e.sesiones); }   // cerrada: que elija de nuevo
+      else if (e.plan) { setPlan(e.plan); setSesiones(e.sesiones); setPaso(1); }
       try {
         const { data } = await navegador().auth.getSession();
         if (vivo) setSesionAbierta(data.session ? "si" : "no");
@@ -465,10 +466,12 @@ export default function RegistroWizard() {
       {actual === "plan" && (
         <Pregunta
           titulo={<>¿Qué quieres<br /><span>hacer</span>?</>}
-          ayuda="Puedes sumar lo que te falte más adelante desde tu panel."
+          ayuda={hackAbierta()
+            ? `Las inscripciones a la hackathon cierran el ${HACK_CIERRA_TEXTO} (hora de Lima).`
+            : `Las inscripciones a la hackathon cerraron el ${HACK_CIERRA_TEXTO} El bootcamp sigue abierto para todos.`}
         >
           <div className="rg-opts">
-            {PLANES.map((p) => (
+            {PLANES.filter((p) => p.id !== "hack_bootcamp" || hackAbierta()).map((p) => (
               <button
                 key={p.id} type="button" className="rg-opt" aria-pressed={plan === p.id}
                 onClick={() => {
@@ -478,7 +481,7 @@ export default function RegistroWizard() {
                 }}
               >
                 <b>{p.titulo}{p.marca && <em>{p.marca}</em>}</b>
-                <span>{p.desc}</span>
+                <span>{p.id === "bootcamp" && !hackAbierta() ? "Abierto a todos, con cualquier correo y sin DNI. Eliges las sesiones." : p.desc}</span>
               </button>
             ))}
           </div>
