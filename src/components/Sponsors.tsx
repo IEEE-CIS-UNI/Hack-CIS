@@ -26,6 +26,8 @@ type Sponsor = {
   grande?: boolean;
   /** Un globo de conversación sobre el logo: a qué viene este sponsor. */
   saludo?: { mensaje: string; color: string };
+  /** Alto del logo con saludo (px, en computadora): menor que los de track; según lo compacto que sea cada logo. */
+  alto?: number;
 };
 
 /**
@@ -39,6 +41,7 @@ const GENERALES: Sponsor[] = [
     logo: { src: "/logos/futura.png", width: 340, height: 203 },
     tall: true,
     saludo: { mensaje: "¡Vengo con cursos y más!", color: "#5FD4FF" },
+    alto: 64,
   },
   {
     name: "ToDoStudents",
@@ -46,6 +49,7 @@ const GENERALES: Sponsor[] = [
     logo: { src: "/logos/todostudents-blanco.png", width: 640, height: 216 },
     tall: true,
     saludo: { mensaje: "¡Vengo con la merch y mucho más!", color: "#EF5F18" },
+    alto: 48,
   },
   {
     name: "Sol AI",
@@ -53,6 +57,7 @@ const GENERALES: Sponsor[] = [
     logo: { src: "/logos/sol-ai-blanco.svg", width: 990, height: 465 },
     tall: true,
     saludo: { mensaje: "¡Vengo a hacer hablar a tu proyecto!", color: "#FFC93C" },
+    alto: 64,
   },
 ];
 
@@ -160,7 +165,7 @@ export function Niveles() {
         <div className="sp-logos">
           {GENERALES.map((s) =>
             s.saludo && s.url ? (
-              <SponsorMensaje key={s.name} nombre={s.name} url={s.url} logo={s.logo} mensaje={s.saludo.mensaje} color={s.saludo.color} />
+              <SponsorMensaje key={s.name} nombre={s.name} url={s.url} logo={s.logo} mensaje={s.saludo.mensaje} color={s.saludo.color} alto={s.alto} />
             ) : (
               <Chip key={s.name} s={s} />
             ),

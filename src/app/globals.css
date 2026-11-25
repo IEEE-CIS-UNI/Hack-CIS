@@ -265,15 +265,15 @@ a.sp-chip:hover{opacity:1;transform:translateY(-3px)}
 .sp-tier.gen .sp-chip{height:68px}
 .sp-tier.gen .sp-chip.tall{height:100px}
 .sp-tier.sup .sp-logos{gap:14px 30px}
-.sp-tier.sup .sp-chip{height:44px;gap:8px}
-.sp-tier.sup .sp-chip img.sp-mark{height:34px}
-.sp-tier.sup .sp-chip b{font-size:1.1rem}
+.sp-tier.sup .sp-chip{height:34px;gap:8px}
+.sp-tier.sup .sp-chip img.sp-mark{height:27px}
+.sp-tier.sup .sp-chip b{font-size:.95rem}
 @media (min-width:700px){
   .sp-tier.org .l-cis{height:44px}.sp-tier.org .l-pucp{height:64px}.sp-tier.org .l-dsc{height:80px}
   .sp-tier.gen .sp-chip{height:92px}
   .sp-tier.gen .sp-chip.tall{height:124px}
-  .sp-tier.sup .sp-chip{height:52px}
-  .sp-tier.sup .sp-chip img.sp-mark{height:40px}
+  .sp-tier.sup .sp-chip{height:40px}
+  .sp-tier.sup .sp-chip img.sp-mark{height:31px}
 }
 @media (min-width:900px){
   .sp-tier{display:grid;grid-template-columns:12rem 1fr;gap:24px;align-items:center}

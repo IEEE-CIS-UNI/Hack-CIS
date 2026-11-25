@@ -3,7 +3,7 @@ import Image from "next/image";
 import s from "./SponsorMensaje.module.css";
 
 export default function SponsorMensaje({
-  nombre, url, logo, mensaje, color,
+  nombre, url, logo, mensaje, color, alto = 56,
 }: {
   nombre: string;
   url: string;
@@ -11,11 +11,14 @@ export default function SponsorMensaje({
   mensaje: string;
   /** Color de la marca: fondo del globo (claro, para que se lea el texto oscuro). */
   color: string;
+  alto?: number;
 }) {
   return (
-    <a href={url} target="_blank" rel="noopener" className={s.caja} style={{ "--marca": color } as React.CSSProperties}>
+    <a href={url} target="_blank" rel="noopener" className={s.caja} style={{ "--marca": color, "--alto": `${alto}px` } as React.CSSProperties}>
       <span className={s.globo}>{mensaje}</span>
-      <Image src={logo.src} width={logo.width} height={logo.height} alt={nombre} unoptimized className={s.logo} />
+      <span className={s.marco}>
+        <Image src={logo.src} width={logo.width} height={logo.height} alt={nombre} unoptimized className={s.logo} />
+      </span>
     </a>
   );
 }

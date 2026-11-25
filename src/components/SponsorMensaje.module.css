@@ -1,6 +1,7 @@
 /* Sponsor del evento con un globo que dice a qué viene. Todo quieto, sin animaciones. */
 .caja { display: inline-flex; flex-direction: column; align-items: center; gap: 12px; }
-.logo { display: block; height: 100px; width: auto; max-width: 100%; }
+.marco { display: flex; align-items: center; height: 64px; }   /* mismo marco para todos: los globos quedan alineados */
+.logo { display: block; height: var(--alto); width: auto; max-width: 100%; }
 
 .globo {
   position: relative; white-space: nowrap;
@@ -10,6 +11,7 @@
 .globo::after { content: ""; position: absolute; left: 50%; bottom: -6px; width: 12px; height: 12px; background: var(--marca); transform: translateX(-50%) rotate(45deg); border-radius: 2px; }
 
 @media (max-width: 520px) {
-  .logo { height: 76px; }
+  .marco { height: 50px; }
+  .logo { height: calc(var(--alto) * .78); }
   .globo { font-size: .7rem; padding: 6px 12px; }
 }
