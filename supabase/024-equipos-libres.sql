@@ -7,7 +7,7 @@
 --
 -- Reglas:
 --   · Solo forman equipo quienes tienen CUPO confirmado: botón de confirmar o código de Discord canjeado, y no en lista de espera.
---   · Se abre el miércoles 25/11 22:00 y se puede crear y unirse hasta el jueves 26/11 23:59 (hora de Lima). Las fechas viven en
+--   · Se abre el miércoles 25/11 20:00 y se puede crear y unirse hasta el jueves 26/11 23:59 (hora de Lima). Las fechas viven en
 --     la tabla equipos_config.
 --   · De 2 a 4 personas. Una persona, un equipo. El líder invita o acepta solicitudes; cada quien acepta sus invitaciones.
 --   · Los datos de contacto (correo, celular, Discord, LinkedIn, GitHub) los ven SOLO los integrantes del mismo equipo.
@@ -22,7 +22,7 @@ create table if not exists public.equipos_config (
 );
 -- Personas que ven la plataforma abierta ANTES de la fecha (solo para probarla con cuentas falsas). Vacía en producción.
 alter table public.equipos_config add column if not exists prueba_personas uuid[] not null default '{}';
-insert into public.equipos_config (abre, cierra) values ('2026-11-25 22:00:00-05', '2026-11-26 23:59:59-05') on conflict (id) do nothing;
+insert into public.equipos_config (abre, cierra) values ('2026-11-25 20:00:00-05', '2026-11-26 23:59:59-05') on conflict (id) do nothing;
 alter table public.equipos_config enable row level security;
 revoke all on public.equipos_config from anon, authenticated;
 

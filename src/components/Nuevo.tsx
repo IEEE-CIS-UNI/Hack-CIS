@@ -52,7 +52,7 @@ export default function AvisoEquipos({ enlace = true }: { enlace?: boolean }) {
             personas, con quienes quieran. <b>¡Aprovechen el bootcamp para formar equipos!</b>
           </p>
           <p className="aviso-p">
-            <b>La plataforma de equipos abre el miércoles 25 de noviembre a las 10:00 p. m.</b> y cierra el jueves 26 a las 11:59 p. m.
+            <b>La plataforma de equipos abre el miércoles 25 de noviembre a las 8:00 p. m.</b> y cierra el jueves 26 a las 11:59 p. m.
           </p>
           {enlace && (
             <Link href="/equipos" className="aviso-l">

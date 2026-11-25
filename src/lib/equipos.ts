@@ -8,7 +8,7 @@ import { navegador } from "@/lib/supabase";
  * Cuándo está abierta la plataforma de equipos. Son las mismas fechas que `equipos_config` en la base (migración 024), que es
  * la que manda: esto solo sirve para mostrar la cuenta regresiva a quien todavía no inició sesión. Si se cambian, cambiar las dos.
  */
-export const EQUIPOS_ABRE = "2026-11-25T22:00:00-05:00";
+export const EQUIPOS_ABRE = "2026-11-25T20:00:00-05:00";
 export const EQUIPOS_CIERRA = "2026-11-26T23:59:59-05:00";
 
 export const HABILIDADES = [
