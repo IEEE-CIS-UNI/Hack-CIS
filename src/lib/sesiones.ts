@@ -25,6 +25,7 @@ export type DatosSesion = {
   resumen: string; // descripción corta (tarjetas de /bootcamp)
   workshop?: string; // enfoque del workshop según la ponencia; si falta, se usa `resumen`
   ideas: string[];
+  video?: string; // ID del video de YouTube; sin él se muestra «Próximamente»
   bloques?: Bloque[]; // agenda de la sesión; si falta, se muestran los bloques «por definir»
   ponentes: Ponente[]; // solo confirmados (uno por sesión)
 };
@@ -36,6 +37,7 @@ const IN = "https://www.linkedin.com/in/";
 export const DATOS_SESION: Record<string, DatosSesion> = {
   "01": {
     fecha: "Lun 23/11",
+    video: "rjTCJ8MjIX4",
     hora: "8:30 pm",
     horario: "8:30 pm – 11:30 pm",
     tone: "#8b5cf6",
@@ -71,6 +73,7 @@ export const DATOS_SESION: Record<string, DatosSesion> = {
   },
   "02": {
     fecha: "Mar 24/11",
+    video: "gQGQrtYTXjM",
     hora: "10:00 am",
     horario: "10:00 am – 1:00 pm",
     tone: "#22c7ee",
