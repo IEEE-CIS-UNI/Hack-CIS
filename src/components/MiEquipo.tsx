@@ -80,7 +80,7 @@ export default function MiEquipo() {
     setOcupado(clave); setAviso(null);
     const r = await fn();
     setOcupado(null);
-    if (!r.ok) { setAviso({ tipo: "error", texto: r.motivo ?? "No pudimos completar la acción." }); return false; }
+    if (!r.ok) { setAviso({ tipo: "error", texto: r.motivo ?? "No pudimos completar la acción." }); await cargar(); return false; }   // lo que se ve pudo quedar viejo
     if (exito) setAviso({ tipo: "ok", texto: exito });
     await cargar();
     return true;
@@ -160,6 +160,11 @@ export default function MiEquipo() {
                 {m.linkedin && <li><span>LinkedIn</span><a href={m.linkedin} target="_blank" rel="noopener noreferrer">perfil</a></li>}
                 {m.github && <li><span>GitHub</span><a href={m.github} target="_blank" rel="noopener noreferrer">perfil</a></li>}
               </ul>
+              {eq.soy_lider && !m.yo && e.abierto && (
+                <div className="rg-actions" style={{ marginTop: 12 }}>
+                  <Boton peligro ocupado={ocupado === `quitar-${m.id}`} alClick={() => { if (window.confirm(`¿Quitar a ${m.nombre} del equipo? Dejará de ver los datos de contacto y podrá unirse a otro.`)) accion(`quitar-${m.id}`, () => llamar("equipo_quitar", { p_person: m.id }), `${m.nombre} ya no está en el equipo.`); }}>Quitar del equipo</Boton>
+                </div>
+              )}
             </article>
           ))}
         </div>
@@ -246,7 +251,7 @@ export default function MiEquipo() {
             <div className={s.lista}>
               {personas.map((p) => (
                 <TarjetaPersona key={p.id} p={p} acciones={
-                  pend?.invitadas.some((v) => v.nombre === p.nombre)
+                  pend?.invitadas.some((v) => v.persona_id === p.id)
                     ? <span className="pill-ok"><Check size={12} aria-hidden /> Invitación enviada</span>
                     : <Boton solido ocupado={ocupado === `inv-${p.id}`} alClick={() => accion(`inv-${p.id}`, () => llamar("equipo_invitar", { p_person: p.id }), `Invitaste a ${p.nombre}.`)}>Invitar</Boton>
                 } />
@@ -257,9 +262,21 @@ export default function MiEquipo() {
       )}
 
       <div className="box">
-        <p className="box-h">Salir del equipo</p>
-        <p className={s.sub}>Si sales, el equipo sigue con quienes quedan{eq.soy_lider ? " y el liderazgo pasa a la siguiente persona" : ""}. Podrás unirte a otro mientras la plataforma siga abierta.</p>
-        <div className="rg-actions"><Boton peligro ocupado={ocupado === "salir"} alClick={() => { if (window.confirm("¿Seguro que quieres salir del equipo?")) accion("salir", () => llamar("equipo_salir")).then((ok) => { if (ok) router.push("/equipos"); }); }}>Salir del equipo</Boton></div>
+        <p className="box-h">{eq.soy_lider ? "Salir o eliminar el equipo" : "Salir del equipo"}</p>
+        <p className={s.sub}>
+          {eq.soy_lider && eq.n === 1 ? "Estás solo en el equipo: si lo eliminas, podrás crear otro o unirte a uno."
+            : eq.soy_lider ? "Si sales, el equipo sigue y el liderazgo pasa a la siguiente persona. Si lo eliminas, todos quedan sin equipo."
+            : "Si sales, el equipo sigue con quienes quedan."}
+          {e.abierto ? (eq.soy_lider && eq.n === 1 ? "" : " Podrás unirte a otro mientras la plataforma siga abierta.") : " La plataforma ya no está abierta: si sales, no podrás unirte a otro equipo."}
+        </p>
+        <div className="rg-actions">
+          {!(eq.soy_lider && eq.n === 1 && e.abierto) && (
+            <Boton peligro ocupado={ocupado === "salir"} alClick={() => { if (window.confirm(e.abierto ? "¿Seguro que quieres salir del equipo?" : "La plataforma ya cerró: si sales, no podrás unirte a otro equipo. ¿Salir de todos modos?")) accion("salir", () => llamar("equipo_salir")).then((ok) => { if (ok) router.push("/equipos"); }); }}>Salir del equipo</Boton>
+          )}
+          {eq.soy_lider && e.abierto && (
+            <Boton peligro ocupado={ocupado === "eliminar"} alClick={() => { if (window.confirm(eq.n > 1 ? `¿Eliminar «${eq.nombre}»? Las ${eq.n} personas quedarán sin equipo y se pierden los datos guardados. No se puede deshacer.` : `¿Eliminar «${eq.nombre}»? No se puede deshacer.`)) accion("eliminar", () => llamar("equipo_eliminar")).then((ok) => { if (ok) router.push("/equipos"); }); }}>Eliminar equipo</Boton>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -68,6 +68,7 @@ export default function ConfirmarAsistencia({ modo, inicial }: { modo: Modo; ini
   if (cargando || !a?.hay_hack) return null;
 
   async function responder(accion: "confirmo" | "no_participo") {
+    if (accion === "no_participo" && !window.confirm("¿Seguro? Dejarás tu lugar a otra persona y, si estás en un equipo, saldrás de él.")) return;
     setEnviando(accion);
     setError(null);
     try { setA(await llamar(modo, accion)); }

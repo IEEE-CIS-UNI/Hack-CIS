@@ -17,9 +17,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Check, Loader2, Users } from "lucide-react";
 import { navegador } from "@/lib/supabase";
-import { EQUIPOS_ABRE, EQUIPOS_CIERRA, llamar, type EquipoAbierto, type EstadoEquipos, type PersonaBusca, type Pendientes } from "@/lib/equipos";
+import { EQUIPOS_ABRE, EQUIPOS_CIERRA, llamar, type EquipoAbierto, type EstadoEquipos, type PersonaBusca, type Pendientes, type MiEquipoDetalle } from "@/lib/equipos";
 import { Boton, Habilidades, Pronto, SelectorHabilidades, TarjetaPersona, fechaLima } from "./EquiposUI";
 import s from "./Equipos.module.css";
+
+/** Qué decirle a quien ya tiene equipo y quiere entrar a otro. */
+const yaTienes = (eq: MiEquipoDetalle) => eq.soy_lider
+  ? `Eres líder del equipo «${eq.nombre}»: no puedes unirte a otro. Primero elimina tu equipo (o sal y deja el liderazgo) desde «Mi equipo».`
+  : `Ya estás en el equipo «${eq.nombre}»: no puedes unirte a otro. Primero sal de él desde «Mi equipo».`;
 
 type Carga =
   | { f: "cargando" }
@@ -37,6 +42,8 @@ export default function Equipos() {
   const [personas, setPersonas] = useState<PersonaBusca[]>([]);
   const [equipos, setEquipos] = useState<EquipoAbierto[]>([]);
   const [pend, setPend] = useState<Pendientes | null>(null);
+  const [mio, setMio] = useState<MiEquipoDetalle | null>(null);
+  const [intento, setIntento] = useState<string | null>(null);   // a qué equipo quiso entrar teniendo ya uno
   const [pestana, setPestana] = useState<"equipos" | "personas">("equipos");
   const [ahora, setAhora] = useState(0);
 
@@ -68,6 +75,11 @@ export default function Equipos() {
       if (b.ok) setEquipos(b.data);
       if (c.ok) setPend(c.data);
     }
+    if (e.abierto && e.puede && e.tiene_equipo) {
+      const [d, b] = await Promise.all([llamar<MiEquipoDetalle | null>("mi_equipo_detalle"), llamar<EquipoAbierto[]>("equipos_abiertos")]);
+      if (d.ok) setMio(d.data);
+      if (b.ok) setEquipos(b.data);
+    }
   }, []);
 
   useEffect(() => {
@@ -80,7 +92,7 @@ export default function Equipos() {
     setOcupado(clave); setAviso(null);
     const r = await fn();
     setOcupado(null);
-    if (!r.ok) { setAviso({ tipo: "error", texto: r.motivo ?? "No pudimos completar la acción." }); return false; }
+    if (!r.ok) { setAviso({ tipo: "error", texto: r.motivo ?? "No pudimos completar la acción." }); await cargar(); return false; }   // lo que se ve pudo quedar viejo
     if (exito) setAviso({ tipo: "ok", texto: exito });
     await cargar();
     return true;
@@ -150,11 +162,30 @@ export default function Equipos() {
   }
 
   if (e.tiene_equipo) {
+    const otros = equipos.filter((t) => t.id !== mio?.id);
     return (
-      <div className="box" style={{ marginTop: 26 }}>
-        <p className="box-h">Ya tienes equipo</p>
-        <p className={s.sub}>Entra a la página de tu equipo para ver a tus compañeros, sus datos de contacto y los entregables.</p>
-        <div className="rg-actions"><Link href="/equipos/mi-equipo" className="more solid"><Users aria-hidden size={14} /> Ir a mi equipo <ArrowRight aria-hidden size={14} /></Link></div>
+      <div className={s.col}>
+        <div className="box">
+          <p className="box-h">Ya tienes equipo</p>
+          <p className={s.sub}>Entra a la página de tu equipo para ver a tus compañeros, sus datos de contacto y los entregables. Solo se puede estar en un equipo a la vez.</p>
+          <div className="rg-actions"><Link href="/equipos/mi-equipo" className="more solid"><Users aria-hidden size={14} /> Ir a mi equipo <ArrowRight aria-hidden size={14} /></Link></div>
+        </div>
+        {mio && otros.length > 0 && (
+          <div>
+            <p className="box-h" style={{ marginBottom: 0 }}>Otros equipos que buscan gente ({otros.length})</p>
+            <div className={s.lista}>
+              {otros.map((t) => (
+                <article key={t.id} className={s.tarjeta}>
+                  <h3>{t.nombre}</h3>
+                  <p className="meta" style={{ fontSize: ".85rem", color: "var(--mist)" }}>{t.n} de 4 · {t.miembros.map((m) => m.nombre).join(", ")}</p>
+                  {t.descripcion && <p className={s.frase}>{t.descripcion}</p>}
+                  <div className={s.acc}><Boton alClick={() => setIntento(t.id)}>Pedir unirme</Boton></div>
+                  {intento === t.id && <p className="rg-msg err" role="alert">{yaTienes(mio)} <Link href="/equipos/mi-equipo" style={{ textDecoration: "underline" }}>Ir a mi equipo</Link></p>}
+                </article>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     );
   }

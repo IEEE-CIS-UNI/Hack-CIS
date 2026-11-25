@@ -29,7 +29,9 @@ const ERRORES: Record<string, string> = {
   sin_perfil: "No encontramos tu inscripción. Entra a tu panel y complétala.",
   equipos_cerrados: "La plataforma de equipos no está abierta en este momento.",
   no_elegible: "Para formar equipo necesitas tener tu lugar en la hackathon confirmado.",
-  ya_tiene_equipo: "Ya estás en un equipo.",
+  ya_tiene_equipo: "Ya estás en un equipo. Para unirte a otro, primero sal del tuyo (o elimínalo si eres líder).",
+  ya_te_pidio: "Esa persona ya pidió unirse a tu equipo: respóndele en «Solicitudes e invitaciones».",
+  ya_te_invito: "Ese equipo ya te invitó: acepta la invitación que aparece arriba.",
   sin_equipo: "Todavía no estás en un equipo.",
   no_lider: "Solo la persona líder del equipo puede hacer esto.",
   equipo_lleno: "El equipo ya tiene 4 integrantes.",
@@ -85,7 +87,7 @@ export type Pendientes = {
   recibidas: { id: string; equipo: string; equipo_id: string; n: number; descripcion: string | null; lider: string }[];
   enviadas: { id: string; equipo: string; equipo_id: string }[];
   solicitudes: { id: string; persona_id: string; nombre: string; universidad: string | null; carrera: string | null; ciclo: number | null; nivel: string | null; habilidades: string[]; frase: string | null }[];
-  invitadas: { id: string; nombre: string }[];
+  invitadas: { id: string; persona_id: string; nombre: string }[];
 };
 export type Miembro = {
   id: string; nombre: string; lider: boolean; yo: boolean; universidad: string | null; carrera: string | null; ciclo: number | null;
