@@ -158,14 +158,32 @@ export default async function SesionPage({ params }: { params: Promise<{ n: stri
 
           <section aria-labelledby="sd-vd">
             <h2 id="sd-vd" className="sd-h">Mírala en YouTube</h2>
-            {/* Reemplazar por el enlace o el reproductor cuando el video esté disponible. */}
-            <div className="sd-video" role="img" aria-label="Video de la sesión, próximamente">
-              <span className="sd-play">
-                <Play aria-hidden fill="currentColor" />
-              </span>
-              <span className="hud">Próximamente</span>
-              <small>El canal de CIS publicará la sesión aquí.</small>
-            </div>
+            {/* Para publicar un video: agregar su ID de YouTube en `video` (src/lib/sesiones.ts). */}
+            {d.video ? (
+              <>
+                <div className="sd-player">
+                  <iframe
+                    src={`https://www.youtube-nocookie.com/embed/${d.video}`}
+                    title={`Video de la sesión ${sesion.n}: ${sesion.title}`}
+                    loading="lazy"
+                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  />
+                </div>
+                <a href={`https://www.youtube.com/watch?v=${d.video}`} target="_blank" rel="noopener noreferrer" className="sd-in">
+                  Abrir en YouTube <ArrowUpRight aria-hidden size={12} />
+                </a>
+              </>
+            ) : (
+              <div className="sd-video" role="img" aria-label="Video de la sesión, próximamente">
+                <span className="sd-play">
+                  <Play aria-hidden fill="currentColor" />
+                </span>
+                <span className="hud">Próximamente</span>
+                <small>El canal de CIS publicará la sesión aquí.</small>
+              </div>
+            )}
           </section>
         </div>
 
