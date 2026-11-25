@@ -63,6 +63,13 @@ export function Pronto({ abre, cierra, nota }: { abre: string; cierra: string; n
     return () => clearInterval(t);
   }, []);
   const falta = Math.max(0, new Date(abre).getTime() - ahora);
+  useEffect(() => {
+    // Quien está esperando con la página abierta la ve abrirse sola. Solo si faltaba tiempo al mirar: así no se recarga en bucle.
+    const ms = new Date(abre).getTime() - Date.now();
+    if (ms <= 0 || ms > 86_400_000) return;
+    const t = setTimeout(() => window.location.reload(), ms + 3000 + Math.random() * 5000);
+    return () => clearTimeout(t);
+  }, [abre]);
   const dias = Math.floor(falta / 86_400_000), horas = Math.floor((falta % 86_400_000) / 3_600_000), minutos = Math.floor((falta % 3_600_000) / 60_000);
   return (
     <div className={s.col}>
