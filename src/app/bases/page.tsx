@@ -191,7 +191,7 @@ export default function BasesPage() {
                 equipo elige el suyo.
               </li>
               <li>
-                Lo elige la <B>persona líder</B> para todo el equipo, que necesita al menos <B>2 integrantes</B>. La elección
+                Lo elige la <B>persona líder</B> para todo el equipo, que necesita al menos <B>2 integrantes</B>, es decir, 2 personas en total contando a la persona líder. La elección
                 se activa en vivo durante la presentación y <B>cierra el sábado 28 a las 11:59 p. m.</B>
               </li>
               <li>
