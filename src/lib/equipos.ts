@@ -97,5 +97,5 @@ export type Miembro = {
 export type MiEquipoDetalle = {
   id: string; nombre: string; descripcion: string | null; buscando: string[]; abierto: boolean; soy_lider: boolean; n: number;
   track: null | { slug: string; nombre: string; sponsor: string | null; abre: string | null; cierra: string | null };
-  whatsapp_url: string | null; repo_url: string | null; slides_url: string | null; idea: string | null; miembros: Miembro[];
+  whatsapp_url: string | null; repo_url: string | null; slides_url: string | null; video_url: string | null; idea: string | null; miembros: Miembro[];
 };
