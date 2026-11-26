@@ -28,21 +28,21 @@ export default function GranFinal() {
             tres <span className="lav">ganadores</span>
           </h2>
           <p className="lead">
-            Sábado 5 de diciembre, todo el día, en el Auditorio CTIC de la UNI. Habrá feria de stands, los 15 finalistas
+            Sábado 5 de diciembre, todo el día, en el Auditorio de la FIIS de la UNI. Habrá feria de stands, los 15 finalistas
             (5 por track) hacen pitch y demo, y hay mini-retos con premios para <b>todas las personas que asistan</b>, no solo
             para quienes participan en la hackathon.
           </p>
 
           <div className="gf-map">
             <iframe
-              title="Mapa: CTIC UNI, Lima"
-              src="https://www.google.com/maps?q=CTIC+UNI+Lima&output=embed"
+              title="Mapa: FIIS UNI, Lima"
+              src="https://www.google.com/maps?q=FIIS+UNI+Lima&output=embed"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               allowFullScreen
             />
             <a
-              href="https://www.google.com/maps/search/?api=1&query=CTIC+UNI+Lima"
+              href="https://www.google.com/maps/search/?api=1&query=FIIS+UNI+Lima"
               target="_blank"
               rel="noopener noreferrer"
               className="gf-route"

@@ -28,7 +28,7 @@ const ITEMS = [
   },
   {
     q: "¿Cuándo y dónde es?",
-    a: "El Bootcamp es virtual, del 23 al 27 de noviembre. El hackathon va del 30 de noviembre al 5 de diciembre, y la Gran Final es presencial el sábado 5 en el Auditorio CTIC de la UNI.",
+    a: "El Bootcamp es virtual, del 23 al 27 de noviembre. El hackathon va del 30 de noviembre al 5 de diciembre, y la Gran Final es presencial el sábado 5 en el Auditorio de la FIIS de la UNI.",
   },
   {
     q: "¿Cómo me inscribo?",

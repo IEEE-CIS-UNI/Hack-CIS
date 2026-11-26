@@ -163,7 +163,7 @@ export default function MillenniumTrack({ slug }: { slug: string }) {
               <div className={s.paso}><b>Antes del sábado 28 por la noche</b> el equipo entrega su primera propuesta. Fintech acepta hasta <b>40 equipos</b> (los primeros en elegirlo) y <b>15 pasan a construir</b>.</div>
             </div>
             <p className={s.nota}>
-              En la Gran Final del sábado 5 de diciembre, en el Auditorio CTIC de la UNI, se anuncian los 5 equipos de Fintech que hacen pitch y, al final, el ganador del track.
+              En la Gran Final del sábado 5 de diciembre, en el Auditorio de la FIIS de la UNI, se anuncian los 5 equipos de Fintech que hacen pitch y, al final, el ganador del track.
             </p>
           </div>
         </section>

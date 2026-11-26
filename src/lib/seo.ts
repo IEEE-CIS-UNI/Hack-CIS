@@ -31,7 +31,7 @@ export const DATOS_ESTRUCTURADOS = {
       eventStatus: "https://schema.org/EventScheduled", eventAttendanceMode: "https://schema.org/MixedEventAttendanceMode",
       location: [
         { "@type": "VirtualLocation", url: `${SITIO}/` },
-        { "@type": "Place", name: "Auditorio CTIC, Universidad Nacional de Ingeniería", address: { "@type": "PostalAddress", addressLocality: "Lima", addressCountry: "PE" } },
+        { "@type": "Place", name: "Auditorio FIIS, Universidad Nacional de Ingeniería", address: { "@type": "PostalAddress", addressLocality: "Lima", addressCountry: "PE" } },
       ],
       organizer: ORGANIZADORES.map((o) => ({ "@id": o["@id"] })),
       sponsor: [

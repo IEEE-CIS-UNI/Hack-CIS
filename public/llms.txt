@@ -14,7 +14,7 @@ Solo esas dos agrupaciones organizan esta edición. DSC PUCP figura como apoyo, 
 - Armado de equipos: del miércoles 25 (8:00 p. m.) al jueves 26 de noviembre, en https://hackcis.lat/equipos
 - Presentación de sponsors: viernes 27 a las 8:30 p. m.; la elección de track se abre cuando terminan los tres pitches.
 - Construcción (unas 100 horas): del lunes 30 de noviembre por la noche al sábado 5 de diciembre.
-- Gran Final presencial: sábado 5 de diciembre, Auditorio CTIC de la UNI, Lima.
+- Gran Final presencial: sábado 5 de diciembre, Auditorio de la FIIS de la UNI, Lima.
 
 ## Participación
 - Para la hackathon: estudiantes de universidades e institutos del país. 250 cupos y lista de espera.

@@ -161,7 +161,7 @@ export default function BasesPage() {
                 viernes 27; puedes apoyarte en herramientas, librerías y código abierto existentes.
               </li>
               <li>
-                <B>Gran Final</B> — presencial, sábado 5 de diciembre, en el Auditorio CTIC de la UNI, durante
+                <B>Gran Final</B> — presencial, sábado 5 de diciembre, en el Auditorio de la FIIS de la UNI, durante
                 todo el día. Habrá feria de stands, y los mini-retos y premios son para{" "}
                 <B>todas las personas que asistan</B>, no solo para quienes participan en la hackathon. Para los
                 finalistas, lo ideal es que al menos una persona del equipo pueda asistir en Lima.

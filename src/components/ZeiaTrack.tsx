@@ -132,7 +132,7 @@ export default function ZeiaTrack({ slug }: { slug: string }) {
               <div className={s.paso}><b>Antes del sábado 28 por la noche</b> el equipo entrega su primera propuesta. Pasan 5 equipos por track.</div>
             </div>
             <p className={s.nota}>
-              El ganador del track se anuncia en la Gran Final del sábado 5 de diciembre, en el Auditorio CTIC de la UNI.
+              El ganador del track se anuncia en la Gran Final del sábado 5 de diciembre, en el Auditorio de la FIIS de la UNI.
             </p>
           </div>
         </section>

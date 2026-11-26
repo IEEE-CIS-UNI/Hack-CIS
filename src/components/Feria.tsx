@@ -18,7 +18,7 @@ const PUNTOS = [
   },
 ];
 
-/** La feria de stands de la Gran Final (sábado 5 de diciembre, Auditorio CTIC, UNI). */
+/** La feria de stands de la Gran Final (sábado 5 de diciembre, Auditorio FIIS, UNI). */
 export default function Feria() {
   return (
     <section id="feria" className="pad">
@@ -45,7 +45,7 @@ export default function Feria() {
         </div>
 
         <p className="pr-nota">
-          Sábado 5 de diciembre · Auditorio CTIC, UNI. Recibes tu <b>pasaporte de stands</b> al registrarte, desde las 9:00 a. m.
+          Sábado 5 de diciembre · Auditorio FIIS, UNI. Recibes tu <b>pasaporte de stands</b> al registrarte, desde las 9:00 a. m.
         </p>
       </div>
     </section>
