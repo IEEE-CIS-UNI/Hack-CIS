@@ -177,7 +177,7 @@ export default function BasesPage() {
                 <B>La plataforma de equipos abre el miércoles 25 de noviembre a las 8:00 p. m.</B> y cierra el <B>viernes 27 a las 8:30 p. m.</B> (hora de Lima), antes de la presentación de los tracks. Ahí cada quien crea su equipo o se une a uno; el track se elige después.
               </li>
               <li>
-                <Cinta chica /> <B>A pedido de ustedes, ya no es obligatorio</B> que el equipo tenga carreras o
+                <B>A pedido de ustedes, ya no es obligatorio</B> que el equipo tenga carreras o
                 facultades distintas: es opcional. Un equipo diverso suele complementarse mejor, pero cada quien
                 arma su equipo con quienes prefiera.
               </li>

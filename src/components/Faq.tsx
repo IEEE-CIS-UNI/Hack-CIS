@@ -12,7 +12,7 @@ const ITEMS = [
   },
   {
     q: "¿Me inscribo solo o con mi equipo?",
-    a: "Te inscribes solo. Armas tu equipo hasta el viernes 27 de noviembre a las 8:30 p. m.: de 2 a 4 integrantes, de las carreras o facultades que quieran (nuevo: a pedido de ustedes, ya no es obligatorio que sean distintas).",
+    a: "Te inscribes solo. Armas tu equipo hasta el viernes 27 de noviembre a las 8:30 p. m.: de 2 a 4 integrantes, de las carreras o facultades que quieran (a pedido de ustedes, ya no es obligatorio que sean distintas).",
   },
   {
     q: "¿Qué pasa si no paso a finalista?",
