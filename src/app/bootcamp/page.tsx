@@ -51,11 +51,10 @@ export default function BootcampPage() {
             <b>Viernes 27 de noviembre, 8:30 p. m.:</b> cada sponsor presenta su reto y eliges en qué track competir.
           </li>
           <li>
-            <b>Hasta el sábado 28 por la noche</b> tu equipo entrega su propuesta.
+            <b>Todos los equipos construyen:</b> 100 horas, del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 a. m.
           </li>
           <li>
-            <b>Lunes 30 a las 6:00 pm</b> se anuncian los 25 equipos que construyen: 5 en Energía, 5 en Cloud y 15 en Fintech. En la Gran Final hacen pitch 15 finalistas, 5 por track. Los demás se llevan todo lo
-            aprendido.
+            <b>Sábado 5, Gran Final:</b> se anuncian los 15 finalistas, 5 por track, y hacen pitch.
           </li>
         </ul>
       </section>

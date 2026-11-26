@@ -125,7 +125,7 @@ export default function ManantialTrack({ slug }: { slug: string }) {
               <div className={s.paso}><b>El viernes 27 de noviembre</b>, cuando los tres sponsors terminen sus pitches (desde las 8:30 p. m.), cada equipo elige su track.</div>
               <div className={s.paso}><b>El líder</b> se une al track y, automáticamente, todo su equipo se une con él.</div>
               <div className={s.paso}><b>Equipos de 2 a 4 personas</b>, de las carreras o facultades que quieran. <span className={s.nuevo}>Nuevo</span> A pedido de ustedes, ya no es obligatorio que sean distintas.</div>
-              <div className={s.paso}><b>Antes del sábado 28 por la noche</b> el equipo entrega su primera propuesta. Pasan 5 equipos por track.</div>
+              <div className={s.paso}><b>Del sábado 28 a las 00:00 al miércoles 2 a las 4:00 a. m.</b> construyen y entregan su proyecto. Los 5 finalistas del track se anuncian el sábado 5.</div>
             </div>
             <p className={s.nota}>
               El ganador del track se anuncia en la Gran Final del sábado 5 de diciembre, en el Auditorio de la FIIS de la UNI.

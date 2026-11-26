@@ -60,7 +60,7 @@ export default function MillenniumTrack({ slug }: { slug: string }) {
             fondo: "radial-gradient(760px 440px at 100% 0, rgba(0,104,169,.22), transparent 62%), radial-gradient(640px 440px at 0 100%, rgba(0,104,169,.10), transparent 62%), #fff",
             tinta: "#101e4b", texto: "#46536b", acento: "#0068a9", acento2: "#35a7e6", cinta: "#f2b705", cintaTexto: "#101e4b", botonTexto: "#ffffff",
           }}
-          datos={["★ Track dorado: S/ 1 000 + cartas oferta", "Hasta 40 equipos · 15 construyen", "Gran Final · sáb 5 dic · UNI"]}
+          datos={["★ Track dorado: S/ 1 000 + cartas oferta", "Hasta 40 equipos · todos construyen", "Gran Final · sáb 5 dic · UNI"]}
         >
           Millennium es un grupo peruano de finanzas con foco en la <strong>inclusión financiera impulsada por IA</strong>: ayuda a
           conductores a conseguir su moto o su taxi como herramienta de trabajo, a través de sus marcas Lima Bikes y Lizzo. En
@@ -160,7 +160,7 @@ export default function MillenniumTrack({ slug }: { slug: string }) {
               <div className={s.paso}><b>El viernes 27 de noviembre</b>, cuando los tres sponsors terminen sus pitches (desde las 8:30 p. m.), cada equipo elige su track.</div>
               <div className={s.paso}><b>El líder</b> se une al track y, automáticamente, todo su equipo se une con él.</div>
               <div className={s.paso}><b>Equipos de 2 a 4 personas</b>, de las carreras o facultades que quieran. <span className={s.nuevo}>Nuevo</span> A pedido de ustedes, ya no es obligatorio que sean distintas.</div>
-              <div className={s.paso}><b>Antes del sábado 28 por la noche</b> el equipo entrega su primera propuesta. Fintech acepta hasta <b>40 equipos</b> (los primeros en elegirlo) y <b>15 pasan a construir</b>.</div>
+              <div className={s.paso}><b>Del sábado 28 a las 00:00 al miércoles 2 a las 4:00 a. m.</b> construyen y entregan su proyecto. Fintech acepta hasta <b>40 equipos</b> (los primeros en elegirlo) y <b>todos construyen</b>.</div>
             </div>
             <p className={s.nota}>
               En la Gran Final del sábado 5 de diciembre, en el Auditorio de la FIIS de la UNI, se anuncian los 5 equipos de Fintech que hacen pitch y, al final, el ganador del track.

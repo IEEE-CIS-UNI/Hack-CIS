@@ -27,7 +27,7 @@ export const DATOS_ESTRUCTURADOS = {
     {
       "@type": "Event", "@id": `${SITIO}/#hackathon`, name: `${NOMBRE} · The Agentic Era`, alternateName: ["HackCIS 2026", "Hack CIS UNI 2026"],
       description: DESCRIPCION, url: `${SITIO}/`, image: [`${SITIO}/opengraph-image.jpg`], inLanguage: "es-PE",
-      startDate: "2026-11-30T22:00:00-05:00", endDate: "2026-12-05",
+      startDate: "2026-11-28T00:00:00-05:00", endDate: "2026-12-05",
       eventStatus: "https://schema.org/EventScheduled", eventAttendanceMode: "https://schema.org/MixedEventAttendanceMode",
       location: [
         { "@type": "VirtualLocation", url: `${SITIO}/` },

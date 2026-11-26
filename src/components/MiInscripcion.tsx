@@ -446,9 +446,9 @@ export default function MiInscripcion() {
               <b>Hackathon</b>
               <small>
                 {hack
-                  ? `Inscrito n.º ${numeroBonito(hack.number)} · 30 nov – 5 dic`
+                  ? `Inscrito n.º ${numeroBonito(hack.number)} · 28 nov – 5 dic`
                   : !hackAbierta() ? "Las inscripciones a la hackathon ya cerraron"
-                  : p.verified ? "30 nov – 5 dic · cierra el 25 nov, 11:59 p. m." : p.institution ? "Completa los datos de arriba para sumarte" : "Necesita correo institucional: mira arriba"}
+                  : p.verified ? "28 nov – 5 dic · cierra el 25 nov, 11:59 p. m." : p.institution ? "Completa los datos de arriba para sumarte" : "Necesita correo institucional: mira arriba"}
               </small>
             </div>
             {hack ? (

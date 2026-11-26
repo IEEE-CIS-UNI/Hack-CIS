@@ -40,19 +40,13 @@ function Seccion({ n, titulo, children }: { n: string; titulo: string; children:
 
 const B = ({ children }: { children: React.ReactNode }) => <strong className="text-white">{children}</strong>;
 
-/** Rúbrica de la primera propuesta: con ella se eligen los 25 equipos que construyen. Suma 100. */
+/** Rúbrica de la revisión de proyectos: con ella se eligen los 15 finalistas (5 por track). Suma 100. */
 const RUBRICA: [string, string, number][] = [
-  ["Problema y reto del track", "Entiende el reto del sponsor y lo plantea con claridad: a quién afecta y por qué importa.", 20],
-  ["Solución propuesta", "Responde al problema, aporta valor y se explica en pocas líneas.", 20],
-  ["Uso de agentes de IA", "Qué hará el agente, con qué herramientas y por qué la solución lo necesita.", 20],
-  ["Viabilidad y plan de desarrollo", "Alcanzable en 100 horas: alcance realista, hitos y roles del equipo.", 20],
-  ["Estructura de la propuesta", "Incluye problema, solución, tecnología, plan y uso de IA. Ordenada y legible.", 20],
-];
-/** [track, equipos que pasan a construir, finalistas que hacen pitch] */
-const PASAN: [string, string, string][] = [
-  ["IA & Energía (Zeia)", "5", "5"],
-  ["IA & Cloud (Manantial)", "5", "5"],
-  ["IA & Fintech (Millennium), track dorado", "15", "5 de los 15"],
+  ["Problema y reto del track", "Entiende el reto del sponsor y lo resuelve: a quién afecta y por qué importa.", 20],
+  ["Prototipo funcionando", "Lo que se muestra en el video y está en el repositorio funciona y responde al problema.", 25],
+  ["Uso de agentes de IA", "Qué hace el agente, con qué herramientas se construyó y por qué la solución lo necesita.", 20],
+  ["Viabilidad técnica y de negocio", "Se puede llevar a la práctica: tecnología, costos y siguiente paso realistas.", 20],
+  ["Presentación de la entrega", "Video, láminas y repositorio claros, completos y fáciles de revisar.", 15],
 ];
 /** Rúbrica de la Gran Final: peso de cada criterio en porcentaje. */
 const RUBRICA_FINAL: [string, number][] = [
@@ -149,22 +143,24 @@ export default function BasesPage() {
                 <B>Viernes 27 de noviembre, 8:30 p. m.</B> — presentación de sponsors: cada uno expone su reto y, cuando terminan los tres pitches, se activan la elección de track y los retos.
               </li>
               <li>
-                <B>Propuesta</B> — cada equipo entrega su primera propuesta <B>hasta el sábado 28 de noviembre a las 11:59 p. m.</B>, en la página <Link href="/equipos/mi-equipo">«Mi equipo»</Link>: enlace al repositorio, PDF con las láminas e idea. Sin equipo no se puede entregar.
+                <B>Build · todos los equipos construyen</B> — 100 horas, <B>del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 a. m.</B> (hora de Lima). Después de la presentación de retos del viernes 27 pueden planificar y diseñar; el reloj y los commits cuentan desde las 00:00 del sábado. La solución debe responder al reto que el sponsor presenta ese viernes; puedes apoyarte en herramientas, librerías y código abierto existentes.
               </li>
               <li>
-                <B>Finalistas</B> — el lunes 30 de noviembre a las 6:00 pm se anuncian los{" "}
-                <B>25 equipos</B> que pasan: 5 en Energía, 5 en Cloud y 15 en Fintech. En la Gran Final hacen pitch <B>15 finalistas, 5 por track</B>: los 5 de Fintech los elige Millennium entre sus 15 y se anuncian en la misma Gran Final. Los demás se llevan todo lo aprendido.
+                <B>Entrega</B> — hasta el <B>miércoles 2 de diciembre a las 4:00 a. m.</B>, en la página <Link href="/equipos/mi-equipo">«Mi equipo»</Link>: <B>repositorio</B> (no valen los commits fuera del plazo), <B>video demo de máximo 1 minuto</B> y <B>láminas en PDF, máximo 7</B>. Sin equipo no se puede entregar.
               </li>
               <li>
-                <B>Build</B> — unas 100 horas, desde el lunes 30 de noviembre por la noche hasta la Gran Final,
-                con mentores y mini-retos con premios. La solución debe responder al reto que el sponsor presenta el
-                viernes 27; puedes apoyarte en herramientas, librerías y código abierto existentes.
+                <B>Revisión</B> — del miércoles 2 al viernes 4 de diciembre, la organización revisa los proyectos entregados.
+              </li>
+              <li>
+                <B>Finalistas</B> — se anuncian <B>el mismo sábado 5, temprano, en la Gran Final</B>: <B>15 equipos, 5 por track</B>. Quienes hacen pitch se conocen recién en la Gran Final, así que <B>todos los equipos deben llegar preparados</B>.
               </li>
               <li>
                 <B>Gran Final</B> — presencial, sábado 5 de diciembre, en el Auditorio de la FIIS de la UNI, durante
                 todo el día. Habrá feria de stands, y los mini-retos y premios son para{" "}
-                <B>todas las personas que asistan</B>, no solo para quienes participan en la hackathon. Para los
-                finalistas, lo ideal es que al menos una persona del equipo pueda asistir en Lima.
+                <B>todas las personas que asistan</B>, no solo para quienes participan en la hackathon.
+              </li>
+              <li>
+                <B>Asistencia a la Gran Final</B> — para hacer pitch, el equipo necesita personas presentes en la sala: los equipos de <B>4</B>, <B>mínimo 2</B>; los de <B>2 o 3</B>, <B>mínimo 1</B>. Los equipos de <B>provincia o del extranjero</B>, <B>mínimo 1</B>. Idealmente, que asista al menos la mitad del equipo.
               </li>
               <li>
                 <B>Pitch final</B> — formato libre: cada equipo finalista tiene <B>hasta 4 minutos</B> de pitch y{" "}
@@ -174,11 +170,11 @@ export default function BasesPage() {
           </Seccion>
 
           <Seccion n="04" titulo="Equipos y tracks">
-            <p>Los equipos se arman durante el Bootcamp, no al inscribirse.</p>
+            <p>Los equipos se arman durante la semana del Bootcamp, no al inscribirse.</p>
             <ul>
               <li>De <B>2 a 4 integrantes</B>, que estén inscritos en la hackathon y no tengan otro equipo.</li>
               <li>
-                <B>La plataforma de equipos abre el miércoles 25 de noviembre a las 8:00 p. m.</B> y cierra el jueves 26 a las 11:59 p. m. (hora de Lima). Ahí cada quien crea su equipo o se une a uno; el track se elige después.
+                <B>La plataforma de equipos abre el miércoles 25 de noviembre a las 8:00 p. m.</B> y cierra el <B>viernes 27 a las 8:30 p. m.</B> (hora de Lima), antes de la presentación de los tracks. Ahí cada quien crea su equipo o se une a uno; el track se elige después.
               </li>
               <li>
                 <Cinta chica /> <B>A pedido de ustedes, ya no es obligatorio</B> que el equipo tenga carreras o
@@ -205,8 +201,8 @@ export default function BasesPage() {
           </Seccion>
 
           <Seccion n="05" titulo="Evaluación y premios">
-            <p className="font-bold text-white">Ronda 1 · selección de los 25 equipos (100 puntos)</p>
-            <p>Se califica la primera propuesta de cada equipo con esta rúbrica:</p>
+            <p className="font-bold text-white">Revisión de proyectos · selección de los 15 finalistas (100 puntos)</p>
+            <p>Se califica el proyecto que cada equipo entrega al cierre de las 100 horas, con esta rúbrica:</p>
             <div className="overflow-hidden rounded-xl border border-white/15">
               <table className="w-full border-collapse text-[0.95rem]">
                 <thead><tr><th scope="col" className={cabeza}>Criterio y qué se revisa</th><th scope="col" className={`${cabeza} w-20 !text-right`}>Puntos</th></tr></thead>
@@ -219,24 +215,13 @@ export default function BasesPage() {
             </div>
             <p className="mt-4 font-bold text-white">Proceso de selección</p>
             <ul>
-              <li>Cada propuesta la revisan <B>2 revisores internos</B> por separado; el puntaje final es el <B>promedio</B>.</li>
-              <li>Si la diferencia entre ambos supera los <B>15 puntos</B>, un <B>tercer revisor</B> también la puntúa y se promedian los dos puntajes más cercanos.</li>
-              <li>Pasan a construir <B>25 equipos</B>: los de mayor puntaje en cada track, según la tabla.</li>
-              <li><B>Desempate:</B> mayor puntaje en «Solución propuesta»; si sigue el empate, en «Viabilidad y plan de desarrollo».</li>
+              <li>Cada proyecto lo revisan <B>2 revisores internos</B> por separado; el puntaje final es el <B>promedio</B>.</li>
+              <li>Si la diferencia entre ambos supera los <B>15 puntos</B>, un <B>tercer revisor</B> también lo puntúa y se promedian los dos puntajes más cercanos.</li>
+              <li>Son finalistas los <B>5 mejores de cada track</B>. En Fintech, los 5 los elige <B>Millennium</B> entre los proyectos entregados en su track.</li>
+              <li><B>Desempate:</B> mayor puntaje en «Prototipo funcionando»; si sigue el empate, en «Viabilidad técnica y de negocio».</li>
               <li><B>Conflicto de interés:</B> quien revisa lo declara si conoce a un equipo, y no lo puntúa.</li>
+              <li>Los 15 finalistas se anuncian el sábado 5, temprano, en la Gran Final.</li>
             </ul>
-            <div className="overflow-hidden rounded-xl border border-white/15">
-              <table className="w-full border-collapse text-[0.95rem]">
-                <thead><tr><th scope="col" className={cabeza}>Track</th><th scope="col" className={cabeza}>Construyen</th><th scope="col" className={cabeza}>Pitch final</th></tr></thead>
-                <tbody>
-                  {PASAN.map(([track, construyen, pitch]) => (
-                    <tr key={track}><td className={celda}><B>{track}</B></td><td className={celda}>{construyen}</td><td className={celda}>{pitch}</td></tr>
-                  ))}
-                  <tr><td className={celda}><B>Total</B></td><td className={`${celda} font-bold text-white`}>25</td><td className={`${celda} font-bold text-white`}>15</td></tr>
-                </tbody>
-              </table>
-            </div>
-            <p>En Fintech, los 5 finalistas los elige <B>Millennium</B> entre los 15 que construyen y se anuncian en la misma Gran Final.</p>
             <p className="mt-4 font-bold text-white">Gran Final · rúbrica de evaluación</p>
             <div className="overflow-hidden rounded-xl border border-white/15">
               <table className="w-full border-collapse text-[0.95rem]">
@@ -366,11 +351,14 @@ export default function BasesPage() {
           <Seccion n="10" titulo="Cambios en estas bases">
             <p>
               Si algo cambia, se actualiza esta página y se avisa por la comunidad de WhatsApp. Nunca se
-              cambian las reglas de una etapa que ya empezó.
+              cambian las reglas de una etapa que ya empezó, salvo para ampliar plazos a favor de quienes participan.
             </p>
             <ul>
               <li>
-                <Cinta chica /> <B>25 de noviembre:</B> se publicaron las rúbricas y el proceso de selección, la presentación
+                <Cinta chica /> <B>26 de noviembre:</B> a pedido del público y por el gran interés, se eliminó el filtro de 25 equipos (<B>todos los equipos construyen</B>) y el armado de equipos se amplió hasta el viernes 27 a las 8:30 p. m. Se fijó la asistencia mínima a la Gran Final. Las 100 horas van del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 a. m. y los 15 finalistas se anuncian el mismo día de la Gran Final.
+              </li>
+              <li>
+                <B>25 de noviembre:</B> se publicaron las rúbricas y el proceso de selección, la presentación
                 de sponsors quedó el viernes 27 a las 8:30 p. m. y se detallaron los plazos de tracks, entrega y premios.
               </li>
               <li>

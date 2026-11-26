@@ -27,7 +27,7 @@ export function AvisoTrackDorado() {
             <b>carta oferta para cada integrante</b> para entrar a trabajar en Millennium, con una entrevista de por medio.
           </p>
           <p className="aviso-p">
-            Acepta hasta <b>40 equipos</b> y <b>15 pasan a construir</b>: más lugares para tu idea.
+            Acepta hasta <b>40 equipos</b> y <b>todos construyen</b>.
           </p>
           <Image src="/logos/millennium-blanco.png" width={640} height={274} alt="Millennium" unoptimized className="aviso-logo" />
           <Link href="/tracks/fintech" className="aviso-l">
@@ -39,24 +39,29 @@ export function AvisoTrackDorado() {
   );
 }
 
-/** El aviso del cambio de regla de equipos (para la portada y el bootcamp). */
+/** El aviso del cambio de reglas (para la portada y el bootcamp). */
 export default function AvisoEquipos({ enlace = true }: { enlace?: boolean }) {
   return (
-    <section className="aviso-nuevo" aria-label="Novedad: equipos">
+    <section className="aviso-nuevo" aria-label="Novedad: todos los equipos construyen">
       <div className="wrap">
         <div className="aviso-caja">
           <Cinta />
-          <p className="aviso-t">A pedido de ustedes</p>
+          <p className="aviso-t">¡Todos los equipos construyen!</p>
           <p className="aviso-p">
-            Ya <b>no es obligatorio</b> que tu equipo tenga carreras o facultades distintas. Armen su equipo, de 2 a 4
-            personas, con quienes quieran. <b>¡Aprovechen el bootcamp para formar equipos!</b>
+            A pedido del público y por el gran interés, con <b>más de 350 personas registradas</b>, <b>eliminamos el filtro de 25 equipos</b>.
           </p>
           <p className="aviso-p">
-            <b>La plataforma de equipos abre el miércoles 25 de noviembre a las 8:00 p. m.</b> y cierra el jueves 26 a las 11:59 p. m.
+            <b>100 horas:</b> del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 a. m. <b>Los 15 finalistas que hacen pitch se anuncian en la misma Gran Final</b>, el sábado 5.
+          </p>
+          <p className="aviso-p">
+            <b>Asistencia:</b> equipos de 4, mínimo 2; de 2 o 3, mínimo 1. Provincia o extranjero, mínimo 1.
+          </p>
+          <p className="aviso-p">
+            <b>Más tiempo para armar equipo:</b> hasta el viernes 27 a las 8:30 p. m.
           </p>
           {enlace && (
-            <Link href="/equipos" className="aviso-l">
-              Ver cuándo abre <ArrowRight aria-hidden size={13} />
+            <Link href="/bases" className="aviso-l">
+              Ver las bases <ArrowRight aria-hidden size={13} />
             </Link>
           )}
         </div>

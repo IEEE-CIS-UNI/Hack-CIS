@@ -11,19 +11,21 @@ Solo esas dos agrupaciones organizan esta edición. DSC PUCP figura como apoyo, 
 
 ## Fechas (hora de Lima, 2026)
 - Bootcamp virtual: del lunes 23 al viernes 27 de noviembre. Abierto a todos y sin costo.
-- Armado de equipos: del miércoles 25 (8:00 p. m.) al jueves 26 de noviembre, en https://hackcis.lat/equipos
+- Armado de equipos: del miércoles 25 (8:00 p. m.) al viernes 27 de noviembre (8:30 p. m.), en https://hackcis.lat/equipos
 - Presentación de sponsors: viernes 27 a las 8:30 p. m.; la elección de track se abre cuando terminan los tres pitches.
-- Construcción (unas 100 horas): del lunes 30 de noviembre por la noche al sábado 5 de diciembre.
+- Construcción (100 horas, todos los equipos): del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 a. m.
 - Gran Final presencial: sábado 5 de diciembre, Auditorio de la FIIS de la UNI, Lima.
 
 ## Participación
 - Para la hackathon: estudiantes de universidades e institutos del país. 250 cupos y lista de espera.
 - Las inscripciones a la hackathon cierran el miércoles 25 de noviembre a las 11:59 p. m.; el Bootcamp sigue abierto.
-- Pasan 25 equipos a construir (5 en Energía, 5 en Cloud y 15 en Fintech) y 15 finalistas hacen pitch, 5 por track.
+- No hay filtro previo: todos los equipos construyen. Los 15 finalistas (5 por track) se anuncian el 5 de diciembre en la misma Gran Final.
+- Asistencia mínima para hacer pitch: equipos de 4, 2 personas; de 2 o 3, 1 persona; de provincia o del extranjero, 1 persona.
 - Las soluciones quedan como código abierto con licencia MIT; la autoría es del equipo.
 
-## Evaluación de la primera propuesta
-- 100 puntos: problema y reto del track, solución, uso de agentes de IA, viabilidad y plan, y estructura (20 cada uno).
+## Revisión de proyectos (2 al 4 de diciembre)
+- 100 puntos: problema y reto del track 20, prototipo funcionando 25, uso de agentes de IA 20, viabilidad 20 y presentación 15.
+- Entrega: repositorio (sin commits fuera del plazo), video demo de máximo 1 minuto y PDF de máximo 7 láminas.
 - Dos revisores internos; un tercero si difieren en más de 15 puntos. Detalle en https://hackcis.lat/bases
 - Gran Final: impacto en el negocio del track 50 %, viabilidad técnica y prototipo 20 %, creatividad 20 %, uso de agentes de IA 5 %, calidad del pitch 5 %.
 
@@ -37,7 +39,7 @@ Solo esas dos agrupaciones organizan esta edición. DSC PUCP figura como apoyo, 
 - Cada integrante del equipo ganador de Fintech recibe una carta oferta de Millennium, con una entrevista de por medio.
 - Sorteos de cursos y merch.
 - Los premios se entregan en la Gran Final o, a más tardar, en 5 días hábiles.
-- Pitch final: hasta 4 minutos y 2 de preguntas. La primera propuesta se entrega hasta el sábado 28 a las 11:59 p. m.
+- Pitch final: hasta 4 minutos y 2 de preguntas. El proyecto se entrega hasta el miércoles 2 de diciembre a las 4:00 a. m.
 
 ## Sponsors y aliados
 - Sponsors de track: Zeia, Manantial, Millennium.

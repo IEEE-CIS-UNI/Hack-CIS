@@ -12,11 +12,11 @@ const ITEMS = [
   },
   {
     q: "¿Me inscribo solo o con mi equipo?",
-    a: "Te inscribes solo. Armas tu equipo durante el Bootcamp: de 2 a 4 integrantes, de las carreras o facultades que quieran (nuevo: a pedido de ustedes, ya no es obligatorio que sean distintas).",
+    a: "Te inscribes solo. Armas tu equipo hasta el viernes 27 de noviembre a las 8:30 p. m.: de 2 a 4 integrantes, de las carreras o facultades que quieran (nuevo: a pedido de ustedes, ya no es obligatorio que sean distintas).",
   },
   {
     q: "¿Qué pasa si no paso a finalista?",
-    a: "Pasan 25 equipos al build: 5 de Energía, 5 de Cloud y 15 de Fintech, el track dorado. Al final hacen pitch 15 finalistas, 5 por track. Si no pasas, igual te llevas el Bootcamp: entrenamiento en prototipado rápido y pitch, además de la comunidad.",
+    a: "Todos los equipos construyen. Los 15 finalistas, 5 por track, se anuncian el sábado 5 en la misma Gran Final y hacen pitch ese día. Para pitchear, los equipos de 4 necesitan al menos 2 personas presentes y los de 2 o 3, al menos 1; los de provincia o del extranjero, al menos 1. Si no quedas, igual te llevas lo que construiste, el Bootcamp: entrenamiento en prototipado rápido y pitch, además de la comunidad.",
   },
   {
     q: "¿Necesito experiencia con IA?",
@@ -28,7 +28,7 @@ const ITEMS = [
   },
   {
     q: "¿Cuándo y dónde es?",
-    a: "El Bootcamp es virtual, del 23 al 27 de noviembre. El hackathon va del 30 de noviembre al 5 de diciembre, y la Gran Final es presencial el sábado 5 en el Auditorio de la FIIS de la UNI.",
+    a: "El Bootcamp es virtual, del 23 al 27 de noviembre. El hackathon va del 28 de noviembre al 5 de diciembre, y la Gran Final es presencial el sábado 5 en el Auditorio de la FIIS de la UNI.",
   },
   {
     q: "¿Cómo me inscribo?",
@@ -36,7 +36,7 @@ const ITEMS = [
   },
   {
     q: "¿Cuánto dura el build?",
-    a: "Unas 100 horas, desde el lunes 30 de noviembre por la noche hasta la Gran Final del sábado 5 de diciembre. Solo construyen los 25 equipos que pasan.",
+    a: "100 horas, del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 a. m. Construyen todos los equipos. Después viene la revisión y, el sábado 5, la Gran Final.",
   },
   {
     q: "¿Cuáles son los tracks?",

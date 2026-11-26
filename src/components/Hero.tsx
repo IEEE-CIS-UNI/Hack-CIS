@@ -6,7 +6,7 @@ import Logos from "./Logos";
 const MESSAGES = [
   "¡Algo grande se acerca!",
   "Cuatro humanos, un agente. Así se construye en la era agéntica.",
-  "Solo 25 equipos construyen. ¡Prepárate en el Bootcamp!",
+  "¡Ahora todos los equipos construyen! 100 horas desde el 28/11.",
   "¡Inscripciones el 13/11!",
   "Bootcamp virtual desde el 23/11.",
 ];

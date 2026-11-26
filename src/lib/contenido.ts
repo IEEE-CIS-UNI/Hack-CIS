@@ -78,7 +78,7 @@ export const APOYO_ROLES = [
     text: "Evalúas los pitch y las demos de los finalistas el sábado 5 de diciembre.",
   },
   {
-    role: "Jurado del filtro inicial",
-    text: "Opcional: revisas las propuestas de los equipos antes de elegir a los finalistas.",
+    role: "Revisor de proyectos",
+    text: "Opcional: del 2 al 4 de diciembre revisas los proyectos entregados para elegir a los finalistas.",
   },
 ];

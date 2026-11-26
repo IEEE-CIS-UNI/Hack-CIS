@@ -204,11 +204,11 @@ export default function MiEquipo() {
       </div>
 
       <div className="box">
-        <p className="box-h">Entregables · primera propuesta</p>
-        <p className={s.sub}>Cualquiera del equipo puede completarlos. La primera propuesta se entrega <b>hasta la noche del sábado 28 de noviembre</b>. Sin equipo y sin entregables no se puede pasar a la selección de los 25 equipos que construyen.</p>
+        <p className="box-h">Entregables · proyecto</p>
+        <p className={s.sub}>Cualquiera del equipo puede completarlos, hasta el <b>miércoles 2 de diciembre a las 4:00 a. m.</b> Se pide el repositorio (no valen commits fuera del plazo), un video demo de máximo 1 minuto (pronto habilitamos su casilla) y las láminas en PDF, máximo 7.</p>
         <ul className={s.estado}>
           <li><Check size={16} aria-hidden className={eq.repo_url ? s.ok : ""} style={{ opacity: eq.repo_url ? 1 : .3 }} /> Repositorio creado</li>
-          <li><Check size={16} aria-hidden className={eq.slides_url ? s.ok : ""} style={{ opacity: eq.slides_url ? 1 : .3 }} /> PDF con las láminas de la solución</li>
+          <li><Check size={16} aria-hidden className={eq.slides_url ? s.ok : ""} style={{ opacity: eq.slides_url ? 1 : .3 }} /> PDF con las láminas (máximo 7)</li>
           <li><Check size={16} aria-hidden className={eq.idea ? s.ok : ""} style={{ opacity: eq.idea ? 1 : .3 }} /> Idea del equipo</li>
         </ul>
         <div className={s.campo}><label htmlFor="e-repo">Enlace del repositorio (GitHub, GitLab…)</label><input id="e-repo" className="rg-input" value={repo} onChange={(ev) => setRepo(ev.target.value)} placeholder="https://github.com/su-equipo/su-proyecto" /></div>
