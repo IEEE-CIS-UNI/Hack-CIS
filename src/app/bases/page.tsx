@@ -374,7 +374,7 @@ export default function BasesPage() {
                 de sponsors quedó el viernes 27 a las 8:30 p. m. y se detallaron los plazos de tracks, entrega y premios.
               </li>
               <li>
-                <Cinta chica /> <B>22 de noviembre:</B> se eliminó la regla de que el equipo tuviera al menos 2 carreras o
+                <B>22 de noviembre:</B> se eliminó la regla de que el equipo tuviera al menos 2 carreras o
                 facultades distintas; ahora es opcional.
               </li>
             </ul>
