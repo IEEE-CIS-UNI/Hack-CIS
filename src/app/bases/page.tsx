@@ -146,7 +146,7 @@ export default function BasesPage() {
                 {SESIONES.map((s) => s.title).join("; ")}.
               </li>
               <li>
-                <B>Viernes 27 de noviembre, 8:30 p. m.</B> — presentación de sponsors: cada uno expone su reto y, durante esa sesión, se activa la elección de track.
+                <B>Viernes 27 de noviembre, 8:30 p. m.</B> — presentación de sponsors: cada uno expone su reto y, cuando terminan los tres pitches, se activan la elección de track y los retos.
               </li>
               <li>
                 <B>Propuesta</B> — cada equipo entrega su primera propuesta <B>hasta el sábado 28 de noviembre a las 11:59 p. m.</B>, en la página <Link href="/equipos/mi-equipo">«Mi equipo»</Link>: enlace al repositorio, PDF con las láminas e idea. Sin equipo no se puede entregar.
@@ -187,12 +187,12 @@ export default function BasesPage() {
               </li>
               <li>Hay <B>tres tracks</B>. Son <B>IA &amp; Energía</B>, con Zeia como sponsor; <B>IA &amp; Cloud</B>, con Manantial; e <B>IA &amp; Fintech</B>, con Millennium: el <B>track dorado</B>.</li>
               <li>
-                El track <B>no se elige al inscribirse</B>: el viernes 27, durante la presentación de sponsors (8:30 p. m.), cada
+                El track <B>no se elige al inscribirse</B>: el viernes 27, cuando terminen los pitches de los tres sponsors (desde las 8:30 p. m.), cada
                 equipo elige el suyo.
               </li>
               <li>
                 Lo elige la <B>persona líder</B> para todo el equipo, que necesita al menos <B>2 integrantes</B>, es decir, 2 personas en total contando a la persona líder. La elección
-                se activa en vivo durante la presentación y <B>cierra el sábado 28 a las 11:59 p. m.</B>
+                se activa en vivo cuando terminan los tres pitches y <B>cierra el sábado 28 a las 11:59 p. m.</B>
               </li>
               <li>
                 <B>Fintech acepta hasta 40 equipos</B>, por orden de elección. Energía y Cloud no tienen tope.

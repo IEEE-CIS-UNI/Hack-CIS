@@ -45,7 +45,7 @@ export default function AperturaTrack({ abre, alCambiar, nota = "El líder del e
     return (
       <div className={s.caja}>
         <p className={s.k}>Se abre en vivo</p>
-        <p className={s.t}>La elección de track se activa <b>durante la presentación de sponsors</b>, el {PRESENTACION} (hora de Lima).</p>
+        <p className={s.t}>La elección de track y los retos se activan <b>cuando los tres sponsors terminen sus pitches</b>, el {PRESENTACION} en adelante (hora de Lima).</p>
         <p className={s.n}>Deja esta página abierta: la cuenta regresiva aparecerá sola.</p>
       </div>
     );

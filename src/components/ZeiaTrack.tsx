@@ -3,6 +3,8 @@ import Link from "next/link";
 import { Poppins } from "next/font/google";
 import { ArrowLeft, BarChart3, BellRing, Gauge, Power, Receipt, Zap } from "lucide-react";
 import UnirseTrack from "@/components/UnirseTrack";
+import ContadorTrack from "@/components/ContadorTrack";
+import RetoEnVivo from "@/components/RetoEnVivo";
 import HeroSponsor from "@/components/HeroSponsor";
 import s from "./ZeiaTrack.module.css";
 import { desde } from "@/lib/enlaces";
@@ -91,29 +93,31 @@ export default function ZeiaTrack({ slug }: { slug: string }) {
           <div className={s.in}>
             <p className={s.sobre}>El reto</p>
             <h2>Un problema real de energía, resuelto con IA</h2>
-            <div className={s.reto}>
-              <div className={s.retoCaja}>
-                <h3>Zeia lo presenta en vivo el viernes 27, 8:30 p. m.</h3>
-                <p>
-                  En la presentación de sponsors, Zeia explica el problema que quiere resolver y cada equipo decide en qué track
-                  competir. Ese día conocerás el reto completo y, si hay datos o herramientas disponibles, también se
-                  anuncian ahí.
-                </p>
-                <p style={{ marginBottom: 0 }}>
-                  <b>La autoría es de tu equipo.</b> Las soluciones quedan como repositorio open source con licencia MIT,
-                  a total disposición de Zeia para pilotearlas. <Link href="/bases" style={{ color: "#0a8f86", fontWeight: 600 }}>Lee las bases</Link>.
-                </p>
+            <RetoEnVivo slug="energia" sponsor="Zeia">
+              <div className={s.reto}>
+                <div className={s.retoCaja}>
+                  <h3>Zeia lo presenta en vivo el viernes 27, 8:30 p. m.</h3>
+                  <p>
+                    En la presentación de sponsors, Zeia explica el problema que quiere resolver y cada equipo decide en qué track
+                    competir. Ese día conocerás el reto completo y, si hay datos o herramientas disponibles, también se
+                    anuncian ahí.
+                  </p>
+                  <p style={{ marginBottom: 0 }}>
+                    <b>La autoría es de tu equipo.</b> Las soluciones quedan como repositorio open source con licencia MIT,
+                    a total disposición de Zeia para pilotearlas. <Link href="/bases" style={{ color: "#0a8f86", fontWeight: 600 }}>Lee las bases</Link>.
+                  </p>
+                </div>
+                <div className={s.calentar}>
+                  <h3>Para ir calentando motores</h3>
+                  <ul className={s.lista}>
+                    <li><b>Series de tiempo:</b> consumo, demanda y potencia eléctrica a lo largo del día.</li>
+                    <li><b>Anomalías:</b> cómo detectar cuándo un equipo gasta de más.</li>
+                    <li><b>Agentes de IA:</b> cómo convertir lecturas en alertas y decisiones.</li>
+                    <li><b>Costos:</b> cómo se arma una factura eléctrica y qué la encarece.</li>
+                  </ul>
+                </div>
               </div>
-              <div className={s.calentar}>
-                <h3>Para ir calentando motores</h3>
-                <ul className={s.lista}>
-                  <li><b>Series de tiempo:</b> consumo, demanda y potencia eléctrica a lo largo del día.</li>
-                  <li><b>Anomalías:</b> cómo detectar cuándo un equipo gasta de más.</li>
-                  <li><b>Agentes de IA:</b> cómo convertir lecturas en alertas y decisiones.</li>
-                  <li><b>Costos:</b> cómo se arma una factura eléctrica y qué la encarece.</li>
-                </ul>
-              </div>
-            </div>
+            </RetoEnVivo>
           </div>
         </section>
 
@@ -122,7 +126,7 @@ export default function ZeiaTrack({ slug }: { slug: string }) {
             <p className={s.sobre}>Cómo participar</p>
             <h2>Del Bootcamp a la Gran Final</h2>
             <div className={s.pasos}>
-              <div className={s.paso}><b>El viernes 27 de noviembre</b>, durante la presentación de sponsors (8:30 p. m.), cada equipo elige su track.</div>
+              <div className={s.paso}><b>El viernes 27 de noviembre</b>, cuando los tres sponsors terminen sus pitches (desde las 8:30 p. m.), cada equipo elige su track.</div>
               <div className={s.paso}><b>El líder</b> se une al track y, automáticamente, todo su equipo se une con él.</div>
               <div className={s.paso}><b>Equipos de 2 a 4 personas</b>, de las carreras o facultades que quieran. <span className={s.nuevo}>Nuevo</span> A pedido de ustedes, ya no es obligatorio que sean distintas.</div>
               <div className={s.paso}><b>Antes del sábado 28 por la noche</b> el equipo entrega su primera propuesta. Pasan 5 equipos por track.</div>
@@ -141,6 +145,7 @@ export default function ZeiaTrack({ slug }: { slug: string }) {
               <p className={`${s.lead} ${s.sub}`} style={{ marginTop: 12, color: "#cdeee3" }}>
                 El líder del equipo se une desde aquí, el viernes 27, cuando se active la elección.
               </p>
+              <ContadorTrack slug={slug} />
               <div className="box">
                 <UnirseTrack slug={slug} />
               </div>

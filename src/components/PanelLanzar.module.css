@@ -1,0 +1,20 @@
+/* /lanzar: panel de la organización. */
+.col { display: grid; gap: 18px; margin-top: 24px; }
+.campos { display: grid; gap: 14px; margin-top: 12px; }
+.control { text-align: center; }
+.sub { margin: 10px 0 0; color: var(--mist); font-size: .95rem; line-height: 1.5; }
+.sub b { color: #fff; }
+.reloj { margin: 8px 0 0; font: 700 clamp(5rem, 22vw, 9rem)/1 var(--display); color: #ffd95a; font-variant-numeric: tabular-nums; }
+.fila { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; align-items: flex-end; margin-top: 20px; }
+.min { display: grid; gap: 6px; text-align: left; font: 400 .62rem var(--tech); letter-spacing: .18em; text-transform: uppercase; color: var(--lav); }
+.min select { min-width: 190px; background: #12071f; color: #fff; }
+.lanzar { margin-top: 0; font-size: 1rem; padding: 18px 34px; }
+.tracks { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.track { text-align: center; }
+.cifra { margin: 6px 0 0; font: 700 5rem/1 var(--display); color: #fff; font-variant-numeric: tabular-nums; }
+.cifra small { font-size: 2rem; color: var(--lav); }
+.editor { margin-top: 14px; border-top: 1px solid rgba(182, 156, 255, .25); padding-top: 12px; }
+.editor summary { cursor: pointer; font-weight: 600; color: #fff; }
+.editor label { display: grid; gap: 6px; margin-top: 12px; font: 400 .62rem var(--tech); letter-spacing: .18em; text-transform: uppercase; color: var(--lav); }
+.editor textarea { resize: vertical; }
+.msg { margin: 12px 0 0; color: #ffd95a; font-size: .9rem; }

@@ -60,6 +60,19 @@ export default function UnirseTrack({ slug }: { slug: string }) {
     cargar();
   }, [cargar]);
 
+  // Con la elección abierta, el número de equipos por track se actualiza solo.
+  const abierta = carga.f === "listo" && !!carga.ventana?.opens_at && carga.ahora >= Date.parse(carga.ventana.opens_at)
+    && (!carga.ventana.closes_at || carga.ahora <= Date.parse(carga.ventana.closes_at));
+  useEffect(() => {
+    if (!abierta) return;
+    let vivo = true;
+    const t = setInterval(async () => {
+      const c = await llamar<Cupo[]>("track_cupos");
+      if (vivo && c.ok) setCarga((v) => v.f === "listo" ? { ...v, cupo: c.data.find((x) => x.slug === slug) ?? v.cupo } : v);
+    }, 5000 + Math.random() * 2000);
+    return () => { vivo = false; clearInterval(t); };
+  }, [abierta, slug]);
+
   if (carga.f === "cargando") {
     return <p className="rg-help" style={{ display: "flex", gap: 10, alignItems: "center" }}><Loader2 className="size-5 animate-spin" aria-hidden /> Un segundo…</p>;
   }
@@ -70,7 +83,8 @@ export default function UnirseTrack({ slug }: { slug: string }) {
   const lleno = !!cupo && cupo.tope !== null && cupo.ocupados >= cupo.tope;
   const quedan = cupo && cupo.tope !== null ? Math.max(0, cupo.tope - cupo.ocupados) : null;
 
-  const cupos = cupo && cupo.tope !== null && (
+  // Antes de abrir se avisa del tope; con la elección abierta, el número en vivo lo muestra ContadorTrack.
+  const cupos = cupo && cupo.tope !== null && !abierta && (
     <p className="rg-small" style={{ marginTop: 14 }}>
       {lleno
         ? <>Este track ya llegó a su tope de <strong>{cupo.tope} equipos</strong>. Elige otro.</>

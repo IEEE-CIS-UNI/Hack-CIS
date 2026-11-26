@@ -3,6 +3,8 @@ import Link from "next/link";
 import { Poppins } from "next/font/google";
 import { Activity, ArrowLeft, Database, Headset, PiggyBank } from "lucide-react";
 import UnirseTrack from "@/components/UnirseTrack";
+import ContadorTrack from "@/components/ContadorTrack";
+import RetoEnVivo from "@/components/RetoEnVivo";
 import HeroSponsor from "@/components/HeroSponsor";
 import s from "./ManantialTrack.module.css";
 import { desde } from "@/lib/enlaces";
@@ -88,28 +90,30 @@ export default function ManantialTrack({ slug }: { slug: string }) {
           <div className={s.in}>
             <p className={s.sobre}>El reto</p>
             <h2>Un problema real de cloud, resuelto con IA</h2>
-            <div className={s.reto}>
-              <div className={s.retoCaja}>
-                <h3>Manantial lo presenta en vivo el viernes 27, 8:30 p. m.</h3>
-                <p>
-                  En la presentación de sponsors, Manantial explica el problema que quiere resolver y cada equipo decide en qué track
-                  competir. Ese día conocerás el reto completo y, si hay datos o herramientas disponibles, también se anuncian ahí.
-                </p>
-                <p style={{ marginBottom: 0 }}>
-                  <b>La autoría es de tu equipo.</b> Las soluciones quedan como repositorio open source con licencia MIT,
-                  a total disposición de Manantial para pilotearlas. <Link href="/bases" style={{ color: "#912b2b", fontWeight: 600 }}>Lee las bases</Link>.
-                </p>
+            <RetoEnVivo slug="cloud" sponsor="Manantial">
+              <div className={s.reto}>
+                <div className={s.retoCaja}>
+                  <h3>Manantial lo presenta en vivo el viernes 27, 8:30 p. m.</h3>
+                  <p>
+                    En la presentación de sponsors, Manantial explica el problema que quiere resolver y cada equipo decide en qué track
+                    competir. Ese día conocerás el reto completo y, si hay datos o herramientas disponibles, también se anuncian ahí.
+                  </p>
+                  <p style={{ marginBottom: 0 }}>
+                    <b>La autoría es de tu equipo.</b> Las soluciones quedan como repositorio open source con licencia MIT,
+                    a total disposición de Manantial para pilotearlas. <Link href="/bases" style={{ color: "#912b2b", fontWeight: 600 }}>Lee las bases</Link>.
+                  </p>
+                </div>
+                <div className={s.calentar}>
+                  <h3>Para ir calentando motores</h3>
+                  <ul className={s.lista}>
+                    <li><b>Datos:</b> cómo ordenar, proteger y aprovechar la información de una empresa.</li>
+                    <li><b>Atención con IA:</b> cómo automatizar llamadas, chats y correos sin perder cercanía.</li>
+                    <li><b>Observabilidad:</b> cómo detectar una incidencia antes de que afecte al servicio.</li>
+                    <li><b>Costos en la nube:</b> cómo entender en qué se gasta y qué se puede optimizar.</li>
+                  </ul>
+                </div>
               </div>
-              <div className={s.calentar}>
-                <h3>Para ir calentando motores</h3>
-                <ul className={s.lista}>
-                  <li><b>Datos:</b> cómo ordenar, proteger y aprovechar la información de una empresa.</li>
-                  <li><b>Atención con IA:</b> cómo automatizar llamadas, chats y correos sin perder cercanía.</li>
-                  <li><b>Observabilidad:</b> cómo detectar una incidencia antes de que afecte al servicio.</li>
-                  <li><b>Costos en la nube:</b> cómo entender en qué se gasta y qué se puede optimizar.</li>
-                </ul>
-              </div>
-            </div>
+            </RetoEnVivo>
           </div>
         </section>
 
@@ -118,7 +122,7 @@ export default function ManantialTrack({ slug }: { slug: string }) {
             <p className={s.sobre}>Cómo participar</p>
             <h2>Del Bootcamp a la Gran Final</h2>
             <div className={s.pasos}>
-              <div className={s.paso}><b>El viernes 27 de noviembre</b>, durante la presentación de sponsors (8:30 p. m.), cada equipo elige su track.</div>
+              <div className={s.paso}><b>El viernes 27 de noviembre</b>, cuando los tres sponsors terminen sus pitches (desde las 8:30 p. m.), cada equipo elige su track.</div>
               <div className={s.paso}><b>El líder</b> se une al track y, automáticamente, todo su equipo se une con él.</div>
               <div className={s.paso}><b>Equipos de 2 a 4 personas</b>, de las carreras o facultades que quieran. <span className={s.nuevo}>Nuevo</span> A pedido de ustedes, ya no es obligatorio que sean distintas.</div>
               <div className={s.paso}><b>Antes del sábado 28 por la noche</b> el equipo entrega su primera propuesta. Pasan 5 equipos por track.</div>
@@ -137,6 +141,7 @@ export default function ManantialTrack({ slug }: { slug: string }) {
               <p className={`${s.lead} ${s.sub}`} style={{ marginTop: 12, color: "#f3d6d6" }}>
                 El líder del equipo se une desde aquí, el viernes 27, cuando se active la elección.
               </p>
+              <ContadorTrack slug={slug} />
               <div className="box">
                 <UnirseTrack slug={slug} />
               </div>

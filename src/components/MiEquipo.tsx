@@ -31,6 +31,7 @@ export default function MiEquipo() {
   const [pend, setPend] = useState<Pendientes | null>(null);
   const [personas, setPersonas] = useState<PersonaBusca[]>([]);
   const [pistas, setPistas] = useState<Pista[]>([]);
+  const [cupos, setCupos] = useState<{ slug: string; tope: number | null; ocupados: number }[]>([]);
   const [aviso, setAviso] = useState<Aviso>(null);
   const [ocupado, setOcupado] = useState<string | null>(null);
   const [ahora, setAhora] = useState<number>(0);
@@ -83,6 +84,16 @@ export default function MiEquipo() {
     if (data) setPistas(data as Pista[]);
     setAhora(Date.now());
   }, []);
+
+  const hayAbierta = pistas.some((p) => !!p.opens_at && ahora >= new Date(p.opens_at).getTime() && (!p.closes_at || ahora <= new Date(p.closes_at).getTime()));
+  useEffect(() => {
+    if (!hayAbierta) return;
+    let vivo = true;
+    const mirar = async () => { const c = await llamar<{ slug: string; tope: number | null; ocupados: number }[]>("track_cupos"); if (vivo && c.ok) setCupos(c.data); };
+    mirar();
+    const t = setInterval(mirar, 5000 + Math.random() * 2000);
+    return () => { vivo = false; clearInterval(t); };
+  }, [hayAbierta]);
 
   async function accion(clave: string, fn: () => Promise<Res>, exito?: string) {
     setOcupado(clave); setAviso(null);
@@ -209,7 +220,7 @@ export default function MiEquipo() {
       <div className="box">
         <p className="box-h">Track</p>
         {eq.track && pistaActual && <p className={s.sub}>Su track actual es <b style={{ color: "#fff" }}>{eq.track.nombre}</b>{eq.track.sponsor ? ` (${eq.track.sponsor})` : ""}.</p>}
-        {!eq.soy_lider && <p className={s.sub}>El track lo elige la persona líder, durante la presentación de sponsors del viernes 27 (8:30 p. m.). Todo el equipo queda en ese track.</p>}
+        {!eq.soy_lider && <p className={s.sub}>El track lo elige la persona líder, cuando terminen los pitches de sponsors del viernes 27 (desde las 8:30 p. m.). Todo el equipo queda en ese track.</p>}
         {!eq.soy_lider && !algunaAbierta && proxima && <AperturaTrack abre={proxima} alCambiar={refrescarTracks} />}
         {eq.soy_lider && (
           <>
@@ -219,7 +230,9 @@ export default function MiEquipo() {
               {pistas.map((p) => (
                 <label key={p.slug} className={s.trackopt} style={{ opacity: ventanaAbierta(p) ? 1 : .55 }}>
                   <input type="radio" name="track" value={p.slug} checked={trackElegido === p.slug} disabled={!ventanaAbierta(p)} onChange={() => setTrackElegido(p.slug)} />
-                  <span><b>{p.name}</b>{p.sponsor_name && <small>con {p.sponsor_name}</small>}</span>
+                  <span><b>{p.name}</b>{p.sponsor_name && <small>con {p.sponsor_name}</small>}
+                    {(() => { const c = cupos.find((x) => x.slug === p.slug); return c && ventanaAbierta(p) ? <small>{c.tope === null ? `${c.ocupados} equipos` : c.ocupados >= c.tope ? "Lleno" : `Quedan ${c.tope - c.ocupados} de ${c.tope}`}</small> : null; })()}
+                    <Link href={`/tracks/${p.slug}`} style={{ fontSize: ".78rem", textDecoration: "underline" }}>Ver el reto</Link></span>
                 </label>
               ))}
             </div>

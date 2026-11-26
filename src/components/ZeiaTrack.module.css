@@ -80,7 +80,7 @@
 /* ── únete (recuadro oscuro de Zeia con acentos menta) ── */
 .unete { padding: clamp(40px, 7vw, 76px) 0; }
 /* cuenta regresiva de la elección de track, con los colores del sponsor */
-.unete { --ap-fondo: #0f2a2e; --ap-borde: rgba(135, 227, 196, .45); --ap-acento: #38e5c4; --ap-suave: #b9e6da; --ap-brillo: rgba(56, 229, 196, .7); }
+.zeia, .unete { --ap-fondo: #0f2a2e; --ap-borde: rgba(135, 227, 196, .45); --ap-acento: #38e5c4; --ap-suave: #b9e6da; --ap-brillo: rgba(56, 229, 196, .7); }
 .oscuro {
   --lav: #87e3c4; --mist: #cdeee3; --violet: #38e5c4; --violet2: #12a98f; --cyan: #38e5c4;
   padding: clamp(24px, 5vw, 44px); border-radius: 28px; color: #fff;
