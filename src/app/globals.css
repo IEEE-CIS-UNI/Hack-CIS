@@ -169,6 +169,8 @@ section{position:relative}
 .tk-power img{height:38px;width:auto;max-width:200px;object-fit:contain}
 @media (min-width:900px){.tk-power img{height:46px}}
 .tk-power{transition:opacity .3s}a.tk-power:hover{opacity:.8}
+/* Manantial pide su logo sobre fondo blanco */
+.tk-power img[src*="manantial-color"],.sp-chip img[src*="manantial-color"]{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 150' preserveAspectRatio='none'%3E%3Cfilter id='b' x='-40%25' y='-40%25' width='180%25' height='180%25'%3E%3CfeGaussianBlur stdDeviation='7'/%3E%3C/filter%3E%3Cg fill='%23fff' filter='url%28%23b%29'%3E%3Cellipse cx='150' cy='94' rx='126' ry='36'/%3E%3Ccircle cx='74' cy='84' r='36'/%3E%3Ccircle cx='124' cy='64' r='42'/%3E%3Ccircle cx='184' cy='60' r='46'/%3E%3Ccircle cx='232' cy='84' r='35'/%3E%3Cellipse cx='150' cy='86' rx='100' ry='40'/%3E%3C/g%3E%3C/svg%3E") center/100% 100% no-repeat;box-sizing:content-box;padding:16px 30px;margin:-16px -14px}
 .tk-badge{display:inline-block;margin-bottom:10px;padding:5px 12px;border:1px solid var(--tone);border-radius:999px;font-family:var(--tech);font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--tone)}
 .tk-logo-slot{display:inline-block;width:120px;height:34px;border:1px dashed rgba(217,204,255,.45);border-radius:6px}
 

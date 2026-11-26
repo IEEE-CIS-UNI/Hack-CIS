@@ -96,7 +96,7 @@ const DE_TRACK: Sponsor[] = [
   {
     name: "Manantial · Track Cloud",
     url: desde("https://manantial.pe/"),
-    logo: { src: "/logos/manantial.png", width: 640, height: 192 },
+    logo: { src: "/logos/manantial-color.png", width: 3578, height: 1386 },
   },
   {
     name: "Millennium · Track Fintech",

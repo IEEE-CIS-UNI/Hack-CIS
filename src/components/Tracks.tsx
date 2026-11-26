@@ -21,7 +21,7 @@ export const CLOUD = {
   desc: "Manantial es una consultora peruana de tecnología, especialista en migración cloud, DevOps y ciberseguridad, partner de AWS, Google Cloud y Oracle. Su reto lo presentan en vivo el viernes 27 a las 8:30 p. m.",
   tone: "#ff6b6b",
   tone2: "#912b2b",
-  sponsor: { name: "Manantial", url: desde("https://manantial.pe/"), logo: "/logos/manantial.png", width: 640, height: 192 },
+  sponsor: { name: "Manantial", url: desde("https://manantial.pe/"), logo: "/logos/manantial-color.png", width: 3578, height: 1386 },
 };
 
 export const FINTECH = {
