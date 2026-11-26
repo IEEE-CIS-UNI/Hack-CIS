@@ -29,6 +29,7 @@ import { PAISES, PAIS_POR_DEFECTO, formatearE164, normalizarTelefono, paisPorCod
 import ElegirClave from "./ElegirClave";
 import TarjetaHack from "./TarjetaHack";
 import SumarseHack from "./SumarseHack";
+import SinEquipo from "./SinEquipo";
 import ConfirmarAsistencia from "./ConfirmarAsistencia";
 import { hackAbierta } from "@/lib/config";
 
@@ -491,35 +492,25 @@ export default function MiInscripcion() {
         {avisoInsc && <p className={`rg-msg ${avisoInsc.tipo === "ok" ? "ok" : "err"}`} style={{ marginTop: 14 }}>{avisoInsc.texto}</p>}
       </div>
 
-      {hack && (
+      {hack && (r.team ? (
         <div className="box">
           <p className="box-h">Mi equipo</p>
-          {r.team ? (
-            <>
-              <p style={{ fontFamily: "var(--display)", fontWeight: 700, textTransform: "uppercase", fontSize: "1.8rem", lineHeight: 1 }}>
-                {r.team.name}
-              </p>
-              <p className="rg-help" style={{ marginTop: 6 }}>Track: <strong style={{ color: "#fff" }}>{r.team.track_name ?? "se elige el viernes 27"}</strong></p>
-              <ul className="team-list" style={{ marginTop: 12 }}>
-                {r.team.members.map((m) => (
-                  <li key={m.name}>
-                    <Check size={14} aria-hidden className="text-glow" /> <b>{m.name}</b>{m.leader && <span className="pill-ok">líder</span>}
-                  </li>
-                ))}
-              </ul>
-              <Link href="/equipos/mi-equipo" className="more solid" style={{ marginTop: 14 }}>Ir a mi equipo <ArrowRight aria-hidden size={14} /></Link>
-            </>
-          ) : (
-            <>
-              <p className="rg-help" style={{ marginTop: 0 }}>
-                Todavía no tienes equipo. La plataforma para armarlo se abre el miércoles 25 de noviembre a las 8:00 p. m. y
-                cierra el jueves 26 a las 11:59 p. m. Después, el viernes 27 a las 8:30 p. m., en la presentación de sponsors, el líder de cada equipo elige el track.
-              </p>
-              <Link href="/equipos" className="more solid" style={{ marginTop: 14 }}>Arma tu equipo <ArrowRight aria-hidden size={14} /></Link>
-            </>
-          )}
+          <>
+            <p style={{ fontFamily: "var(--display)", fontWeight: 700, textTransform: "uppercase", fontSize: "1.8rem", lineHeight: 1 }}>
+              {r.team.name}
+            </p>
+            <p className="rg-help" style={{ marginTop: 6 }}>Track: <strong style={{ color: "#fff" }}>{r.team.track_name ?? "se elige el viernes 27"}</strong></p>
+            <ul className="team-list" style={{ marginTop: 12 }}>
+              {r.team.members.map((m) => (
+                <li key={m.name}>
+                  <Check size={14} aria-hidden className="text-glow" /> <b>{m.name}</b>{m.leader && <span className="pill-ok">líder</span>}
+                </li>
+              ))}
+            </ul>
+            <Link href="/equipos/mi-equipo" className="more solid" style={{ marginTop: 14 }}>Ir a mi equipo <ArrowRight aria-hidden size={14} /></Link>
+          </>
         </div>
-      )}
+      ) : <SinEquipo />)}
 
       <div className="box">
         <p className="box-h">Mis datos</p>
