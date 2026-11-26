@@ -1,0 +1,26 @@
+/* /monitor: cómo se forman los equipos. */
+.col { display: grid; gap: 22px; margin-top: 24px; }
+.campos { display: grid; gap: 14px; margin-top: 12px; }
+.cifras { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.cifras div { padding: 14px 12px; border-radius: 16px; background: rgba(122, 44, 245, .16); border: 1px solid rgba(182, 156, 255, .3); text-align: center; }
+.cifras b { display: block; font: 700 2.8rem/1 var(--display); color: #fff; font-variant-numeric: tabular-nums; }
+.cifras span { display: block; margin-top: 4px; font-size: .78rem; line-height: 1.35; color: var(--mist); }
+.filtros { display: grid; gap: 12px; }
+.botones { display: flex; flex-wrap: wrap; gap: 8px; }
+.botones button { padding: 8px 15px; border-radius: 999px; border: 1px solid rgba(182, 156, 255, .45); background: none; color: #e8defe; font: 600 .82rem var(--body); cursor: pointer; }
+.botones button[aria-pressed="true"] { background: #fff; color: #12071f; }
+.nota { margin: 0; font-size: .8rem; color: var(--lav); }
+.vacio { padding: 30px; border: 1px dashed rgba(182, 156, 255, .4); border-radius: 16px; text-align: center; color: var(--mist); }
+.rejilla { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); align-items: start; }
+.equipo { padding: 16px 18px; border-radius: 18px; background: rgba(18, 7, 31, .85); border: 1px solid rgba(182, 156, 255, .3); min-width: 0; }
+.equipo header { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.equipo h3 { margin: 0; font: 700 1.35rem/1.15 var(--display); text-transform: uppercase; color: #fff; overflow-wrap: anywhere; }
+.ok, .solo { font: 700 1.2rem var(--display); color: #8ef0b8; }
+.solo { color: #ffd95a; }
+.meta { margin: 6px 0 0; font-size: .75rem; color: var(--lav); }
+.desc, .busca { margin: 8px 0 0; font-size: .85rem; color: var(--mist); overflow-wrap: anywhere; }
+.equipo ul { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 10px; }
+.equipo li { border-top: 1px solid rgba(182, 156, 255, .18); padding-top: 10px; }
+.equipo li b { display: block; color: #fff; font-size: .92rem; }
+.equipo li span, .equipo li small { display: block; font-size: .78rem; color: var(--mist); overflow-wrap: anywhere; }
+.equipo li a { color: var(--lav); }
