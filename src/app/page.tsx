@@ -1,3 +1,4 @@
+import AnuncioModal from "@/components/AnuncioModal";
 import Bootcamp from "@/components/Bootcamp";
 import Closing from "@/components/Closing";
 import Community from "@/components/Community";
@@ -46,6 +47,7 @@ export default function Home() {
       </main>
       <Footer />
       <HelpVideo />
+      <AnuncioModal />
     </>
   );
 }
