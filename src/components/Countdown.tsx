@@ -1,7 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { EVENT } from "@/lib/config";
+import { EVENT, hackAbierta } from "@/lib/config";
 
 let snapshot = 0;
 
@@ -62,7 +62,7 @@ export default function Countdown() {
 
   return (
     <div className="count-box">
-      <span className="hud">{open ? "Inscripciones abiertas" : `Inscripciones abren el ${EVENT.registrationOpensLabel}`}</span>
+      <span className="hud">{!open ? `Inscripciones abren el ${EVENT.registrationOpensLabel}` : hackAbierta() ? "Inscripciones abiertas" : "Bootcamp: inscripciones abiertas"}</span>
       {!open && (
         <div className="cd" aria-live="off">
           {parts.map((p) => (

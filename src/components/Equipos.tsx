@@ -167,7 +167,7 @@ export default function Equipos() {
       <div className={s.col}>
         <div className="box">
           <p className="box-h">Ya tienes equipo</p>
-          <p className={s.sub}>Entra a la página de tu equipo para ver a tus compañeros, sus datos de contacto y los entregables. Solo se puede estar en un equipo a la vez.</p>
+          <p className={s.sub}>Entra a la página de tu equipo para ver a tus compañeros y sus datos de contacto. Solo se puede estar en un equipo a la vez.</p>
           <div className="rg-actions"><Link href="/equipos/mi-equipo" className="more solid"><Users aria-hidden size={14} /> Ir a mi equipo <ArrowRight aria-hidden size={14} /></Link></div>
         </div>
         {mio && otros.length > 0 && (

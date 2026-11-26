@@ -3,8 +3,8 @@
 /**
  * /equipos/mi-equipo: la página de cada equipo.
  *
- * Integrantes con su contacto (solo los ven quienes están en el equipo), grupo de WhatsApp, entregables de la primera fase
- * (repositorio, láminas en PDF e idea), elección de track (la hace el líder el viernes 27), solicitudes pendientes y, para el
+ * Integrantes con su contacto (solo los ven quienes están en el equipo), grupo de WhatsApp, entrega del proyecto
+ * (desde el sábado 28: repositorio, láminas en PDF e idea), elección de track (la hace el líder el viernes 27), solicitudes pendientes y, para el
  * líder, la lista de personas que buscan equipo para invitarlas.
  */
 
@@ -16,6 +16,7 @@ import { navegador } from "@/lib/supabase";
 import { llamar, type EstadoEquipos, type MiEquipoDetalle, type Pendientes, type PersonaBusca } from "@/lib/equipos";
 import { Boton, Habilidades, SelectorHabilidades, TarjetaPersona } from "./EquiposUI";
 import AperturaTrack from "./AperturaTrack";
+import { ENTREGA_ABRE, ENTREGA_CIERRA } from "@/lib/config";
 import s from "./Equipos.module.css";
 
 type Pista = { slug: string; name: string; sponsor_name: string | null; opens_at: string | null; closes_at: string | null };
@@ -203,19 +204,27 @@ export default function MiEquipo() {
         )}
       </div>
 
-      <div className="box">
-        <p className="box-h">Entregables · proyecto</p>
-        <p className={s.sub}>Cualquiera del equipo puede completarlos, hasta el <b>miércoles 2 de diciembre a las 4:00 a. m.</b> Se pide el repositorio (no valen commits fuera del plazo), un video demo de máximo 1 minuto (pronto habilitamos su casilla) y las láminas en PDF, máximo 7.</p>
-        <ul className={s.estado}>
-          <li><Check size={16} aria-hidden className={eq.repo_url ? s.ok : ""} style={{ opacity: eq.repo_url ? 1 : .3 }} /> Repositorio creado</li>
-          <li><Check size={16} aria-hidden className={eq.slides_url ? s.ok : ""} style={{ opacity: eq.slides_url ? 1 : .3 }} /> PDF con las láminas (máximo 7)</li>
-          <li><Check size={16} aria-hidden className={eq.idea ? s.ok : ""} style={{ opacity: eq.idea ? 1 : .3 }} /> Idea del equipo</li>
-        </ul>
-        <div className={s.campo}><label htmlFor="e-repo">Enlace del repositorio (GitHub, GitLab…)</label><input id="e-repo" className="rg-input" value={repo} onChange={(ev) => setRepo(ev.target.value)} placeholder="https://github.com/su-equipo/su-proyecto" /></div>
-        <div className={s.campo}><label htmlFor="e-sl">Enlace al PDF de las láminas (Drive, Canva…)</label><input id="e-sl" className="rg-input" value={slides} onChange={(ev) => setSlides(ev.target.value)} placeholder="https://drive.google.com/..." /><small>Asegúrate de que el enlace permita ver el archivo sin pedir permiso.</small></div>
-        <div className={s.campo}><label htmlFor="e-idea">La idea en pocas líneas</label><textarea id="e-idea" className="rg-input" rows={4} maxLength={1500} value={idea} onChange={(ev) => setIdea(ev.target.value)} placeholder="¿Qué problema resuelven y cómo?" /><small>{idea.length}/1500</small></div>
-        <div className="rg-actions"><Boton solido ocupado={ocupado === "entregar"} alClick={() => accion("entregar", () => llamar("equipo_entregar", { p_repo: repo, p_slides: slides, p_idea: idea }), "Entregables guardados.")}>Guardar entregables</Boton></div>
-      </div>
+      {/* la entrega no se muestra hasta que arrancan las 100 horas */}
+      {ahora < Date.parse(ENTREGA_ABRE) ? (
+        <div className="box">
+          <p className="box-h">Entrega del proyecto</p>
+          <p className={s.sub}>Se habilita el <b>sábado 28 de noviembre a las 00:00</b>, cuando arrancan las 100 horas.</p>
+        </div>
+      ) : (
+        <div className="box">
+          <p className="box-h">Entregables · proyecto</p>
+          <p className={s.sub}>Cualquiera del equipo puede completarlos, hasta el <b>miércoles 2 de diciembre a las 4:00 a. m.</b> Se pide el repositorio (no valen commits fuera del plazo), un video demo de máximo 1 minuto (pronto habilitamos su casilla) y las láminas en PDF, máximo 7.</p>
+          <ul className={s.estado}>
+            <li><Check size={16} aria-hidden className={eq.repo_url ? s.ok : ""} style={{ opacity: eq.repo_url ? 1 : .3 }} /> Repositorio creado</li>
+            <li><Check size={16} aria-hidden className={eq.slides_url ? s.ok : ""} style={{ opacity: eq.slides_url ? 1 : .3 }} /> PDF con las láminas (máximo 7)</li>
+            <li><Check size={16} aria-hidden className={eq.idea ? s.ok : ""} style={{ opacity: eq.idea ? 1 : .3 }} /> Idea del equipo</li>
+          </ul>
+          <div className={s.campo}><label htmlFor="e-repo">Enlace del repositorio (GitHub, GitLab…)</label><input id="e-repo" className="rg-input" value={repo} onChange={(ev) => setRepo(ev.target.value)} placeholder="https://github.com/su-equipo/su-proyecto" /></div>
+          <div className={s.campo}><label htmlFor="e-sl">Enlace al PDF de las láminas (Drive, Canva…)</label><input id="e-sl" className="rg-input" value={slides} onChange={(ev) => setSlides(ev.target.value)} placeholder="https://drive.google.com/..." /><small>Asegúrate de que el enlace permita ver el archivo sin pedir permiso.</small></div>
+          <div className={s.campo}><label htmlFor="e-idea">La idea en pocas líneas</label><textarea id="e-idea" className="rg-input" rows={4} maxLength={1500} value={idea} onChange={(ev) => setIdea(ev.target.value)} placeholder="¿Qué problema resuelven y cómo?" /><small>{idea.length}/1500</small></div>
+          {ahora <= Date.parse(ENTREGA_CIERRA) ? <div className="rg-actions"><Boton solido ocupado={ocupado === "entregar"} alClick={() => accion("entregar", () => llamar("equipo_entregar", { p_repo: repo, p_slides: slides, p_idea: idea }), "Entregables guardados.")}>Guardar entregables</Boton></div> : <p className={s.sub}><b style={{ color: "#fff" }}>La entrega ya cerró.</b></p>}
+        </div>
+      )}
 
       <div className="box">
         <p className="box-h">Track</p>

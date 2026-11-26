@@ -51,6 +51,7 @@ const ERRORES: Record<string, string> = {
   habilidad_invalida: "Elige hasta 5 habilidades de la lista.",
   frase_larga: "La frase puede tener hasta 140 caracteres.",
   idea_larga: "La idea puede tener hasta 1500 caracteres.",
+  entrega_cerrada: "La entrega solo está habilitada del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 a. m.",
 };
 
 export const motivoDe = (mensaje: string) => {

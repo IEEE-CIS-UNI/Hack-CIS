@@ -4,11 +4,10 @@ import Countdown from "./Countdown";
 import Logos from "./Logos";
 
 const MESSAGES = [
-  "¡Algo grande se acerca!",
+  "¡La era agéntica ya despegó!",
   "Cuatro humanos, un agente. Así se construye en la era agéntica.",
   "¡Ahora todos los equipos construyen! 100 horas desde el 28/11.",
-  "¡Inscripciones el 13/11!",
-  "Bootcamp virtual desde el 23/11.",
+  "Gran Final: sábado 5 de diciembre en la FIIS, UNI.",
 ];
 
 export default function Hero() {

@@ -20,6 +20,10 @@ export const HACK_CIERRA = "2026-11-26T00:00:00-05:00";
 export const HACK_CIERRA_TEXTO = "miércoles 25 de noviembre, 11:59 p. m.";
 export const hackAbierta = () => Date.now() < Date.parse(HACK_CIERRA);
 
+/** Plazo de la entrega del proyecto (las 100 horas). La base lo exige también: supabase/040. */
+export const ENTREGA_ABRE = "2026-11-28T00:00:00-05:00";
+export const ENTREGA_CIERRA = "2026-12-02T04:00:00-05:00";
+
 /**
  * Un «#» significa que ese enlace todavía no existe, no un descuido. La
  * interfaz lo trata como ausente: esconde el botón en vez de ofrecer un enlace

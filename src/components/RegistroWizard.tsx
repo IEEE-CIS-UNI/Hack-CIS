@@ -30,7 +30,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, Check, Loader2, LogIn, Mail, TriangleAlert, X } from "lucide-react";
-import { CLAVE_BOLETO, EVENT, HACK_CIERRA_TEXTO, hackAbierta } from "@/lib/config";
+import { CLAVE_BOLETO, HACK_CIERRA_TEXTO, hackAbierta } from "@/lib/config";
 import { SESIONES } from "@/lib/contenido";
 import { CICLOS, SLUG_OTRA, limpiarCarrera, type Carrera } from "@/lib/carreras";
 import { ORIGENES, normalizarDiscord, normalizarGithub, normalizarLinkedin } from "@/lib/contacto";
@@ -744,7 +744,7 @@ export default function RegistroWizard() {
       </div>
 
       <p className="rg-small">
-        inscripciones abiertas desde el {EVENT.registrationOpensLabel} · hack: 250 cupos + lista de espera · bootcamp: sin límite
+        hackathon: inscripciones cerradas · bootcamp: abierto y sin límite
       </p>
       <p className="rg-small" style={{ marginTop: 10 }}>
         ¿ya tienes cuenta? <a href="/mi-inscripcion">entra a tu panel</a>
