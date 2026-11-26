@@ -39,7 +39,7 @@ export default function TracksPage() {
             <b>Todos los equipos construyen</b> con su agente de IA: 100 horas, del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 a. m.
           </li>
           <li>
-            <b>Fintech acepta hasta 40 equipos</b>, para los primeros que lo elijan. Energía y Cloud no tienen tope. El sábado 5, en la Gran Final, se anuncian los 15 finalistas que hacen pitch, 5 por track; los de Fintech los elige Millennium.
+            <b>Fintech acepta hasta la mitad de los equipos habilitados</b> (máximo 40), para los primeros que lo elijan. Energía y Cloud no tienen tope. El sábado 5, en la Gran Final, se anuncian los 15 finalistas que hacen pitch, 5 por track; los de Fintech los elige Millennium.
           </li>
           <li>
             <b>Un ganador por track</b>, que se anuncia en la Gran Final del sábado 5 de diciembre.

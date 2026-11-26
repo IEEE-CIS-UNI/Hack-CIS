@@ -81,14 +81,13 @@ export default function UnirseTrack({ slug }: { slug: string }) {
   const abre = ventana?.opens_at ? Date.parse(ventana.opens_at) : null;
   const cierra = ventana?.closes_at ? Date.parse(ventana.closes_at) : null;
   const lleno = !!cupo && cupo.tope !== null && cupo.ocupados >= cupo.tope;
-  const quedan = cupo && cupo.tope !== null ? Math.max(0, cupo.tope - cupo.ocupados) : null;
 
   // Antes de abrir se avisa del tope; con la elección abierta, el número en vivo lo muestra ContadorTrack.
   const cupos = cupo && cupo.tope !== null && !abierta && (
     <p className="rg-small" style={{ marginTop: 14 }}>
       {lleno
         ? <>Este track ya llegó a su tope de <strong>{cupo.tope} equipos</strong>. Elige otro.</>
-        : <>Este track acepta hasta <strong>{cupo.tope} equipos</strong>: quedan <strong>{quedan}</strong> lugares, para los primeros en elegirlo.</>}
+        : <>Este track acepta hasta <strong>la mitad de los equipos habilitados</strong> (máximo 40), para los primeros en elegirlo.</>}
     </p>
   );
 

@@ -191,7 +191,7 @@ export default function BasesPage() {
                 se activa en vivo cuando terminan los tres pitches y <B>cierra el sábado 28 a las 11:59 p. m.</B>
               </li>
               <li>
-                <B>Fintech acepta hasta 40 equipos</B>, por orden de elección. Energía y Cloud no tienen tope.
+                <B>Fintech acepta hasta la mitad de los equipos habilitados</B> (los que tienen 2 o más integrantes, redondeando hacia arriba), con un <B>máximo de 40</B>, por orden de elección. Energía y Cloud no tienen tope.
               </li>
               <li>
                 Cada equipo compite en un solo track. Mientras la elección siga abierta, la persona líder puede
@@ -355,7 +355,7 @@ export default function BasesPage() {
             </p>
             <ul>
               <li>
-                <Cinta chica /> <B>26 de noviembre:</B> a pedido del público y por el gran interés, se eliminó el filtro de 25 equipos (<B>todos los equipos construyen</B>) y el armado de equipos se amplió hasta el viernes 27 a las 8:30 p. m. Se fijó la asistencia mínima a la Gran Final. Las 100 horas van del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 a. m. y los 15 finalistas se anuncian el mismo día de la Gran Final.
+                <Cinta chica /> <B>26 de noviembre:</B> a pedido del público y por el gran interés, se eliminó el filtro de 25 equipos (<B>todos los equipos construyen</B>) y el armado de equipos se amplió hasta el viernes 27 a las 8:30 p. m. Se fijó la asistencia mínima a la Gran Final y Fintech pasa a aceptar hasta la mitad de los equipos habilitados (máximo 40). Las 100 horas van del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 a. m. y los 15 finalistas se anuncian el mismo día de la Gran Final.
               </li>
               <li>
                 <B>25 de noviembre:</B> se publicaron las rúbricas y el proceso de selección, la presentación

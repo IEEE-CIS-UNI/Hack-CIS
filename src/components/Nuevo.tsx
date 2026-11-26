@@ -27,7 +27,7 @@ export function AvisoTrackDorado() {
             <b>carta oferta para cada integrante</b> para entrar a trabajar en Millennium, con una entrevista de por medio.
           </p>
           <p className="aviso-p">
-            Acepta hasta <b>40 equipos</b> y <b>todos construyen</b>.
+            Acepta hasta <b>la mitad de los equipos</b> (máximo 40) y <b>todos construyen</b>.
           </p>
           <Image src="/logos/millennium-blanco.png" width={640} height={274} alt="Millennium" unoptimized className="aviso-logo" />
           <Link href="/tracks/fintech" className="aviso-l">
