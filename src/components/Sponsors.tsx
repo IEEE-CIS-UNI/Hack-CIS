@@ -61,6 +61,13 @@ const GENERALES: Sponsor[] = [
   },
 ];
 
+/** Sponsor oficial del evento: va arriba de todos los sponsors y su logo lleva a su web. */
+const OFICIAL: Sponsor = {
+  name: "Ravn · Sponsor oficial",
+  url: desde("https://www.ravn.com/"),
+  logo: { src: "/logos/ravn.svg", width: 310, height: 72 },
+};
+
 const APOYAN: Sponsor[] = [
   {
     name: "We Educación Ejecutiva",
@@ -150,6 +157,12 @@ export function Niveles() {
         <div className="sp-logos">
           <Logo l={CIS} />
           <Logo l={DSC} />
+        </div>
+      </div>
+      <div className="sp-tier ofi">
+        <p className="note">Sponsor oficial</p>
+        <div className="sp-logos">
+          <Chip s={OFICIAL} />
         </div>
       </div>
       <div className="sp-tier trk">
