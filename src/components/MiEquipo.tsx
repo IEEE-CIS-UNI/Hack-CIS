@@ -259,7 +259,7 @@ export default function MiEquipo() {
           {pend.solicitudes.length > 0 && (
             <div className={s.lista}>
               {pend.solicitudes.map((v) => (
-                <TarjetaPersona key={v.id} p={{ id: v.persona_id, nombre: v.nombre, universidad: v.universidad, universidad_nombre: null, carrera: v.carrera, area: null, ciclo: v.ciclo, nivel: v.nivel, habilidades: v.habilidades, frase: v.frase }}
+                <TarjetaPersona key={v.id} p={{ id: v.persona_id, nombre: v.nombre, universidad: v.universidad, universidad_nombre: null, carrera: v.carrera, area: null, ciclo: v.ciclo, nivel: v.nivel, habilidades: v.habilidades, frase: v.frase, discord: v.discord }}
                   acciones={<>
                     <Boton solido ocupado={ocupado === `ok-${v.id}`} alClick={() => accion(`ok-${v.id}`, () => llamar("equipo_responder", { p_invite: v.id, p_acepta: true }), `${v.nombre} se unió al equipo.`)}><Check size={14} aria-hidden /> Aceptar</Boton>
                     <Boton ocupado={ocupado === `no-${v.id}`} alClick={() => accion(`no-${v.id}`, () => llamar("equipo_responder", { p_invite: v.id, p_acepta: false }))}>Rechazar</Boton>
@@ -280,7 +280,7 @@ export default function MiEquipo() {
       {eq.soy_lider && !lleno && e.abierto && (
         <div>
           <p className="box-h" style={{ marginBottom: 0 }}>Personas que buscan equipo</p>
-          <p className={s.sub}>Al invitar, la persona decide si acepta. Al aceptar, ustedes verán sus datos de contacto y ella los de ustedes.</p>
+          <p className={s.sub}>Antes de invitar puedes escribirle por Discord (busca su usuario). Al invitar, la persona decide si acepta; al aceptar, ustedes verán sus datos de contacto y ella los de ustedes.</p>
           {personas.length === 0 ? <div className={s.vacio} style={{ marginTop: 14 }}>Por ahora nadie está disponible. Vuelve en un rato.</div> : (
             <div className={s.lista}>
               {personas.map((p) => (

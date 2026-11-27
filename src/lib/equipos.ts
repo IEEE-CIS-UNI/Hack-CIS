@@ -78,7 +78,7 @@ export type EstadoEquipos = {
 };
 export type PersonaBusca = {
   id: string; nombre: string; universidad: string | null; universidad_nombre: string | null; carrera: string | null; area: string | null;
-  ciclo: number | null; nivel: string | null; habilidades: string[]; frase: string | null;
+  ciclo: number | null; nivel: string | null; habilidades: string[]; frase: string | null; discord?: string | null;
 };
 export type EquipoAbierto = {
   id: string; nombre: string; descripcion: string | null; buscando: string[]; n: number; pedido: boolean;
@@ -87,7 +87,7 @@ export type EquipoAbierto = {
 export type Pendientes = {
   recibidas: { id: string; equipo: string; equipo_id: string; n: number; descripcion: string | null; lider: string }[];
   enviadas: { id: string; equipo: string; equipo_id: string }[];
-  solicitudes: { id: string; persona_id: string; nombre: string; universidad: string | null; carrera: string | null; ciclo: number | null; nivel: string | null; habilidades: string[]; frase: string | null }[];
+  solicitudes: { id: string; persona_id: string; nombre: string; universidad: string | null; carrera: string | null; ciclo: number | null; nivel: string | null; habilidades: string[]; frase: string | null; discord?: string | null }[];
   invitadas: { id: string; persona_id: string; nombre: string }[];
 };
 export type Miembro = {

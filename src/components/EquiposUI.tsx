@@ -41,6 +41,17 @@ export function Boton({ ocupado, alClick, children, solido = false, peligro = fa
   );
 }
 
+/** Usuario de Discord con botón para copiarlo: sirve para conversar antes de invitar o aceptar. */
+function Discord({ usuario }: { usuario: string }) {
+  const [copiado, setCopiado] = useState(false);
+  return (
+    <p className={s.dc}>
+      Discord: <b>{usuario}</b>
+      <button type="button" onClick={async () => { try { await navigator.clipboard.writeText(usuario); setCopiado(true); setTimeout(() => setCopiado(false), 1600); } catch { /* sin portapapeles: se puede seleccionar a mano */ } }}>{copiado ? "Copiado" : "Copiar"}</button>
+    </p>
+  );
+}
+
 export function TarjetaPersona({ p, acciones }: { p: PersonaBusca; acciones?: React.ReactNode }) {
   return (
     <article className={s.tarjeta}>
@@ -50,6 +61,7 @@ export function TarjetaPersona({ p, acciones }: { p: PersonaBusca; acciones?: Re
       </p>
       <Habilidades ids={p.habilidades} />
       {p.frase && <p className={s.frase}>«{p.frase}»</p>}
+      {p.discord && <Discord usuario={p.discord} />}
       {acciones && <div className={s.acc}>{acciones}</div>}
     </article>
   );

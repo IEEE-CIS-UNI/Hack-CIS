@@ -18,6 +18,9 @@
 .tarjeta .meta { font-size: .85rem; color: var(--mist); }
 .tarjeta .frase { font-size: .9rem; color: #fff; font-style: italic; opacity: .92; }
 .tarjeta .acc { margin-top: auto; padding-top: 6px; display: flex; flex-wrap: wrap; gap: 8px; }
+.dc { font-size: .85rem; color: var(--mist); display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
+.dc b { color: #fff; user-select: all; overflow-wrap: anywhere; }
+.dc button { color: var(--lav); font-size: .8rem; text-decoration: underline; text-underline-offset: 3px; padding: 4px 0; }
 .pestanas { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
 .pestana { padding: 9px 18px; border-radius: 999px; font: 400 .6rem var(--tech); letter-spacing: .18em; text-transform: uppercase; color: var(--mist); border: 1px solid rgba(182, 156, 255, .32); background: transparent; cursor: pointer; }
 .pestana[aria-selected="true"] { background: #fff; color: #1a0a2e; border-color: #fff; }

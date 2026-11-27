@@ -233,7 +233,7 @@ export default function Equipos() {
         </div>
         <label className="rg-consent" style={{ marginTop: 12 }}>
           <input type="checkbox" checked={buscando} onChange={(ev) => setBuscando(ev.target.checked)} />
-          <span>Busco equipo: quiero aparecer en la lista de personas disponibles.</span>
+          <span>Busco equipo: quiero aparecer en la lista de personas disponibles (se verá mi usuario de Discord para que me escriban).</span>
         </label>
         <div className="rg-actions">
           <Boton solido ocupado={ocupado === "perfil"} alClick={() => accion("perfil", () => llamar("equipo_perfil_guardar", { p_buscando: buscando, p_habilidades: habilidades, p_frase: frase }), "Perfil guardado.")}>Guardar mi perfil</Boton>
