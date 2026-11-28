@@ -4,7 +4,7 @@
  * «Anuncio importante» al entrar a la portada: el cambio de reglas del 26 de noviembre.
  *
  * Sale una sola vez por navegador (si no se puede guardar, sale en cada visita), la fila de los equipos desaparece cuando
- * cierran y el anuncio completo se retira solo el sábado 28 al mediodía. El mismo texto sigue en la portada y en las Bases.
+ * cierran y el anuncio completo se retira solo el domingo 29 al mediodía. El mismo texto sigue en la portada y en las Bases.
  */
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
@@ -12,9 +12,9 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import s from "./AnuncioModal.module.css";
 
-const CLAVE = "anuncio-todos-construyen";
-const CIERRAN_EQUIPOS = Date.parse("2026-11-27T20:30:00-05:00");
-const SE_RETIRA = Date.parse("2026-11-28T12:00:00-05:00");
+const CLAVE = "anuncio-plazos-27nov";
+const CIERRAN_EQUIPOS = Date.parse("2026-11-28T23:59:59-05:00");
+const SE_RETIRA = Date.parse("2026-11-29T12:00:00-05:00");
 
 const sinCambios = () => () => {};
 /** Qué corresponde mostrar al abrir la página: nada, el anuncio completo o sin la fila de los equipos. */
@@ -62,10 +62,10 @@ export default function AnuncioModal() {
   if (!abierto) return null;
 
   const filas: [string, string, string, string][] = [
-    ["Sáb", "28", "Inician las 100 horas a las 00:00", "Entrega hasta el mié 2 dic, 4:00 a. m."],
+    ["Vie", "27", "Retos de los sponsors, 8:30 p. m.", "Elijan track hasta el dom 29, 12:00 m."],
+    ["Sáb", "28", "Inician las 100 horas a las 00:00", (modo === "completo" ? "Equipos hasta las 11:59 p. m. · " : "") + "Entrega: mié 2 dic, 4:00 a. m."],
     ["Sáb", "5", "Gran Final en la FIIS · UNI", "Ahí se anuncian los finalistas que pitchean"],
   ];
-  if (modo === "completo") filas.unshift(["Vie", "27", "Armen su equipo hasta las 8:30 p. m.", "Luego se presentan los retos"]);
 
   return (
     <div className={s.fondo} onClick={(e) => { if (e.target === e.currentTarget) cerrar(); }}>

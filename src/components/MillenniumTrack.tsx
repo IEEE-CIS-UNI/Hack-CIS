@@ -134,7 +134,7 @@ export default function MillenniumTrack({ slug }: { slug: string }) {
             <p className={s.sobre}>Cómo participar</p>
             <h2>Del Bootcamp a la Gran Final</h2>
             <div className={s.pasos}>
-              <div className={s.paso}><b>El viernes 27 de noviembre</b>, cuando los tres sponsors terminen sus pitches (desde las 8:30 p. m.), cada equipo elige su track.</div>
+              <div className={s.paso}><b>El viernes 27 de noviembre</b>, cuando los tres sponsors terminen sus pitches (desde las 8:30 p. m.), cada equipo elige su track, con plazo hasta el domingo 29 a las 12:00 m.</div>
               <div className={s.paso}><b>El líder</b> se une al track y, automáticamente, todo su equipo se une con él.</div>
               <div className={s.paso}><b>Equipos de 2 a 4 personas</b>, de las carreras o facultades que quieran. A pedido de ustedes, ya no es obligatorio que sean distintas.</div>
               <div className={s.paso}><b>Del sábado 28 a las 00:00 al miércoles 2 a las 4:00 a. m.</b> construyen y entregan su proyecto. Fintech acepta hasta <b>la mitad de los equipos habilitados, máximo 40</b> (los primeros en elegirlo) y <b>todos construyen</b>.</div>

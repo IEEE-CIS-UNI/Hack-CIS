@@ -57,7 +57,7 @@ export default function AvisoEquipos({ enlace = true }: { enlace?: boolean }) {
             <b>Asistencia:</b> equipos de 4, mínimo 2; de 2 o 3, mínimo 1. Provincia o extranjero, mínimo 1.
           </p>
           <p className="aviso-p">
-            <b>Más tiempo para armar equipo:</b> hasta el viernes 27 a las 8:30 p. m.
+            <b>Más tiempo para armar equipo:</b> hasta el sábado 28 a las 11:59 p. m., y eligen track hasta el domingo 29 a las 12:00 m.
           </p>
           {enlace && (
             <Link href="/bases" className="aviso-l">

@@ -174,7 +174,7 @@ export default function BasesPage() {
             <ul>
               <li>De <B>2 a 4 integrantes</B>, que estén inscritos en la hackathon y no tengan otro equipo.</li>
               <li>
-                <B>La plataforma de equipos abre el miércoles 25 de noviembre a las 8:00 p. m.</B> y cierra el <B>viernes 27 a las 8:30 p. m.</B> (hora de Lima), antes de la presentación de los tracks. Ahí cada quien crea su equipo o se une a uno; el track se elige después.
+                <B>La plataforma de equipos abre el miércoles 25 de noviembre a las 8:00 p. m.</B> y cierra el <B>sábado 28 a las 11:59 p. m.</B> (hora de Lima). Las 100 horas empiezan igual a las 00:00 del sábado. Ahí cada quien crea su equipo o se une a uno; el track se elige después.
               </li>
               <li>
                 <B>A pedido de ustedes, ya no es obligatorio</B> que el equipo tenga carreras o
@@ -188,7 +188,7 @@ export default function BasesPage() {
               </li>
               <li>
                 Lo elige la <B>persona líder</B> para todo el equipo, que necesita al menos <B>2 integrantes</B>, es decir, 2 personas en total contando a la persona líder. La elección
-                se activa en vivo cuando terminan los tres pitches y <B>cierra el sábado 28 a las 11:59 p. m.</B>
+                se activa en vivo cuando terminan los tres pitches y <B>cierra el domingo 29 a las 12:00 m.</B>
               </li>
               <li>
                 <B>Fintech acepta hasta la mitad de los equipos habilitados</B> (los que tienen 2 o más integrantes, redondeando hacia arriba), con un <B>máximo de 40</B>, por orden de elección. Energía y Educación no tienen tope.
@@ -355,7 +355,10 @@ export default function BasesPage() {
             </p>
             <ul>
               <li>
-                <Cinta chica /> <B>26 de noviembre:</B> a pedido del público y por el gran interés, se eliminó el filtro de 25 equipos (<B>todos los equipos construyen</B>) y el armado de equipos se amplió hasta el viernes 27 a las 8:30 p. m. Se fijó la asistencia mínima a la Gran Final y Fintech pasa a aceptar hasta la mitad de los equipos habilitados (máximo 40). Las 100 horas van del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 a. m. y los 15 finalistas se anuncian el mismo día de la Gran Final.
+                <Cinta chica /> <B>27 de noviembre:</B> el armado de equipos se amplió hasta el sábado 28 a las 11:59 p. m. y la elección de track, hasta el domingo 29 a las 12:00 m.
+              </li>
+              <li>
+                <B>26 de noviembre:</B> a pedido del público y por el gran interés, se eliminó el filtro de 25 equipos (<B>todos los equipos construyen</B>) y el armado de equipos se amplió hasta el viernes 27 a las 8:30 p. m. Se fijó la asistencia mínima a la Gran Final y Fintech pasa a aceptar hasta la mitad de los equipos habilitados (máximo 40). Las 100 horas van del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 a. m. y los 15 finalistas se anuncian el mismo día de la Gran Final.
               </li>
               <li>
                 <B>25 de noviembre:</B> se publicaron las rúbricas y el proceso de selección, la presentación

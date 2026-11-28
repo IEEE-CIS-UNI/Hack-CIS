@@ -3,7 +3,7 @@
 /**
  * «Elegir este track»: el LÍDER del equipo elige el track de todo su equipo.
  *
- * Los equipos se arman antes, en /equipos (viernes 27 a las 8:30 p. m. como máximo). El viernes 27, en la presentación de sponsors, el líder
+ * Los equipos se arman antes, en /equipos (sábado 28 a las 11:59 p. m. como máximo). El viernes 27, en la presentación de sponsors, el líder
  * entra a la página del track que quiere y toca el botón: todo su equipo queda en ese track. Algunos tracks tienen tope de
  * equipos (Fintech: 40): si ya está lleno, la base lo rechaza y aquí se avisa para que elija otro.
  *

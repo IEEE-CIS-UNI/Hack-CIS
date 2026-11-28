@@ -95,7 +95,7 @@ export default async function TrackPage({ params }: { params: Promise<{ slug: st
       <section className="pg-sec">
         <h2>Cómo funciona</h2>
         <ul className="pg-dots">
-          <li><b>El viernes 27 de noviembre</b>, durante la presentación de sponsors (8:30 p. m.), cada equipo elige su track.</li>
+          <li><b>El viernes 27 de noviembre</b>, durante la presentación de sponsors (8:30 p. m.), se abre la elección de track, con plazo hasta el domingo 29 a las 12:00 m.</li>
           <li><b>El líder</b> se une al track y, automáticamente, todo su equipo se une con él.</li>
           <li><b>Equipos de 2 a 4 personas</b>, de las carreras o facultades que quieran: a pedido de ustedes, ya no es obligatorio que sean distintas.</li>
           <li><b>Del sábado 28 a las 00:00 al miércoles 2 a las 4:00 a. m.</b> construyen y entregan su proyecto. Los 5 finalistas de cada track se anuncian el sábado 5.</li>

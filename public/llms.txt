@@ -11,8 +11,8 @@ Solo esas dos agrupaciones organizan esta edición. DSC PUCP figura como apoyo, 
 
 ## Fechas (hora de Lima, 2026)
 - Bootcamp virtual: del lunes 23 al viernes 27 de noviembre. Abierto a todos y sin costo.
-- Armado de equipos: del miércoles 25 (8:00 p. m.) al viernes 27 de noviembre (8:30 p. m.), en https://hackcis.lat/equipos
-- Presentación de sponsors: viernes 27 a las 8:30 p. m.; la elección de track se abre cuando terminan los tres pitches.
+- Armado de equipos: del miércoles 25 (8:00 p. m.) al sábado 28 de noviembre (11:59 p. m.), en https://hackcis.lat/equipos
+- Presentación de sponsors: viernes 27 a las 8:30 p. m.; la elección de track se abre cuando terminan los tres pitches y cierra el domingo 29 a las 12:00 m.
 - Construcción (100 horas, todos los equipos): del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 a. m.
 - Gran Final presencial: sábado 5 de diciembre, Auditorio de la FIIS de la UNI, Lima.
 
@@ -42,6 +42,7 @@ Solo esas dos agrupaciones organizan esta edición. DSC PUCP figura como apoyo, 
 - Pitch final: hasta 4 minutos y 2 de preguntas. El proyecto se entrega hasta el miércoles 2 de diciembre a las 4:00 a. m.
 
 ## Sponsors y aliados
+- Sponsor oficial del evento: Ravn (https://www.ravn.com/).
 - Sponsors de track: Zeia, Manantial, Millennium.
 - Sponsors del evento: Futura, ToDoStudents, Sol AI.
 - Con el apoyo de: We Educación Ejecutiva, MayuGo, Datux Perú, DSC PUCP.

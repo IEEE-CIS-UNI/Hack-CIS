@@ -13,7 +13,7 @@ const STEPS = [
   {
     title: "Retos",
     when: "Vie 27 nov · 8:30 p. m.",
-    text: "Los equipos escuchan los retos de los sponsors y eligen su track (hasta el sábado 28 a las 11:59 p. m.).",
+    text: "Los equipos escuchan los retos de los sponsors y eligen su track (hasta el domingo 29 a las 12:00 m.).",
     count: "3",
     unit: "tracks",
   },
