@@ -19,7 +19,7 @@ export default function TracksPage() {
         <span className="lav">batalla</span>
       </h1>
       <p className="pg-lead">
-        Tres sponsors, tres retos reales: Energía con Zeia, Educación con Manantial y Fintech con Millennium, el track dorado: S/ 1 000 y una carta oferta para cada integrante del equipo ganador.
+        Tres sponsors, tres retos reales: Energía con Zeia (S/ 500 al equipo ganador), Educación con Manantial (S/ 500) y Fintech con Millennium, el track dorado: S/ 1 000 y una carta oferta para cada integrante del equipo ganador.
       </p>
 
       <div className="pg-tracks">

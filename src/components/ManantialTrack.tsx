@@ -4,7 +4,7 @@ import { Poppins } from "next/font/google";
 import { Activity, ArrowLeft, Database, Headset, PiggyBank } from "lucide-react";
 import UnirseTrack from "@/components/UnirseTrack";
 import ContadorTrack from "@/components/ContadorTrack";
-import RetoEnVivo from "@/components/RetoEnVivo";
+import RetoCompleto from "@/components/RetoCompleto";
 import HeroSponsor from "@/components/HeroSponsor";
 import s from "./ManantialTrack.module.css";
 import { desde } from "@/lib/enlaces";
@@ -48,7 +48,7 @@ export default function ManantialTrack({ slug }: { slug: string }) {
             fondo: "radial-gradient(760px 440px at 100% 0, rgba(255,107,107,.26), transparent 62%), radial-gradient(640px 440px at 0 100%, rgba(145,43,43,.16), transparent 62%), #fff",
             tinta: "#212529", texto: "#4a4f55", acento: "#912b2b", acento2: "#ff6b6b", cinta: "#912b2b", cintaTexto: "#ffffff", botonTexto: "#ffffff",
           }}
-          datos={["El reto se presenta en vivo el vie 27 nov", "5 equipos pasan a la final", "Gran Final · sáb 5 dic · UNI"]}
+          datos={["S/ 500 al equipo ganador", "5 equipos pasan a la final", "Gran Final · sáb 5 dic · UNI"]}
         >
           Manantial es una consultora peruana de tecnología que conecta <strong>innovación con personas</strong> para lograr
           grandes resultados. Especialistas en migración cloud, DevOps y ciberseguridad, ayudan a las empresas a acelerar su
@@ -89,22 +89,8 @@ export default function ManantialTrack({ slug }: { slug: string }) {
         <section className={s.sec}>
           <div className={s.in}>
             <p className={s.sobre}>El reto</p>
-            <h2>Un reto real de educación, resuelto con IA</h2>
-            <RetoEnVivo slug="cloud" sponsor="Manantial">
-              <div className={s.reto}>
-                <div className={s.retoCaja}>
-                  <h3>Manantial lo presenta en vivo el viernes 27, 8:30 p. m.</h3>
-                  <p>
-                    En la presentación de sponsors, Manantial explica el problema que quiere resolver y cada equipo decide en qué track
-                    competir. Ese día conocerás el reto completo y, si hay datos o herramientas disponibles, también se anuncian ahí.
-                  </p>
-                  <p style={{ marginBottom: 0 }}>
-                    <b>La autoría es de tu equipo.</b> Las soluciones quedan como repositorio open source con licencia MIT,
-                    a total disposición de Manantial para pilotearlas. <Link href="/bases" style={{ color: "#912b2b", fontWeight: 600 }}>Lee las bases</Link>.
-                  </p>
-                </div>
-              </div>
-            </RetoEnVivo>
+            <h2>Un orientador de IA que ayuda a jóvenes a elegir qué estudiar</h2>
+            <RetoCompleto slug="cloud" acento="#912b2b" premio="Premio del track: S/ 500 al equipo ganador" />
           </div>
         </section>
 

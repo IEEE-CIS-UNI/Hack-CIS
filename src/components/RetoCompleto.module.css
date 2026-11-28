@@ -1,0 +1,13 @@
+/* Reto completo en la página de un track (fondo claro). */
+.reto { margin-top: 26px; }
+.premio { display: inline-block; font-weight: 700; font-size: .95rem; color: var(--rc); border-bottom: 3px solid var(--rc); padding-bottom: 4px; }
+.destacado { margin-top: 20px; font-size: clamp(1.2rem, 2.6vw, 1.65rem); font-weight: 600; line-height: 1.45; padding: 6px 0 6px 20px; border-left: 5px solid var(--rc); }
+.bloques { display: grid; gap: 16px; margin-top: 28px; grid-template-columns: 1fr; }
+@media (min-width: 760px) { .bloques { grid-template-columns: 1fr 1fr; } .ancho { grid-column: 1 / -1; } }
+.bloque { padding: 22px 22px 20px; border-radius: 18px; background: #fff; border: 1px solid rgba(20, 20, 40, .12); box-shadow: 0 8px 26px -18px rgba(20, 20, 40, .35); min-width: 0; }
+.bloque h3 { font-size: .78rem; letter-spacing: .16em; text-transform: uppercase; color: var(--rc); margin-bottom: 10px; }
+.bloque p, .bloque li { font-size: .98rem; line-height: 1.6; color: #30343c; overflow-wrap: anywhere; }
+.bloque ul { display: grid; gap: 8px; padding: 0; }
+.bloque li { position: relative; padding-left: 18px; }
+.bloque li::before { content: ""; position: absolute; left: 0; top: .62em; width: 8px; height: 8px; border-radius: 50%; background: var(--rc); }
+.ir { display: inline-block; margin-top: 26px; padding: 13px 26px; border-radius: 999px; background: var(--rc); color: #fff; font-weight: 700; }

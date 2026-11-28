@@ -31,8 +31,8 @@ const ERRORES: Record<string, string> = {
 const ALIADOS = {
   we: {
     nombre: "We Educación Ejecutiva", url: desde("https://www.we-educacion.com/"),
-    elige: (n: number) => `Los ${n} ganadores eligen uno de estos cursos, totalmente cubierto:`,
-    cursos: ["Desarrollo Web", "UX/UI", "IA aplicada", "Metodologías Ágiles", "Desarrollo y programación"],
+    elige: (n: number) => `Los ${n} ganadores eligen en hackcis.lat/elige uno de estos cursos, totalmente cubierto:`,
+    cursos: ["Desarrollo Web", "UX/UI", "Metodologías Ágiles"],
   },
   mayugo: {
     nombre: "MayuGo", url: desde("https://www.mayugo.net/"),

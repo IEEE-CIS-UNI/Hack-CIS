@@ -4,7 +4,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import { ArrowLeft, Briefcase, Trophy } from "lucide-react";
 import UnirseTrack from "@/components/UnirseTrack";
 import ContadorTrack from "@/components/ContadorTrack";
-import RetoEnVivo from "@/components/RetoEnVivo";
+import RetoCompleto from "@/components/RetoCompleto";
 import HeroSponsor from "@/components/HeroSponsor";
 import s from "./MillenniumTrack.module.css";
 import { desde } from "@/lib/enlaces";
@@ -124,31 +124,8 @@ export default function MillenniumTrack({ slug }: { slug: string }) {
         <section className={s.sec}>
           <div className={s.in}>
             <p className={s.sobre}>El reto</p>
-            <h2>Un problema real de fintech, resuelto con IA</h2>
-            <RetoEnVivo slug="fintech" sponsor="Millennium">
-              <div className={s.reto}>
-                <div className={s.retoCaja}>
-                  <h3>Millennium lo presenta en vivo el viernes 27, 8:30 p. m.</h3>
-                  <p>
-                    En la presentación de sponsors, Millennium explica el problema que quiere resolver y cada equipo decide en qué track
-                    competir. Ese día conocerás el reto completo y, si hay datos o herramientas disponibles, también se anuncian ahí.
-                  </p>
-                  <p style={{ marginBottom: 0 }}>
-                    <b>La autoría es de tu equipo.</b> Las soluciones quedan como repositorio open source con licencia MIT,
-                    a total disposición de Millennium para pilotearlas. <Link href="/bases" style={{ color: "#0068a9", fontWeight: 700 }}>Lee las bases</Link>.
-                  </p>
-                </div>
-                <div className={s.calentar}>
-                  <h3>Para ir calentando motores</h3>
-                  <ul className={s.lista}>
-                    <li><b>Acceso al crédito:</b> cómo evaluar a una persona que no tiene historial en el sistema financiero.</li>
-                    <li><b>Vehículos de trabajo:</b> cómo hacer que financiar una moto o un taxi sea rápido y claro.</li>
-                    <li><b>IA con sentido social:</b> cómo usar datos para incluir y no para excluir.</li>
-                    <li><b>Experiencia del cliente:</b> cómo acompañar a un conductor durante todo su financiamiento.</li>
-                  </ul>
-                </div>
-              </div>
-            </RetoEnVivo>
+            <h2>Del volante a la cuota</h2>
+            <RetoCompleto slug="fintech" acento="#0068a9" premio="Track dorado: S/ 1 000 al equipo ganador y una carta oferta para cada integrante" />
           </div>
         </section>
 

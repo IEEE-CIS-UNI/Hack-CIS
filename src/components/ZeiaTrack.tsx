@@ -4,7 +4,7 @@ import { Poppins } from "next/font/google";
 import { ArrowLeft, BarChart3, BellRing, Gauge, Power, Receipt, Zap } from "lucide-react";
 import UnirseTrack from "@/components/UnirseTrack";
 import ContadorTrack from "@/components/ContadorTrack";
-import RetoEnVivo from "@/components/RetoEnVivo";
+import RetoCompleto from "@/components/RetoCompleto";
 import HeroSponsor from "@/components/HeroSponsor";
 import s from "./ZeiaTrack.module.css";
 import { desde } from "@/lib/enlaces";
@@ -51,7 +51,7 @@ export default function ZeiaTrack({ slug }: { slug: string }) {
             fondo: "radial-gradient(900px 480px at 88% -8%, rgba(135,227,196,.5), transparent 62%), radial-gradient(700px 480px at -8% 24%, rgba(0,183,215,.16), transparent 62%), #fff",
             tinta: "#1f292e", texto: "#4d5a63", acento: "#00b7d7", acento2: "#4fd9b8", cinta: "#87e3c4", cintaTexto: "#1f292e", botonTexto: "#1f292e",
           }}
-          datos={["El reto se presenta en vivo el vie 27 nov", "5 equipos pasan a la final", "Gran Final · sáb 5 dic · UNI"]}
+          datos={["S/ 500 al equipo ganador", "5 equipos pasan a la final", "Gran Final · sáb 5 dic · UNI"]}
         >
           Zeia es una empresa peruana de <strong>monitoreo energético en tiempo real</strong>. Instala sensores en los tableros
           eléctricos, conecta todo a la nube y da visibilidad total sobre cada sol que se consume. En HACK[CIS] propone un reto
@@ -92,32 +92,8 @@ export default function ZeiaTrack({ slug }: { slug: string }) {
         <section className={s.sec}>
           <div className={s.in}>
             <p className={s.sobre}>El reto</p>
-            <h2>Un problema real de energía, resuelto con IA</h2>
-            <RetoEnVivo slug="energia" sponsor="Zeia">
-              <div className={s.reto}>
-                <div className={s.retoCaja}>
-                  <h3>Zeia lo presenta en vivo el viernes 27, 8:30 p. m.</h3>
-                  <p>
-                    En la presentación de sponsors, Zeia explica el problema que quiere resolver y cada equipo decide en qué track
-                    competir. Ese día conocerás el reto completo y, si hay datos o herramientas disponibles, también se
-                    anuncian ahí.
-                  </p>
-                  <p style={{ marginBottom: 0 }}>
-                    <b>La autoría es de tu equipo.</b> Las soluciones quedan como repositorio open source con licencia MIT,
-                    a total disposición de Zeia para pilotearlas. <Link href="/bases" style={{ color: "#0a8f86", fontWeight: 600 }}>Lee las bases</Link>.
-                  </p>
-                </div>
-                <div className={s.calentar}>
-                  <h3>Para ir calentando motores</h3>
-                  <ul className={s.lista}>
-                    <li><b>Series de tiempo:</b> consumo, demanda y potencia eléctrica a lo largo del día.</li>
-                    <li><b>Anomalías:</b> cómo detectar cuándo un equipo gasta de más.</li>
-                    <li><b>Agentes de IA:</b> cómo convertir lecturas en alertas y decisiones.</li>
-                    <li><b>Costos:</b> cómo se arma una factura eléctrica y qué la encarece.</li>
-                  </ul>
-                </div>
-              </div>
-            </RetoEnVivo>
+            <h2>Agente de Eficiencia Energética</h2>
+            <RetoCompleto slug="energia" acento="#0a8f86" premio="Premio del track: S/ 500 al equipo ganador" />
           </div>
         </section>
 
