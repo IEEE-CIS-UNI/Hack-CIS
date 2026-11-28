@@ -6,7 +6,7 @@ const AGENDA: { hora: string; actividad: string; nota?: string; tipo: Tipo }[] =
   { hora: "9:30 – 9:50", actividad: "Inauguración", nota: "Bienvenida, anuncio de los 15 finalistas, agenda, mini-retos, sorteo y agradecimiento a los sponsors generales", tipo: "normal" },
   { hora: "9:50 – 10:40", actividad: "Track Energía", nota: "Reto del sponsor (5 min) + 5 pitches", tipo: "pitch" },
   { hora: "10:40 – 10:55", actividad: "Dinámica", nota: "Premios de los mini-retos · el jurado de Energía delibera", tipo: "dinamica" },
-  { hora: "10:55 – 11:45", actividad: "Track Cloud", nota: "Reto del sponsor + 5 pitches", tipo: "pitch" },
+  { hora: "10:55 – 11:45", actividad: "Track Educación", nota: "Reto del sponsor + 5 pitches", tipo: "pitch" },
   { hora: "11:45 – 12:15", actividad: "Coffee break en la feria de stands", nota: "Delibera el jurado del track anterior", tipo: "pausa" },
   { hora: "12:15 – 1:05", actividad: "Track Fintech (dorado)", nota: "Reto del sponsor + 5 pitches", tipo: "pitch" },
   { hora: "1:05 – 2:05", actividad: "Almuerzo libre", nota: "Fuera del campus o en los comedores de la UNI · no se ofrece almuerzo", tipo: "pausa" },

@@ -92,7 +92,7 @@ const APOYAN: Sponsor[] = [
 ];
 
 /**
- * Sponsors de track: uno por track. Los tres están revelados: Energía (Zeia), Cloud (Manantial) y Fintech (Millennium).
+ * Sponsors de track: uno por track. Los tres están revelados: Energía (Zeia), Educación (Manantial) y Fintech (Millennium).
  */
 const DE_TRACK: Sponsor[] = [
   {
@@ -101,7 +101,7 @@ const DE_TRACK: Sponsor[] = [
     logo: { src: "/logos/zeia-blanco.png", width: 154, height: 50 },
   },
   {
-    name: "Manantial · Track Cloud",
+    name: "Manantial · Track Educación",
     url: desde("https://manantial.pe/"),
     logo: { src: "/logos/manantial-color.png", width: 3578, height: 1386 },
   },

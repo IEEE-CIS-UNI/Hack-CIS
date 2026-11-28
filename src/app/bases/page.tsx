@@ -181,7 +181,7 @@ export default function BasesPage() {
                 facultades distintas: es opcional. Un equipo diverso suele complementarse mejor, pero cada quien
                 arma su equipo con quienes prefiera.
               </li>
-              <li>Hay <B>tres tracks</B>. Son <B>IA &amp; Energía</B>, con Zeia como sponsor; <B>IA &amp; Cloud</B>, con Manantial; e <B>IA &amp; Fintech</B>, con Millennium: el <B>track dorado</B>.</li>
+              <li>Hay <B>tres tracks</B>. Son <B>IA &amp; Energía</B>, con Zeia como sponsor; <B>IA &amp; Educación</B>, con Manantial; e <B>IA &amp; Fintech</B>, con Millennium: el <B>track dorado</B>.</li>
               <li>
                 El track <B>no se elige al inscribirse</B>: el viernes 27, cuando terminen los pitches de los tres sponsors (desde las 8:30 p. m.), cada
                 equipo elige el suyo.
@@ -191,7 +191,7 @@ export default function BasesPage() {
                 se activa en vivo cuando terminan los tres pitches y <B>cierra el sábado 28 a las 11:59 p. m.</B>
               </li>
               <li>
-                <B>Fintech acepta hasta la mitad de los equipos habilitados</B> (los que tienen 2 o más integrantes, redondeando hacia arriba), con un <B>máximo de 40</B>, por orden de elección. Energía y Cloud no tienen tope.
+                <B>Fintech acepta hasta la mitad de los equipos habilitados</B> (los que tienen 2 o más integrantes, redondeando hacia arriba), con un <B>máximo de 40</B>, por orden de elección. Energía y Educación no tienen tope.
               </li>
               <li>
                 Cada equipo compite en un solo track. Mientras la elección siga abierta, la persona líder puede
@@ -236,7 +236,7 @@ export default function BasesPage() {
             <p className="mt-4 font-bold text-white">Premios</p>
             <p>Premios confirmados hasta ahora. Se entregan <B>en vivo en la Gran Final</B> o, a más tardar, en <B>5 días hábiles</B>:</p>
             <ul>
-              <li><B>S/ 500</B> para el equipo ganador de cada uno de los tracks Energía y Cloud (en total, <B>S/ 2 000</B> en premios entre los tres tracks).</li>
+              <li><B>S/ 500</B> para el equipo ganador de cada uno de los tracks Energía y Educación (en total, <B>S/ 2 000</B> en premios entre los tres tracks).</li>
               <li><B>Track dorado (Fintech, con Millennium):</B> <B>S/ 1 000</B> para el equipo ganador y una <B>carta oferta para cada integrante</B> para entrar a trabajar en Millennium, con una entrevista de por medio.</li>
               <li><B>Sorteo de cursos en vivo</B>, durante la semana y en la Gran Final.</li>
               <li><B>Sorteo de merch.</B></li>

@@ -1,7 +1,7 @@
 import { Briefcase, GraduationCap, Shirt, Trophy } from "lucide-react";
 
 const PREMIOS = [
-  { icono: Trophy, tag: "Equipos ganadores", grande: "S/ 2 000", titulo: "En premios", texto: "S/ 1 000 para el ganador de Fintech, el track dorado, y S/ 500 para el ganador de cada uno de los otros dos tracks: Energía y Cloud." },
+  { icono: Trophy, tag: "Equipos ganadores", grande: "S/ 2 000", titulo: "En premios", texto: "S/ 1 000 para el ganador de Fintech, el track dorado, y S/ 500 para el ganador de cada uno de los otros dos tracks: Energía y Educación." },
   { icono: Briefcase, tag: "★ Track dorado", grande: "Cartas oferta", titulo: "Fintech · Millennium", texto: "Cada integrante del equipo ganador de Fintech recibe una carta oferta para entrar a trabajar en Millennium, con una entrevista de por medio. Además de los S/ 1 000.", dorado: true },
   { icono: GraduationCap, tag: "En vivo", grande: "Cursos", titulo: "Sorteo en vivo", texto: "Sorteamos cursos durante la semana y en la Gran Final." },
   { icono: Shirt, tag: "Para ti", grande: "Merch", titulo: "Sorteo de merch", texto: "También sorteamos merch durante el evento, con el apoyo de ToDoStudents." },

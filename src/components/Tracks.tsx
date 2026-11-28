@@ -1,11 +1,11 @@
 import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Cloud, Landmark, Zap } from "lucide-react";
+import { ArrowRight, GraduationCap, Landmark, Zap } from "lucide-react";
 import { desde } from "@/lib/enlaces";
 
 /**
- * Los tres tracks están revelados: Energía (Zeia), Cloud (Manantial) y Fintech (Millennium). Cada ficha vive en
+ * Los tres tracks están revelados: Energía (Zeia), Educación (Manantial) y Fintech (Millennium). Cada ficha vive en
  * /tracks/[slug] (ver app/tracks/[slug]/page.tsx) y su fila en la tabla `tracks` tiene `revealed = true`.
  */
 export const ENERGIA = {
@@ -17,7 +17,7 @@ export const ENERGIA = {
 };
 
 export const CLOUD = {
-  sub: "IA & Cloud",
+  sub: "IA & Educación",
   desc: "Manantial es una consultora peruana de tecnología, especialista en migración cloud, DevOps y ciberseguridad, partner de AWS, Google Cloud y Oracle. Su reto lo presentan en vivo el viernes 27 a las 8:30 p. m.",
   tone: "#ff6b6b",
   tone2: "#912b2b",
@@ -58,16 +58,16 @@ export function TrackList() {
 
       <article className="tk is-link" style={{ "--tone": CLOUD.tone, "--tone2": CLOUD.tone2 } as CSSProperties}>
         <div className="tk-ic">
-          <Cloud aria-hidden strokeWidth={1.6} />
+          <GraduationCap aria-hidden strokeWidth={1.6} />
         </div>
         <div>
           <span className="tk-badge">Track revelado</span>
-          <h3 className="tk-title">Cloud</h3>
+          <h3 className="tk-title">Educación</h3>
           <p className="tk-sub">{CLOUD.sub}</p>
           <p className="tk-desc">{CLOUD.desc}</p>
         </div>
         <div className="tk-meta">
-          <Link href="/tracks/cloud" className="tk-more" aria-label="Conocer más sobre el track de Cloud, con Manantial">
+          <Link href="/tracks/cloud" className="tk-more" aria-label="Conocer más sobre el track de Educación, con Manantial">
             Click aquí para conocer más <ArrowRight aria-hidden size={13} />
           </Link>
           <span className="tk-power">
@@ -110,7 +110,7 @@ export default function Tracks() {
           Elige tu <span className="lav">batalla</span>
         </h2>
         <p className="lead">
-          Tres sponsors, tres retos reales: Energía con Zeia, Cloud con Manantial y Fintech con Millennium, el track dorado. Cada sponsor
+          Tres sponsors, tres retos reales: Energía con Zeia, Educación con Manantial y Fintech con Millennium, el track dorado. Cada sponsor
           presenta su reto el viernes 27 a las 8:30 p. m. y tú decides en cuál competir.
         </p>
 

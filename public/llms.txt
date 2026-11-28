@@ -31,7 +31,7 @@ Solo esas dos agrupaciones organizan esta edición. DSC PUCP figura como apoyo, 
 
 ## Tracks
 - IA & Energía, con Zeia: https://hackcis.lat/tracks/energia
-- IA & Cloud, con Manantial: https://hackcis.lat/tracks/cloud
+- IA & Educación, con Manantial: https://hackcis.lat/tracks/cloud
 - IA & Fintech, con Millennium (track dorado): https://hackcis.lat/tracks/fintech
 
 ## Premios

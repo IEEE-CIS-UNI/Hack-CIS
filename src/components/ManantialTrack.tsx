@@ -10,7 +10,7 @@ import s from "./ManantialTrack.module.css";
 import { desde } from "@/lib/enlaces";
 
 /**
- * La página del reto de Manantial (sponsor del track «IA & Cloud»).
+ * La página del reto de Manantial (sponsor del track «IA & Educación»).
  *
  * Todo su branding es el de Manantial (manantial.pe): el rojo vino de su logo y de su portada, el coral de sus
  * acentos, Poppins y fondo claro. Los textos sobre qué hace Manantial salen de su propia web. El reto en sí se
@@ -42,7 +42,7 @@ export default function ManantialTrack({ slug }: { slug: string }) {
 
       <main>
         <HeroSponsor
-          etiqueta="IA & Cloud" nombre="Manantial" url={desde("https://manantial.pe/")}
+          etiqueta="IA & Educación" nombre="Manantial" url={desde("https://manantial.pe/")}
           logo="/logos/manantial-color.png" logoAncho={3578} logoAlto={1386} logoMostrado={520}
           tema={{
             fondo: "radial-gradient(760px 440px at 100% 0, rgba(255,107,107,.26), transparent 62%), radial-gradient(640px 440px at 0 100%, rgba(145,43,43,.16), transparent 62%), #fff",
@@ -89,7 +89,7 @@ export default function ManantialTrack({ slug }: { slug: string }) {
         <section className={s.sec}>
           <div className={s.in}>
             <p className={s.sobre}>El reto</p>
-            <h2>Un problema real de cloud, resuelto con IA</h2>
+            <h2>Un reto real de educación, resuelto con IA</h2>
             <RetoEnVivo slug="cloud" sponsor="Manantial">
               <div className={s.reto}>
                 <div className={s.retoCaja}>
@@ -102,15 +102,6 @@ export default function ManantialTrack({ slug }: { slug: string }) {
                     <b>La autoría es de tu equipo.</b> Las soluciones quedan como repositorio open source con licencia MIT,
                     a total disposición de Manantial para pilotearlas. <Link href="/bases" style={{ color: "#912b2b", fontWeight: 600 }}>Lee las bases</Link>.
                   </p>
-                </div>
-                <div className={s.calentar}>
-                  <h3>Para ir calentando motores</h3>
-                  <ul className={s.lista}>
-                    <li><b>Datos:</b> cómo ordenar, proteger y aprovechar la información de una empresa.</li>
-                    <li><b>Atención con IA:</b> cómo automatizar llamadas, chats y correos sin perder cercanía.</li>
-                    <li><b>Observabilidad:</b> cómo detectar una incidencia antes de que afecte al servicio.</li>
-                    <li><b>Costos en la nube:</b> cómo entender en qué se gasta y qué se puede optimizar.</li>
-                  </ul>
                 </div>
               </div>
             </RetoEnVivo>

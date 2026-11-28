@@ -34,8 +34,8 @@ const TRACKS_PUBLICOS: Record<string, TrackPublico> = {
     sponsor: { name: "Zeia", url: desde("https://zeia.com.pe/"), logo: "/logos/zeia.png", width: 308, height: 92 },
   },
   cloud: {
-    nombre: "Cloud",
-    sub: "Manantial · IA & Cloud",
+    nombre: "Educación",
+    sub: "Manantial · IA & Educación",
     desc: "Manantial es una consultora peruana de tecnología, especialista en migración cloud, DevOps y ciberseguridad. Su reto se presenta en vivo el viernes 27 de noviembre a las 8:30 p. m.",
     tono: "#ff6b6b",
     sponsor: { name: "Manantial", url: desde("https://manantial.pe/"), logo: "/logos/manantial-color.png", width: 3578, height: 1386 },
