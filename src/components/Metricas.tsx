@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
 /** Páginas con datos de la persona: ahí Clarity enmascara todo el texto y los campos. */
-const PRIVADAS = ["/registro", "/mi-inscripcion", "/bienvenida", "/auth"];
+const PRIVADAS = ["/registro", "/mi-inscripcion", "/bienvenida", "/auth", "/agrupame"];
 
 /**
  * Microsoft Clarity (gratis): mapas de calor, grabaciones y embudo. Solo se carga si
