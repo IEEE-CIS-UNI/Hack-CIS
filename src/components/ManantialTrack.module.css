@@ -43,6 +43,10 @@
 /* ── secciones ── */
 .sec { padding: clamp(40px, 7vw, 76px) 0; }
 .sec.gris { background: var(--suave); }
+.sec.cine { background: radial-gradient(900px 500px at 50% 120%, rgba(145, 43, 43, .55), transparent 70%), #14070a; }
+.sec.cine h2 { color: #fff; }
+.sec.cine .sobre { color: #ff8f8f; }
+.video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; margin-top: 22px; border-radius: 16px; background: #000; box-shadow: 0 24px 60px -30px rgba(0, 0, 0, .9); }
 .sec h2 { margin: 0; color: var(--tinta); font-weight: 700; font-size: clamp(1.6rem, 4.6vw, 2.4rem); line-height: 1.15; letter-spacing: -.01em; }
 .sec .sub { margin: 12px 0 0; max-width: 680px; }
 .sec .lead { color: var(--texto); }

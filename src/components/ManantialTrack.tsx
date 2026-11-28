@@ -86,6 +86,18 @@ export default function ManantialTrack({ slug }: { slug: string }) {
           </div>
         </section>
 
+        {/* el video que envió Manantial: no se descarga hasta que alguien le da play */}
+        <section className={`${s.sec} ${s.cine}`} aria-labelledby="video-reto">
+          <div className={s.in}>
+            <p className={s.sobre}>En video</p>
+            <h2 id="video-reto">Manantial presenta su reto</h2>
+            <video className={s.video} controls playsInline preload="none" poster="/videos/manantial-reto.jpg" width={1920} height={1080}>
+              <source src="/videos/manantial-reto.mp4" type="video/mp4" />
+              <a href="/videos/manantial-reto.mp4">Ver el video del reto</a>
+            </video>
+          </div>
+        </section>
+
         <section className={s.sec}>
           <div className={s.in}>
             <p className={s.sobre}>El reto</p>
