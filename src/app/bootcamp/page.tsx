@@ -50,7 +50,7 @@ export default function BootcampPage() {
             <b>Viernes 27 de noviembre, 8:30 p. m.:</b> cada sponsor presenta su reto y eliges en qué track competir.
           </li>
           <li>
-            <b>Todos los equipos construyen:</b> 100 horas, del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 a. m.
+            <b>Todos los equipos construyen:</b> 112 horas, del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 p. m.
           </li>
           <li>
             <b>Sábado 5, Gran Final:</b> se anuncian los 15 finalistas, 5 por track, y hacen pitch.

@@ -51,7 +51,7 @@ export default function AvisoEquipos({ enlace = true }: { enlace?: boolean }) {
             A pedido del público y por el gran interés, con <b>más de 350 personas registradas</b>, <b>eliminamos el filtro de 25 equipos</b>.
           </p>
           <p className="aviso-p">
-            <b>100 horas:</b> del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 a. m. <b>Los 15 finalistas que hacen pitch se anuncian en la misma Gran Final</b>, el sábado 5.
+            <b>112 horas:</b> del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 p. m. <b>Los 15 finalistas que hacen pitch se anuncian en la misma Gran Final</b>, el sábado 5.
           </p>
           <p className="aviso-p">
             <b>Asistencia:</b> equipos de 4, mínimo 2; de 2 o 3, mínimo 1. Provincia o extranjero, mínimo 1.

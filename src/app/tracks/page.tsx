@@ -36,7 +36,7 @@ export default function TracksPage() {
             <b>El líder del equipo elige el track</b> cuando terminen los tres pitches, desde la página de cada track: se une y, automáticamente, todo su equipo se une con él.
           </li>
           <li>
-            <b>Todos los equipos construyen</b> con su agente de IA: 100 horas, del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 a. m.
+            <b>Todos los equipos construyen</b> con su agente de IA: 112 horas, del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 p. m.
           </li>
           <li>
             <b>Fintech acepta hasta la mitad de los equipos habilitados</b> (máximo 40), para los primeros que lo elijan. Energía y Educación no tienen tope. El sábado 5, en la Gran Final, se anuncian los 15 finalistas que hacen pitch, 5 por track; los de Fintech los elige Millennium.

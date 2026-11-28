@@ -143,10 +143,10 @@ export default function BasesPage() {
                 <B>Viernes 27 de noviembre, 8:30 p. m.</B> — presentación de sponsors: cada uno expone su reto y, cuando terminan los tres pitches, se activan la elección de track y los retos.
               </li>
               <li>
-                <B>Build · todos los equipos construyen</B> — 100 horas, <B>del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 a. m.</B> (hora de Lima). Después de la presentación de retos del viernes 27 pueden planificar y diseñar; el reloj y los commits cuentan desde las 00:00 del sábado. La solución debe responder al reto que el sponsor presenta ese viernes; puedes apoyarte en herramientas, librerías y código abierto existentes.
+                <B>Build · todos los equipos construyen</B> — 112 horas, <B>del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 p. m.</B> (hora de Lima). Después de la presentación de retos del viernes 27 pueden planificar y diseñar; el reloj y los commits cuentan desde las 00:00 del sábado. La solución debe responder al reto que el sponsor presenta ese viernes; puedes apoyarte en herramientas, librerías y código abierto existentes.
               </li>
               <li>
-                <B>Entrega</B> — hasta el <B>miércoles 2 de diciembre a las 4:00 a. m.</B>, en la página <Link href="/equipos/mi-equipo">«Mi equipo»</Link>: <B>repositorio</B> (no valen los commits fuera del plazo), <B>video demo de máximo 1 minuto</B> y <B>láminas en PDF, máximo 7</B>. Sin equipo no se puede entregar.
+                <B>Entrega</B> — hasta el <B>miércoles 2 de diciembre a las 4:00 p. m.</B>, en la página <Link href="/equipos/mi-equipo">«Mi equipo»</Link>: <B>repositorio</B> (no valen los commits fuera del plazo), <B>video demo de máximo 1 minuto</B> y <B>láminas en PDF, máximo 7</B>. Sin equipo no se puede entregar.
               </li>
               <li>
                 <B>Revisión</B> — del miércoles 2 al viernes 4 de diciembre, la organización revisa los proyectos entregados.
@@ -356,6 +356,9 @@ export default function BasesPage() {
             <ul>
               <li>
                 <Cinta chica /> <B>27 de noviembre:</B> el armado de equipos se amplió hasta el sábado 28 a las 11:59 p. m. y la elección de track, hasta el domingo 29 a las 12:00 m.
+              </li>
+              <li>
+                <B>28 de noviembre:</B> por motivos de fuerza mayor, los sponsors tienen dificultades para compartir los datos de los retos, así que el cierre de la entrega pasa del miércoles 2 de diciembre a las 4:00 a. m. a las <B>4:00 p. m.</B> (12 horas más). El inicio no cambia.
               </li>
               <li>
                 <B>26 de noviembre:</B> a pedido del público y por el gran interés, se eliminó el filtro de 25 equipos (<B>todos los equipos construyen</B>) y el armado de equipos se amplió hasta el viernes 27 a las 8:30 p. m. Se fijó la asistencia mínima a la Gran Final y Fintech pasa a aceptar hasta la mitad de los equipos habilitados (máximo 40). Las 100 horas van del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 a. m. y los 15 finalistas se anuncian el mismo día de la Gran Final.

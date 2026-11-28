@@ -12,7 +12,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import s from "./AnuncioModal.module.css";
 
-const CLAVE = "anuncio-plazos-27nov";
+const CLAVE = "anuncio-entrega-28nov";
 const CIERRAN_EQUIPOS = Date.parse("2026-11-28T23:59:59-05:00");
 const SE_RETIRA = Date.parse("2026-11-29T12:00:00-05:00");
 
@@ -63,7 +63,7 @@ export default function AnuncioModal() {
 
   const filas: [string, string, string, string][] = [
     ["Vie", "27", "Retos de los sponsors, 8:30 p. m.", "Elijan track hasta el dom 29, 12:00 m."],
-    ["Sáb", "28", "Inician las 100 horas a las 00:00", (modo === "completo" ? "Equipos hasta las 11:59 p. m. · " : "") + "Entrega: mié 2 dic, 4:00 a. m."],
+    ["Sáb", "28", "Se construye desde las 00:00", (modo === "completo" ? "Equipos hasta las 11:59 p. m. · " : "") + "Entrega: mié 2 dic, 4:00 p. m."],
     ["Sáb", "5", "Gran Final en la FIIS · UNI", "Ahí se anuncian los finalistas que pitchean"],
   ];
 
@@ -76,7 +76,7 @@ export default function AnuncioModal() {
           <span className={s.todos} aria-hidden>¡Todos</span>
           <span className={s.construyen} aria-hidden>Construyen<i>!</i></span>
         </h2>
-        <p className={s.sub}>A pedido de ustedes: <b>adiós al filtro de 25 equipos</b>.</p>
+        <p className={s.sub}>Por problemas con los datos de los sponsors, <b>ampliamos la entrega 12 horas</b>.</p>
         <ol className={s.filas}>
           {filas.map(([dia, n, titulo, detalle]) => (
             <li key={n}>

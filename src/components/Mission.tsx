@@ -19,8 +19,8 @@ const STEPS = [
   },
   {
     title: "Build",
-    when: "Sáb 28 nov · 00:00 → mié 2 dic · 4:00 a. m.",
-    text: "Todos los equipos construyen: 100 horas con su agente de IA, con mentores y mini-retos con premios de por medio.",
+    when: "Sáb 28 nov · 00:00 → mié 2 dic · 4:00 p. m.",
+    text: "Todos los equipos construyen: 112 horas con su agente de IA, con mentores y mini-retos con premios de por medio.",
     count: "100",
     unit: "horas",
   },

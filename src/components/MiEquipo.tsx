@@ -213,7 +213,7 @@ export default function MiEquipo() {
       ) : (
         <div className="box">
           <p className="box-h">Entregables · proyecto</p>
-          <p className={s.sub}>Cualquiera del equipo puede completarlos, hasta el <b>miércoles 2 de diciembre a las 4:00 a. m.</b> Se pide el repositorio (no valen commits fuera del plazo), un video demo de máximo 1 minuto y las láminas en PDF, máximo 7.</p>
+          <p className={s.sub}>Cualquiera del equipo puede completarlos, hasta el <b>miércoles 2 de diciembre a las 4:00 p. m.</b> Se pide el repositorio (no valen commits fuera del plazo), un video demo de máximo 1 minuto y las láminas en PDF, máximo 7.</p>
           <ul className={s.estado}>
             <li><Check size={16} aria-hidden className={eq.repo_url ? s.ok : ""} style={{ opacity: eq.repo_url ? 1 : .3 }} /> Repositorio creado</li>
             <li><Check size={16} aria-hidden className={eq.slides_url ? s.ok : ""} style={{ opacity: eq.slides_url ? 1 : .3 }} /> PDF con las láminas (máximo 7)</li>

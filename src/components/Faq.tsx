@@ -36,7 +36,7 @@ const ITEMS = [
   },
   {
     q: "¿Cuánto dura el build?",
-    a: "100 horas, del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 a. m. Construyen todos los equipos. Después viene la revisión y, el sábado 5, la Gran Final.",
+    a: "112 horas, del sábado 28 de noviembre a las 00:00 al miércoles 2 de diciembre a las 4:00 p. m. Construyen todos los equipos. Después viene la revisión y, el sábado 5, la Gran Final.",
   },
   {
     q: "¿Cuáles son los tracks?",
