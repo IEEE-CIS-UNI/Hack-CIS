@@ -18,7 +18,7 @@ export const ENERGIA = {
 
 export const CLOUD = {
   sub: "IA & Educación",
-  desc: "Manantial es una consultora peruana de tecnología, especialista en migración cloud, DevOps y ciberseguridad, partner de AWS, Google Cloud y Oracle. El equipo ganador se lleva S/ 500.",
+  desc: "Manantial es una consultora peruana de tecnología, especialista en migración cloud, DevOps y ciberseguridad, partner de AWS, Google Cloud, Oracle y Anthropic (Claude). El equipo ganador se lleva S/ 500.",
   tone: "#ff6b6b",
   tone2: "#912b2b",
   sponsor: { name: "Manantial", url: desde("https://manantial.pe/"), logo: "/logos/manantial-color.png", width: 3578, height: 1386 },

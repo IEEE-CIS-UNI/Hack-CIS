@@ -59,7 +59,7 @@ export default function ManantialTrack({ slug }: { slug: string }) {
           <div className={s.in}>
             <div className={s.cifra}><b>+60</b><span>proyectos de transformación digital</span></div>
             <div className={s.cifra}><b>+16</b><span>clientes enterprise</span></div>
-            <div className={s.cifra}><b>3 partners</b><span>AWS, Google Cloud y Oracle</span></div>
+            <div className={s.cifra}><b>4 partners</b><span>AWS, Google Cloud, Oracle y Anthropic (Claude)</span></div>
           </div>
         </section>
 
@@ -69,7 +69,7 @@ export default function ManantialTrack({ slug }: { slug: string }) {
             <h2>Tecnología con propósito</h2>
             <p className={`${s.lead} ${s.sub}`} style={{ marginTop: 14 }}>
               Manantial acompaña a las empresas en su camino a la nube: migra, automatiza, protege y cuida los costos, con el respaldo
-              de sus aliados estratégicos AWS (Advanced Consulting Partner), Google Cloud y Oracle.
+              de sus aliados estratégicos AWS (Advanced Consulting Partner), Google Cloud, Oracle y Anthropic (Claude).
             </p>
             <div className={s.tarjetas}>
               {SOLUCIONES.map((t) => (
