@@ -13,6 +13,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { validarInscripcion } from "@/lib/inscripcion";
 import { emitirBoleto } from "@/lib/boleto";
+import { inscripcionesAbiertas } from "@/lib/config";
 import { SUPABASE_CLAVE, SUPABASE_URL, urlDelSitio } from "@/lib/supabase";
 import { dentroDelLimite, ipDe, json, leerCuerpo, RespuestaMala } from "@/lib/limite";
 
@@ -23,6 +24,8 @@ export async function POST(req: Request) {
   if (!lim.ok) {
     return json({ ok: false, reintentable: true, motivo: "Vamos muy rápido. Espera un minuto y reintenta." }, 429);
   }
+
+  if (!inscripcionesAbiertas()) return json({ ok: false, reintentable: false, motivo: "Las inscripciones ya cerraron." }, 403);
 
   let cuerpo;
   try { cuerpo = await leerCuerpo(req); }

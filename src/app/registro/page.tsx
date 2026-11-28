@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
 import RegistroCliente from "@/components/RegistroCliente";
 import StarField from "@/components/StarField";
-import { LINKS, registroAbierto } from "@/lib/config";
+import { LINKS, inscripcionesAbiertas, registroAbierto } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "Inscripción · HACK[CIS] UNI 2026",
@@ -32,10 +32,27 @@ export default async function RegistroPage({
       <Nav />
       <main className="flex min-h-[85vh] items-center px-5 pt-28 pb-16 sm:px-10">
         <div className="mx-auto w-full max-w-4xl">
-          {abierto ? <RegistroCliente /> : <Espera />}
+          {!inscripcionesAbiertas() && preview === undefined ? <Cerradas /> : abierto ? <RegistroCliente /> : <Espera />}
         </div>
       </main>
       <Footer />
+    </>
+  );
+}
+
+function Cerradas() {
+  return (
+    <>
+      <p className="hud text-lavender">Inscripción</p>
+      <h1 className="display mt-4 text-[clamp(2.8rem,9vw,8rem)]">
+        Inscripciones
+        <br />
+        <span className="text-lavender">cerradas</span>
+      </h1>
+      <p className="mt-6 max-w-xl text-lg text-mist/85">¿Ya te inscribiste? Entra a tu panel para ver tu equipo y la data de los retos.</p>
+      <div className="rg-actions mt-8">
+        <Link href="/mi-inscripcion" className="more solid">Iniciar sesión</Link>
+      </div>
     </>
   );
 }

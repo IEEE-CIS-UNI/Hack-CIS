@@ -8,7 +8,6 @@ import Feria from "@/components/Feria";
 import Fifth from "@/components/Fifth";
 import Footer from "@/components/Footer";
 import GranFinal from "@/components/GranFinal";
-import HelpVideo from "@/components/HelpVideo";
 import AvisoEquipos, { AvisoTrackDorado } from "@/components/Nuevo";
 import Hero from "@/components/Hero";
 import Mission from "@/components/Mission";
@@ -46,7 +45,6 @@ export default function Home() {
         <Closing />
       </main>
       <Footer />
-      <HelpVideo />
       <AnuncioModal />
     </>
   );

@@ -3,12 +3,7 @@
 /**
  * El botón de inscribirse a una sesión del bootcamp (/bootcamp/01…).
  *
- * Cambia según quién lo mira, que es lo que evita que cada persona tenga que
- * pensar qué le falta:
- *
- *   sin cuenta                 -> lleva al formulario con esa sesión ya marcada
- *   con cuenta, sin la sesión  -> un clic y queda inscrita (aunque solo esté en la hack)
- *   con cuenta, ya inscrita    -> «ya estás inscrito»
+ * Las inscripciones ya cerraron: dice si ya estabas en la sesión y lleva a iniciar sesión o al panel.
  */
 
 import { useEffect, useState } from "react";
@@ -20,12 +15,10 @@ import { api, estaEn, type Resumen } from "@/lib/resumen";
 type Estado =
   | { f: "cargando" }
   | { f: "sinCuenta" }
-  | { f: "puede"; token: string; hackDentro: boolean }
-  | { f: "enviando"; token: string; hackDentro: boolean }
-  | { f: "dentro" }
-  | { f: "error"; motivo: string; token: string; hackDentro: boolean };
+  | { f: "fuera" }
+  | { f: "dentro" };
 
-export default function BotonInscripcion({ slug, n }: { slug: string; n: string }) {
+export default function BotonInscripcion({ slug }: { slug: string }) {
   const [estado, setEstado] = useState<Estado>({ f: "cargando" });
 
   useEffect(() => {
@@ -40,20 +33,13 @@ export default function BotonInscripcion({ slug, n }: { slug: string; n: string 
         if (!vivo) return;
         const r = datos.resumen as Resumen | undefined;
         if (!datos.ok || !r) { setEstado({ f: "sinCuenta" }); return; }   // cuenta sin ficha: que complete el formulario
-        setEstado(estaEn(r, slug) ? { f: "dentro" } : { f: "puede", token, hackDentro: estaEn(r, "hack") });
+        setEstado(estaEn(r, slug) ? { f: "dentro" } : { f: "fuera" });
       } catch {
         if (vivo) setEstado({ f: "sinCuenta" });
       }
     })();
     return () => { vivo = false; };
   }, [slug]);
-
-  async function inscribir(token: string, hackDentro: boolean) {
-    setEstado({ f: "enviando", token, hackDentro });
-    const { datos } = await api("/api/matricular", { metodo: "POST", token, cuerpo: { slug } });
-    if (datos.ok) setEstado({ f: "dentro" });
-    else setEstado({ f: "error", motivo: datos.motivo ?? "No pudimos inscribirte.", token, hackDentro });
-  }
 
   if (estado.f === "cargando") {
     return <div className="rg-actions"><span className="more" aria-busy="true"><Loader2 className="size-4 animate-spin" aria-hidden /> Un segundo…</span></div>;
@@ -76,33 +62,19 @@ export default function BotonInscripcion({ slug, n }: { slug: string; n: string 
     return (
       <div>
         <div className="rg-actions" style={{ marginTop: 0 }}>
-          <Link href={`/registro?plan=bootcamp&sesion=${n}`} className="more solid">
-            Inscribirme a esta sesión <ArrowRight aria-hidden size={14} />
+          <Link href="/mi-inscripcion" className="more solid">
+            Iniciar sesión <ArrowRight aria-hidden size={14} />
           </Link>
         </div>
-        <p className="rg-small">
-          Es gratis y abierto a todos. ¿Ya tienes cuenta? <Link href="/mi-inscripcion">entra aquí</Link>
-        </p>
-        <p className="rg-small" style={{ marginTop: 10 }}>
-          ¿Quieres también la hackathon? <Link href={`/registro?plan=hack_bootcamp&sesion=${n}`}>inscríbete a las dos</Link>
-        </p>
+        <p className="rg-small">Las inscripciones ya cerraron.</p>
       </div>
     );
   }
 
-  const ocupado = estado.f === "enviando";
   return (
     <div>
-      <div className="rg-actions" style={{ marginTop: 0 }}>
-        <button className="more solid" disabled={ocupado} onClick={() => inscribir(estado.token, estado.hackDentro)}>
-          {ocupado && <Loader2 className="size-4 animate-spin" aria-hidden />}
-          Inscribirme a esta sesión <ArrowRight aria-hidden size={14} />
-        </button>
-      </div>
-      {estado.f === "error" && <p className="rg-msg err" style={{ marginTop: 12 }}>{estado.motivo}</p>}
-      <p className="rg-small">
-        {estado.hackDentro ? "Ya estás en la hackathon: con un clic sumas esta sesión." : "Es gratis. Con tu cuenta no tienes que llenar nada."}
-      </p>
+      <p className="rg-small">Las inscripciones ya cerraron.</p>
+      <div className="rg-actions"><Link href="/mi-inscripcion" className="more">Ir a mi panel <ArrowRight aria-hidden size={14} /></Link></div>
     </div>
   );
 }

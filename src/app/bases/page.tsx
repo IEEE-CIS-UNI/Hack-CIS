@@ -376,10 +376,10 @@ export default function BasesPage() {
 
           <div className="mt-16">
             <Link
-              href="/registro"
+              href="/mi-inscripcion"
               className="inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3 font-bold text-white transition-colors hover:border-lavender hover:text-lavender"
             >
-              <ArrowLeft className="size-5" aria-hidden /> Volver a la inscripción
+              <ArrowLeft className="size-5" aria-hidden /> Iniciar sesión
             </Link>
           </div>
 

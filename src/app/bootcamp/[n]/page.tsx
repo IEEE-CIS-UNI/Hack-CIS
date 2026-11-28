@@ -109,7 +109,7 @@ export default async function SesionPage({ params }: { params: Promise<{ n: stri
                 <li key={t}>{t}</li>
               ))}
             </ul>
-            <BotonInscripcion slug={sesion.slug} n={sesion.n} />
+            <BotonInscripcion slug={sesion.slug} />
           </section>
         </div>
 

@@ -29,7 +29,7 @@ function haySesion() {
         if (v?.refresh_token || v?.access_token) return true;
       }
     }
-  } catch { /* sin almacenamiento: se muestra «Inscríbete» */ }
+  } catch { /* sin almacenamiento: se muestra «Iniciar sesión» */ }
   return false;
 }
 // «storage» avisa de cambios hechos en OTRAS pestañas; la sesión que se abre o se cierra en esta misma pestaña avisa con «hackcis:sesion».
@@ -77,9 +77,9 @@ export default function Nav() {
               Mi panel
             </Link>
           ) : (
-            <a href="/registro" className="pill solid">
-              Inscríbete
-            </a>
+            <Link href="/mi-inscripcion" className="pill solid">
+              Iniciar sesión
+            </Link>
           )}
           <button ref={openRef} type="button" className="pill line" aria-expanded={open} aria-controls="menu" onClick={() => setOpen(true)}>
             Menú ≡

@@ -52,8 +52,8 @@ export default function TracksPage() {
       </section>
 
       <div className="pg-cta">
-        <Link href="/registro" className="more solid">
-          Inscríbete <ArrowRight aria-hidden size={14} />
+        <Link href="/mi-inscripcion" className="more solid">
+          Iniciar sesión <ArrowRight aria-hidden size={14} />
         </Link>
         <Link href="/" className="more">
           <ArrowLeft aria-hidden size={14} /> Volver al inicio

@@ -58,23 +58,13 @@ export function TarjetaZoom({ estado, n, fecha, horario, ahora, inscribir, inscr
 
         {estado.f === "sinSesion" && (
           <>
-            <Link href={`/registro?plan=bootcamp&sesion=${n}`} className="more solid">
-              Inscribirme a esta sesión <ArrowRight aria-hidden size={14} />
+            <Link href="/mi-inscripcion" className="more solid">
+              Iniciar sesión <ArrowRight aria-hidden size={14} />
             </Link>
-            <small>
-              ¿Ya te inscribiste? <Link href="/mi-inscripcion">Entra a tu panel</Link> y aquí aparece tu enlace.
-            </small>
+            <small>Entra con tu cuenta y aquí aparece tu enlace.</small>
           </>
         )}
-        {estado.f === "noInscrito" && (
-          <>
-            <button type="button" className="more solid" onClick={inscribir} disabled={inscribiendo}>
-              {inscribiendo ? "Inscribiéndote…" : "Inscribirme y ver el enlace"} <ArrowRight aria-hidden size={14} />
-            </button>
-            <small>Un clic: te inscribes a esta sesión del bootcamp (gratis) y aquí aparece tu enlace de Zoom.</small>
-            {error && <small role="alert" style={{ color: "#ff9bd2" }}>{error}</small>}
-          </>
-        )}
+        {estado.f === "noInscrito" && <small>Las inscripciones ya cerraron.</small>}
         {estado.f === "sinEnlace" && <small>El enlace de esta sesión se publica aquí pronto.</small>}
       </div>
     </section>

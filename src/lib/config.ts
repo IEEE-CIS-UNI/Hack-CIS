@@ -20,6 +20,10 @@ export const HACK_CIERRA = "2026-11-26T00:00:00-05:00";
 export const HACK_CIERRA_TEXTO = "miércoles 25 de noviembre, 11:59 p. m.";
 export const hackAbierta = () => Date.now() < Date.parse(HACK_CIERRA);
 
+/** Cierre de TODAS las inscripciones (hackathon y bootcamp): desde que arrancó la construcción. */
+export const INSCRIPCIONES_CIERRAN = "2026-11-28T00:00:00-05:00";
+export const inscripcionesAbiertas = () => Date.now() < Date.parse(INSCRIPCIONES_CIERRAN);
+
 /** Plazo de la entrega del proyecto (las 100 horas). La base lo exige también: supabase/047. */
 export const ENTREGA_ABRE = "2026-11-28T00:00:00-05:00";
 export const ENTREGA_CIERRA = "2026-12-02T16:00:00-05:00";

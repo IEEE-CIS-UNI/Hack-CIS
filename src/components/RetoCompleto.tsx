@@ -1,6 +1,7 @@
 /** El reto completo de un sponsor, como sección de su página de track. Los colores salen de la página (--rc-*). */
 import type { CSSProperties } from "react";
 import { RETOS } from "@/lib/retos";
+import DataTrack from "./DataTrack";
 import s from "./RetoCompleto.module.css";
 
 export default function RetoCompleto({ slug, acento, premio }: { slug: keyof typeof RETOS; acento: string; premio: string }) {
@@ -18,6 +19,7 @@ export default function RetoCompleto({ slug, acento, premio }: { slug: keyof typ
           </section>
         ))}
       </div>
+      <DataTrack slug={slug} />
       <a className={s.ir} href="#unete">Elegir este track</a>
     </div>
   );

@@ -1,4 +1,3 @@
-import { EVENT } from "@/lib/config";
 import { jsonLd } from "@/lib/seo";
 
 const ITEMS = [
@@ -31,8 +30,8 @@ const ITEMS = [
     a: "El Bootcamp es virtual, del 23 al 27 de noviembre. El hackathon va del 28 de noviembre al 5 de diciembre, y la Gran Final es presencial el sábado 5 en el Auditorio de la FIIS de la UNI.",
   },
   {
-    q: "¿Cómo me inscribo?",
-    a: `En hackcis.lat/registro; las inscripciones abrieron el ${EVENT.registrationOpensLabel}. El Bootcamp está abierto a todos; la hackathon tiene cupos limitados y lista de espera, y sus inscripciones cierran el miércoles 25 de noviembre a las 11:59 p. m.`,
+    q: "¿Todavía puedo inscribirme?",
+    a: "No: las inscripciones ya cerraron. Si ya te inscribiste, entra con «Iniciar sesión» para ver tu panel, tu equipo y la data de los retos.",
   },
   {
     q: "¿Cuánto dura el build?",

@@ -1,0 +1,21 @@
+/* «Data del reto»: bloque oscuro dentro de las páginas claras de cada track; el acento llega en --rc. */
+.data { margin-top: 36px; padding: clamp(20px, 4vw, 32px); border-radius: 20px; background: #14101c; color: #eee9f7; scroll-margin-top: 90px; border-top: 5px solid var(--rc, #8b5cf6); }
+.sobre { margin: 0 0 6px; font-size: .75rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: #b9aedb; }
+.data h3 { margin: 0 0 16px; font-size: clamp(1.4rem, 4vw, 1.9rem); font-weight: 700; color: #fff; line-height: 1.2; }
+.texto { display: flex; gap: 10px; align-items: flex-start; margin: 0 0 16px; line-height: 1.6; }
+.texto svg { flex: none; margin-top: 4px; }
+.nota { display: flex; gap: 8px; align-items: center; margin: 12px 0 0; font-size: .86rem; color: #a99fc4; }
+.boton { display: inline-flex; gap: 8px; align-items: center; justify-content: center; padding: 11px 22px; border: 0; border-radius: 10px; background: #fff; color: #14101c; font: inherit; font-weight: 700; font-size: .95rem; cursor: pointer; text-decoration: none; white-space: nowrap; }
+.boton:hover { background: #e6dcff; }
+.lista { list-style: none; margin: 0 0 8px; padding: 0; }
+.lista li { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; justify-content: space-between; padding: 16px 0; border-top: 1px solid rgba(255, 255, 255, .13); }
+.lista li > div { flex: 1 1 260px; min-width: 0; }
+.lista b { font-size: 1.03rem; color: #fff; }
+.lista p { margin: 4px 0 0; font-size: .9rem; line-height: 1.55; color: #c9c1de; overflow-wrap: anywhere; }
+.lista small { display: block; margin-top: 6px; font-size: .8rem; color: #ffd98a; }
+.canal { margin: 18px 0 0; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, .13); font-size: .9rem; line-height: 1.6; color: #c9c1de; }
+.canal h4 { margin: 0 0 6px; font-size: 1.05rem; font-weight: 700; color: #fff; }
+.canal p { margin: 0 0 12px; }
+.canal p:last-child { margin-bottom: 0; }
+.canal > a { margin: 0 0 14px; white-space: normal; text-align: center; }
+.canal p a { color: #c9b6ff; text-decoration: underline; }

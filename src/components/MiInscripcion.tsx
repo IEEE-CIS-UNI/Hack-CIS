@@ -31,7 +31,7 @@ import TarjetaHack from "./TarjetaHack";
 import SumarseHack from "./SumarseHack";
 import SinEquipo from "./SinEquipo";
 import ConfirmarAsistencia from "./ConfirmarAsistencia";
-import { hackAbierta } from "@/lib/config";
+import { hackAbierta, inscripcionesAbiertas } from "@/lib/config";
 
 const NIVELES = ["Principiante", "Intermedio", "Avanzado", "Experto"] as const;
 
@@ -368,7 +368,7 @@ export default function MiInscripcion() {
           </button>
         </div>
         <p className="rg-small">
-          ¿aún no te inscribes? <Link href="/registro">hazlo aquí</Link>
+          Las inscripciones ya cerraron.
         </p>
       </div>
     );
@@ -378,11 +378,8 @@ export default function MiInscripcion() {
     return (
       <div className="rg animate-pop-in">
         <p className="rg-step">Casi</p>
-        <h1 className="rg-q">Aún no<br /><span>te inscribes</span></h1>
-        <p className="rg-help">Tu correo está verificado, pero falta llenar el formulario.</p>
-        <div className="rg-actions">
-          <Link href="/registro" className="more solid">Completar mi inscripción <ArrowRight aria-hidden size={14} /></Link>
-        </div>
+        <h1 className="rg-q">Sin<br /><span>inscripción</span></h1>
+        <p className="rg-help">Tu correo está verificado, pero no tiene una inscripción y estas ya cerraron. ¿Es un error? Escríbenos a ieee.cis@uni.edu.pe.</p>
       </div>
     );
   }
@@ -481,11 +478,11 @@ export default function MiInscripcion() {
                   })()}
                   <Link href={`/bootcamp/${s.n}`} className="pill-ok"><Check size={12} aria-hidden /> inscrito</Link>
                 </div>
-              ) : (
+              ) : inscripcionesAbiertas() ? (
                 <button className="more" style={{ marginTop: 0 }} disabled={ocupado === s.slug} onClick={() => matricular(s.slug)}>
                   {ocupado === s.slug && <Loader2 className="size-4 animate-spin" aria-hidden />} Inscribirme
                 </button>
-              )}
+              ) : null}
             </li>
           ))}
         </ul>

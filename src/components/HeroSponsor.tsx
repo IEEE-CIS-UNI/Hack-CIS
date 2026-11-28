@@ -57,6 +57,9 @@ export default function HeroSponsor({
           <a href="#unete" className={`${s.btn} ${s.principal}`}>
             Unirme a este track <ArrowRight aria-hidden size={16} />
           </a>
+          <a href="#data" className={`${s.btn} ${s.borde}`}>
+            Data del reto
+          </a>
           <a href={url} target="_blank" rel="noopener" className={`${s.btn} ${s.borde}`}>
             Conocer {nombre} ↗
           </a>

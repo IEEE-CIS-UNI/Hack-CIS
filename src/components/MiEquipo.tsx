@@ -231,6 +231,7 @@ export default function MiEquipo() {
       <div className="box">
         <p className="box-h">Track</p>
         {eq.track && pistaActual && <p className={s.sub}>Su track actual es <b style={{ color: "#fff" }}>{eq.track.nombre}</b>{eq.track.sponsor ? ` (${eq.track.sponsor})` : ""}.</p>}
+        {eq.track && <div className="rg-actions"><Link href={`/tracks/${eq.track.slug}#data`} className="more solid">Data y canales de su track <ArrowRight aria-hidden size={14} /></Link></div>}
         {!eq.soy_lider && <p className={s.sub}>El track lo elige la persona líder, cuando terminen los pitches de sponsors del viernes 27 (desde las 8:30 p. m.). Todo el equipo queda en ese track.</p>}
         {!eq.soy_lider && !algunaAbierta && proxima && <AperturaTrack abre={proxima} alCambiar={refrescarTracks} />}
         {eq.soy_lider && (

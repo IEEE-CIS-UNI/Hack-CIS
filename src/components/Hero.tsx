@@ -32,8 +32,8 @@ export default function Hero() {
         <p className="tagline">Preparados para el despegue…</p>
 
         <div className="cta-row">
-          <a className="cta" href="/registro">
-            Inscríbete →
+          <a className="cta" href="/mi-inscripcion">
+            Iniciar sesión →
           </a>
           <Countdown />
         </div>
